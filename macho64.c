@@ -623,17 +623,17 @@ static void macho_build_structures(struct module_info* modinfo, struct macho_mod
                     reloc.r_type = machotype;
                     switch (currFixup->addbytes)
                     {
-                    case 8:
-                        reloc.r_length = 3;
-                        break;
-                    case 4:
-                        reloc.r_length = 2;
-                        break;
-                    case 2:
-                        reloc.r_length = 1;
-                        break;
-                    default:
-                        reloc.r_length = 0;
+                        case 8:
+                            reloc.r_length = 3;
+                            break;
+                        case 4:
+                            reloc.r_length = 2;
+                            break;
+                        case 2:
+                            reloc.r_length = 1;
+                            break;
+                        default:
+                            reloc.r_length = 0;
                     }
 
                     if (fwrite(&reloc, 1, sizeof(struct relocation_info), CurrFile[OBJ]) != sizeof(struct relocation_info))

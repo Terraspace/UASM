@@ -194,15 +194,15 @@ static int get_num_reloc_sections(void)
 static uint_32 set_symtab32(struct elfmod* em, uint_32 entries, struct localname* localshead)
 /*********************************************************************************************/
 {
-    uint_32   strsize = 1;
-    uint_32   len;
-    uint_8    stt;
-    struct dsym* curr;
-    struct asym* sym;
-    struct localname* localscurr;
-    struct qnode* q;
-    Elf32_Sym* p32;
-    char      buffer[MAX_ID_LEN + MANGLE_BYTES + 1];
+    uint_32             strsize = 1;
+    uint_32             len;
+    uint_8              stt;
+    struct dsym*        curr;
+    struct asym*        sym;
+    struct localname*   localscurr;
+    struct qnode*       q;
+    Elf32_Sym*          p32;
+    char                buffer[MAX_ID_LEN + MANGLE_BYTES + 1];
 
     em->internal_segs[SYMTAB_IDX].size = entries * sizeof(Elf32_Sym);
     em->internal_segs[SYMTAB_IDX].data = LclAlloc(em->internal_segs[SYMTAB_IDX].size);
@@ -280,10 +280,10 @@ static uint_32 set_symtab32(struct elfmod* em, uint_32 entries, struct localname
         else
         {
 #if OWELFIMPORT
-            p32->st_info = (IsWeak(curr->sym)?ELF32_ST_INFO(STB_WEAK, STT_IMPORT):ELF32_ST_INFO(STB_GLOBAL, STT_IMPORT));
+            p32->st_info = (IsWeak(curr->sym) ? ELF32_ST_INFO(STB_WEAK, STT_IMPORT) : ELF32_ST_INFO(STB_GLOBAL, STT_IMPORT));
 #else
             /* todo: set STT_FUNC for prototypes/code labels??? */
-            p32->st_info = (IsWeak(curr->sym)?ELF32_ST_INFO(STB_WEAK, STT_NOTYPE):ELF32_ST_INFO(STB_GLOBAL, STT_NOTYPE));
+            p32->st_info = (IsWeak(curr->sym) ? ELF32_ST_INFO(STB_WEAK, STT_NOTYPE) : ELF32_ST_INFO(STB_GLOBAL, STT_NOTYPE));
 #endif
             p32->st_value = curr->sym.offset; /* is always 0 */
             p32->st_shndx = SHN_UNDEF;
@@ -367,7 +367,7 @@ static uint_32 set_symtab32(struct elfmod* em, uint_32 entries, struct localname
     }
 #endif
     return(strsize);
-    }
+}
 
 #if AMD64_SUPPORT
 
@@ -385,15 +385,15 @@ static uint_32 set_symtab32(struct elfmod* em, uint_32 entries, struct localname
 static uint_32 set_symtab64(struct elfmod* em, uint_32 entries, struct localname* localshead)
 /*********************************************************************************************/
 {
-    uint_32   strsize = 1;
-    uint_32   len;
-    uint_8    stt;
-    struct dsym* curr;
-    struct asym* sym;
-    struct localname* localscurr;
-    struct qnode* q;
-    Elf64_Sym* p64;
-    char      buffer[MAX_ID_LEN + MANGLE_BYTES + 1];
+    uint_32             strsize = 1;
+    uint_32             len;
+    uint_8              stt;
+    struct dsym*        curr;
+    struct asym*        sym;
+    struct localname*   localscurr;
+    struct qnode*       q;
+    Elf64_Sym*          p64;
+    char                buffer[MAX_ID_LEN + MANGLE_BYTES + 1];
 
     em->internal_segs[SYMTAB_IDX].size = entries * sizeof(Elf64_Sym);
     em->internal_segs[SYMTAB_IDX].data = LclAlloc(em->internal_segs[SYMTAB_IDX].size);
@@ -471,10 +471,10 @@ static uint_32 set_symtab64(struct elfmod* em, uint_32 entries, struct localname
         else
         {
 #if OWELFIMPORT
-            p64->st_info = (IsWeak(curr->sym)?ELF64_ST_INFO(STB_WEAK, STT_IMPORT):ELF64_ST_INFO(STB_GLOBAL, STT_IMPORT));
+            p64->st_info = (IsWeak(curr->sym) ? ELF64_ST_INFO(STB_WEAK, STT_IMPORT) : ELF64_ST_INFO(STB_GLOBAL, STT_IMPORT));
 #else
             /* todo: set STT_FUNC for prototypes??? */
-            p64->st_info = (IsWeak(curr->sym)?ELF64_ST_INFO(STB_WEAK, STT_NOTYPE):ELF64_ST_INFO(STB_GLOBAL, STT_NOTYPE));
+            p64->st_info = (IsWeak(curr->sym) ? ELF64_ST_INFO(STB_WEAK, STT_NOTYPE) : ELF64_ST_INFO(STB_GLOBAL, STT_NOTYPE));
 #endif
             p64->st_value = curr->sym.offset; /* is always 0 */
             p64->st_shndx = SHN_UNDEF;
@@ -559,7 +559,7 @@ static uint_32 set_symtab64(struct elfmod* em, uint_32 entries, struct localname
     }
 #endif
     return(strsize);
-    }
+}
 #endif
 
 /* calculate size of .symtab + .strtab section.
@@ -568,12 +568,12 @@ static uint_32 set_symtab64(struct elfmod* em, uint_32 entries, struct localname
 static void set_symtab_values(struct elfmod* em)
 /************************************************/
 {
-    uint_32 strsize;
-    uint_32 entries;
-    struct dsym* curr;
+    uint_32         strsize;
+    uint_32         entries;
+    struct dsym*    curr;
     //struct asym *sym;
-    struct qnode* q;
-    char* p2;
+    struct qnode*   q;
+    char*           p2;
     struct
     {
         struct localname* head;
@@ -629,10 +629,10 @@ static void set_symtab_values(struct elfmod* em)
                         locals.head = locals.tail = localscurr;
                     }
                     fix->sym->ext_idx = em->symindex++;
-                    }
                 }
             }
         }
+    }
     DebugMsg(("set_symtab_values: index after sections: %u\n", em->symindex));
     em->start_globals = em->symindex;
 
@@ -719,7 +719,7 @@ static void set_symtab_values(struct elfmod* em)
 #endif
     DebugMsg(("set_symtab_values: exit, symindex=%u\n", em->symindex));
     return;
-    }
+}
 
 /* set content + size of .shstrtab section.
  * this section contains the names of all sections.
@@ -732,22 +732,22 @@ static void set_symtab_values(struct elfmod* em)
 static void set_shstrtab_values(struct elfmod* em)
 /**************************************************/
 {
-    int         i;
-    struct dsym* curr;
-    char* p;
-    unsigned int size = 1; /* the first byte at offset 0 is the NULL section name */
-    char buffer[MAX_ID_LEN + 1];
+    int             i;
+    struct dsym*    curr;
+    char*           p;
+    unsigned int    size = 1; /* the first byte at offset 0 is the NULL section name */
+    char            buffer[MAX_ID_LEN + 1];
 
     /* get size of section names defined in the program & relocation sections ) */
     for (curr = SymTables[TAB_SEG].head; curr; curr = curr->next)
     {
         /* v2.07: ALIAS name defined? */
-        p = (curr->e.seginfo->aliasname?curr->e.seginfo->aliasname:ElfConvertSectionName(&curr->sym, buffer));
+        p = (curr->e.seginfo->aliasname ? curr->e.seginfo->aliasname : ElfConvertSectionName(&curr->sym, &buffer));
         size += strlen(p) + 1;
         if (curr->e.seginfo->FixupList.head)
             size += strlen(p) +
 #if AMD64_SUPPORT
-            ((ModuleInfo.defOfssize == USE64)?sizeof(".rela"):sizeof(".rel"));
+            ((ModuleInfo.defOfssize == USE64) ? sizeof(".rela") : sizeof(".rel"));
 #else
             sizeof(".rel");
 #endif
@@ -769,7 +769,7 @@ static void set_shstrtab_values(struct elfmod* em)
     /* 1. names of program sections */
     for (curr = SymTables[TAB_SEG].head; curr; curr = curr->next)
     {
-        strcpy(p, curr->e.seginfo->aliasname?curr->e.seginfo->aliasname:ElfConvertSectionName(&curr->sym, buffer));
+        strcpy(p, curr->e.seginfo->aliasname ? curr->e.seginfo->aliasname : ElfConvertSectionName(&curr->sym, &buffer));
         p += strlen(p) + 1;
     }
     /* 2. names of internal sections */
@@ -784,12 +784,12 @@ static void set_shstrtab_values(struct elfmod* em)
         if (curr->e.seginfo->FixupList.head)
         {
 #if AMD64_SUPPORT
-            strcpy(p, ((ModuleInfo.defOfssize == USE64)?".rela":".rel"));
+            strcpy(p, ((ModuleInfo.defOfssize == USE64) ? ".rela" : ".rel"));
 #else
             strcpy(p, ".rel");
 #endif
             p += strlen(p);
-            strcpy(p, curr->e.seginfo->aliasname?curr->e.seginfo->aliasname:ElfConvertSectionName(&curr->sym, buffer));
+            strcpy(p, curr->e.seginfo->aliasname ? curr->e.seginfo->aliasname : ElfConvertSectionName(&curr->sym, &buffer));
             p += strlen(p) + 1;
         }
     }
@@ -828,11 +828,11 @@ static unsigned int Get_Alignment(struct dsym* curr)
 static int elf_write_section_table32(struct module_info* modinfo, struct elfmod* em, uint_32 fileoffset)
 /********************************************************************************************************/
 {
-    int         i;
-    struct dsym* curr;
-    uint_8* p;
+    int             i;
+    struct dsym*    curr;
+    uint_8*         p;
     //uint_32     fileoffset;
-    Elf32_Shdr  shdr32;
+    Elf32_Shdr      shdr32;
 
     DebugMsg(("elf_write_section_table32( fileofs=%X ): enter\n", fileoffset));
 
@@ -865,7 +865,7 @@ static int elf_write_section_table32(struct module_info* modinfo, struct elfmod*
         }
         else
         {
-            shdr32.sh_type = (curr->e.seginfo->segtype != SEGTYPE_BSS?SHT_PROGBITS:SHT_NOBITS);
+            shdr32.sh_type = (curr->e.seginfo->segtype != SEGTYPE_BSS ? SHT_PROGBITS : SHT_NOBITS);
             if (curr->e.seginfo->segtype == SEGTYPE_CODE)
             {
                 shdr32.sh_flags = SHF_EXECINSTR | SHF_ALLOC;
@@ -887,7 +887,7 @@ static int elf_write_section_table32(struct module_info* modinfo, struct elfmod*
         /* todo: translate values in field <characteristics> to
          * elf section flags.
          */
-        if (curr->e.seginfo->characteristics == ???)
+        if (curr->e.seginfo->characteristics == ? ? ? )
         {
         }
 #endif
@@ -999,10 +999,10 @@ static int elf_write_section_table32(struct module_info* modinfo, struct elfmod*
 static int elf_write_section_table64(struct module_info* modinfo, struct elfmod* em, uint_32 fileoffset)
 /********************************************************************************************************/
 {
-    int         i;
-    struct dsym* curr;
-    uint_8* p;
-    Elf64_Shdr  shdr64;
+    int             i;
+    struct dsym*    curr;
+    uint_8*         p;
+    Elf64_Shdr      shdr64;
 
     DebugMsg(("elf_write_section_table64( fileofs=%X ): enter\n", fileoffset));
 
@@ -1034,7 +1034,7 @@ static int elf_write_section_table64(struct module_info* modinfo, struct elfmod*
         }
         else
         {
-            shdr64.sh_type = (curr->e.seginfo->segtype != SEGTYPE_BSS?SHT_PROGBITS:SHT_NOBITS);
+            shdr64.sh_type = (curr->e.seginfo->segtype != SEGTYPE_BSS ? SHT_PROGBITS : SHT_NOBITS);
             if (curr->e.seginfo->segtype == SEGTYPE_CODE)
             {
                 shdr64.sh_flags = SHF_EXECINSTR | SHF_ALLOC;
@@ -1056,7 +1056,7 @@ static int elf_write_section_table64(struct module_info* modinfo, struct elfmod*
         /* todo: translate values in field <characteristics> to
          * elf section flags.
          */
-        if (curr->e.seginfo->characteristics == ???)
+        if (curr->e.seginfo->characteristics == ? ? ? )
         {
         }
 #endif
@@ -1164,9 +1164,9 @@ static int elf_write_section_table64(struct module_info* modinfo, struct elfmod*
 static void write_relocs32(struct elfmod* em, struct dsym* curr)
 /****************************************************************/
 {
-    uint_8 elftype;
-    struct fixup* fixup;
-    Elf32_Rel reloc32;
+    uint_8          elftype;
+    struct fixup*   fixup;
+    Elf32_Rel       reloc32;
 
     DebugMsg(("write_relocs32: enter\n"));
     for (fixup = curr->e.seginfo->FixupList.head; fixup; fixup = fixup->nextrlc)
@@ -1174,42 +1174,42 @@ static void write_relocs32(struct elfmod* em, struct dsym* curr)
         reloc32.r_offset = fixup->locofs;
         switch (fixup->type)
         {
-        case FIX_OFF32:         elftype = R_386_32;             break;
-        case FIX_RELOFF32:      elftype = R_386_PC32;           break;
-            //case FIX_???:         elftype = R_386_GOT32;          break;
-            //case FIX_???:         elftype = R_386_PLT32;          break;
-            //case FIX_???:         elftype = R_386_COPY;           break;
-            //case FIX_???:         elftype = R_386_GLOB_DAT;       break;
-            //case FIX_???:         elftype = R_386_JMP_SLOT;       break;
-        case FIX_OFF32_IMGREL:  elftype = R_386_RELATIVE;       break;
-            //case FIX_???:         elftype = R_386_GOTOFF;         break;
-            //case FIX_???:         elftype = R_386_GOTPC;          break;
+            case FIX_OFF32:         elftype = R_386_32;             break;
+            case FIX_RELOFF32:      elftype = R_386_PC32;           break;
+                //case FIX_???:         elftype = R_386_GOT32;          break;
+                //case FIX_???:         elftype = R_386_PLT32;          break;
+                //case FIX_???:         elftype = R_386_COPY;           break;
+                //case FIX_???:         elftype = R_386_GLOB_DAT;       break;
+                //case FIX_???:         elftype = R_386_JMP_SLOT;       break;
+            case FIX_OFF32_IMGREL:  elftype = R_386_RELATIVE;       break;
+                //case FIX_???:         elftype = R_386_GOTOFF;         break;
+                //case FIX_???:         elftype = R_386_GOTPC;          break;
 #if GNURELOCS
-        case FIX_OFF16:    em->extused = TRUE; elftype = R_386_16;   break;
-        case FIX_RELOFF16: em->extused = TRUE; elftype = R_386_PC16; break;
-        case FIX_OFF8:     em->extused = TRUE; elftype = R_386_8;    break;
-        case FIX_RELOFF8:  em->extused = TRUE; elftype = R_386_PC8;  break;
+            case FIX_OFF16:    em->extused = TRUE; elftype = R_386_16;   break;
+            case FIX_RELOFF16: em->extused = TRUE; elftype = R_386_PC16; break;
+            case FIX_OFF8:     em->extused = TRUE; elftype = R_386_8;    break;
+            case FIX_RELOFF8:  em->extused = TRUE; elftype = R_386_PC8;  break;
 #endif
-        default:
-            DebugMsg(("write_relocs32(): unhandled reloc loc=%X type=%u idx=%u sym=%s\n",
-                     fixup->locofs, fixup->type, fixup->sym->ext_idx, fixup->sym->name));
-            elftype = R_386_NONE;
-            if (fixup->type < FIX_LAST)
-            {
-                EmitErr(INVALID_FIXUP_TYPE, ModuleInfo.fmtopt->formatname, fixup->type, curr->sym.name, fixup->locofs);
-            }
-            else
-                EmitErr(UNKNOWN_FIXUP_TYPE, fixup->type, curr->sym.name, fixup->locofs);
-    }
+            default:
+                DebugMsg(("write_relocs32(): unhandled reloc loc=%X type=%u idx=%u sym=%s\n",
+                         fixup->locofs, fixup->type, fixup->sym->ext_idx, fixup->sym->name));
+                elftype = R_386_NONE;
+                if (fixup->type < FIX_LAST)
+                {
+                    EmitErr(INVALID_FIXUP_TYPE, ModuleInfo.fmtopt->formatname, fixup->type, curr->sym.name, fixup->locofs);
+                }
+                else
+                    EmitErr(UNKNOWN_FIXUP_TYPE, fixup->type, curr->sym.name, fixup->locofs);
+        }
         /* the low 8 bits of info are type */
         /* the high 24 bits are symbol table index */
         reloc32.r_info = ELF32_R_INFO(fixup->sym->ext_idx, elftype);
         if (fwrite(&reloc32, 1, sizeof(reloc32), CurrFile[OBJ]) != sizeof(reloc32))
             WriteError();
-}
+    }
     DebugMsg(("write_relocs32: exit\n"));
     return;
-    }
+}
 
 #if AMD64_SUPPORT
 
@@ -1218,9 +1218,9 @@ static void write_relocs32(struct elfmod* em, struct dsym* curr)
 static void write_relocs64(struct dsym* curr)
 /*********************************************/
 {
-    uint_8 elftype;
-    struct fixup* fixup;
-    Elf64_Rela reloc64; /* v2.05: changed to Rela */
+    uint_8          elftype;
+    struct fixup*   fixup;
+    Elf64_Rela      reloc64; /* v2.05: changed to Rela */
 
     DebugMsg(("write_relocs64: enter\n"));
     for (fixup = curr->e.seginfo->FixupList.head; fixup; fixup = fixup->nextrlc)
@@ -1246,54 +1246,54 @@ static void write_relocs64(struct dsym* curr)
                  fixup->locofs, fixup->type, fixup->sym->ext_idx, fixup->sym->name, fixup->offset, fixup->addbytes));
         switch (fixup->type)
         {
-        case FIX_RELOFF32:
+            case FIX_RELOFF32:
 #if 0  /* v2.07: activate if the section's index is to be used as symtab ref */
-            if (fixup->sym->segment != &curr->sym)
-            {
-                //printf("PC-relative fixup to another section: %s\n", fixup->sym->name );
-                reloc64.r_addend += fixup->sym->offset;
-                symidx = fixup->sym->segment->ext_idx;
-            }
+                if (fixup->sym->segment != &curr->sym)
+                {
+                    //printf("PC-relative fixup to another section: %s\n", fixup->sym->name );
+                    reloc64.r_addend += fixup->sym->offset;
+                    symidx = fixup->sym->segment->ext_idx;
+                }
 #endif
-            elftype = R_X86_64_PC32;
-            break;
-        case FIX_OFF64:        elftype = R_X86_64_64;          break;
-            //case FIX_???:        elftype = R_X86_64_GOT32;       break;
-            //case FIX_???:        elftype = R_X86_64_PLT32;       break;
-            //case FIX_???:        elftype = R_X86_64_COPY;        break;
-        case FIX_GOT64:        elftype = R_X86_64_GLOB_DAT;    break; /* UASM 2.47 added these plt/got types + fixup.h changes in prep for plt/got support */
-        case FIX_PLT64:        elftype = R_X86_64_JUMP_SLOT;   break;
-        case FIX_OFF32_IMGREL: elftype = R_X86_64_RELATIVE;    break;
-        case FIX_GOTPCREL64:   elftype = R_X86_64_GOTPCREL64;  break;
-        case FIX_OFF32:        elftype = R_X86_64_32;          break;
-            //case FIX_???:        elftype = R_X86_64_32S;         break;
-        case FIX_OFF16:        elftype = R_X86_64_16;          break;
-        case FIX_RELOFF16:     elftype = R_X86_64_PC16;        break;
-        case FIX_OFF8:         elftype = R_X86_64_8;           break;
-        case FIX_RELOFF8:      elftype = R_X86_64_PC8;         break;
-            //case FIX_???:        elftype = R_X86_64_DPTMOD64;    break;
-            //case FIX_???:        elftype = R_X86_64_DPTOFF64;    break;
-            //case FIX_???:        elftype = R_X86_64_TPOFF64;     break;
-            //case FIX_???:        elftype = R_X86_64_TLSGD;       break;
-            //case FIX_???:        elftype = R_X86_64_TLSLD;       break;
-            //case FIX_???:        elftype = R_X86_64_DPTOFF32;    break;
-            //case FIX_???:        elftype = R_X86_64_GOTTPOFF;    break;
-            //case FIX_???:        elftype = R_X86_64_TPOFF32;     break;
-            //case FIX_???:        elftype = R_X86_64_PC64;        break;
-            //case FIX_???:        elftype = R_X86_64_GOTOFF64;    break;
-            //case FIX_???:        elftype = R_X86_64_GOTPC32;     break;
-            //case FIX_???:        elftype = R_X86_64_SIZE32;      break;
-            //case FIX_???:        elftype = R_X86_64_SIZE64;      break;
-        default:
-            DebugMsg(("write_relocs64(): unhandled reloc loc=%X type=%u idx=%u sym=%s\n",
-                     fixup->locofs, fixup->type, fixup->sym->ext_idx, fixup->sym->name));
-            elftype = R_X86_64_NONE;
-            if (fixup->type < FIX_LAST)
-            {
-                EmitErr(INVALID_FIXUP_TYPE, ModuleInfo.fmtopt->formatname, fixup->type, curr->sym.name, fixup->locofs);
-            }
-            else
-                EmitErr(UNKNOWN_FIXUP_TYPE, fixup->type, curr->sym.name, fixup->locofs);
+                elftype = R_X86_64_PC32;
+                break;
+            case FIX_OFF64:        elftype = R_X86_64_64;          break;
+                //case FIX_???:        elftype = R_X86_64_GOT32;       break;
+                //case FIX_???:        elftype = R_X86_64_PLT32;       break;
+                //case FIX_???:        elftype = R_X86_64_COPY;        break;
+            case FIX_GOT64:        elftype = R_X86_64_GLOB_DAT;    break; /* UASM 2.47 added these plt/got types + fixup.h changes in prep for plt/got support */
+            case FIX_PLT64:        elftype = R_X86_64_JUMP_SLOT;   break;
+            case FIX_OFF32_IMGREL: elftype = R_X86_64_RELATIVE;    break;
+            case FIX_GOTPCREL64:   elftype = R_X86_64_GOTPCREL64;  break;
+            case FIX_OFF32:        elftype = R_X86_64_32;          break;
+                //case FIX_???:        elftype = R_X86_64_32S;         break;
+            case FIX_OFF16:        elftype = R_X86_64_16;          break;
+            case FIX_RELOFF16:     elftype = R_X86_64_PC16;        break;
+            case FIX_OFF8:         elftype = R_X86_64_8;           break;
+            case FIX_RELOFF8:      elftype = R_X86_64_PC8;         break;
+                //case FIX_???:        elftype = R_X86_64_DPTMOD64;    break;
+                //case FIX_???:        elftype = R_X86_64_DPTOFF64;    break;
+                //case FIX_???:        elftype = R_X86_64_TPOFF64;     break;
+                //case FIX_???:        elftype = R_X86_64_TLSGD;       break;
+                //case FIX_???:        elftype = R_X86_64_TLSLD;       break;
+                //case FIX_???:        elftype = R_X86_64_DPTOFF32;    break;
+                //case FIX_???:        elftype = R_X86_64_GOTTPOFF;    break;
+                //case FIX_???:        elftype = R_X86_64_TPOFF32;     break;
+                //case FIX_???:        elftype = R_X86_64_PC64;        break;
+                //case FIX_???:        elftype = R_X86_64_GOTOFF64;    break;
+                //case FIX_???:        elftype = R_X86_64_GOTPC32;     break;
+                //case FIX_???:        elftype = R_X86_64_SIZE32;      break;
+                //case FIX_???:        elftype = R_X86_64_SIZE64;      break;
+            default:
+                DebugMsg(("write_relocs64(): unhandled reloc loc=%X type=%u idx=%u sym=%s\n",
+                         fixup->locofs, fixup->type, fixup->sym->ext_idx, fixup->sym->name));
+                elftype = R_X86_64_NONE;
+                if (fixup->type < FIX_LAST)
+                {
+                    EmitErr(INVALID_FIXUP_TYPE, ModuleInfo.fmtopt->formatname, fixup->type, curr->sym.name, fixup->locofs);
+                }
+                else
+                    EmitErr(UNKNOWN_FIXUP_TYPE, fixup->type, curr->sym.name, fixup->locofs);
         }
         /* the low 8 bits of info are type */
         /* the high 24 bits are symbol table index */
@@ -1311,11 +1311,11 @@ static void write_relocs64(struct dsym* curr)
 static ret_code elf_write_data(struct module_info* modinfo, struct elfmod* em)
 /******************************************************************************/
 {
-    struct dsym* curr;
+    struct dsym*    curr;
     //int seg_index;
     //uint_32 offset = 0;
-    uint_32     size;
-    int         i;
+    uint_32         size;
+    int             i;
 
     DebugMsg(("elf_write_data: enter\n"));
 
@@ -1395,75 +1395,75 @@ static ret_code elf_write_module(struct module_info* modinfo)
     switch (modinfo->defOfssize)
     {
 #if AMD64_SUPPORT
-    case USE64:
-        memcpy(&em.ehdr64.e_ident, ELF_SIGNATURE, ELF_SIGNATURE_LEN);
-        em.ehdr64.e_ident[EI_CLASS] = ELFCLASS64;
-        em.ehdr64.e_ident[EI_DATA] = ELFDATA2LSB;
-        em.ehdr64.e_ident[EI_VERSION] = EV_CURRENT;
-        em.ehdr64.e_ident[EI_OSABI] = modinfo->elf_osabi;
-        /* v2.07: set abiversion to 0 */
-        //ehdr64.e_ident[EI_ABIVERSION] = EV_CURRENT;
-        em.ehdr64.e_ident[EI_ABIVERSION] = 0;
-        em.ehdr64.e_type = ET_REL; /* file type */
-        em.ehdr64.e_machine = EM_X86_64;
-        em.ehdr64.e_version = EV_CURRENT;
-        em.ehdr64.e_entry = 0; /* no entry for relocatable objects */
-        em.ehdr64.e_phoff = 0; /* no progheaders for relocatable objects */
-        em.ehdr64.e_shoff = sizeof(em.ehdr64);
-        em.ehdr64.e_flags = 0;
-        em.ehdr64.e_ehsize = sizeof(em.ehdr64);
-        em.ehdr64.e_phentsize = 0; /* no progheaders for relocatable objects */
-        em.ehdr64.e_phnum = 0;
-        em.ehdr64.e_shentsize = sizeof(Elf64_Shdr);
-        /* calculate # of sections. Add the following internal sections:
-         - 1 NULL entry
-         - 1 .shstrtab
-         - 1 .symtab
-         - 1 .strtab
-         - n .rela<xxx> sections
-         */
-        em.ehdr64.e_shnum = 1 + modinfo->g.num_segs + 3 + get_num_reloc_sections();
-        em.ehdr64.e_shstrndx = 1 + modinfo->g.num_segs + SHSTRTAB_IDX; /* set index of .shstrtab section */
-        if (fwrite(&em.ehdr64, 1, sizeof(em.ehdr64), CurrFile[OBJ]) != sizeof(em.ehdr64))
-            WriteError();
-        elf_write_section_table64(modinfo, &em,
-                                  sizeof(Elf64_Ehdr) + em.ehdr64.e_shnum * em.ehdr64.e_shentsize);
-        break;
+        case USE64:
+            memcpy(&em.ehdr64.e_ident, ELF_SIGNATURE, ELF_SIGNATURE_LEN);
+            em.ehdr64.e_ident[EI_CLASS] = ELFCLASS64;
+            em.ehdr64.e_ident[EI_DATA] = ELFDATA2LSB;
+            em.ehdr64.e_ident[EI_VERSION] = EV_CURRENT;
+            em.ehdr64.e_ident[EI_OSABI] = modinfo->elf_osabi;
+            /* v2.07: set abiversion to 0 */
+            //ehdr64.e_ident[EI_ABIVERSION] = EV_CURRENT;
+            em.ehdr64.e_ident[EI_ABIVERSION] = 0;
+            em.ehdr64.e_type = ET_REL; /* file type */
+            em.ehdr64.e_machine = EM_X86_64;
+            em.ehdr64.e_version = EV_CURRENT;
+            em.ehdr64.e_entry = 0; /* no entry for relocatable objects */
+            em.ehdr64.e_phoff = 0; /* no progheaders for relocatable objects */
+            em.ehdr64.e_shoff = sizeof(em.ehdr64);
+            em.ehdr64.e_flags = 0;
+            em.ehdr64.e_ehsize = sizeof(em.ehdr64);
+            em.ehdr64.e_phentsize = 0; /* no progheaders for relocatable objects */
+            em.ehdr64.e_phnum = 0;
+            em.ehdr64.e_shentsize = sizeof(Elf64_Shdr);
+            /* calculate # of sections. Add the following internal sections:
+             - 1 NULL entry
+             - 1 .shstrtab
+             - 1 .symtab
+             - 1 .strtab
+             - n .rela<xxx> sections
+             */
+            em.ehdr64.e_shnum = 1 + modinfo->g.num_segs + 3 + get_num_reloc_sections();
+            em.ehdr64.e_shstrndx = 1 + modinfo->g.num_segs + SHSTRTAB_IDX; /* set index of .shstrtab section */
+            if (fwrite(&em.ehdr64, 1, sizeof(em.ehdr64), CurrFile[OBJ]) != sizeof(em.ehdr64))
+                WriteError();
+            elf_write_section_table64(modinfo, &em,
+                                      sizeof(Elf64_Ehdr) + em.ehdr64.e_shnum * em.ehdr64.e_shentsize);
+            break;
 #endif
-    default:
-        memcpy(&em.ehdr32.e_ident, ELF_SIGNATURE, ELF_SIGNATURE_LEN);
-        em.ehdr32.e_ident[EI_CLASS] = ELFCLASS32;
-        em.ehdr32.e_ident[EI_DATA] = ELFDATA2LSB;
-        em.ehdr32.e_ident[EI_VERSION] = EV_CURRENT;
-        em.ehdr32.e_ident[EI_OSABI] = modinfo->elf_osabi;
-        /* v2.07: set abiversion to 0 */
-        //ehdr32.e_ident[EI_ABIVERSION] = EV_CURRENT;
-        em.ehdr32.e_ident[EI_ABIVERSION] = 0;
-        em.ehdr32.e_type = ET_REL; /* file type */
-        em.ehdr32.e_machine = EM_386;
-        em.ehdr32.e_version = EV_CURRENT;
-        em.ehdr32.e_entry = 0; /* no entry for relocatable objects */
-        em.ehdr32.e_phoff = 0; /* no progheaders for relocatable objects */
-        em.ehdr32.e_shoff = sizeof(em.ehdr32);
-        em.ehdr32.e_flags = 0;
-        em.ehdr32.e_ehsize = sizeof(em.ehdr32);
-        em.ehdr32.e_phentsize = 0; /* no progheaders for relocatable objects */
-        em.ehdr32.e_phnum = 0;
-        em.ehdr32.e_shentsize = sizeof(Elf32_Shdr);
-        /* calculate # of sections. Add the following internal sections:
-         - 1 NULL entry
-         - 1 .shstrtab
-         - 1 .symtab
-         - 1 .strtab
-         - n .rel<xxx> entries
-         */
-        em.ehdr32.e_shnum = 1 + modinfo->g.num_segs + 3 + get_num_reloc_sections();
-        em.ehdr32.e_shstrndx = 1 + modinfo->g.num_segs + SHSTRTAB_IDX; /* set index of .shstrtab section */
-        if (fwrite(&em.ehdr32, 1, sizeof(em.ehdr32), CurrFile[OBJ]) != sizeof(em.ehdr32))
-            WriteError();
-        elf_write_section_table32(modinfo, &em,
-                                  sizeof(Elf32_Ehdr) + em.ehdr32.e_shnum * em.ehdr32.e_shentsize);
-};
+        default:
+            memcpy(&em.ehdr32.e_ident, ELF_SIGNATURE, ELF_SIGNATURE_LEN);
+            em.ehdr32.e_ident[EI_CLASS] = ELFCLASS32;
+            em.ehdr32.e_ident[EI_DATA] = ELFDATA2LSB;
+            em.ehdr32.e_ident[EI_VERSION] = EV_CURRENT;
+            em.ehdr32.e_ident[EI_OSABI] = modinfo->elf_osabi;
+            /* v2.07: set abiversion to 0 */
+            //ehdr32.e_ident[EI_ABIVERSION] = EV_CURRENT;
+            em.ehdr32.e_ident[EI_ABIVERSION] = 0;
+            em.ehdr32.e_type = ET_REL; /* file type */
+            em.ehdr32.e_machine = EM_386;
+            em.ehdr32.e_version = EV_CURRENT;
+            em.ehdr32.e_entry = 0; /* no entry for relocatable objects */
+            em.ehdr32.e_phoff = 0; /* no progheaders for relocatable objects */
+            em.ehdr32.e_shoff = sizeof(em.ehdr32);
+            em.ehdr32.e_flags = 0;
+            em.ehdr32.e_ehsize = sizeof(em.ehdr32);
+            em.ehdr32.e_phentsize = 0; /* no progheaders for relocatable objects */
+            em.ehdr32.e_phnum = 0;
+            em.ehdr32.e_shentsize = sizeof(Elf32_Shdr);
+            /* calculate # of sections. Add the following internal sections:
+             - 1 NULL entry
+             - 1 .shstrtab
+             - 1 .symtab
+             - 1 .strtab
+             - n .rel<xxx> entries
+             */
+            em.ehdr32.e_shnum = 1 + modinfo->g.num_segs + 3 + get_num_reloc_sections();
+            em.ehdr32.e_shstrndx = 1 + modinfo->g.num_segs + SHSTRTAB_IDX; /* set index of .shstrtab section */
+            if (fwrite(&em.ehdr32, 1, sizeof(em.ehdr32), CurrFile[OBJ]) != sizeof(em.ehdr32))
+                WriteError();
+            elf_write_section_table32(modinfo, &em,
+                                      sizeof(Elf32_Ehdr) + em.ehdr32.e_shnum * em.ehdr32.e_shentsize);
+    };
     elf_write_data(modinfo, &em);
     DebugMsg(("elf_write_module: exit\n"));
     return(NOT_ERROR);

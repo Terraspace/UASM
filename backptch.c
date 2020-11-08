@@ -225,15 +225,15 @@ static void DoPatch(struct asym* sym, struct fixup* fixup)
                     for (; size; size--)
                         OutputByte(0xCC);
                     break;
-                    }
+                }
                 break;
             case 2:
             case 4:
                 DebugMsg(("DoPatch: jump out of range, disp=%d\n", disp));
                 EmitWarn(4, JUMP_OUT_OF_RANGE, disp - max_disp);
                 break;
-                }
             }
+        }
 #ifdef DEBUG_OUT
         else
             DebugMsg(("DoPatch, loc=%" I32_SPEC "X: displacement still short: %Xh\n", fixup->locofs, disp));
@@ -247,9 +247,9 @@ static void DoPatch(struct asym* sym, struct fixup* fixup)
         DebugMsg(("DoPatch: default branch, unhandled fixup type=%u\n", fixup->type));
         SkipFixup();
         break;
-        }
-    return;
     }
+    return;
+}
 
 ret_code BackPatch(struct asym* sym)
 /************************************/

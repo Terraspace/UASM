@@ -185,7 +185,7 @@ char* GetExtPart(const char* fname)
             rc = NULL;
         }
     }
-    return(rc?rc:(char*)fname);
+    return(rc ? rc : (char*)fname);
 }
 
 /* check if a file is in the array of known files.
@@ -380,36 +380,36 @@ static char* my_fgets(char* buffer, int max, FILE* fp)
     {
         switch (c)
         {
-        case '\r':
-            break; /* don't store CR */
-        case '\n':
-            /* fall through */
-        //case '\0': /* v2.08: */
+            case '\r':
+                break; /* don't store CR */
+            case '\n':
+                /* fall through */
+            //case '\0': /* v2.08: */
 #ifdef DEBUG_OUT
-            if (Parse_Pass == PASS_1)
-                cntflines++;
+                if (Parse_Pass == PASS_1)
+                    cntflines++;
 #endif
-            * ptr = NULLC;
-            return(buffer);
+                * ptr = NULLC;
+                return(buffer);
 #if DETECTCTRLZ
-        case 0x1a:
-            /* since source files are opened in binary mode, ctrl-z
-             * handling must be done here.
-             */
-             /* no break */
+            case 0x1a:
+                /* since source files are opened in binary mode, ctrl-z
+                 * handling must be done here.
+                 */
+                 /* no break */
 #endif
-        case EOF:
-            *ptr = NULLC;
-            return(ptr > buffer?buffer:NULL);
-        default:
-            *ptr++ = c;
+            case EOF:
+                *ptr = NULLC;
+                return(ptr > buffer ? buffer : NULL);
+            default:
+                *ptr++ = c;
         }
         c = getc(fp);
     }
     EmitErr(LINE_TOO_LONG);
     *(ptr - 1) = NULLC;
     return(buffer);
-        }
+}
 
 #if FILESEQ
 void AddFileSeq(unsigned file)
@@ -517,7 +517,7 @@ int GetCurrSrcPos(char* buffer)
     {
         if (curr->type == SIT_FILE)
         {
-            return(sprintf(buffer, ModuleInfo.EndDirFound == FALSE?"%s(%" I32_SPEC "u) : ":"%s : ", GetFName(curr->srcfile)->fname, curr->line_num));
+            return(sprintf(buffer, ModuleInfo.EndDirFound == FALSE ? "%s(%" I32_SPEC "u) : " : "%s : ", GetFName(curr->srcfile)->fname, curr->line_num));
         }
     }
     *buffer = NULLC;
@@ -568,11 +568,11 @@ void print_source_nesting_structure(void)
 static FILE* open_file_in_include_path(const char* name, char fullpath[])
 /*************************************************************************/
 {
-    char* curr;
-    char* next;
-    size_t             i;
-    size_t             namelen;
-    FILE* file = NULL;
+    char*       curr;
+    char*       next;
+    size_t      i;
+    size_t      namelen;
+    FILE*       file = NULL;
 
     while (isspace(*name))
         name++;
@@ -630,20 +630,20 @@ static FILE* open_file_in_include_path(const char* name, char fullpath[])
  * v2.12: _splitpath()/_makepath() removed
  */
 
-FILE* SearchFile(const char* path, bool queue)
+FILE* SearchFile(char* path, bool queue)
 /**********************************************/
 {
-    FILE* file = NULL;
-    struct src_item* fl;
-    const char* fn;
-    bool        isabs;
-    char        fullpath[FILENAME_MAX];
+    FILE*               file = NULL;
+    struct src_item*    fl;
+    char*               fn;
+    bool                isabs;
+    char                fullpath[FILENAME_MAX];
 
     DebugMsg1(("SearchFile(%s) enter\n", path));
 
     //_splitpath( path, drive, dir, fname, ext );
     //DebugMsg1(("SearchFile(): drive=%s, dir=%s, fname=%s, ext=%s\n", drive, dir, fname, ext ));
-    fn = GetFNamePart(path);
+    fn = (char*)GetFNamePart(path);
 
     /* if no absolute path is given, then search in the directory
      * of the current source file first!
@@ -658,12 +658,12 @@ FILE* SearchFile(const char* path, bool queue)
         {
             if (fl->type == SIT_FILE)
             {
-                const char* fn2;
+                char* fn2;
                 char* src;
                 //_splitpath( GetFName( fl->srcfile )->fname, drive2, dir2, NULL, NULL );
                 //DebugMsg1(("SearchFile(): curr src=%s, split into drive=%s, dir=%s\n", GetFName( fl->srcfile)->fname, drive2, dir2 ));
                 src = GetFName(fl->srcfile)->fname;
-                fn2 = GetFNamePart(src);
+                fn2 = (char*)GetFNamePart(src);
                 if (fn2 != src)
                 {
                     size_t i = fn2 - src;
@@ -686,9 +686,9 @@ FILE* SearchFile(const char* path, bool queue)
 #endif
                 }
                 break;
-                }
             }
         }
+    }
     if (file == NULL)
     {
         fullpath[0] = NULLC;
@@ -732,7 +732,7 @@ FILE* SearchFile(const char* path, bool queue)
 #endif
     }
     return(file);
-    }
+}
 
 /* get the next source line from file or macro.
  * v2.11: line queues are no longer read here,
@@ -776,7 +776,7 @@ char* GetTextLine(char* buffer)
     }
     else
     {
-        curr->mi->currline = (curr->mi->currline?curr->mi->currline->next:curr->mi->startline);
+        curr->mi->currline = (curr->mi->currline ? curr->mi->currline->next : curr->mi->startline);
         if (curr->mi->currline)
         {
             /* if line contains placeholders, replace them by current values */
@@ -803,7 +803,7 @@ char* GetTextLine(char* buffer)
     }
 
     return(NULL); /* end of file or macro reached */
-            }
+}
 
 /* add a string to the include path.
  * called for -I cmdline options.
@@ -837,7 +837,7 @@ void AddStringToIncludePath(const char* string)
         strcat(ModuleInfo.g.IncludePath, string);
         MemFree(tmp);
     }
-        }
+}
 
 #if 0
 /* function to get value of @FileCur.
@@ -893,7 +893,7 @@ struct asm_tok* PushInputStatus(struct input_status* oldstat)
         size_t i = strlen(CurrSource);
         oldstat->CurrComment = CurrSource + i;
         strcpy(oldstat->CurrComment, ModuleInfo.CurrComment);
-}
+    }
     else
         oldstat->CurrComment = NULL;
     oldstat->line_flags = ModuleInfo.line_flags; /* v2.08 */

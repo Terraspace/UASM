@@ -335,7 +335,7 @@ void ContextInit(int pass)
         ContextRestoreState();
     }
 #endif
-    }
+}
 #if FASTMEM==0
 void ContextFini(void)
 /**********************/

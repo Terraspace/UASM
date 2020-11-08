@@ -231,8 +231,8 @@ static void PutMsg(FILE* fp, int severity, int msgnum, va_list args)
 /********************************************************************/
 {
     int             i, j;
-    const char* type;
-    const char* pMsg;
+    char*           type;
+    char*           pMsg;
     char            buffer[MAX_LINE_LEN + 128];
 
 #ifdef _WIN32
@@ -249,13 +249,13 @@ static void PutMsg(FILE* fp, int severity, int msgnum, va_list args)
         {
             fwrite(buffer, 1, j, fp);
         }
-        pMsg = MsgGetEx(msgnum);
+        pMsg = (char*)MsgGetEx(msgnum);
         switch (severity)
         {
-        case 1:  type = MsgGetEx(MSG_FATAL_PREFIX);   break;
-        case 2:  type = MsgGetEx(MSG_ERROR_PREFIX);   break;
-        case 4:  type = MsgGetEx(MSG_WARNING_PREFIX); break;
-        default:  type = NULL; i = 0; break;
+            case 1:  type = (char*)MsgGetEx(MSG_FATAL_PREFIX);   break;
+            case 2:  type = (char*)MsgGetEx(MSG_ERROR_PREFIX);   break;
+            case 4:  type = (char*)MsgGetEx(MSG_WARNING_PREFIX); break;
+            default:  type = NULL; i = 0; break;
         }
         if (type)
             i = sprintf(buffer, "%s A%4u: ", type, severity * 1000 + msgnum);
@@ -293,8 +293,8 @@ static void PutMsg(FILE* fp, int severity, int msgnum, va_list args)
             LstPrintf("                           %s", buffer);
             LstNL();
         }
-        }
     }
+}
 
 static void PrtMsg(int severity, int msgnum, va_list args1, va_list args2)
 /**************************************************************************/
@@ -351,7 +351,7 @@ int EmitErr(int msgnum, ...)
     va_list args1, args2;
 
 #ifdef DEBUG_OUT
-    printf("%s\n", ModuleInfo.tokenarray?ModuleInfo.tokenarray[0].tokpos:"");
+    printf("%s\n", ModuleInfo.tokenarray ? ModuleInfo.tokenarray[0].tokpos : "");
 #endif
     va_start(args1, msgnum);
     va_start(args2, msgnum);
@@ -380,7 +380,7 @@ void EmitWarn(int level, int msgnum, ...)
     if (level <= Options.warning_level)
     {
 #ifdef DEBUG_OUT
-        printf("%s\n", ModuleInfo.tokenarray?ModuleInfo.tokenarray[0].tokpos:"");
+        printf("%s\n", ModuleInfo.tokenarray ? ModuleInfo.tokenarray[0].tokpos : "");
 #endif
         va_start(args1, msgnum);
         va_start(args2, msgnum);
@@ -404,7 +404,7 @@ char* ErrnoStr(void)
 /********************/
 {
     static char buffer[32];
-    return((errno == ENOENT)?"ENOENT":myltoa(errno, buffer, 10, FALSE, FALSE));
+    return((errno == ENOENT) ? "ENOENT" : myltoa(errno, buffer, 10, FALSE, FALSE));
 }
 
 /* fatal error (out of memory, unable to open files for write, ...)

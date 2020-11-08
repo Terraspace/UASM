@@ -68,11 +68,11 @@ void AddFloatingPointEmulationFixup(struct code_info* CodeInfo)
 /***************************************************************/
 {
     int i;
-    enum fp_patches patch;
-    struct asym* sym[2];
-    struct fixup* fixup;
-    int_32 data;
-    char name[8] = "F__RQQ";
+    enum fp_patches     patch;
+    struct asym*        sym[2];
+    struct fixup*       fixup;
+    int_32              data;
+    char                name[8] = "F__RQQ";
 
     DebugMsg(("AddFloatingPointEmulationFixup enter, token=%u, regoverride=%d\n", CodeInfo->token, CodeInfo->prefix.RegOverride));
 

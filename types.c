@@ -64,7 +64,7 @@ struct asym* CreateTypeSymbol(struct asym* sym, const char* name, bool global)
     if (sym)
         sym_remove_table(&SymTables[TAB_UNDEF], (struct dsym*)sym);
     else
-        sym = (global?SymCreate(name):SymAlloc(name));
+        sym = (global ? SymCreate(name) : SymAlloc(name));
 
     if (sym)
     {
@@ -182,14 +182,14 @@ static bool AreStructsEqual(const struct dsym* newstr, const struct dsym* oldstr
 ret_code StructDirective(int i, struct asm_tok tokenarray[])
 /************************************************************/
 {
-    char* name;
-    unsigned alignment;
-    uint_32 offset;
-    uint_8 typekind = (tokenarray[i].tokval == T_UNION?TYPE_UNION:TYPE_STRUCT);
-    struct asym* sym;
-    struct dsym* dir;
+    char*           name;
+    unsigned        alignment;
+    uint_32         offset;
+    uint_8          typekind = (tokenarray[i].tokval == T_UNION ? TYPE_UNION : TYPE_STRUCT);
+    struct asym*    sym;
+    struct dsym*    dir;
 
-    DebugMsg1(("StructDirective(%s) enter, i=%u, CurrStruct=%s\n", tokenarray[i].string_ptr, i, CurrStruct?CurrStruct->sym.name:"NULL"));
+    DebugMsg1(("StructDirective(%s) enter, i=%u, CurrStruct=%s\n", tokenarray[i].string_ptr, i, CurrStruct ? CurrStruct->sym.name : "NULL"));
 
     /* top level structs/unions must have an identifier at pos 0.
      * for embedded structs, the directive must be at pos 0,
@@ -367,18 +367,18 @@ ret_code StructDirective(int i, struct asm_tok tokenarray[])
     {
         switch (sym->typekind)
         {
-        case TYPE_STRUCT:
-        case TYPE_UNION:
-            /* if a struct is redefined as a union ( or vice versa )
-             * do accept the directive and just check if the redefinition
-             * is compatible (usually it isn't) */
-            redef_struct = (struct dsym*)sym;
-            sym = CreateTypeSymbol(NULL, name, FALSE);
-            break;
-        case TYPE_NONE:  /* TYPE_NONE is forward reference */
-            break;
-        default:
-            return(EmitErr(SYMBOL_REDEFINITION, sym->name));
+            case TYPE_STRUCT:
+            case TYPE_UNION:
+                /* if a struct is redefined as a union ( or vice versa )
+                 * do accept the directive and just check if the redefinition
+                 * is compatible (usually it isn't) */
+                redef_struct = (struct dsym*)sym;
+                sym = CreateTypeSymbol(NULL, name, FALSE);
+                break;
+            case TYPE_NONE:  /* TYPE_NONE is forward reference */
+                break;
+            default:
+                return(EmitErr(SYMBOL_REDEFINITION, sym->name));
         }
     }
     else
@@ -414,14 +414,14 @@ ret_code StructDirective(int i, struct asm_tok tokenarray[])
 ret_code CStructDirective(int i, struct asm_tok tokenarray[])
 /************************************************************/
 {
-    char* name;
-    unsigned alignment;
-    uint_32 offset;
-    uint_8 typekind = (tokenarray[i].tokval == T_UNION?TYPE_UNION:TYPE_STRUCT);
-    struct asym* sym;
-    struct dsym* dir;
+    char*           name;
+    unsigned        alignment;
+    uint_32         offset;
+    uint_8          typekind = (tokenarray[i].tokval == T_UNION ? TYPE_UNION : TYPE_STRUCT);
+    struct asym*    sym;
+    struct dsym*    dir;
 
-    DebugMsg1(("CStructDirective(%s) enter, i=%u, CurrStruct=%s\n", tokenarray[i].string_ptr, i, CurrStruct?CurrStruct->sym.name:"NULL"));
+    DebugMsg1(("CStructDirective(%s) enter, i=%u, CurrStruct=%s\n", tokenarray[i].string_ptr, i, CurrStruct ? CurrStruct->sym.name : "NULL"));
 
     /* top level structs/unions must have an identifier at pos 0.
     * for embedded structs, the directive must be at pos 0,
@@ -605,18 +605,18 @@ ret_code CStructDirective(int i, struct asm_tok tokenarray[])
     {
         switch (sym->typekind)
         {
-        case TYPE_STRUCT:
-        case TYPE_UNION:
-            /* if a struct is redefined as a union ( or vice versa )
-            * do accept the directive and just check if the redefinition
-            * is compatible (usually it isn't) */
-            redef_struct = (struct dsym*)sym;
-            sym = CreateTypeSymbol(NULL, name, FALSE);
-            break;
-        case TYPE_NONE:  /* TYPE_NONE is forward reference */
-            break;
-        default:
-            return(EmitErr(SYMBOL_REDEFINITION, sym->name));
+            case TYPE_STRUCT:
+            case TYPE_UNION:
+                /* if a struct is redefined as a union ( or vice versa )
+                * do accept the directive and just check if the redefinition
+                * is compatible (usually it isn't) */
+                redef_struct = (struct dsym*)sym;
+                sym = CreateTypeSymbol(NULL, name, FALSE);
+                break;
+            case TYPE_NONE:  /* TYPE_NONE is forward reference */
+                break;
+            default:
+                return(EmitErr(SYMBOL_REDEFINITION, sym->name));
         }
     }
     else
@@ -652,14 +652,14 @@ ret_code CStructDirective(int i, struct asm_tok tokenarray[])
 ret_code RAWStructDirective(int i, struct asm_tok tokenarray[])
 /************************************************************/
 {
-    char* name;
-    unsigned alignment;
-    uint_32 offset;
-    uint_8 typekind = (tokenarray[i].tokval == T_UNION?TYPE_UNION:TYPE_STRUCT);
-    struct asym* sym;
-    struct dsym* dir;
+    char*           name;
+    unsigned        alignment;
+    uint_32         offset;
+    uint_8          typekind = (tokenarray[i].tokval == T_UNION ? TYPE_UNION : TYPE_STRUCT);
+    struct asym*    sym;
+    struct dsym*    dir;
 
-    DebugMsg1(("RAWStructDirective(%s) enter, i=%u, CurrStruct=%s\n", tokenarray[i].string_ptr, i, CurrStruct?CurrStruct->sym.name:"NULL"));
+    DebugMsg1(("RAWStructDirective(%s) enter, i=%u, CurrStruct=%s\n", tokenarray[i].string_ptr, i, CurrStruct ? CurrStruct->sym.name : "NULL"));
 
     /* top level structs/unions must have an identifier at pos 0.
     * for embedded structs, the directive must be at pos 0,
@@ -851,18 +851,18 @@ ret_code RAWStructDirective(int i, struct asm_tok tokenarray[])
     {
         switch (sym->typekind)
         {
-        case TYPE_STRUCT:
-        case TYPE_UNION:
-            /* if a struct is redefined as a union ( or vice versa )
-            * do accept the directive and just check if the redefinition
-            * is compatible (usually it isn't) */
-            redef_struct = (struct dsym*)sym;
-            sym = CreateTypeSymbol(NULL, name, FALSE);
-            break;
-        case TYPE_NONE:  /* TYPE_NONE is forward reference */
-            break;
-        default:
-            return(EmitErr(SYMBOL_REDEFINITION, sym->name));
+            case TYPE_STRUCT:
+            case TYPE_UNION:
+                /* if a struct is redefined as a union ( or vice versa )
+                * do accept the directive and just check if the redefinition
+                * is compatible (usually it isn't) */
+                redef_struct = (struct dsym*)sym;
+                sym = CreateTypeSymbol(NULL, name, FALSE);
+                break;
+            case TYPE_NONE:  /* TYPE_NONE is forward reference */
+                break;
+            default:
+                return(EmitErr(SYMBOL_REDEFINITION, sym->name));
         }
     }
     else
@@ -898,14 +898,14 @@ ret_code RAWStructDirective(int i, struct asm_tok tokenarray[])
 ret_code COMStructDirective(int i, struct asm_tok tokenarray[])
 /************************************************************/
 {
-    char* name;
-    unsigned alignment;
-    uint_32 offset;
-    uint_8 typekind = (tokenarray[i].tokval == T_UNION?TYPE_UNION:TYPE_STRUCT);
-    struct asym* sym;
-    struct dsym* dir;
+    char*           name;
+    unsigned        alignment;
+    uint_32         offset;
+    uint_8          typekind = (tokenarray[i].tokval == T_UNION ? TYPE_UNION : TYPE_STRUCT);
+    struct asym*    sym;
+    struct dsym*    dir;
 
-    DebugMsg1(("COMStructDirective(%s) enter, i=%u, CurrStruct=%s\n", tokenarray[i].string_ptr, i, CurrStruct?CurrStruct->sym.name:"NULL"));
+    DebugMsg1(("COMStructDirective(%s) enter, i=%u, CurrStruct=%s\n", tokenarray[i].string_ptr, i, CurrStruct ? CurrStruct->sym.name : "NULL"));
 
     /* top level structs/unions must have an identifier at pos 0.
     * for embedded structs, the directive must be at pos 0,
@@ -1094,18 +1094,18 @@ ret_code COMStructDirective(int i, struct asm_tok tokenarray[])
     {
         switch (sym->typekind)
         {
-        case TYPE_STRUCT:
-        case TYPE_UNION:
-            /* if a struct is redefined as a union ( or vice versa )
-            * do accept the directive and just check if the redefinition
-            * is compatible (usually it isn't) */
-            redef_struct = (struct dsym*)sym;
-            sym = CreateTypeSymbol(NULL, name, FALSE);
-            break;
-        case TYPE_NONE:  /* TYPE_NONE is forward reference */
-            break;
-        default:
-            return(EmitErr(SYMBOL_REDEFINITION, sym->name));
+            case TYPE_STRUCT:
+            case TYPE_UNION:
+                /* if a struct is redefined as a union ( or vice versa )
+                * do accept the directive and just check if the redefinition
+                * is compatible (usually it isn't) */
+                redef_struct = (struct dsym*)sym;
+                sym = CreateTypeSymbol(NULL, name, FALSE);
+                break;
+            case TYPE_NONE:  /* TYPE_NONE is forward reference */
+                break;
+            default:
+                return(EmitErr(SYMBOL_REDEFINITION, sym->name));
         }
     }
     else
@@ -1141,8 +1141,8 @@ ret_code COMStructDirective(int i, struct asm_tok tokenarray[])
 ret_code EndstructDirective(int i, struct asm_tok tokenarray[])
 /***************************************************************/
 {
-    unsigned int size;
-    struct dsym* dir;
+    unsigned int    size;
+    struct dsym*    dir;
 
     dir = CurrStruct; /* cannot be NULL */
 
@@ -1178,7 +1178,7 @@ ret_code EndstructDirective(int i, struct asm_tok tokenarray[])
     {
         /* v2.04: error msg improved */
         //EmitErr( SYNTAX_ERROR_EX, tokenarray[i].string_ptr );
-        return(EmitErr(UNMATCHED_BLOCK_NESTING, i == 1?tokenarray[0].string_ptr:""));
+        return(EmitErr(UNMATCHED_BLOCK_NESTING, i == 1 ? tokenarray[0].string_ptr : ""));
     }
 
     if (i == 1)
@@ -1236,7 +1236,7 @@ ret_code EndstructDirective(int i, struct asm_tok tokenarray[])
     {
         struct asym* sym;
         /* v2.06: the struct name is needed for checks */
-        sym = CreateStructField(-1, NULL, *dir->sym.name?dir->sym.name:NULL, MT_TYPE, &dir->sym, dir->sym.total_size);
+        sym = CreateStructField(-1, NULL, *dir->sym.name ? dir->sym.name : NULL, MT_TYPE, &dir->sym, dir->sym.total_size);
         /* the member name was stored in the type name */
         //sym->name = dir->sym.name;
         //sym->name_size = strlen( dir->sym.name );
@@ -1253,13 +1253,13 @@ ret_code EndstructDirective(int i, struct asm_tok tokenarray[])
     /* to allow direct structure access */
     switch (dir->sym.total_size)
     {
-    case 1:  dir->sym.mem_type = MT_BYTE;   break;
-    case 2:  dir->sym.mem_type = MT_WORD;   break;
-    case 4:  dir->sym.mem_type = MT_DWORD;  break;
-    case 6:  dir->sym.mem_type = MT_FWORD;  break;
-    case 8:  dir->sym.mem_type = MT_QWORD;  break;
-        //case 16:  dir->sym.mem_type = MT_OWORD;  break;
-    default: dir->sym.mem_type = MT_EMPTY;
+        case 1:  dir->sym.mem_type = MT_BYTE;   break;
+        case 2:  dir->sym.mem_type = MT_WORD;   break;
+        case 4:  dir->sym.mem_type = MT_DWORD;  break;
+        case 6:  dir->sym.mem_type = MT_FWORD;  break;
+        case 8:  dir->sym.mem_type = MT_QWORD;  break;
+            //case 16:  dir->sym.mem_type = MT_OWORD;  break;
+        default: dir->sym.mem_type = MT_EMPTY;
     }
 #endif
     /* reset redefine */
@@ -1301,9 +1301,9 @@ ret_code EndstructDirective(int i, struct asm_tok tokenarray[])
 static ret_code CheckAnonymousStruct(struct dsym* type)
 /*******************************************************/
 {
-    uint_32 disp;
-    struct asym* sym;
-    struct sfield* f;
+    uint_32         disp;
+    struct asym*    sym;
+    struct sfield*  f;
 
     for (f = type->e.structinfo->head; f; f = f->next)
     {
@@ -1340,22 +1340,22 @@ static ret_code CheckAnonymousStruct(struct dsym* type)
 struct asym* CreateStructField(int loc, struct asm_tok tokenarray[], const char* name, enum memtype mem_type, struct asym* vartype, uint_32 size)
     /*************************************************************************************************************************************************/
 {
-    int_32 offset;
-    //int count;
-    int i;
-    int len;
-    uint_32 disp;
-    char* init;
-    struct struct_info* si;
-    struct sfield* f;
-    struct asym* gsym;
+    int_32                  offset;
+    //int                     count;
+    int                     i;
+    int                     len;
+    uint_32                 disp;
+    char*                   init;
+    struct struct_info*     si;
+    struct sfield*          f;
+    struct asym*            gsym;
 
     si = CurrStruct->e.structinfo;
     offset = CurrStruct->sym.offset;
 
     DebugMsg1(("CreateStructField(%s): name=%s, curr ofs=%" I32_SPEC "u, vartype=%s, size=%" I32_SPEC "u\n",
-              CurrStruct->sym.name, name?name:"<anonymous>", offset,
-              vartype?vartype->name:"NULL", size));
+              CurrStruct->sym.name, name ? name : "<anonymous>", offset,
+              vartype ? vartype->name : "NULL", size));
 
     if (name)
     {
@@ -1593,7 +1593,7 @@ void UpdateStructSize(struct asym* sym)
     DebugMsg1(("UpdateStructSize(%s.%s): %s, curr mbr size=%u curr struc/union size=%u\n",
               CurrStruct->sym.name,
               sym->name,
-              CurrStruct->sym.typekind == TYPE_UNION?"union":"struct",
+              CurrStruct->sym.typekind == TYPE_UNION ? "union" : "struct",
               sym->total_size,
               CurrStruct->sym.total_size));
     return;
@@ -1634,7 +1634,7 @@ ret_code GetQualifiedType(int* pi, struct asm_tok tokenarray[], struct qualified
     enum memtype    mem_type;
     int             i = *pi;
     int             distance = FALSE;
-    struct asym* sym;
+    struct asym*    sym;
 
     /* convert PROC token to a type qualifier */
     for (tmp = i; tokenarray[tmp].token != T_FINAL && tokenarray[tmp].token != T_COMMA; tmp++)
@@ -1642,7 +1642,7 @@ ret_code GetQualifiedType(int* pi, struct asm_tok tokenarray[], struct qualified
         {
             tokenarray[tmp].token = T_STYPE;
             /* v2.06: avoid to use ST_PROC */
-            tokenarray[tmp].tokval = ((SIZE_CODEPTR & (1 << ModuleInfo.model))?T_FAR:T_NEAR);
+            tokenarray[tmp].tokval = ((SIZE_CODEPTR & (1 << ModuleInfo.model)) ? T_FAR : T_NEAR);
         }
     /* with NEAR/FAR, there are several syntax variants allowed:
      * 1. NEARxx | FARxx
@@ -1714,7 +1714,7 @@ ret_code GetQualifiedType(int* pi, struct asm_tok tokenarray[], struct qualified
                     {
                         /* v2.06b: alias types have MT_TYPE, dont use for ptr_memtype! */
                         //pti->ptr_memtype = sym->mem_type;
-                        pti->ptr_memtype = (sym->mem_type != MT_TYPE?sym->mem_type:MT_EMPTY);
+                        pti->ptr_memtype = (sym->mem_type != MT_TYPE ? sym->mem_type : MT_EMPTY);
                         if (distance == FALSE && pti->is_ptr == 1 &&
                             (sym->mem_type == MT_NEAR ||
                             sym->mem_type == MT_PROC ||
@@ -1800,15 +1800,15 @@ ret_code GetQualifiedType(int* pi, struct asm_tok tokenarray[], struct qualified
         else
             pti->mem_type = GetMemtypeSp(type);
         if (pti->mem_type == MT_PTR)
-            pti->size = SizeFromMemtype(pti->is_far?MT_FAR:MT_NEAR, pti->Ofssize, NULL);
+            pti->size = SizeFromMemtype(pti->is_far ? MT_FAR : MT_NEAR, pti->Ofssize, NULL);
         else
             pti->size = SizeFromMemtype(pti->mem_type, pti->Ofssize, NULL);
     }
     *pi = i;
     DebugMsg1(("GetQualifiedType: i=%u, memtype=%Xh, ptr=%u, far=%u, ofssize=%d, arbtype=%s:%X\n",
               i, pti->mem_type, pti->is_ptr, pti->is_far, pti->Ofssize,
-              pti->symtype?pti->symtype->name:"NULL",
-              pti->symtype?pti->symtype->mem_type:0));
+              pti->symtype ? pti->symtype->name : "NULL",
+              pti->symtype ? pti->symtype->mem_type : 0));
     return(NOT_ERROR);
 }
 
@@ -1818,8 +1818,8 @@ ret_code GetQualifiedType(int* pi, struct asm_tok tokenarray[], struct qualified
 ret_code TypedefDirective(int i, struct asm_tok tokenarray[])
 /*************************************************************/
 {
-    struct asym* sym;
-    char* name;
+    struct asym*    sym;
+    char*           name;
     struct qualified_type ti;
 
     DebugMsg1(("TypedefDirective(%d) enter\n", i));
@@ -1932,10 +1932,10 @@ ret_code TypedefDirective(int i, struct asm_tok tokenarray[])
         char oo;
         char on;
         for (tn = ti.symtype; tn && tn->type; tn = tn->type);
-        to = (sym->mem_type == MT_TYPE)?sym->type:sym->target_type;
+        to = (sym->mem_type == MT_TYPE) ? sym->type : sym->target_type;
         for (; to && to->type; to = to->type);
-        oo = (sym->Ofssize != USE_EMPTY)?sym->Ofssize:ModuleInfo.Ofssize;
-        on = (ti.Ofssize != USE_EMPTY)?ti.Ofssize:ModuleInfo.Ofssize;
+        oo = (sym->Ofssize != USE_EMPTY) ? sym->Ofssize : ModuleInfo.Ofssize;
+        on = (ti.Ofssize != USE_EMPTY) ? ti.Ofssize : ModuleInfo.Ofssize;
         if (ti.mem_type != sym->mem_type ||
             (ti.mem_type == MT_TYPE && tn != to) ||
             (ti.mem_type == MT_PTR &&
@@ -1946,9 +1946,9 @@ ret_code TypedefDirective(int i, struct asm_tok tokenarray[])
         {
             DebugMsg(("TypedefDirective: old-new memtype=%X-%X type=%X(%s)-%X(%s) far=%u-%u ind=%u-%u ofss=%d-%d pmt=%X-%X\n",
                      sym->mem_type, ti.mem_type,
-                     (sym->mem_type == MT_TYPE)?sym->type:sym->target_type,
-                     (sym->mem_type == MT_TYPE)?sym->type->name:sym->target_type?sym->target_type->name:"",
-                     ti.symtype, ti.symtype?ti.symtype->name:"",
+                     (sym->mem_type == MT_TYPE) ? sym->type : sym->target_type,
+                     (sym->mem_type == MT_TYPE) ? sym->type->name : sym->target_type ? sym->target_type->name : "",
+                     ti.symtype, ti.symtype ? ti.symtype->name : "",
                      sym->isfar, ti.is_far,
                      sym->is_ptr, ti.is_ptr,
                      sym->Ofssize, ti.Ofssize,
@@ -1968,7 +1968,7 @@ ret_code TypedefDirective(int i, struct asm_tok tokenarray[])
         sym->target_type = ti.symtype;
     sym->ptr_memtype = ti.ptr_memtype;
     DebugMsg1(("TypedefDirective(%s) ok, mem_type=MT_TYPE, size=%" I32_SPEC "u, type=%p type.memtype=%X\n",
-              sym->name, sym->total_size, sym->type, ti.symtype?ti.symtype->mem_type:0));
+              sym->name, sym->total_size, sym->type, ti.symtype ? ti.symtype->mem_type : 0));
 
     DebugMsg1(("TypedefDirective(%s) ok, mem_type=%Xh, size=%u, indirection=%u target=%p\n", sym->name, sym->mem_type, ti.size, ti.is_ptr, ti.symtype));
 
@@ -1990,20 +1990,20 @@ ret_code TypedefDirective(int i, struct asm_tok tokenarray[])
 ret_code RecordDirective(int i, struct asm_tok tokenarray[])
 /************************************************************/
 {
-    char* name;
-    struct asym* sym;
-    struct dsym* newr;
-    struct dsym* oldr = NULL;
-    struct sfield* f;
-    int cntBits;
-    int define;
-    int len;
-    int redef_err;
-    int count;
-    //int value;
-    int name_loc;
-    int init_loc;
-    struct expr opndx;
+    char*           name;
+    struct asym*    sym;
+    struct dsym*    newr;
+    struct dsym*    oldr = NULL;
+    struct sfield*  f;
+    int             cntBits;
+    int             define;
+    int             len;
+    int             redef_err;
+    int             count;
+    //int             value;
+    int             name_loc;
+    int             init_loc;
+    struct expr     opndx;
 
     DebugMsg1(("RecordDirective(%d) enter\n", i));
     if (i != 1)

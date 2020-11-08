@@ -110,7 +110,7 @@ static void jumpExtend(struct code_info* CodeInfo, int far_flag)
     OutputCodeByte(CodeInfo->pinstr->opcode ^ 1);
     OutputCodeByte(next_ins_size);
     CodeInfo->token = T_JMP;
-    CodeInfo->pinstr = (struct instr_item *)&InstrTable[IndexFromToken(T_JMP)];
+    CodeInfo->pinstr = &InstrTable[IndexFromToken(T_JMP)];
 
     return;
 }
@@ -146,9 +146,9 @@ ret_code process_branch(struct code_info* CodeInfo, unsigned CurrOpnd, const str
     enum fixup_types    fixup_type;
     enum fixup_options  fixup_option;
     enum sym_state      state;
-    struct asym* sym;
+    struct asym*        sym;
     enum memtype        mem_type;
-    struct dsym* symseg;
+    struct dsym*        symseg;
     unsigned            opidx = IndexFromToken(CodeInfo->token);
 
     /* v2.05: just 1 operand possible */
@@ -206,7 +206,7 @@ ret_code process_branch(struct code_info* CodeInfo, unsigned CurrOpnd, const str
 
         return(NOT_ERROR);
 #endif
-}
+    }
     DebugMsg1(("process_branch(%" I32_SPEC "X, %s): opnd.explicit=%u/memtype=%X/Ofssize=%u CI.memtype=%X sym.state=%u/mem_type=%Xh/ofs=%" I32_SPEC "X/seg=%s\n",
               GetCurrOffset(), sym->name, opndx->explicit, opndx->mem_type, opndx->Ofssize, CodeInfo->mem_type,
               sym->state, sym->mem_type, sym->offset, sym->segment?sym->segment->name:"NULL"));
@@ -548,14 +548,14 @@ ret_code process_branch(struct code_info* CodeInfo, unsigned CurrOpnd, const str
             {
                 fixup_type = FIX_RELOFF32;
                 CodeInfo->opnd[OPND1].type = OP_I32;
-        }
+            }
             else
             {
                 fixup_type = FIX_RELOFF16;
                 CodeInfo->opnd[OPND1].type = OP_I16;
             }
             break;
-    }
+        }
         /* fall through */
     case T_JMP:
         DebugMsg1(("process_branch: JMP/CALL, CodeInfo->memtype=%X\n", CodeInfo->mem_type));

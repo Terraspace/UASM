@@ -198,14 +198,14 @@ static void trPrt(_trmem_hdl hdl, const char* fmt, ...)
 {
     va_list     args;
     char        buff[100];
-    char* ptr;
+    char*       ptr;
     char        ch;
     uint        ui;
     uint_32     ul;
-    void* dp;
+    void*       dp;
     _trmem_who  who;
-    char* start;
-    char* xptr;
+    char*       start;
+    char*       xptr;
     int         i;
     size_t      size;
 
@@ -220,81 +220,81 @@ static void trPrt(_trmem_hdl hdl, const char* fmt, ...)
             ch = *fmt++;
             switch (ch)
             {
-            case 'W':   /* "a1(a2):" */
-                ptr = stpcpy(ptr, va_arg(args, const char*));
-                who = va_arg(args, _trmem_who);
-                if (who != _TRMEM_NO_ROUTINE)
-                {
-                    *ptr++ = '(';
-                    ptr = formHex(ptr, (uint_32)who, sizeof(who));
-                    *ptr++ = ')';
-                }
-                *ptr++ = ':';
-                break;
-            case 'C':   /* code pointer */
-                who = va_arg(args, _trmem_who);
-                ptr = formCodePtr(hdl, ptr, who);
-                break;
-            case 'D':   /* data pointer */
-                dp = va_arg(args, void*);
+                case 'W':   /* "a1(a2):" */
+                    ptr = stpcpy(ptr, va_arg(args, const char*));
+                    who = va_arg(args, _trmem_who);
+                    if (who != _TRMEM_NO_ROUTINE)
+                    {
+                        *ptr++ = '(';
+                        ptr = formHex(ptr, (uint_32)who, sizeof(who));
+                        *ptr++ = ')';
+                    }
+                    *ptr++ = ':';
+                    break;
+                case 'C':   /* code pointer */
+                    who = va_arg(args, _trmem_who);
+                    ptr = formCodePtr(hdl, ptr, who);
+                    break;
+                case 'D':   /* data pointer */
+                    dp = va_arg(args, void*);
 #if defined( M_I86LM ) || defined( M_I86HM ) || defined( M_I86CM )
-                ptr = formFarPtr(ptr, dp);
+                    ptr = formFarPtr(ptr, dp);
 #else
-                ptr = formHex(ptr, (uint_32)dp, sizeof(dp));
+                    ptr = formHex(ptr, (uint_32)dp, sizeof(dp));
 #endif
-                break;
-            case 'S':   /* char * (string) pointer */
-                ptr = stpcpy(ptr, va_arg(args, char*));
-                break;
-            case 'U':   /* unsigned integer */
-                ui = va_arg(args, uint);
-                ptr = formHex(ptr, (uint_32)ui, sizeof(ui));
-                break;
-            case 'L':   /* unsigned long */
-                ul = va_arg(args, uint_32);
-                ptr = formHex(ptr, (uint_32)ul, sizeof(ul));
-                break;
-            case 'X':   /* 14 bytes of hex data */
-                start = va_arg(args, char*);
-                size = va_arg(args, size_t);
-                if (size > 14) size = 14;
-                xptr = start;
-                for (i = 0; i < 14; i++)
-                {
-                    if (i < size)
+                    break;
+                case 'S':   /* char * (string) pointer */
+                    ptr = stpcpy(ptr, va_arg(args, char*));
+                    break;
+                case 'U':   /* unsigned integer */
+                    ui = va_arg(args, uint);
+                    ptr = formHex(ptr, (uint_32)ui, sizeof(ui));
+                    break;
+                case 'L':   /* unsigned long */
+                    ul = va_arg(args, uint_32);
+                    ptr = formHex(ptr, (uint_32)ul, sizeof(ul));
+                    break;
+                case 'X':   /* 14 bytes of hex data */
+                    start = va_arg(args, char*);
+                    size = va_arg(args, size_t);
+                    if (size > 14) size = 14;
+                    xptr = start;
+                    for (i = 0; i < 14; i++)
                     {
-                        ptr = formHex(ptr, *xptr, sizeof(char));
-                        xptr++;
+                        if (i < size)
+                        {
+                            ptr = formHex(ptr, *xptr, sizeof(char));
+                            xptr++;
+                        }
+                        else
+                        {    // no more to print, so make things line up.
+                            *ptr = ' ';
+                            *(ptr + 1) = ' ';
+                            ptr += 2;
+                        }
+                        if (i == 7)
+                        {
+                            *ptr = ' ';
+                            ptr++;
+                        }
                     }
-                    else
-                    {    // no more to print, so make things line up.
-                        *ptr = ' ';
-                        *(ptr + 1) = ' ';
-                        ptr += 2;
-                    }
-                    if (i == 7)
+                    for (i = 0; i < size; i++)
                     {
-                        *ptr = ' ';
+                        if (isprint(*start))
+                        {
+                            *ptr = *start;
+                        }
+                        else
+                        {
+                            *ptr = '.';
+                        }
                         ptr++;
+                        start++;
                     }
-                }
-                for (i = 0; i < size; i++)
-                {
-                    if (isprint(*start))
-                    {
-                        *ptr = *start;
-                    }
-                    else
-                    {
-                        *ptr = '.';
-                    }
-                    ptr++;
-                    start++;
-                }
-                break;
-            default:
-                *ptr++ = ch;
-                break;
+                    break;
+                default:
+                    *ptr++ = ch;
+                    break;
             }
         }
         else
@@ -469,7 +469,7 @@ void _trmem_set_min_alloc(size_t size, _trmem_hdl hdl)
 void* _trmem_alloc(size_t size, _trmem_who who, _trmem_hdl hdl)
 /***************************************************************/
 {
-    void* mem;
+    void*       mem;
     entry_ptr   tr;
 
     hdl->alloc_no += 1;
@@ -587,7 +587,7 @@ static void* ChangeAlloc(void* old, size_t size, _trmem_who who,
     /*********************************************************************/
 {
     entry_ptr   tr;
-    void* new_block;
+    void*       new_block;
     size_t      old_size;
 
     if (fn == (void*)_TRMEM_NO_ROUTINE)
@@ -723,8 +723,8 @@ int _trmem_chk_range(void* start, size_t len,
     /**********************************************/
 {
     entry_ptr   tr;
-    void* end;
-    void* end_of_mem;
+    void*       end;
+    void*       end_of_mem;
 
     tr = hdl->alloc_list;
     for (;;)

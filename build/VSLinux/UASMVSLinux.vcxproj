@@ -81,10 +81,10 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <PreprocessorDefinitions>MACROLIB=1;__UNIX__;__LINUX__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>MACROLIB=1;__UNIX__;__LINUX__;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>../../H;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <ShowIncludes>true</ShowIncludes>
-      <AdditionalOptions>-Wno-sign-conversion -Wno-implicit-int-conversion -Wno-comment -Wno-switch -Wno-implicit-function-declaration -Wno-enum-conversion -O2 -std=c11 -march=x86-64 -target x86_64-unknown-linux-gnu -DNDEBUG -funsigned-char -fwritable-strings -mstack-alignment=16</AdditionalOptions>
+      <AdditionalOptions>-Wno-sign-conversion -Wno-implicit-int-conversion -Wno-comment -Wno-switch -Wno-implicit-function-declaration -Wno-enum-conversion -O2 -std=c11 -march=x86-64 -target x86_64-pc-linux-gnu -funsigned-char -fwritable-strings -mstack-alignment=16 -fpie</AdditionalOptions>
       <ExceptionHandling>Disabled</ExceptionHandling>
       <RuntimeTypeInfo>false</RuntimeTypeInfo>
       <Optimization>MaxSpeed</Optimization>
@@ -102,10 +102,10 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
     <ClCompile>
-      <PreprocessorDefinitions>MACROLIB=1;__UNIX__;__LINUX__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>MACROLIB=1;__UNIX__;__LINUX__;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>../../H;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <ShowIncludes>true</ShowIncludes>
-      <AdditionalOptions>-Wno-sign-conversion -Wno-implicit-int-conversion -Wno-comment -Wno-switch -Wno-implicit-function-declaration -Wno-enum-conversion -O2 -std=c11 -march=x86-64 -target x86_64-unknown-linux-gnu -DNDEBUG -funsigned-char -fwritable-strings -mstack-alignment=16</AdditionalOptions>
+      <AdditionalOptions>-Wno-sign-conversion -Wno-implicit-int-conversion -Wno-comment -Wno-switch -Wno-implicit-function-declaration -Wno-enum-conversion -O2 -std=c11 -march=x86-64 -target x86_64-pc-linux-gnu -funsigned-char -fwritable-strings -mstack-alignment=16 -fpie</AdditionalOptions>
       <ExceptionHandling>Disabled</ExceptionHandling>
       <RuntimeTypeInfo>false</RuntimeTypeInfo>
       <Optimization>MaxSpeed</Optimization>
@@ -123,10 +123,10 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <PreprocessorDefinitions>MACROLIB=1;__UNIX__;__LINUX__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>MACROLIB=1;__UNIX__;__LINUX__;_DEBUG;DEBUG_OUT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>../../H;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <ShowIncludes>true</ShowIncludes>
-      <AdditionalOptions>-Wno-sign-conversion -Wno-implicit-int-conversion -Wno-comment -Wno-switch -Wno-implicit-function-declaration -Wno-enum-conversion -g -O0 -std=c11 -march=x86-64 -target x86_64-unknown-linux-gnu -D_DEBUG -DDEBUG_OUT -funsigned-char -fwritable-strings -mstack-alignment=16</AdditionalOptions>
+      <AdditionalOptions>-Wno-sign-conversion -Wno-implicit-int-conversion -Wno-comment -Wno-switch -Wno-implicit-function-declaration -Wno-enum-conversion -g -O0 -std=c11 -march=x86-64 -target x86_64-pc-linux-gnu -funsigned-char -fwritable-strings -mstack-alignment=16 -fpie</AdditionalOptions>
       <ExceptionHandling>Disabled</ExceptionHandling>
       <RuntimeTypeInfo>false</RuntimeTypeInfo>
     </ClCompile>
@@ -142,10 +142,10 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
     <ClCompile>
-      <PreprocessorDefinitions>MACROLIB=1;__UNIX__;__LINUX__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>MACROLIB=1;__UNIX__;__LINUX__;_DEBUG;DEBUG_OUT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>../../H;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <ShowIncludes>true</ShowIncludes>
-      <AdditionalOptions>-Wno-sign-conversion -Wno-implicit-int-conversion -Wno-comment -Wno-switch -Wno-implicit-function-declaration -Wno-enum-conversion -g -O0 -std=c11 -march=x86-64 -target x86_64-unknown-linux-gnu -D_DEBUG -DDEBUG_OUT -funsigned-char -fwritable-strings -mstack-alignment=16</AdditionalOptions>
+      <AdditionalOptions>-Wno-sign-conversion -Wno-implicit-int-conversion -Wno-comment -Wno-switch -Wno-implicit-function-declaration -Wno-enum-conversion -g -O0 -std=c11 -march=x86-64 -target x86_64-pc-linux-gnu -funsigned-char -fwritable-strings -mstack-alignment=16 -fpie</AdditionalOptions>
       <ExceptionHandling>Disabled</ExceptionHandling>
       <RuntimeTypeInfo>false</RuntimeTypeInfo>
     </ClCompile>

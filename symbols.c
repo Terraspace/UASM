@@ -159,7 +159,7 @@ static bool structLookup = FALSE;
 static unsigned int hashpjw(const char* s)
 /******************************************/
 {
-    uint_64 fnv_basis = 14695981039346656037;
+    uint_64 fnv_basis = 0xCBF29CE484222325 /*14695981039346656037ull*/;
     uint_64 register fnv_prime = 1099511628211;
     uint_64 h;
     for (h = fnv_basis; *s; ++s)
@@ -173,7 +173,7 @@ static unsigned int hashpjw(const char* s)
 void SymSetCmpFunc(void)
 /************************/
 {
-    SymCmpFunc = (ModuleInfo.case_sensitive == TRUE?memcmp:(StrCmpFunc)_memicmp);
+    SymCmpFunc = (ModuleInfo.case_sensitive == TRUE ? memcmp : (StrCmpFunc)_memicmp);
     return;
 }
 
@@ -487,54 +487,54 @@ static void free_ext(struct asym* sym)
     DebugMsg(("free_ext: item=%p name=%s state=%u\n", sym, sym->name, sym->state));
     switch (sym->state)
     {
-    case SYM_INTERNAL:
-        if (sym->isproc)
-            DeleteProc((struct dsym*)sym);
-        break;
-    case SYM_EXTERNAL:
-        if (sym->isproc)
-            DeleteProc((struct dsym*)sym);
-        sym->first_size = 0;
-        /* The altname field may contain a symbol (if weak == FALSE).
-         * However, this is an independant item and must not be released here
-         */
+        case SYM_INTERNAL:
+            if (sym->isproc)
+                DeleteProc((struct dsym*)sym);
+            break;
+        case SYM_EXTERNAL:
+            if (sym->isproc)
+                DeleteProc((struct dsym*)sym);
+            sym->first_size = 0;
+            /* The altname field may contain a symbol (if weak == FALSE).
+             * However, this is an independant item and must not be released here
+             */
 #ifdef DEBUG_OUT /* to be removed, this can't happen anymore. */
-        if (sym->mem_type == MT_TYPE && *sym->type->name == NULLC)
-        {
-            DebugMsg(("free_ext: external with private type: %s\n", sym->name));
-            SymFree(sym->type);
-        }
+            if (sym->mem_type == MT_TYPE && *sym->type->name == NULLC)
+            {
+                DebugMsg(("free_ext: external with private type: %s\n", sym->name));
+                SymFree(sym->type);
+            }
 #endif
-        break;
-    case SYM_SEG:
-        if (((struct dsym*)sym)->e.seginfo->internal)
-            LclFree(((struct dsym*)sym)->e.seginfo->CodeBuffer);
-        LclFree(((struct dsym*)sym)->e.seginfo);
-        break;
-    case SYM_GRP:
-        DeleteGroup((struct dsym*)sym);
-        break;
-    case SYM_TYPE:
-        DeleteType((struct dsym*)sym);
-        break;
-    case SYM_MACRO:
-        ReleaseMacroData((struct dsym*)sym);
-        LclFree(((struct dsym*)sym)->e.macroinfo);
-        break;
-    case SYM_TMACRO:
-        if (sym->predefined == FALSE)
-            LclFree(sym->string_ptr);
-        break;
+            break;
+        case SYM_SEG:
+            if (((struct dsym*)sym)->e.seginfo->internal)
+                LclFree(((struct dsym*)sym)->e.seginfo->CodeBuffer);
+            LclFree(((struct dsym*)sym)->e.seginfo);
+            break;
+        case SYM_GRP:
+            DeleteGroup((struct dsym*)sym);
+            break;
+        case SYM_TYPE:
+            DeleteType((struct dsym*)sym);
+            break;
+        case SYM_MACRO:
+            ReleaseMacroData((struct dsym*)sym);
+            LclFree(((struct dsym*)sym)->e.macroinfo);
+            break;
+        case SYM_TMACRO:
+            if (sym->predefined == FALSE)
+                LclFree(sym->string_ptr);
+            break;
 #ifdef DEBUG_OUT
-    case SYM_STACK:
-        /* to be removed, this can't happen anymore. */
-        if (sym->mem_type == MT_TYPE && *sym->type->name == NULLC)
-        {
-            DebugMsg(("free_ext: case SYM_STACK, sym=%s with private type\n", sym->name));
-            /* symbol has a "private" type */
-            SymFree(sym->type);
-        }
-        break;
+        case SYM_STACK:
+            /* to be removed, this can't happen anymore. */
+            if (sym->mem_type == MT_TYPE && *sym->type->name == NULLC)
+            {
+                DebugMsg(("free_ext: case SYM_STACK, sym=%s with private type\n", sym->name));
+                /* symbol has a "private" type */
+                SymFree(sym->type);
+            }
+            break;
 #endif
     }
 }
@@ -734,10 +734,10 @@ void SymFini(void)
 void SymInit(void)
 /******************/
 {
-    struct asym* sym;
-    int i;
-    time_t    time_of_day;
-    struct tm* now;
+    struct asym*    sym;
+    int             i;
+    time_t          time_of_day;
+    struct tm*      now;
 
     DebugMsg(("SymInit() enter\n"));
     SymCount = 0;
@@ -883,19 +883,19 @@ struct asym* SymEnum(struct asym* sym, int* pi)
 
 void SymSimd(struct dsym* sym)
 {
-    int memberCount = 0;
-    int vtotal = 0;
-    int msize = 0;
-    enum memtype ctype;
-    enum memtype htype;
-    int c0;
-    int c1;
-    int c2;
-    struct sfield* pMember = sym->e.structinfo->head;
-    uint_8 member1Valid = 0;
-    uint_8 member2Valid = 0;
-    uint_8 member3Valid = 0;
-    uint_8 member4Valid = 0;
+    int             memberCount = 0;
+    int             vtotal = 0;
+    int             msize = 0;
+    enum memtype    ctype;
+    enum memtype    htype;
+    int             c0;
+    int             c1;
+    int             c2;
+    struct sfield*  pMember = sym->e.structinfo->head;
+    uint_8          member1Valid = 0;
+    uint_8          member2Valid = 0;
+    uint_8          member3Valid = 0;
+    uint_8          member4Valid = 0;
 
     if (pMember == NULL && sym->sym.typekind != TYPE_UNION) return;
     memberCount = 0;
@@ -1062,12 +1062,12 @@ void SymSimd(struct dsym* sym)
 
 void WriteSymbols()
 {
-    char* pName;
-    uint_32 count = 0;
-    struct asym* sym;
-    int i;
-    FILE* ld;
-    int n = 0;
+    char*           pName;
+    uint_32         count = 0;
+    struct asym*    sym;
+    int             i;
+    FILE*           ld;
+    int             n = 0;
 
     if (Options.dumpSymbols)
     {
@@ -1107,87 +1107,87 @@ void WriteSymbols()
 static void DumpSymbol(struct asym* sym)
 /****************************************/
 {
-    struct dsym* dir = (struct dsym*)sym;
-    char* type;
-    uint_64     value = sym->uvalue;
+    struct dsym*    dir = (struct dsym*)sym;
+    char*           type;
+    uint_64         value = sym->uvalue;
     //const char  *langtype;
 
     switch (sym->state)
     {
-    case SYM_UNDEFINED:
-        type = "Undefined";
-        break;
-    case SYM_INTERNAL:
-        if (sym->isproc)
-            type = "Procedure";
-        //else if ( sym->mem_type == MT_ABS )
-        else if (sym->segment == NULL)
-        {
-            type = "Number";
-            value += ((uint_64)(uint_32)sym->value3264) << 32;
-        }
-        else if (sym->mem_type == MT_NEAR || sym->mem_type == MT_FAR)
-            type = "Code Label";
-        else
-            type = "Data Label";
-        break;
-    case SYM_EXTERNAL:
-        if (sym->isproc)
-            type = "Proto";
-        else if (sym->iscomm)
-            type = "Communal";
-        else if (sym->mem_type == MT_EMPTY)
-            type = "Number (ext)";
-        else if (sym->mem_type == MT_NEAR || sym->mem_type == MT_FAR)
-            type = "Code (ext)";
-        else
-            type = "Data (ext)";
-        break;
-    case SYM_SEG:
-        type = "Segment";
-        break;
-    case SYM_GRP:
-        type = "Group";
-        break;
-    case SYM_STACK: /* should never be found in global table */
-        type = "Stack Var";
-        break;
-    case SYM_STRUCT_FIELD: /* record bitfields are in global namespace! */
-        type = "Struct Field";
-        break;
-    case SYM_TYPE:
-        switch (sym->typekind)
-        {
-        case TYPE_STRUCT:  type = "Structure"; break;
-        case TYPE_UNION:   type = "Union";     break;
-        case TYPE_TYPEDEF: type = "Typedef";   break;
-        case TYPE_RECORD:  type = "Record";    break;
-        default:           type = "Undef Type"; break;
-        }
-        break;
-    case SYM_ALIAS:
-        type = "Alias";
-        break;
-    case SYM_MACRO:
-        type = "Macro";
-        break;
-    case SYM_TMACRO:
-        type = "Text";
-        break;
-        //case SYM_CLASS_LNAME: /* never stored in global or local table */
-        //    type = "CLASS";
-        //    break;
-    default:
-        type = "Unknown";
-        break;
+        case SYM_UNDEFINED:
+            type = "Undefined";
+            break;
+        case SYM_INTERNAL:
+            if (sym->isproc)
+                type = "Procedure";
+            //else if ( sym->mem_type == MT_ABS )
+            else if (sym->segment == NULL)
+            {
+                type = "Number";
+                value += ((uint_64)(uint_32)sym->value3264) << 32;
+            }
+            else if (sym->mem_type == MT_NEAR || sym->mem_type == MT_FAR)
+                type = "Code Label";
+            else
+                type = "Data Label";
+            break;
+        case SYM_EXTERNAL:
+            if (sym->isproc)
+                type = "Proto";
+            else if (sym->iscomm)
+                type = "Communal";
+            else if (sym->mem_type == MT_EMPTY)
+                type = "Number (ext)";
+            else if (sym->mem_type == MT_NEAR || sym->mem_type == MT_FAR)
+                type = "Code (ext)";
+            else
+                type = "Data (ext)";
+            break;
+        case SYM_SEG:
+            type = "Segment";
+            break;
+        case SYM_GRP:
+            type = "Group";
+            break;
+        case SYM_STACK: /* should never be found in global table */
+            type = "Stack Var";
+            break;
+        case SYM_STRUCT_FIELD: /* record bitfields are in global namespace! */
+            type = "Struct Field";
+            break;
+        case SYM_TYPE:
+            switch (sym->typekind)
+            {
+                case TYPE_STRUCT:  type = "Structure"; break;
+                case TYPE_UNION:   type = "Union";     break;
+                case TYPE_TYPEDEF: type = "Typedef";   break;
+                case TYPE_RECORD:  type = "Record";    break;
+                default:           type = "Undef Type"; break;
+            }
+            break;
+        case SYM_ALIAS:
+            type = "Alias";
+            break;
+        case SYM_MACRO:
+            type = "Macro";
+            break;
+        case SYM_TMACRO:
+            type = "Text";
+            break;
+            //case SYM_CLASS_LNAME: /* never stored in global or local table */
+            //    type = "CLASS";
+            //    break;
+        default:
+            type = "Unknown";
+            break;
     }
-    printf("%-12s  %16" I64_SPEC "X %02X %8p %c %8p %s\n", type, value, sym->mem_type, (void*)&(dir->e), sym->ispublic?'X':' ', (void*)sym->name, (char*)sym->name);
+    printf("%-12s  %16" I64_SPEC "X %02X %8p %c %8p %s\n", type, value, sym->mem_type, (void*)&(dir->e), sym->ispublic ? 'X' : ' ', (void*)sym->name, (char*)sym->name);
 }
 
 static void DumpSymbols(void)
 /*****************************/
 {
-    struct asym* sym;
+    struct asym*        sym;
     unsigned            i;
     unsigned            count = 0;
     unsigned            max = 0;

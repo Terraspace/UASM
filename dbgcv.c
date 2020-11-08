@@ -82,11 +82,11 @@ struct leaf32
     uint_32 value32;
 };
 
-static const union cv_typeref_u cv_idx_type = {{ CV_PDS_INTEGRAL_4BYTE, 0, CV_PDT_SIGNED_INTEGRAL, CV_PDM_DIRECT, 0 }};
-static const union cv_typeref_u cv_void = {{ CV_PDS_SPECIAL_VOID,   0, CV_PDT_SPECIAL,         CV_PDM_DIRECT, 0 }};
+static const union cv_typeref_u cv_idx_type = { { CV_PDS_INTEGRAL_4BYTE, 0, CV_PDT_SIGNED_INTEGRAL, CV_PDM_DIRECT, 0 } };
+static const union cv_typeref_u cv_void = { { CV_PDS_SPECIAL_VOID,   0, CV_PDT_SPECIAL,         CV_PDM_DIRECT, 0 } };
 //static const union cv_typeref_u cv_pvoid    = { CV_PDS_SPECIAL_VOID,   0, CV_PDT_SPECIAL,         CV_PDM_DIRECT, 0 };
 #if EQUATESYMS
-static const union cv_typeref_u cv_abs_type = {{ CV_PDS_SPECIAL_ABSOLUTE,0,CV_PDT_SPECIAL,         CV_PDM_DIRECT, 0 }};
+static const union cv_typeref_u cv_abs_type = { { CV_PDS_SPECIAL_ABSOLUTE,0,CV_PDT_SPECIAL,         CV_PDM_DIRECT, 0 } };
 #endif
 
 /* translate symbol's mem_type to a codeview typeref */
@@ -94,7 +94,7 @@ static const union cv_typeref_u cv_abs_type = {{ CV_PDS_SPECIAL_ABSOLUTE,0,CV_PD
 static cv_typeref GetTyperef(struct asym* sym, uint_8 Ofssize)
 /**************************************************************/
 {
-    union cv_typeref_u value = {{ CV_PDS_SPECIAL_NO_TYPE, 0, CV_PDT_SPECIAL, CV_PDM_DIRECT, 0 }};
+    union cv_typeref_u value = { CV_PDS_SPECIAL_NO_TYPE, 0, CV_PDT_SPECIAL, CV_PDM_DIRECT, 0 };
 
     if ((sym->mem_type & MT_SPECIAL) == 0)
     {
@@ -104,9 +104,9 @@ static cv_typeref GetTyperef(struct asym* sym, uint_8 Ofssize)
             value.s.type = CV_PDT_REAL;
             switch (size)
             {
-            case 4:  value.s.size = CV_PDS_REAL_32BIT; break;
-            case 8:  value.s.size = CV_PDS_REAL_64BIT; break;
-            case 10: value.s.size = CV_PDS_REAL_80BIT; break;
+                case 4:  value.s.size = CV_PDS_REAL_32BIT; break;
+                case 8:  value.s.size = CV_PDS_REAL_64BIT; break;
+                case 10: value.s.size = CV_PDS_REAL_80BIT; break;
             }
         }
         else if (size <= 8)
@@ -117,15 +117,15 @@ static cv_typeref GetTyperef(struct asym* sym, uint_8 Ofssize)
                 value.s.type = CV_PDT_UNSIGNED_INTEGRAL;
             switch (size)
             {
-            case 1:  value.s.size = CV_PDS_INTEGRAL_1BYTE; break;
-            case 2:  value.s.size = CV_PDS_INTEGRAL_2BYTE; break;
-            case 4:  value.s.size = CV_PDS_INTEGRAL_4BYTE; break;
-            case 8:  value.s.size = CV_PDS_INTEGRAL_8BYTE; break;
-            case 6: /* v2.11: added ( FWORD ) */
-                value.s.type = CV_PDT_SPECIAL;
-                value.s.size = CV_PDS_SPECIAL_VOID;
-                value.s.mode = CV_PDM_FAR32PTR;
-                break;
+                case 1:  value.s.size = CV_PDS_INTEGRAL_1BYTE; break;
+                case 2:  value.s.size = CV_PDS_INTEGRAL_2BYTE; break;
+                case 4:  value.s.size = CV_PDS_INTEGRAL_4BYTE; break;
+                case 8:  value.s.size = CV_PDS_INTEGRAL_8BYTE; break;
+                case 6: /* v2.11: added ( FWORD ) */
+                    value.s.type = CV_PDT_SPECIAL;
+                    value.s.size = CV_PDS_SPECIAL_VOID;
+                    value.s.mode = CV_PDM_FAR32PTR;
+                    break;
             }
         }
         else
@@ -144,38 +144,38 @@ static cv_typeref GetTyperef(struct asym* sym, uint_8 Ofssize)
         switch (sym->mem_type)
         {
             //case MT_ABS:  break;  /* v2.07: MT_ABS obsolete */
-        case MT_PTR:
-            /* v2.10 */
-            value.s.size = CV_PDS_SPECIAL_VOID;
-            value.s.type = CV_PDT_SPECIAL;
-            switch (sym->Ofssize)
-            {
-            case USE16:
-                value.s.mode = (sym->isfar?CV_PDM_FARPTR:CV_PDM_NEARPTR);
-                break;
-            case USE32:
-                value.s.mode = (sym->isfar?CV_PDM_FAR32PTR:CV_PDM_NEAR32PTR);
-                break;
+            case MT_PTR:
+                /* v2.10 */
+                value.s.size = CV_PDS_SPECIAL_VOID;
+                value.s.type = CV_PDT_SPECIAL;
+                switch (sym->Ofssize)
+                {
+                    case USE16:
+                        value.s.mode = (sym->isfar ? CV_PDM_FARPTR : CV_PDM_NEARPTR);
+                        break;
+                    case USE32:
+                        value.s.mode = (sym->isfar ? CV_PDM_FAR32PTR : CV_PDM_NEAR32PTR);
+                        break;
 #if AMD64_SUPPORT
-            case USE64:
-                value.s.mode = CV_PDM_NEAR64PTR;
-                break;
+                    case USE64:
+                        value.s.mode = CV_PDM_NEAR64PTR;
+                        break;
 #endif
-            }
-            break;
-        case MT_BITS:
-            if (sym->cvtyperef)
-                return(sym->cvtyperef);
-            break;
-        case MT_NEAR: value.s.mode = CV_PDM_NEARPTR; break;
-        case MT_FAR:  value.s.mode = CV_PDM_FARPTR; break;
-        case MT_TYPE:
-            for (sym = sym->type; sym->type; sym = sym->type);
-            if (sym->cvtyperef)
-                return(sym->cvtyperef);
-            DebugMsg(("GetTypeRef, MT_TYPE: sym=%s state=%X memt=%X\n", sym->name, sym->state, sym->mem_type));
-            return(GetTyperef(sym, Ofssize));
-            break;
+                }
+                break;
+            case MT_BITS:
+                if (sym->cvtyperef)
+                    return(sym->cvtyperef);
+                break;
+            case MT_NEAR: value.s.mode = CV_PDM_NEARPTR; break;
+            case MT_FAR:  value.s.mode = CV_PDM_FARPTR; break;
+            case MT_TYPE:
+                for (sym = sym->type; sym->type; sym = sym->type);
+                if (sym->cvtyperef)
+                    return(sym->cvtyperef);
+                DebugMsg(("GetTypeRef, MT_TYPE: sym=%s state=%X memt=%X\n", sym->name, sym->state, sym->mem_type));
+                return(GetTyperef(sym, Ofssize));
+                break;
         }
     }
 
@@ -190,28 +190,28 @@ static uint_16 GetCVStructLen(struct asym* sym, uint_8 Ofssize)
     uint_16 len;
     switch (sym->state)
     {
-    case SYM_TYPE:
-        len = sizeof(struct cv_symrec_udt);
-        break;
-    default:
-        if (sym->isproc && Options.debug_ext >= CVEX_REDUCED)
-        {
-            len = (Ofssize == USE16?sizeof(struct cv_symrec_lproc16):sizeof(struct cv_symrec_lproc32));
-        }
-        else if (sym->mem_type == MT_NEAR || sym->mem_type == MT_FAR)
-        {
-            len = (Ofssize == USE16?sizeof(struct cv_symrec_label16):sizeof(struct cv_symrec_label32));
+        case SYM_TYPE:
+            len = sizeof(struct cv_symrec_udt);
+            break;
+        default:
+            if (sym->isproc && Options.debug_ext >= CVEX_REDUCED)
+            {
+                len = (Ofssize == USE16 ? sizeof(struct cv_symrec_lproc16) : sizeof(struct cv_symrec_lproc32));
+            }
+            else if (sym->mem_type == MT_NEAR || sym->mem_type == MT_FAR)
+            {
+                len = (Ofssize == USE16 ? sizeof(struct cv_symrec_label16) : sizeof(struct cv_symrec_label32));
 #if EQUATESYMS
-        }
-        else if (sym->isequate)
-        {
-            len = sizeof(struct cv_symrec_constant) + (sym->value >= LF_NUMERIC?2:0);
+            }
+            else if (sym->isequate)
+            {
+                len = sizeof(struct cv_symrec_constant) + (sym->value >= LF_NUMERIC ? 2 : 0);
 #endif
-        }
-        else
-        {
-            len = (Ofssize == USE16?sizeof(struct cv_symrec_ldata16):sizeof(struct cv_symrec_ldata32));
-        }
+            }
+            else
+            {
+                len = (Ofssize == USE16 ? sizeof(struct cv_symrec_ldata16) : sizeof(struct cv_symrec_ldata32));
+            }
     }
     return(len);
 }
@@ -256,16 +256,16 @@ static void cv_write_bitfield(struct dbgcv* cv, struct dsym* type, struct asym* 
 static void cv_write_array_type(struct dbgcv* cv, struct asym* sym, uint_16 elemtype, uint_8 Ofssize)
 /*****************************************************************************************************/
 {
-    uint_8* tmp;
+    uint_8*     tmp;
     int         typelen;
     int         size;
 
-    typelen = (sym->total_size >= LF_NUMERIC?sizeof(uint_32):0);
+    typelen = (sym->total_size >= LF_NUMERIC ? sizeof(uint_32) : 0);
     size = (sizeof(struct cv_typerec_array) + 2 + typelen + 1 + 3) & ~3;
     cv->pt = checkflush(cv->types, cv->pt, size, cv->param);
     cv->pt_ar->tr.size = size - sizeof(uint_16);
     cv->pt_ar->tr.leaf = LF_ARRAY;
-    cv->pt_ar->elemtype = (elemtype?elemtype:GetTyperef(sym, Ofssize));
+    cv->pt_ar->elemtype = (elemtype ? elemtype : GetTyperef(sym, Ofssize));
     cv->pt_ar->idxtype = cv_idx_type.uvalue; /* ok? */
     tmp = cv->pt + sizeof(struct cv_typerec_array);
     if (typelen)
@@ -305,11 +305,11 @@ static cv_typeref cv_write_ptr_type(struct dbgcv* cv, struct asym* sym)
     cv->pt_ptr->tr.leaf = LF_POINTER;
     if (sym->Ofssize == USE16)
     {
-        cv->pt_ptr->attribute = (sym->isfar?CV_TYPE_PTRTYPE_FAR:CV_TYPE_PTRTYPE_NEAR);
+        cv->pt_ptr->attribute = (sym->isfar ? CV_TYPE_PTRTYPE_FAR : CV_TYPE_PTRTYPE_NEAR);
     }
     else
     {
-        cv->pt_ptr->attribute = (sym->isfar?CV_TYPE_PTRTYPE_FAR32:CV_TYPE_PTRTYPE_NEAR32);
+        cv->pt_ptr->attribute = (sym->isfar ? CV_TYPE_PTRTYPE_FAR32 : CV_TYPE_PTRTYPE_NEAR32);
     }
     /* if indirection is > 1, define an untyped pointer - to be improved */
     if (sym->is_ptr > 1)
@@ -333,7 +333,7 @@ static cv_typeref cv_write_ptr_type(struct dbgcv* cv, struct asym* sym)
     }
     *(uint_32*)(cv->pt + sizeof(struct cv_typerec_pointer)) = 0; /* variant */
     DebugMsg(("%u cv_write_ptr_type(%Xh, typeref=%X ): name=%s [memt=%X ptr_memt=%X target_type=%s] reftype=%X\n",
-             cv->level, GetPos(cv->types, cv->pt), cv->currtype, sym->name, sym->mem_type, sym->ptr_memtype, sym->target_type?sym->target_type->name:"NULL", cv->pt_ptr->type));
+             cv->level, GetPos(cv->types, cv->pt), cv->currtype, sym->name, sym->mem_type, sym->ptr_memtype, sym->target_type ? sym->target_type->name : "NULL", cv->pt_ptr->type));
     cv->pt += size;
     return(cv->currtype++);
 }
@@ -364,8 +364,8 @@ static void cv_cntproc(struct dsym* type, struct asym* mbr, struct dbgcv* cv, st
     uint_32  offset;
 
     cc->cnt++;
-    offset = (type->sym.typekind == TYPE_RECORD?0:mbr->offset + cc->ofs);
-    numsize = (offset >= LF_NUMERIC?sizeof(uint_32):0);
+    offset = (type->sym.typekind == TYPE_RECORD ? 0 : mbr->offset + cc->ofs);
+    numsize = (offset >= LF_NUMERIC ? sizeof(uint_32) : 0);
     cc->size += (sizeof(struct cv_typerec_member) + numsize + mbr->name_size + 1 + 3) & ~3;
 
     /* field cv_typeref can only be queried from SYM_TYPE items! */
@@ -400,10 +400,10 @@ static void cv_memberproc(struct dsym* type, struct asym* mbr, struct dbgcv* cv,
     uint_32     offset;
     int         typelen;
     int         size;
-    uint_8* tmp;
+    uint_8*     tmp;
 
-    offset = (type->sym.typekind == TYPE_RECORD?0:mbr->offset + cc->ofs);
-    typelen = (offset >= LF_NUMERIC?sizeof(uint_32):0);
+    offset = (type->sym.typekind == TYPE_RECORD ? 0 : mbr->offset + cc->ofs);
+    typelen = (offset >= LF_NUMERIC ? sizeof(uint_32) : 0);
     size = (sizeof(struct cv_typerec_member) + typelen + 1 + mbr->name_size + 3) & ~3;
     cv->pt = checkflush(cv->types, cv->pt, size, cv->param);
     cv->pt_mbr->leaf = LF_MEMBER;
@@ -451,8 +451,8 @@ static void cv_memberproc(struct dsym* type, struct asym* mbr, struct dbgcv* cv,
 static void cv_enum_fields(struct dsym* sym, cv_enum_func enumfunc, struct dbgcv* cv, struct cv_counters* cc)
 /*************************************************************************************************************/
 {
-    unsigned i;
-    struct sfield* curr;
+    unsigned        i;
+    struct sfield*  curr;
     for (curr = sym->e.structinfo->head, i = 0; curr; curr = curr->next)
     {
         if (curr->sym.name_size)
@@ -488,9 +488,9 @@ static void cv_enum_fields(struct dsym* sym, cv_enum_func enumfunc, struct dbgcv
 static void cv_write_type_procedure(struct dbgcv* cv, struct asym* sym, int cnt)
 /********************************************************************************/
 {
-    int         size;
-    cv_typeref* ptr;
-    struct dsym* param;
+    int             size;
+    cv_typeref*     ptr;
+    struct dsym*    param;
 
     size = sizeof(struct cv_typerec_procedure);
     cv->pt = checkflush(cv->types, cv->pt, size, cv->param);
@@ -512,7 +512,7 @@ static void cv_write_type_procedure(struct dbgcv* cv, struct asym* sym, int cnt)
     for (param = ((struct dsym*)sym)->e.procinfo->paralist; param; param = param->nextparam)
     {
         *ptr++ = param->sym.ext_idx1;
-}
+    }
     cv->pt += size;
     cv->currtype++;
     return;
@@ -526,7 +526,7 @@ static void cv_write_type(struct dbgcv* cv, struct asym* sym)
 /*************************************************************/
 {
     struct dsym* type = (struct dsym*)sym;
-    uint_8* tmp;
+    uint_8*     tmp;
     int         namesize;
     int         typelen;
     int         size;
@@ -574,11 +574,11 @@ static void cv_write_type(struct dbgcv* cv, struct asym* sym)
             cv->pt_ptr->tr.leaf = LF_POINTER;
             if (sym->Ofssize == USE16)
             {
-                cv->pt_ptr->attribute = (sym->isfar?CV_TYPE_POINTER_FAR:CV_TYPE_POINTER_NEAR);
+                cv->pt_ptr->attribute = (sym->isfar ? CV_TYPE_POINTER_FAR : CV_TYPE_POINTER_NEAR);
             }
             else
             {
-                cv->pt_ptr->attribute = (sym->isfar?CV_TYPE_POINTER_FAR32:CV_TYPE_POINTER_NEAR32);
+                cv->pt_ptr->attribute = (sym->isfar ? CV_TYPE_POINTER_FAR32 : CV_TYPE_POINTER_NEAR32);
             }
             cv->pt_ptr->pptype = cv_pvoid.s;
             *(uint_32*)(cv->pt + sizeof(struct cv_typerec_pointer)) = 0; /* variant */
@@ -594,9 +594,9 @@ static void cv_write_type(struct dbgcv* cv, struct asym* sym)
         return;
     }
 
-    typelen = (sym->total_size >= LF_NUMERIC?sizeof(uint_32):0);
+    typelen = (sym->total_size >= LF_NUMERIC ? sizeof(uint_32) : 0);
 
-    property = (cv->level?CVTSP_ISNESTED:0);
+    property = (cv->level ? CVTSP_ISNESTED : 0);
 
     /* Count the member fields. If a member's type is unknown, create it! */
     count.cnt = 0;
@@ -605,38 +605,38 @@ static void cv_write_type(struct dbgcv* cv, struct asym* sym)
     cv_enum_fields(type, cv_cntproc, cv, &count);
 
     /* WinDbg wants embedded structs to have a name - else it won't allow to "open" it. */
-    namesize = (sym->name_size?sym->name_size:9);  /* 9 is sizeof("__unnamed") */
+    namesize = (sym->name_size ? sym->name_size : 9);  /* 9 is sizeof("__unnamed") */
 
     sym->cvtyperef = cv->currtype++;
     switch (type->sym.typekind)
     {
-    case TYPE_UNION:
-        DebugMsg(("%u cv_write_type(%Xh, ref=%X): UNION=%s\n", cv->level, GetPos(cv->types, cv->pt), sym->cvtyperef, sym->name));
-        size = (sizeof(struct cv_typerec_union) + typelen + 1 + namesize + 3) & ~3;
-        cv->pt = checkflush(cv->types, cv->pt, size, cv->param);
-        cv->pt_un->tr.size = size - sizeof(uint_16);
-        cv->pt_un->tr.leaf = LF_UNION;
-        cv->pt_un->count = count.cnt;
-        cv->pt_un->field = cv->currtype++;
-        cv->pt_un->property = property;
-        tmp = (uint_8*)&cv->pt_un->length;
-        break;
-    case TYPE_RECORD:
-        property |= CVTSP_PACKED; /* is "packed" */
-        /* no break */
-    case TYPE_STRUCT:
-        DebugMsg(("%u cv_write_type(%Xh, ref=%X): STRUCT=%s\n", cv->level, GetPos(cv->types, cv->pt), sym->cvtyperef, sym->name));
-        size = (sizeof(struct cv_typerec_structure) + typelen + 1 + namesize + 3) & ~3;
-        cv->pt = checkflush(cv->types, cv->pt, size, cv->param);
-        cv->pt_st->tr.size = size - sizeof(uint_16);
-        cv->pt_st->tr.leaf = LF_STRUCTURE;
-        cv->pt_st->count = count.cnt;
-        cv->pt_st->field = cv->currtype++;
-        cv->pt_st->property = property;
-        cv->pt_st->dList = 0;
-        cv->pt_st->vshape = 0;
-        tmp = (uint_8*)&cv->pt_st->length;
-        break;
+        case TYPE_UNION:
+            DebugMsg(("%u cv_write_type(%Xh, ref=%X): UNION=%s\n", cv->level, GetPos(cv->types, cv->pt), sym->cvtyperef, sym->name));
+            size = (sizeof(struct cv_typerec_union) + typelen + 1 + namesize + 3) & ~3;
+            cv->pt = checkflush(cv->types, cv->pt, size, cv->param);
+            cv->pt_un->tr.size = size - sizeof(uint_16);
+            cv->pt_un->tr.leaf = LF_UNION;
+            cv->pt_un->count = count.cnt;
+            cv->pt_un->field = cv->currtype++;
+            cv->pt_un->property = property;
+            tmp = (uint_8*)&cv->pt_un->length;
+            break;
+        case TYPE_RECORD:
+            property |= CVTSP_PACKED; /* is "packed" */
+            /* no break */
+        case TYPE_STRUCT:
+            DebugMsg(("%u cv_write_type(%Xh, ref=%X): STRUCT=%s\n", cv->level, GetPos(cv->types, cv->pt), sym->cvtyperef, sym->name));
+            size = (sizeof(struct cv_typerec_structure) + typelen + 1 + namesize + 3) & ~3;
+            cv->pt = checkflush(cv->types, cv->pt, size, cv->param);
+            cv->pt_st->tr.size = size - sizeof(uint_16);
+            cv->pt_st->tr.leaf = LF_STRUCTURE;
+            cv->pt_st->count = count.cnt;
+            cv->pt_st->field = cv->currtype++;
+            cv->pt_st->property = property;
+            cv->pt_st->dList = 0;
+            cv->pt_st->vshape = 0;
+            tmp = (uint_8*)&cv->pt_st->length;
+            break;
     }
     if (typelen)
     {
@@ -649,7 +649,7 @@ static void cv_write_type(struct dbgcv* cv, struct asym* sym)
         *(uint_16*)tmp = sym->total_size;
         tmp += sizeof(uint_16);
     }
-    SetPrefixName(tmp, sym->name_size?sym->name:"__unnamed", namesize);
+    SetPrefixName(tmp, sym->name_size ? sym->name : "__unnamed", namesize);
 
     PadBytes(tmp, cv->types->e.seginfo->CodeBuffer);
     cv->pt += size;
@@ -731,16 +731,16 @@ static uint_16 cv_get_x64_regno(uint_16 regno)
 static void cv_write_symbol(struct dbgcv* cv, struct asym* sym)
 /***************************************************************/
 {
-    int        len;
-    unsigned   ofs;
-    enum fixup_types rlctype;
-    uint_8     Ofssize;
-    struct fixup* fixup;
-    struct dsym* proc;
-    struct dsym* lcl;
-    int        i;
-    int        cnt[2];
-    struct     dsym* locals[2];
+    int                 len;
+    unsigned            ofs;
+    enum fixup_types    rlctype;
+    uint_8              Ofssize;
+    struct fixup*       fixup;
+    struct dsym*        proc;
+    struct dsym*        lcl;
+    int                 i;
+    int                 cnt[2];
+    struct dsym*        locals[2];
 
     Ofssize = GetSymOfssize(sym);
     len = GetCVStructLen(sym, Ofssize);
@@ -806,7 +806,7 @@ static void cv_write_symbol(struct dbgcv* cv, struct asym* sym)
             {
                 cv_typeref typeref;
                 cnt[i]++;
-                typeref = (lcl->sym.mem_type == MT_PTR?cv_write_ptr_type(cv, &lcl->sym):GetTyperef(&lcl->sym, Ofssize));
+                typeref = (lcl->sym.mem_type == MT_PTR ? cv_write_ptr_type(cv, &lcl->sym) : GetTyperef(&lcl->sym, Ofssize));
                 if (lcl->sym.isarray)
                 {
                     cv_write_array_type(cv, &lcl->sym, typeref, Ofssize);
@@ -820,7 +820,7 @@ static void cv_write_symbol(struct dbgcv* cv, struct asym* sym)
         if (Ofssize == USE16)
         {
             cv->ps_p16->sr.size = sizeof(struct cv_symrec_lproc16) - sizeof(uint_16) + 1 + sym->name_size;
-            cv->ps_p16->sr.type = (sym->ispublic?S_GPROC16:S_LPROC16);
+            cv->ps_p16->sr.type = (sym->ispublic ? S_GPROC16 : S_LPROC16);
             cv->ps_p16->pParent = 0;  /* filled by CVPACK */
             cv->ps_p16->pEnd = 0;     /* filled by CVPACK */
             cv->ps_p16->pNext = 0;    /* filled by CVPACK */
@@ -830,14 +830,14 @@ static void cv_write_symbol(struct dbgcv* cv, struct asym* sym)
             cv->ps_p16->offset = 0;
             cv->ps_p16->segment = 0;
             cv->ps_p16->proctype = cv->currtype; /* typeref LF_PROCEDURE */
-            cv->ps_p16->flags = (sym->mem_type == MT_FAR?CV_PROCF_FAR:0);
+            cv->ps_p16->flags = (sym->mem_type == MT_FAR ? CV_PROCF_FAR : 0);
             rlctype = FIX_PTR16;
             ofs = offsetof(struct cv_symrec_lproc16, offset);
         }
         else
         {
             cv->ps_p32->sr.size = sizeof(struct cv_symrec_lproc32) - sizeof(uint_16) + 1 + sym->name_size;
-            cv->ps_p32->sr.type = (sym->ispublic?S_GPROC32:S_LPROC32);
+            cv->ps_p32->sr.type = (sym->ispublic ? S_GPROC32 : S_LPROC32);
             cv->ps_p32->pParent = 0; /* filled by CVPACK */
             cv->ps_p32->pEnd = 0;    /* filled by CVPACK */
             cv->ps_p32->pNext = 0;   /* filled by CVPACK */
@@ -848,9 +848,9 @@ static void cv_write_symbol(struct dbgcv* cv, struct asym* sym)
             cv->ps_p32->segment = 0;
             cv->ps_p32->proctype = cv->currtype; /* typeref LF_PROCEDURE */
 #if STACKBASESUPP
-            cv->ps_p32->flags = ((sym->mem_type == MT_FAR?CV_PROCF_FAR:0) | (proc->e.procinfo->fpo?CV_PROCF_FPO:0));
+            cv->ps_p32->flags = ((sym->mem_type == MT_FAR ? CV_PROCF_FAR : 0) | (proc->e.procinfo->fpo ? CV_PROCF_FPO : 0));
 #else
-            cv->ps_p32->flags = (sym->mem_type == MT_FAR?CV_PROCF_FAR:0);
+            cv->ps_p32->flags = (sym->mem_type == MT_FAR ? CV_PROCF_FAR : 0);
 #endif
             rlctype = FIX_PTR32;
             ofs = offsetof(struct cv_symrec_lproc32, offset);
@@ -865,7 +865,7 @@ static void cv_write_symbol(struct dbgcv* cv, struct asym* sym)
             cv->ps_l16->sr.type = S_LABEL16;
             cv->ps_l16->offset = 0;
             cv->ps_l16->segment = 0;
-            cv->ps_l16->flags = (sym->mem_type == MT_FAR?CV_PROCF_FAR:0);
+            cv->ps_l16->flags = (sym->mem_type == MT_FAR ? CV_PROCF_FAR : 0);
             rlctype = FIX_PTR16;
             ofs = offsetof(struct cv_symrec_label16, offset);
             DebugMsg(("cv_write_symbol(%X): LABEL16=%s\n", GetPos(cv->symbols, cv->ps), sym->name));
@@ -876,7 +876,7 @@ static void cv_write_symbol(struct dbgcv* cv, struct asym* sym)
             cv->ps_l32->sr.type = S_LABEL32;
             cv->ps_l32->offset = 0;
             cv->ps_l32->segment = 0;
-            cv->ps_l32->flags = (sym->mem_type == MT_FAR?CV_PROCF_FAR:0);
+            cv->ps_l32->flags = (sym->mem_type == MT_FAR ? CV_PROCF_FAR : 0);
             rlctype = FIX_PTR32;
             ofs = offsetof(struct cv_symrec_label32, offset);
             DebugMsg(("cv_write_symbol(%X): LABEL32=%s\n", GetPos(cv->symbols, cv->ps), sym->name));
@@ -920,7 +920,7 @@ static void cv_write_symbol(struct dbgcv* cv, struct asym* sym)
         if (Ofssize == USE16)
         {
             cv->ps_d16->sr.size = sizeof(struct cv_symrec_ldata16) - sizeof(uint_16) + 1 + sym->name_size;
-            cv->ps_d16->sr.type = (sym->ispublic?S_GDATA16:S_LDATA16);
+            cv->ps_d16->sr.type = (sym->ispublic ? S_GDATA16 : S_LDATA16);
             cv->ps_d16->offset = 0;
             cv->ps_d16->segment = 0;
             cv->ps_d16->type = typeref;
@@ -934,10 +934,10 @@ static void cv_write_symbol(struct dbgcv* cv, struct asym* sym)
 #if CVOSUPP
             if ((ModuleInfo.cv_opt & CVO_STATICTLS) && ((struct dsym*)sym->segment)->e.seginfo->clsym &&
                 strcmp(((struct dsym*)sym->segment)->e.seginfo->clsym->name, "TLS") == 0)
-                cv->ps_d32->sr.type = (sym->ispublic?S_GTHREAD32:S_LTHREAD32);
+                cv->ps_d32->sr.type = (sym->ispublic ? S_GTHREAD32 : S_LTHREAD32);
             else
 #endif
-                cv->ps_d32->sr.type = (sym->ispublic?S_GDATA32:S_LDATA32);
+                cv->ps_d32->sr.type = (sym->ispublic ? S_GDATA32 : S_LDATA32);
             cv->ps_d32->offset = 0;
             cv->ps_d32->segment = 0;
             cv->ps_d32->type = typeref;
@@ -961,7 +961,7 @@ static void cv_write_symbol(struct dbgcv* cv, struct asym* sym)
         store_fixup(fixup, cv->symbols, (int_32*)cv->ps);
         fixup = CreateFixup(sym, FIX_SEG, OPTJ_NONE);
         //fixup->locofs += sizeof( int_32 );
-        fixup->locofs = cv->symbols->e.seginfo->current_loc + (rlctype == FIX_PTR32?sizeof(int_32):sizeof(int_16));
+        fixup->locofs = cv->symbols->e.seginfo->current_loc + (rlctype == FIX_PTR32 ? sizeof(int_32) : sizeof(int_16));
         store_fixup(fixup, cv->symbols, (int_32*)cv->ps);
     }
     else
@@ -1098,11 +1098,11 @@ static void cv_write_symbol(struct dbgcv* cv, struct asym* sym)
 void cv_write_debug_tables(struct dsym* symbols, struct dsym* types, void* pv)
 /******************************************************************************/
 {
-    struct asym* sym;
-    int        i;
-    int        len;
-    char* objname;
-    struct dbgcv cv;
+    struct asym*    sym;
+    int             i;
+    int             len;
+    char*           objname;
+    struct dbgcv    cv;
 
     DebugMsg(("cv_write_debug_tables enter\n"));
 
@@ -1150,7 +1150,7 @@ void cv_write_debug_tables(struct dsym* symbols, struct dsym* types, void* pv)
     cv.ps_cp->sr.type = S_COMPILE;
 #if AMD64_SUPPORT
     /* v2.11: use a valid 64-bit value */
-    cv.ps_cp->machine = (ModuleInfo.defOfssize == USE64?CV_MACH_AMD64:(ModuleInfo.curr_cpu & P_CPU_MASK) >> 4);
+    cv.ps_cp->machine = (ModuleInfo.defOfssize == USE64 ? CV_MACH_AMD64 : (ModuleInfo.curr_cpu & P_CPU_MASK) >> 4);
 #else
     cv.ps_cp->machine = (ModuleInfo.curr_cpu & P_CPU_MASK) >> 4;
 #endif
@@ -1164,8 +1164,8 @@ void cv_write_debug_tables(struct dsym* symbols, struct dsym* types, void* pv)
         if (ModuleInfo.model == MODEL_HUGE)
             cv.ps_cp->AmbientData = CV_AMB_HUGE;
         else
-            cv.ps_cp->AmbientData = (SIZE_DATAPTR & (1 << ModuleInfo.model)?CV_AMB_FAR:CV_AMB_NEAR);
-        cv.ps_cp->AmbientCode = (SIZE_CODEPTR & (1 << ModuleInfo.model)?CV_AMB_FAR:CV_AMB_NEAR);
+            cv.ps_cp->AmbientData = (SIZE_DATAPTR & (1 << ModuleInfo.model) ? CV_AMB_FAR : CV_AMB_NEAR);
+        cv.ps_cp->AmbientCode = (SIZE_CODEPTR & (1 << ModuleInfo.model) ? CV_AMB_FAR : CV_AMB_NEAR);
     }
     DebugMsg(("cv_write_debug_tables: at %X compiler=%s\n", GetPos(cv.symbols, cv.ps), szCVCompiler));
     cv.ps += sizeof(struct cv_symrec_compile);
@@ -1193,24 +1193,24 @@ void cv_write_debug_tables(struct dsym* symbols, struct dsym* types, void* pv)
     {
         switch (sym->state)
         {
-        case SYM_TYPE: /* may create an S_UDT entry in the symbols table */
-            if (Options.debug_ext < CVEX_NORMAL) /* v2.10: no UDTs for -Zi0 and -Zi1 */
-                break;
-        case SYM_INTERNAL:
-            if (
+            case SYM_TYPE: /* may create an S_UDT entry in the symbols table */
+                if (Options.debug_ext < CVEX_NORMAL) /* v2.10: no UDTs for -Zi0 and -Zi1 */
+                    break;
+            case SYM_INTERNAL:
+                if (
 #if EQUATESYMS
-                /* emit constants if -Zi3 */
-                (Options.debug_ext < CVEX_MAX?sym->isequate:sym->variable)
+                    /* emit constants if -Zi3 */
+                    (Options.debug_ext < CVEX_MAX ? sym->isequate : sym->variable)
 #else
-                sym->isequate
+                    sym->isequate
 #endif
-                || sym->predefined)
-            { /* EQUates? */
+                    || sym->predefined)
+                { /* EQUates? */
+                    break;
+                }
+                /**/myassert(cv.currtype >= 0x1000); /* check for overflow */
+                cv_write_symbol(&cv, sym);
                 break;
-            }
-            /**/myassert(cv.currtype >= 0x1000); /* check for overflow */
-            cv_write_symbol(&cv, sym);
-            break;
         }
     }
 

@@ -75,7 +75,7 @@ char* GetAnonymousLabel(char* buffer, int value)
 struct asym* CreateLabel(const char* name, enum memtype mem_type, struct qualified_type* ti, bool bLocal)
     /*********************************************************************************************************/
 {
-    struct asym* sym;
+    struct asym*        sym;
     uint_32             addr;
     char                buffer[20];
 
@@ -107,7 +107,7 @@ struct asym* CreateLabel(const char* name, enum memtype mem_type, struct qualifi
         name = buffer;
     }
 
-    sym = (bLocal?SymLookupLocal(name):SymLookup(name));
+    sym = (bLocal ? SymLookupLocal(name) : SymLookup(name));
     /* v2.11: SymLookup...() cannot fail */
     //if( sym == NULL ) /* name invalid or too long? */
     //    return( NULL );
@@ -216,7 +216,7 @@ struct asym* CreateLabel(const char* name, enum memtype mem_type, struct qualifi
     }
     BackPatch(sym);
     return(sym);
-    }
+}
 
 /* LABEL directive.
  * syntax: <label_name> LABEL <qualified type>
@@ -225,8 +225,8 @@ struct asym* CreateLabel(const char* name, enum memtype mem_type, struct qualifi
 ret_code LabelDirective(int i, struct asm_tok tokenarray[])
 /***********************************************************/
 {
-    struct qualified_type ti;
-    struct asym* sym;
+    struct qualified_type   ti;
+    struct asym*            sym;
 #if LABELARRAY
     uint_32 length;
 #endif
@@ -249,7 +249,7 @@ ret_code LabelDirective(int i, struct asm_tok tokenarray[])
         return(ERROR);
 
     DebugMsg1(("LabelDirective(%s): memtype=%Xh, far=%u, ptr=%u, ofssize=%u, type=%s)\n",
-              tokenarray[0].string_ptr, ti.mem_type, ti.is_far, ti.is_ptr, ti.Ofssize, ti.symtype?ti.symtype->name:"NULL"));
+              tokenarray[0].string_ptr, ti.mem_type, ti.is_far, ti.is_ptr, ti.Ofssize, ti.symtype ? ti.symtype->name : "NULL"));
 
 #if LABELARRAY
     length = -1;

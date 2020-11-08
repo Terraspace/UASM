@@ -101,7 +101,7 @@ ret_code OrgDirective(int i, struct asm_tok tokenarray[])
     i++;
     /* v2.09: if -Zne is set, don't allow forward reference in ORG argument */
     //if ( ( ERROR == EvalOperand( &i, tokenarray, Token_Count, &opndx, 0 ) ) )
-    if ((ERROR == EvalOperand(&i, tokenarray, Token_Count, &opndx, Options.strict_masm_compat?EXPF_NOUNDEF:0)))
+    if ((ERROR == EvalOperand(&i, tokenarray, Token_Count, &opndx, Options.strict_masm_compat ? EXPF_NOUNDEF : 0)))
         return(ERROR);
     if (tokenarray[i].token != T_FINAL)
     {
@@ -119,7 +119,10 @@ ret_code OrgDirective(int i, struct asm_tok tokenarray[])
             return(EmitError(MUST_BE_IN_SEGMENT_BLOCK));
         }
 #if FASTPASS
-        if (StoreState == FALSE) {FStoreLine(0);}
+        if (StoreState == FALSE)
+        {
+            FStoreLine(0);
+        }
 #endif
         /* v2.04: added */
         if (Parse_Pass == PASS_1 && CurrSeg->e.seginfo->FixupList.head)
@@ -221,37 +224,37 @@ ret_code AlignDirective(int i, struct asm_tok tokenarray[])
 
     switch (tokenarray[i].tokval)
     {
-    case T_ALIGN:
-        i++;
-        if (EvalOperand(&i, tokenarray, Token_Count, &opndx, EXPF_NOUNDEF) == ERROR)
-            return(ERROR);
-        if (opndx.kind == EXPR_CONST)
-        {
-            int_32 power;
-            /* check that the parm is a power of 2 */
-            for (power = 1; power < align_value; power <<= 1);
-            if (power != align_value)
+        case T_ALIGN:
+            i++;
+            if (EvalOperand(&i, tokenarray, Token_Count, &opndx, EXPF_NOUNDEF) == ERROR)
+                return(ERROR);
+            if (opndx.kind == EXPR_CONST)
             {
-                return(EmitErr(POWER_OF_2, align_value));
+                int_32 power;
+                /* check that the parm is a power of 2 */
+                for (power = 1; power < align_value; power <<= 1);
+                if (power != align_value)
+                {
+                    return(EmitErr(POWER_OF_2, align_value));
+                }
             }
-        }
-        else if (opndx.kind == EXPR_EMPTY)
-        { /* ALIGN without argument? */
-/* v2.03: special STRUCT handling was missing */
-            if (CurrStruct)
-                align_value = CurrStruct->e.structinfo->alignment;
+            else if (opndx.kind == EXPR_EMPTY)
+            { /* ALIGN without argument? */
+    /* v2.03: special STRUCT handling was missing */
+                if (CurrStruct)
+                    align_value = CurrStruct->e.structinfo->alignment;
+                else
+                    align_value = GetCurrSegAlign();
+            }
             else
-                align_value = GetCurrSegAlign();
-        }
-        else
-        {
-            return(EmitError(CONSTANT_EXPECTED));
-        }
-        break;
-    case T_EVEN:
-        align_value = 2;
-        i++;
-        break;
+            {
+                return(EmitError(CONSTANT_EXPECTED));
+            }
+            break;
+        case T_EVEN:
+            align_value = 2;
+            i++;
+            break;
     }
     if (tokenarray[i].token != T_FINAL)
     {
@@ -263,7 +266,10 @@ ret_code AlignDirective(int i, struct asm_tok tokenarray[])
         return(AlignInStruct(align_value));
 
 #if FASTPASS
-    if (StoreState == FALSE) {FStoreLine(0);}
+    if (StoreState == FALSE)
+    {
+        FStoreLine(0);
+    }
 #endif
     seg_align = GetCurrSegAlign(); /* # of bytes */
     if (seg_align <= 0)

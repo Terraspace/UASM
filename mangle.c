@@ -103,18 +103,18 @@ static int RegcallMangler(const struct asym* sym, char* buffer)
     const struct dsym* dir = (struct dsym*)sym;
     switch (Options.regcall_version)
     {
-    case RGCV_1:
-        return(sprintf(buffer, "__regcall1__%s", sym->name, dir->e.procinfo->parasize));
-    case RGCV_2:
-        return(sprintf(buffer, "__regcall2__%s", sym->name, dir->e.procinfo->parasize));
-    case RGCV_3:
-        return(sprintf(buffer, "__regcall3__%s", sym->name, dir->e.procinfo->parasize));
-    case RGCV_4:
-        return(sprintf(buffer, "__regcall4__%s", sym->name, dir->e.procinfo->parasize));
-    case RGCV_5:
-        return(sprintf(buffer, "__regcall5__%s", sym->name, dir->e.procinfo->parasize));
-    default:
-        return(sprintf(buffer, "__regcall3__%s", sym->name, dir->e.procinfo->parasize));
+        case RGCV_1:
+            return(sprintf(buffer, "__regcall1__%s", sym->name, dir->e.procinfo->parasize));
+        case RGCV_2:
+            return(sprintf(buffer, "__regcall2__%s", sym->name, dir->e.procinfo->parasize));
+        case RGCV_3:
+            return(sprintf(buffer, "__regcall3__%s", sym->name, dir->e.procinfo->parasize));
+        case RGCV_4:
+            return(sprintf(buffer, "__regcall4__%s", sym->name, dir->e.procinfo->parasize));
+        case RGCV_5:
+            return(sprintf(buffer, "__regcall5__%s", sym->name, dir->e.procinfo->parasize));
+        default:
+            return(sprintf(buffer, "__regcall3__%s", sym->name, dir->e.procinfo->parasize));
     }
 }
 
@@ -187,13 +187,13 @@ static int ow_decorate(const struct asym* sym, char* buffer)
     {
         switch (sym->mem_type)
         {
-        case MT_NEAR:
-        case MT_FAR:
-        case MT_EMPTY:
-            changes |= USCORE_BACK;
-            break;
-        default:
-            changes |= USCORE_FRONT;
+            case MT_NEAR:
+            case MT_FAR:
+            case MT_EMPTY:
+                changes |= USCORE_BACK;
+                break;
+            default:
+                changes |= USCORE_FRONT;
         }
     }
 
@@ -255,10 +255,10 @@ static mangle_func GetMangler(const char* mangle_type)
     {
         switch (tolower(*mangle_type))
         {
-        case 'c':
-            return(Options.xxx?CMangler:ow_decorate);
-        case 'n':
-            return(VoidMangler);
+            case 'c':
+                return(Options.xxx ? CMangler : ow_decorate);
+            case 'n':
+                return(VoidMangler);
         }
     }
     if (mangle_type)
@@ -275,41 +275,41 @@ int Mangle(struct asym* sym, char* buffer)
 
     switch (sym->langtype)
     {
-    case LANG_C:
-        /* leading underscore for C? */
-        mangler = (Options.sub_format == SFORMAT_64BIT)?VoidMangler:Options.no_cdecl_decoration?VoidMangler:UScoreMangler;
-        break;
-    case LANG_SYSCALL:
-    case LANG_SYSVCALL:
-    case LANG_THISCALL:
-        mangler = VoidMangler;
-        break;
-    case LANG_STDCALL:
-        mangler = (Options.sub_format == SFORMAT_64BIT)?VoidMangler:(Options.stdcall_decoration == STDCALL_NONE)?VoidMangler:StdcallMangler;
-        break;
-    case LANG_PASCAL:
-    case LANG_FORTRAN:
-    case LANG_BASIC:
-        mangler = (Options.sub_format == SFORMAT_64BIT)?VoidMangler:UCaseMangler;
-        break;
-    case LANG_VECTORCALL:
-        mangler = (Options.vectorcall_decoration == VECTORCALL_NONE)?VoidMangler:fcmanglers[ModuleInfo.fctype];
-        break;
-    case LANG_FASTCALL:          /* registers passing parameters */
-        mangler = ((Options.fastcall_decoration == FASTCALL_NONE) || (Options.sub_format == SFORMAT_64BIT))?VoidMangler:fcmanglers[ModuleInfo.fctype];
-        break;
-    case LANG_REGCALL:
-        mangler = (Options.regcall_decoration == REGCALL_NONE)?VoidMangler:RegcallMangler;
-        break;
-    default: /* LANG_NONE */
-#if MANGLERSUPP
-        mangler = sym->mangler;
-        if (mangler == NULL)
-            mangler = GetMangler(Options.default_name_mangler);
-        if (mangler == NULL)
-#endif
+        case LANG_C:
+            /* leading underscore for C? */
+            mangler = (Options.sub_format == SFORMAT_64BIT) ? VoidMangler : Options.no_cdecl_decoration ? VoidMangler : UScoreMangler;
+            break;
+        case LANG_SYSCALL:
+        case LANG_SYSVCALL:
+        case LANG_THISCALL:
             mangler = VoidMangler;
-        break;
+            break;
+        case LANG_STDCALL:
+            mangler = (Options.sub_format == SFORMAT_64BIT) ? VoidMangler : (Options.stdcall_decoration == STDCALL_NONE) ? VoidMangler : StdcallMangler;
+            break;
+        case LANG_PASCAL:
+        case LANG_FORTRAN:
+        case LANG_BASIC:
+            mangler = (Options.sub_format == SFORMAT_64BIT) ? VoidMangler : UCaseMangler;
+            break;
+        case LANG_VECTORCALL:
+            mangler = (Options.vectorcall_decoration == VECTORCALL_NONE) ? VoidMangler : fcmanglers[ModuleInfo.fctype];
+            break;
+        case LANG_FASTCALL:          /* registers passing parameters */
+            mangler = ((Options.fastcall_decoration == FASTCALL_NONE) || (Options.sub_format == SFORMAT_64BIT)) ? VoidMangler : fcmanglers[ModuleInfo.fctype];
+            break;
+        case LANG_REGCALL:
+            mangler = (Options.regcall_decoration == REGCALL_NONE) ? VoidMangler : RegcallMangler;
+            break;
+        default: /* LANG_NONE */
+#if MANGLERSUPP
+            mangler = sym->mangler;
+            if (mangler == NULL)
+                mangler = GetMangler(Options.default_name_mangler);
+            if (mangler == NULL)
+#endif
+                mangler = VoidMangler;
+            break;
     }
 #if MANGLERSUPP
     sym->mangler = mangler;

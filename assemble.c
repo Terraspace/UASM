@@ -248,11 +248,11 @@ char* ConvertSectionName(const struct asym* sym, enum seg_type* pst, char* buffe
                 strcpy(buffer, cst[i].dst);
                 strcat(buffer, sym->name + cst[i].len);
                 return(buffer);
-                }
             }
         }
-    return(sym->name);
     }
+    return(sym->name);
+}
 #endif
 
 /* Write a byte to the segment buffer.
@@ -337,7 +337,7 @@ void OutputBinBytes(unsigned char* pBytes, uint_32 len)
     CurrSeg->e.seginfo->written = TRUE;
     if (CurrSeg->e.seginfo->current_loc > CurrSeg->sym.max_offset)
         CurrSeg->sym.max_offset = CurrSeg->e.seginfo->current_loc;
-    }
+}
 
 #if 0 /* v2.03: OutputCodeByte is obsolete */
 void OutputCodeByte(unsigned char byte)
@@ -436,7 +436,7 @@ void OutputBytes(const unsigned char* pbytes, int len, struct fixup* fixup)
     CurrSeg->e.seginfo->written = TRUE;
     if (CurrSeg->e.seginfo->current_loc > CurrSeg->sym.max_offset)
         CurrSeg->sym.max_offset = CurrSeg->e.seginfo->current_loc;
-    }
+}
 
 /* Used to output a string to current segment in wide-char format with interleaved zeros */
 void OutputInterleavedBytes(const unsigned char* pbytes, int len, struct fixup* fixup)
@@ -511,7 +511,7 @@ ret_code SetCurrOffset(struct dsym* seg, uint_32 value, bool relative, bool sele
          * v1.96: this is now also done for COFF and ELF
          */
          /* else if ( Options.output_format == OFORMAT_BIN && relative == FALSE ) { */
-}
+    }
     else
     {
         if (write_to_file == FALSE)
@@ -742,8 +742,8 @@ static void CmdlParamsInit(int pass)
             else
             {
                 /* do nothing ... __WINDOWS__ already defined */
+            }
         }
-    }
         else if (_stricmp(Options.build_target, "QNX") == 0)
         {
             p = "__UNIX__";
@@ -757,7 +757,7 @@ static void CmdlParamsInit(int pass)
             sym = CreateVariable(p, 0);
             sym->predefined = TRUE;
         }
-}
+    }
 #endif
 
     if (pass == PASS_1)
@@ -781,7 +781,7 @@ void WritePreprocessedLine(const char* string)
  */
 {
     static bool PrintEmptyLine = TRUE;
-    const char* p;
+    char* p;
 
 #if 0 /* v2.08: removed, obsolete */
     /* filter some macro specific directives */
@@ -799,8 +799,8 @@ void WritePreprocessedLine(const char* string)
     if (Token_Count > 0)
     {
         /* v2.08: don't print a leading % (this char is no longer filtered) */
-        for (p = string; isspace(*p); p++);
-        printf("%s\n", *p == '%'?p + 1:string);
+        for (p = (char*)string; isspace(*p); p++);
+        printf("%s\n", *p == '%' ? p + 1 : string);
         PrintEmptyLine = TRUE;
     }
     else if (PrintEmptyLine)
@@ -865,11 +865,19 @@ static void ModulePassInit(void)
         ModuleInfo.fctype = Options.fctype;
 
 #if AMD64_SUPPORT
+        /*if (Options.sub_format == SFORMAT_64BIT)
+        {*/
         if (Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC)
         {
             ModuleInfo.fctype = FCT_SYSV64;
             Options.fctype = FCT_SYSV64; /* SYSV proc/invoke tables use the same ordinal as FCT_WIN64 so set it now, instead of FCT_MSC */
         }
+        else
+        {
+            ModuleInfo.fctype = FCT_WIN64;
+            Options.fctype = FCT_WIN64;
+        }
+        /*}*/
 #endif
 
 #if AMD64_SUPPORT
@@ -929,7 +937,7 @@ static void ModulePassInit(void)
         for (curr = SymTables[TAB_EXT].head; curr; curr = curr->next)
             curr->sym.iat_used = FALSE;
 #endif
-    }
+}
 
 #if 0 /* v2.07: removed */
 /* scan - and clear - global queue (EXTERNDEFs).
@@ -1155,7 +1163,7 @@ static void PassOneChecks(void)
             }
         }
 #endif
-            }
+    }
 
 #ifdef DEBUG_OUT
     DebugMsg(("PassOneChecks: removed unused externals: %u\n", cntUnusedExt));
@@ -1172,7 +1180,7 @@ static void PassOneChecks(void)
             for (fix = sym->bp_fixup; fix; fix = fix->nextbp, j++);
         }
         DebugMsg(("PassOneChecks: segm=%s, labels=%u forward refs=%u\n", curr->sym.name, i, j));
-        }
+    }
 #endif
 
     if (ModuleInfo.g.error_count == 0)
@@ -1190,7 +1198,7 @@ static void PassOneChecks(void)
     }
 
     return;
-    }
+}
 
 /* do ONE assembly pass
  * the FASTPASS variant (which is default now) doesn't scan the full source
@@ -1230,16 +1238,16 @@ static int OnePass(void)
 #ifdef DEBUG_OUT
     if (Parse_Pass > PASS_1)
     {
-        DebugMsg(("OnePass(%u) segments (current=%s):\n", Parse_Pass + 1, CurrSeg?CurrSeg->sym.name:"NULL"));
+        DebugMsg(("OnePass(%u) segments (current=%s):\n", Parse_Pass + 1, CurrSeg ? CurrSeg->sym.name : "NULL"));
         {
             struct dsym* dir;
             for (dir = SymTables[TAB_SEG].head; dir; dir = dir->next)
             {
                 DebugMsg(("OnePass(%u): segm=%-8s typ=%X start=%8X max_ofs=%8X\n", Parse_Pass + 1,
                          dir->sym.name, dir->e.seginfo->segtype, dir->e.seginfo->start_loc, dir->sym.max_offset));
+            }
         }
     }
-}
 #endif
 
     /* the functions above might have written something to the line queue */
@@ -1304,7 +1312,7 @@ static int OnePass(void)
             set_curr_srcfile(LineStoreCurr->srcfile, LineStoreCurr->lineno);
             /* v2.06: list flags now initialized on the top level */
             ModuleInfo.line_flags = 0;
-            MacroLevel = (LineStoreCurr->srcfile == 0xFFF?1:0);
+            MacroLevel = (LineStoreCurr->srcfile == 0xFFF ? 1 : 0);
             DebugMsg1(("OnePass(%u) cur/nxt=%X/%X src=%X.%u mlvl=%u: >%s<\n", Parse_Pass + 1, LineStoreCurr, LineStoreCurr->next, LineStoreCurr->srcfile, LineStoreCurr->lineno, MacroLevel, LineStoreCurr->line));
             ModuleInfo.CurrComment = NULL; /* v2.08: added (var is never reset because GetTextLine() isn't called) */
 #if USELSLINE
@@ -1543,31 +1551,31 @@ static char* GetExt(int type)
 {
     switch (type)
     {
-    case OBJ:
+        case OBJ:
 #if BIN_SUPPORT
-        if (Options.output_format == OFORMAT_BIN)
-        {
+            if (Options.output_format == OFORMAT_BIN)
+            {
 #if MZ_SUPPORT || PE_SUPPORT
-            if (Options.sub_format == SFORMAT_MZ
+                if (Options.sub_format == SFORMAT_MZ
 #if PE_SUPPORT
-                || Options.sub_format == SFORMAT_PE
+                    || Options.sub_format == SFORMAT_PE
 #endif
-                )
-            {
-                return(EXE_EXT);
+                    )
+                {
+                    return(EXE_EXT);
+                }
+                else
+#endif
+                {
+                    return(BIN_EXT);
+                }
             }
-            else
 #endif
-            {
-                return(BIN_EXT);
-            }
-        }
-#endif
-        return(OBJ_EXT);
-    case LST:
-        return(LST_EXT);
-    case ERR:
-        return(ERR_EXT);
+            return(OBJ_EXT);
+        case LST:
+            return(LST_EXT);
+        case ERR:
+            return(ERR_EXT);
     }
     return(NULL);
 }
@@ -1585,7 +1593,7 @@ static void SetFilenames(const char* name)
 /******************************************/
 {
     int i;
-    const char* fn;
+    char* fn;
     char* ext;
     char path[FILENAME_MAX];
 
@@ -1596,7 +1604,7 @@ static void SetFilenames(const char* name)
     strcpy(CurrFName[ASM], name);
 
     /* set [OBJ], [ERR], [LST] */
-    fn = GetFNamePart(name);
+    fn = (char*)GetFNamePart(name);
     for (i = ASM + 1; i < NUM_FILE_TYPES; i++)
     {
         if (Options.names[i] == NULL)
@@ -1612,11 +1620,11 @@ static void SetFilenames(const char* name)
         else
         {
             /* filename has been set by cmdline option -Fo, -Fl or -Fr */
-            const char* fn2;
+            char* fn2;
             strcpy(path, Options.names[i]);
-            fn2 = GetFNamePart(path);
+            fn2 = (char*)GetFNamePart(path);
             if (*fn2 == NULLC)
-                strcpy((char*)fn2, fn);
+                strcpy(fn2, fn);
             ext = GetExtPart(fn2);
             if (*ext == NULLC)
             {
@@ -1777,7 +1785,7 @@ int EXPQUAL AssembleModule(const char* source)
         {
             DebugMsg(("AssembleModule(%u): errorcnt=%u\n", Parse_Pass + 1, ModuleInfo.g.error_count));
             break;
-    }
+        }
 
         /* calculate total size of segments */
         for (curr_written = 0, seg = SymTables[TAB_SEG].head; seg; seg = seg->next)
@@ -1972,45 +1980,45 @@ done:
     ResetOrgFixup();
     DebugMsg(("AssembleModule exit\n"));
     return(ModuleInfo.g.error_count == 0);
-                }
+}
 
 /* ARCH SSE/AVX specific instructions */
 const char* MOVE_ALIGNED_FLOAT()
 {
-    return (extraflags.MODULEARCH == ARCH_AVX?"vmovaps":"movaps");
+    return (extraflags.MODULEARCH == ARCH_AVX ? "vmovaps" : "movaps");
 }
 
 const char* MOVE_ALIGNED_INT()
 {
-    return (extraflags.MODULEARCH == ARCH_AVX?(extraflags.evexflag == TRUE?"vmovdqa32":"vmovdqa"):"movdqa");
+    return (extraflags.MODULEARCH == ARCH_AVX ? (extraflags.evexflag == TRUE ? "vmovdqa32" : "vmovdqa") : "movdqa");
 }
 
 const char* MOVE_UNALIGNED_FLOAT()
 {
-    return (extraflags.MODULEARCH == ARCH_AVX?"vmovups":"movups");
+    return (extraflags.MODULEARCH == ARCH_AVX ? "vmovups" : "movups");
 }
 
 const char* MOVE_UNALIGNED_INT()
 {
-    return (extraflags.MODULEARCH == ARCH_AVX?(extraflags.evexflag == TRUE?"vmovdqu32":"vmovdqu"):"movdqu");
+    return (extraflags.MODULEARCH == ARCH_AVX ? (extraflags.evexflag == TRUE ? "vmovdqu32" : "vmovdqu") : "movdqu");
 }
 
 const char* MOVE_SINGLE()
 {
-    return (extraflags.MODULEARCH == ARCH_AVX?"vmovss":"movss");
+    return (extraflags.MODULEARCH == ARCH_AVX ? "vmovss" : "movss");
 }
 
 const char* MOVE_DOUBLE()
 {
-    return (extraflags.MODULEARCH == ARCH_AVX?"vmovsd":"movsd");
+    return (extraflags.MODULEARCH == ARCH_AVX ? "vmovsd" : "movsd");
 }
 
 const char* MOVE_SIMD_DWORD()
 {
-    return (extraflags.MODULEARCH == ARCH_AVX?"vmovd":"movd");
+    return (extraflags.MODULEARCH == ARCH_AVX ? "vmovd" : "movd");
 }
 
 const char* MOVE_SIMD_QWORD()
 {
-    return (extraflags.MODULEARCH == ARCH_AVX?"vmovq":"movq");
+    return (extraflags.MODULEARCH == ARCH_AVX ? "vmovq" : "movq");
 }

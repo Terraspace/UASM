@@ -769,68 +769,68 @@ OPTFUNC(SetProc)
 
     switch (tokenarray[i].token)
     {
-    case T_ID:
-        if (0 == _stricmp(tokenarray[i].string_ptr, "PRIVATE"))
-        {
-            ModuleInfo.procs_private = TRUE;
-            ModuleInfo.procs_export = FALSE;
-            i++;
-        }
-        else if (0 == _stricmp(tokenarray[i].string_ptr, "EXPORT"))
-        {
-            ModuleInfo.procs_private = FALSE;
-            ModuleInfo.procs_export = TRUE;
-            i++;
-        }
-        else if (0 == _stricmp(tokenarray[i].string_ptr, "DEFAULT"))
-        {
-            ModuleInfo.prologuemode = PEM_DEFAULT;
-            ModuleInfo.epiloguemode = PEM_DEFAULT;
-            i++;
-        }
-        else if (0 == _stricmp(tokenarray[i].string_ptr, "NONE"))
-        {
-            ModuleInfo.prologuemode = PEM_NONE;
-            ModuleInfo.epiloguemode = PEM_NONE;
-            i++;
-        }
-        else
-        {
-            /* Setup prologue macro */
-            if (ModuleInfo.proc_prologue)
+        case T_ID:
+            if (0 == _stricmp(tokenarray[i].string_ptr, "PRIVATE"))
             {
-                LclFree(ModuleInfo.proc_prologue);
-                ModuleInfo.proc_prologue = NULL;
-            }
-            ModuleInfo.prologuemode = PEM_MACRO;
-            ModuleInfo.proc_prologue = (char*)LclAlloc(strlen(tokenarray[i].string_ptr) + 1);
-            strcpy(ModuleInfo.proc_prologue, tokenarray[i].string_ptr);
-            i++;
-
-            /* Setup epilogue macro */
-            if (tokenarray[i].token == T_COMMA)
-            {
+                ModuleInfo.procs_private = TRUE;
+                ModuleInfo.procs_export = FALSE;
                 i++;
-                if (ModuleInfo.proc_epilogue)
+            }
+            else if (0 == _stricmp(tokenarray[i].string_ptr, "EXPORT"))
+            {
+                ModuleInfo.procs_private = FALSE;
+                ModuleInfo.procs_export = TRUE;
+                i++;
+            }
+            else if (0 == _stricmp(tokenarray[i].string_ptr, "DEFAULT"))
+            {
+                ModuleInfo.prologuemode = PEM_DEFAULT;
+                ModuleInfo.epiloguemode = PEM_DEFAULT;
+                i++;
+            }
+            else if (0 == _stricmp(tokenarray[i].string_ptr, "NONE"))
+            {
+                ModuleInfo.prologuemode = PEM_NONE;
+                ModuleInfo.epiloguemode = PEM_NONE;
+                i++;
+            }
+            else
+            {
+                /* Setup prologue macro */
+                if (ModuleInfo.proc_prologue)
                 {
-                    LclFree(ModuleInfo.proc_epilogue);
-                    ModuleInfo.proc_epilogue = NULL;
+                    LclFree(ModuleInfo.proc_prologue);
+                    ModuleInfo.proc_prologue = NULL;
                 }
-                ModuleInfo.epiloguemode = PEM_MACRO;
-                ModuleInfo.proc_epilogue = (char*)LclAlloc(strlen(tokenarray[i].string_ptr) + 1);
-                strcpy(ModuleInfo.proc_epilogue, tokenarray[i].string_ptr);
+                ModuleInfo.prologuemode = PEM_MACRO;
+                ModuleInfo.proc_prologue = (char*)LclAlloc(strlen(tokenarray[i].string_ptr) + 1);
+                strcpy(ModuleInfo.proc_prologue, tokenarray[i].string_ptr);
+                i++;
+
+                /* Setup epilogue macro */
+                if (tokenarray[i].token == T_COMMA)
+                {
+                    i++;
+                    if (ModuleInfo.proc_epilogue)
+                    {
+                        LclFree(ModuleInfo.proc_epilogue);
+                        ModuleInfo.proc_epilogue = NULL;
+                    }
+                    ModuleInfo.epiloguemode = PEM_MACRO;
+                    ModuleInfo.proc_epilogue = (char*)LclAlloc(strlen(tokenarray[i].string_ptr) + 1);
+                    strcpy(ModuleInfo.proc_epilogue, tokenarray[i].string_ptr);
+                    i++;
+                }
+            }
+            break;
+        case T_DIRECTIVE: /* word PUBLIC is a directive */
+            if (tokenarray[i].tokval == T_PUBLIC)
+            {
+                ModuleInfo.procs_private = FALSE;
+                ModuleInfo.procs_export = FALSE;
                 i++;
             }
-        }
-        break;
-    case T_DIRECTIVE: /* word PUBLIC is a directive */
-        if (tokenarray[i].tokval == T_PUBLIC)
-        {
-            ModuleInfo.procs_private = FALSE;
-            ModuleInfo.procs_export = FALSE;
-            i++;
-        }
-        break;
+            break;
     }
     *pi = i;
     return(NOT_ERROR);
@@ -1021,6 +1021,12 @@ OPTFUNC(SetFrame)
         ModuleInfo.frame_auto = 0;
         i++;
     }
+    else if (0 == _stricmp(tokenarray[i].string_ptr, "NONE"))
+    {
+        ModuleInfo.frame_auto = 0;
+        ModuleInfo.noframe = 0;
+        i++;
+    }
     *pi = i;
     return(NOT_ERROR);
 }
@@ -1204,8 +1210,8 @@ OPTFUNC(SetWin64)
             ModuleInfo.frame_auto = 1; /* frame auto must also be implied for all stackbase rsp options */
             ModuleInfo.win64_flags = opndx.llvalue;
             ModuleInfo.win64_flags |= W64F_AUTOSTACKSP;
+        }
     }
-}
     else
     {
         return(EmitError(CONSTANT_EXPECTED));
@@ -1317,7 +1323,7 @@ static struct dll_desc* IncludeDll(const char* name)
     *q = node;
 
 #if AMD64_SUPPORT
-    ModuleInfo.g.imp_prefix = ((ModuleInfo.defOfssize == USE64)?"__imp_":"_imp_");
+    ModuleInfo.g.imp_prefix = ((ModuleInfo.defOfssize == USE64) ? "__imp_" : "_imp_");
 #else
     ModuleInfo.g.imp_prefix = "_imp_";
 #endif
@@ -1448,7 +1454,7 @@ OPTFUNC(SetFlat)
     ModuleInfo.curr_cpu = P_64p | P_AVX | P_CPU_MASK;
     SetCPU(P_64p);
     ModuleInfo.model = MODEL_FLAT;
-    ModuleInfo.fctype = (Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC)?FCT_SYSV64:FCT_WIN64;
+    ModuleInfo.fctype = (Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC) ? FCT_SYSV64 : FCT_WIN64;
     ModuleInfo.defOfssize = USE16;
     ModuleInfo.flat = TRUE;
     if (Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC)

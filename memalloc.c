@@ -187,7 +187,7 @@ void MemFini(void)
     if (memcalls != memstart)
         printf("still allocated memory blocks : %u\n", memcalls - memstart);
 #endif
-    }
+}
 
 void* LclAlloc(size_t size)
 /***************************/
@@ -199,7 +199,7 @@ void* LclAlloc(size_t size)
     if (currfree < size)
     {
         DebugMsg(("LclAlloc: new block needed, req. size=%Xh > currfree=%Xh\n", size, currfree));
-        currfree = (size <= (BLKSIZE - sizeof(struct linked_list))?BLKSIZE - sizeof(struct linked_list):size);
+        currfree = (size <= (BLKSIZE - sizeof(struct linked_list)) ? BLKSIZE - sizeof(struct linked_list) : size);
         BLKALLOC(pCurr, currfree + sizeof(struct linked_list));
         if (!pCurr)
         {
@@ -224,7 +224,7 @@ void* LclAlloc(size_t size)
     if (ptr == NULL)
     {
         Fatal(OUT_OF_MEMORY);
-}
+    }
 #endif
 
 #ifdef _DEBUG
@@ -244,7 +244,7 @@ void LclFree(void* ptr)
         DebugMsg1(("LclFree(0x%p) cnt=%" I32_SPEC "u\n", ptr, --memcalls));
 #endif
         free(ptr);
-}
+    }
 }
 #endif
 

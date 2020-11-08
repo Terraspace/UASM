@@ -70,7 +70,7 @@ static char HexDigit(char x)
 #endif
 {
     x &= 0xF;
-    return((x > 9)?(x - 10 + 'A'):(x + '0'));
+    return((x > 9) ? (x - 10 + 'A') : (x + '0'));
 }
 
 /* Replace placeholders in a stored macro source line with values of actual
@@ -80,12 +80,12 @@ static char HexDigit(char x)
 void fill_placeholders(char* dst, const char* src, unsigned argc, unsigned localstart, char* argv[])
 /****************************************************************************************************/
 {
-    uint_32 i;
-    const char* p;
-    unsigned parmno;
+    uint_32     i;
+    char*       p;
+    unsigned    parmno;
 
     /* scan the string, replace the placeholders #nn */
-    for (p = src; *p != NULLC; )
+    for (p = (char*)src; *p != NULLC; )
     {
         if (*p == PLACEHOLDER_CHAR)
         {
@@ -143,8 +143,8 @@ static char* replace_parm(const char* line, char* start, int len, struct mname_l
      * value 00 isn't used - this restricts the total of parameters
      * and locals for a macro to 255.
      */
-    char* rest;
-    unsigned   count;
+    char*       rest;
+    unsigned    count;
 
     for (count = 1; mnames->label; count++, mnames++)
     {
@@ -197,13 +197,13 @@ static int store_placeholders(char* line, struct mname_list* mnames)
      * - mnames: list of macro params + locals
      * if a param/local is found, replace the name by a 2-byte placeholder.
      */
-    char* p;
-    char* start;
-    char quote = NULLC;
-    int brlevel = 0;
-    int params = 0; /* number of replacements in this line */
-    int qlevel = 0;
-    bool substprf;  /* substitution character before ID? */
+    char*       p;
+    char*       start;
+    char        quote = NULLC;
+    int         brlevel = 0;
+    int         params = 0; /* number of replacements in this line */
+    int         qlevel = 0;
+    bool        substprf;  /* substitution character before ID? */
 
     for (p = line; *p != NULLC; )
     {
@@ -241,35 +241,35 @@ static int store_placeholders(char* line, struct mname_list* mnames)
         {
             switch (*p)
             {
-            case '!':
-                /* v2.11: skip next char only if it is a "special" one; see expans40.asm */
-                //if ( quote == NULLC && *(p+1) != NULLC )
-                if (quote == NULLC && strchr("<>\"'", *(p + 1)))
-                    p++;
-                break;
-            case '<':
-                brlevel++;
-                break;
-            case '>':
-                if (brlevel)
-                {
-                    if (qlevel == brlevel)
-                        quote = NULLC;
-                    brlevel--;
-                }
-                break;
-            case '"':
-            case '\'':
-                if (quote)
-                {
-                    if (quote == *p)
-                        quote = NULLC;
-                }
-                else
-                {
-                    quote = *p;
-                    qlevel = brlevel;
-                }
+                case '!':
+                    /* v2.11: skip next char only if it is a "special" one; see expans40.asm */
+                    //if ( quote == NULLC && *(p+1) != NULLC )
+                    if (quote == NULLC && strchr("<>\"'", *(p + 1)))
+                        p++;
+                    break;
+                case '<':
+                    brlevel++;
+                    break;
+                case '>':
+                    if (brlevel)
+                    {
+                        if (qlevel == brlevel)
+                            quote = NULLC;
+                        brlevel--;
+                    }
+                    break;
+                case '"':
+                case '\'':
+                    if (quote)
+                    {
+                        if (quote == *p)
+                            quote = NULLC;
+                    }
+                    else
+                    {
+                        quote = *p;
+                        qlevel = brlevel;
+                    }
             }
             p++;
         }
@@ -284,7 +284,7 @@ char* RenderMacroLine(const char* src)
     /* a macro line cannot be displayed directly due to the format of
      * the index field. for debug log, convert it to a readable format.
      */
-    char* dst;
+    char*       dst;
     static char buffer[MAX_LINE_LEN]; /* debug only */
 
     for (dst = buffer; *src; src++, dst++)
@@ -317,14 +317,14 @@ char* RenderMacroLine(const char* src)
 ret_code StoreMacro(struct dsym* macro, int i, struct asm_tok tokenarray[], bool store_data)
 /********************************************************************************************/
 {
-    struct macro_info* info;
-    char* src;
-    char* token;
+    struct macro_info*  info;
+    char*               src;
+    char*               token;
     int                 mindex;
-    struct mparm_list* paranode;
-    struct srcline** nextline;
+    struct mparm_list*  paranode;
+    struct srcline**    nextline;
 #ifdef DEBUG_OUT
-    int lineno = 0;
+    int                 lineno = 0;
 #endif
     unsigned            nesting_depth = 0;
     bool                locals_done;
@@ -690,14 +690,14 @@ ret_code StoreMacro(struct dsym* macro, int i, struct asm_tok tokenarray[], bool
 ret_code StoreAutoMacro(struct dsym* macro, int i, struct asm_tok tokenarray[], bool store_data, char* macCode[], int macLine, int macLen)
 /********************************************************************************************/
 {
-    struct macro_info* info;
-    char* src;
-    char* token;
+    struct macro_info*  info;
+    char*               src;
+    char*               token;
     int                 mindex;
-    struct mparm_list* paranode;
-    struct srcline** nextline;
+    struct mparm_list*  paranode;
+    struct srcline**    nextline;
 #ifdef DEBUG_OUT
-    int lineno = 0;
+    int                 lineno = 0;
 #endif
     unsigned            nesting_depth = 0;
     bool                locals_done;
@@ -705,8 +705,8 @@ ret_code StoreAutoMacro(struct dsym* macro, int i, struct asm_tok tokenarray[], 
     struct asm_tok      tok[2];
     struct mname_list   mnames[MAX_PLACEHOLDERS]; /* there are max 255 placeholders */
     char                buffer[MAX_LINE_LEN];
-    int					macCurLine = macLine;
-    int					macCnt = macLen;
+    int                 macCurLine = macLine;
+    int                 macCnt = macLen;
 
     DebugMsg1(("StoreAutoMacro(%s, i=%u, store_data=%u) enter, params=>%s<\n", macro->sym.name, i, store_data, tokenarray[i].tokpos));
     info = macro->e.macroinfo;
@@ -1083,7 +1083,7 @@ struct dsym* CreateMacro(const char* name)
         macro->sym.isfunc = FALSE;
     }
     return(macro);
-    }
+}
 
 /* clear macro data */
 void ReleaseMacroData(struct dsym* macro)
@@ -1138,9 +1138,9 @@ void ReleaseMacroData(struct dsym* macro)
 ret_code MacroDir(int i, struct asm_tok tokenarray[])
 /*****************************************************/
 {
-    char* name;
+    char*               name;
     bool                store_data;
-    struct dsym* macro;
+    struct dsym*        macro;
 
     name = tokenarray[0].string_ptr;
     DebugMsg1(("MacroDir(%s) enter, i=%u\n", name, i));
@@ -1188,7 +1188,7 @@ ret_code MacroDir(int i, struct asm_tok tokenarray[])
             macro->sym.variable = TRUE;
         }
         store_data = TRUE;
-        }
+    }
     else
         store_data = FALSE;
 
@@ -1196,7 +1196,7 @@ ret_code MacroDir(int i, struct asm_tok tokenarray[])
         LstWriteSrcLine();
 
     return(StoreMacro(macro, ++i, tokenarray, store_data));
-    }
+}
 
 /*
  * PURGE directive.
@@ -1294,9 +1294,9 @@ ret_code UndefDirective(int i, struct asm_tok tokenarray[])
 ret_code DefineDirective(int i, struct asm_tok tokenarray[])
 /***********************************************************/
 {
-    struct asym* sym;
-    char buff[256];
-    char* p = buff;
+    struct asym*    sym;
+    char            buff[256];
+    char*           p = buff;
 
     strcpy(tokenarray[0].string_ptr, tokenarray[1].tokpos);
     strcpy(p, tokenarray[1].tokpos);
@@ -1308,7 +1308,10 @@ ret_code DefineDirective(int i, struct asm_tok tokenarray[])
         if (sym->state != SYM_TMACRO)
         {
 #if FASTPASS
-            if (StoreState) {FStoreLine(0);}
+            if (StoreState)
+            {
+                FStoreLine(0);
+            }
 #endif
             if (Options.preprocessor_stdout == TRUE)
                 WritePreprocessedLine(CurrSource);
@@ -1316,7 +1319,7 @@ ret_code DefineDirective(int i, struct asm_tok tokenarray[])
         /* v2.03: LstWrite() must be called AFTER StoreLine()! */
         if (ModuleInfo.list == TRUE)
         {
-            LstWrite(sym->state == SYM_INTERNAL?LSTTYPE_EQUATE:LSTTYPE_TMACRO, 0, sym);
+            LstWrite(sym->state == SYM_INTERNAL ? LSTTYPE_EQUATE : LSTTYPE_TMACRO, 0, sym);
         }
     }
     return(NOT_ERROR);

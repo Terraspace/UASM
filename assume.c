@@ -216,48 +216,48 @@ void AssumeInit(int pass) /* pass may be -1 here! */
 void ModelAssumeInit(void)
 /**************************/
 {
-    const char* pCS;
+    char* pCS;
     const char* pFSassume = szError;
     const char* pGSassume = szError;
-    const char* pFmt;
+    char* pFmt;
 
     /* Generates codes for assume */
     switch (ModuleInfo.model)
     {
-    case MODEL_FLAT:
+        case MODEL_FLAT:
 #if AMD64_SUPPORT
-        if (ModuleInfo.fctype == FCT_WIN64 || ModuleInfo.fctype == FCT_SYSV64)
-            pGSassume = szNothing;
+            if (ModuleInfo.fctype == FCT_WIN64 || ModuleInfo.fctype == FCT_SYSV64)
+                pGSassume = szNothing;
 #endif
-        AddLineQueueX("%r %r:%r,%r:%r,%r:%r,%r:%r,%r:%s,%r:%s",
-                      T_ASSUME, T_CS, T_FLAT, T_DS, T_FLAT, T_SS, T_FLAT, T_ES, T_FLAT, T_FS, pFSassume, T_GS, pGSassume);
-        break;
-    case MODEL_TINY:
-    case MODEL_SMALL:
-    case MODEL_COMPACT:
-    case MODEL_MEDIUM:
-    case MODEL_LARGE:
-    case MODEL_HUGE:
-        /* v2.03: no DGROUP for COFF/ELF */
-#if COFF_SUPPORT || ELF_SUPPORT
-        if (Options.output_format == OFORMAT_COFF
-#if ELF_SUPPORT
-            || Options.output_format == OFORMAT_ELF
-#endif
-            )
+            AddLineQueueX("%r %r:%r,%r:%r,%r:%r,%r:%r,%r:%s,%r:%s",
+                          T_ASSUME, T_CS, T_FLAT, T_DS, T_FLAT, T_SS, T_FLAT, T_ES, T_FLAT, T_FS, pFSassume, T_GS, pGSassume);
             break;
+        case MODEL_TINY:
+        case MODEL_SMALL:
+        case MODEL_COMPACT:
+        case MODEL_MEDIUM:
+        case MODEL_LARGE:
+        case MODEL_HUGE:
+            /* v2.03: no DGROUP for COFF/ELF */
+#if COFF_SUPPORT || ELF_SUPPORT
+            if (Options.output_format == OFORMAT_COFF
+#if ELF_SUPPORT
+                || Options.output_format == OFORMAT_ELF
 #endif
-        if (ModuleInfo.model == MODEL_TINY)
-            pCS = szDgroup;
-        else
-            pCS = SimGetSegName(SIM_CODE);
+                )
+                break;
+#endif
+            if (ModuleInfo.model == MODEL_TINY)
+                pCS = (char*)szDgroup;
+            else
+                pCS = SimGetSegName(SIM_CODE);
 
-        if (ModuleInfo.distance != STACK_FAR)
-            pFmt = "%r %r:%s,%r:%s,%r:%s";
-        else
-            pFmt = "%r %r:%s,%r:%s";
-        AddLineQueueX(pFmt, T_ASSUME, T_CS, pCS, T_DS, szDgroup, T_SS, szDgroup);
-        break;
+            if (ModuleInfo.distance != STACK_FAR)
+                pFmt = "%r %r:%s,%r:%s,%r:%s";
+            else
+                pFmt = "%r %r:%s,%r:%s";
+            AddLineQueueX(pFmt, T_ASSUME, T_CS, pCS, T_DS, szDgroup, T_SS, szDgroup);
+            break;
     }
 }
 
@@ -374,7 +374,7 @@ ret_code AssumeDirective(int i, struct asm_tok tokenarray[])
                 info->error = TRUE;
             }
             else
-                info->error |= ((reg >= T_AH && reg <= T_BH)?RH_ERROR:(flags & OP_R));
+                info->error |= ((reg >= T_AH && reg <= T_BH) ? RH_ERROR : (flags & OP_R));
             info->symbol = NULL;
             i++;
         }
@@ -386,7 +386,7 @@ ret_code AssumeDirective(int i, struct asm_tok tokenarray[])
                 info->error = FALSE;
             }
             else
-                info->error &= ~((reg >= T_AH && reg <= T_BH)?RH_ERROR:(flags & OP_R));
+                info->error &= ~((reg >= T_AH && reg <= T_BH) ? RH_ERROR : (flags & OP_R));
             info->symbol = NULL;
             i++;
         }
@@ -410,7 +410,7 @@ ret_code AssumeDirective(int i, struct asm_tok tokenarray[])
             {
                 return(EmitError(TYPE_IS_WRONG_SIZE_FOR_REGISTER));
             }
-            info->error &= ~((reg >= T_AH && reg <= T_BH)?RH_ERROR:(flags & OP_R));
+            info->error &= ~((reg >= T_AH && reg <= T_BH) ? RH_ERROR : (flags & OP_R));
             if (stdsym[j] == NULL)
             {
                 stdsym[j] = CreateTypeSymbol(NULL, "", FALSE);
@@ -439,42 +439,42 @@ ret_code AssumeDirective(int i, struct asm_tok tokenarray[])
                 return(ERROR);
             switch (opnd.kind)
             {
-            case EXPR_ADDR:
-                if (opnd.sym == NULL || opnd.indirect == TRUE || opnd.value)
-                {
-                    return(EmitError(SEGMENT_GROUP_OR_SEGREG_EXPECTED));
-                }
-                else if (opnd.sym->state == SYM_UNDEFINED)
-                {
-                    /* ensure that directive is rerun in pass 2
-                     * so an error msg can be emitted.
-                     */
-                    FStoreLine(0);
-                    info->symbol = opnd.sym;
-                }
-                else if ((opnd.sym->state == SYM_SEG || opnd.sym->state == SYM_GRP) && opnd.instr == EMPTY)
-                {
-                    info->symbol = opnd.sym;
-                }
-                else if (opnd.instr == T_SEG)
-                {
-                    info->symbol = opnd.sym->segment;
-                }
-                else
-                {
-                    return(EmitError(SEGMENT_GROUP_OR_SEGREG_EXPECTED));
-                }
-                info->is_flat = (info->symbol == &ModuleInfo.flat_grp->sym);
-                break;
-            case EXPR_REG:
-                if (GetValueSp(opnd.base_reg->tokval) & OP_SR)
-                {
-                    info->symbol = SegAssumeTable[GetRegNo(opnd.base_reg->tokval)].symbol;
-                    info->is_flat = SegAssumeTable[GetRegNo(opnd.base_reg->tokval)].is_flat;
+                case EXPR_ADDR:
+                    if (opnd.sym == NULL || opnd.indirect == TRUE || opnd.value)
+                    {
+                        return(EmitError(SEGMENT_GROUP_OR_SEGREG_EXPECTED));
+                    }
+                    else if (opnd.sym->state == SYM_UNDEFINED)
+                    {
+                        /* ensure that directive is rerun in pass 2
+                         * so an error msg can be emitted.
+                         */
+                        FStoreLine(0);
+                        info->symbol = opnd.sym;
+                    }
+                    else if ((opnd.sym->state == SYM_SEG || opnd.sym->state == SYM_GRP) && opnd.instr == EMPTY)
+                    {
+                        info->symbol = opnd.sym;
+                    }
+                    else if (opnd.instr == T_SEG)
+                    {
+                        info->symbol = opnd.sym->segment;
+                    }
+                    else
+                    {
+                        return(EmitError(SEGMENT_GROUP_OR_SEGREG_EXPECTED));
+                    }
+                    info->is_flat = (info->symbol == &ModuleInfo.flat_grp->sym);
                     break;
-                }
-            default:
-                return(EmitError(SEGMENT_GROUP_OR_SEGREG_EXPECTED));
+                case EXPR_REG:
+                    if (GetValueSp(opnd.base_reg->tokval) & OP_SR)
+                    {
+                        info->symbol = SegAssumeTable[GetRegNo(opnd.base_reg->tokval)].symbol;
+                        info->is_flat = SegAssumeTable[GetRegNo(opnd.base_reg->tokval)].is_flat;
+                        break;
+                    }
+                default:
+                    return(EmitError(SEGMENT_GROUP_OR_SEGREG_EXPECTED));
             }
             info->error = FALSE;
         }

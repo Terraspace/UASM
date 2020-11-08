@@ -237,8 +237,8 @@ ret_code CondAsmDirective(int i, struct asm_tok tokenarray[])
 /*************************************************************/
 {
     int directive = tokenarray[i].tokval;
-    const char* string1;
-    const char* string2;
+    char* string1;
+    char* string2;
     enum if_state NextIfState;
     struct expr opndx;
 
@@ -511,8 +511,8 @@ ret_code ErrorDirective(int i, struct asm_tok tokenarray[])
 {
     struct expr opndx;
     unsigned direct;
-    const char* string1;
-    const char* string2;
+    char* string1;
+    char* string2;
     int errmsg = EMPTY;
     int erridx = 0;
     struct asym* sym;

@@ -2580,7 +2580,7 @@ static void output_opc(struct code_info* CodeInfo)
             {
                 if ((CodeInfo->token >= T_KMOVB) && (CodeInfo->token <= T_KMOVW))
                 {
-                    /*const*/  struct instr_item* p = CodeInfo->pinstr;  // KRAD-change const correctnesses
+                    const struct instr_item* p = CodeInfo->pinstr;
                     int cnt;
                     int type1 = CodeInfo->opnd[OPND1].type;
                     int type2 = CodeInfo->opnd[OPND2].type;
@@ -2825,12 +2825,12 @@ static void output_opc(struct code_info* CodeInfo)
                                     if (c > 15) c -= 16;
                                     if (c > 7) c -= 8;
                                     tmp |= c;
-                                    }
                                 }
                             }
                         }
                     }
                 }
+            }
             else
             {
                 CodeInfo->tuple = 0;
@@ -2844,7 +2844,7 @@ static void output_opc(struct code_info* CodeInfo)
                     CodeInfo->rm_byte = tmp;
                 }
             }
-            }
+        }
         if (CodeInfo->token == T_VCVTPS2PH || CodeInfo->token == T_VCVTSI2SS)
         {
             if (!comprdsp) CodeInfo->tuple = 0;
@@ -2980,9 +2980,9 @@ static void output_opc(struct code_info* CodeInfo)
             else
                 OutputCodeByte(CodeInfo->sib);
         }
-            }
+    }
     return;
-        }
+}
 
 static void output_data(const struct code_info* CodeInfo, enum operand_type determinant, int index)
 /***************************************************************************************************/
@@ -3125,8 +3125,8 @@ static void output_data(const struct code_info* CodeInfo, enum operand_type dete
                             EmitErr(INVALID_COMBINATION_OF_OPCODE_AND_OPERANDS);  // proveri
 
 #endif
-                        }
                     }
+            }
             break;
         case MOD_10:  /* 16- or 32-bit displacement */
             if ((CodeInfo->Ofssize == USE16 && CodeInfo->prefix.adrsiz == 0) ||
@@ -3138,8 +3138,8 @@ static void output_data(const struct code_info* CodeInfo, enum operand_type dete
             {
                 size = 4;
             }
-            }
         }
+    }
 #ifdef DEBUG_OUT
     if (size > 4)
         DebugMsg1(("output_data: size=%u cont=%" I64_SPEC "X\n", size, CodeInfo->opnd[index].data64));
@@ -3200,7 +3200,7 @@ static void output_data(const struct code_info* CodeInfo, enum operand_type dete
     }
 
     return;
-    }
+}
 
 static ret_code check_3rd_operand(struct code_info* CodeInfo)
 /*************************************************************/
@@ -3645,7 +3645,8 @@ static ret_code check_operand_2(struct code_info* CodeInfo, enum operand_type op
  */
 {
     /* UASM 2.37: force 64bit immediate indirect addressing conversion */
-    if (((CodeInfo->token == T_MOV && CodeInfo->opnd[OPND2].type == OP_R64) || CodeInfo->opnd[OPND2].type == OP_R32 || CodeInfo->opnd[OPND2].type == OP_R16 || CodeInfo->opnd[OPND2].type == OP_R8) && CodeInfo->isptr && CodeInfo->opnd[OPND2].data32h > 0)
+    if (((CodeInfo->token == T_MOV && CodeInfo->opnd[OPND2].type == OP_R64) || CodeInfo->opnd[OPND2].type == OP_R32 
+            || CodeInfo->opnd[OPND2].type == OP_R16 || CodeInfo->opnd[OPND2].type == OP_R8) && CodeInfo->isptr && CodeInfo->opnd[OPND2].data32h > 0)
     {
         CodeInfo->opnd[OPND2].type = OP_A;
     }
@@ -3806,7 +3807,8 @@ ret_code codegen(struct code_info* CodeInfo, uint_32 oldofs)
     }
 
     /* UASM 2.37: force immediate indirect addressing conversion */
-    if (((CodeInfo->token == T_MOV && CodeInfo->opnd[OPND1].type == OP_R64) || CodeInfo->opnd[OPND1].type == OP_R32 || CodeInfo->opnd[OPND1].type == OP_R16 || CodeInfo->opnd[OPND1].type == OP_R8) && CodeInfo->isptr && CodeInfo->opnd[OPND1].data32h > 0)
+    if (((CodeInfo->token == T_MOV && CodeInfo->opnd[OPND1].type == OP_R64) || CodeInfo->opnd[OPND1].type == OP_R32 
+            || CodeInfo->opnd[OPND1].type == OP_R16 || CodeInfo->opnd[OPND1].type == OP_R8) && CodeInfo->isptr && CodeInfo->opnd[OPND1].data32h > 0)
     {
         CodeInfo->opnd[OPND1].type = OP_A;
         opnd1 = OP_A;

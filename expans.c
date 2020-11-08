@@ -162,7 +162,7 @@ static void SkipMacro(struct asm_tok tokenarray[])
     while (GetTextLine(buffer))
     {
         Tokenize(buffer, 0, tokenarray, TOK_DEFAULT);
-}
+    }
 }
 
 #ifdef __I86__
@@ -181,8 +181,8 @@ static void SkipMacro(struct asm_tok tokenarray[])
 int RunMacro(struct dsym* macro, int idx, struct asm_tok tokenarray[], char* out, int mflags, bool* is_exitm)
 /*************************************************************************************************************/
 {
-    char* currparm;
-    char* savedStringBuffer = StringBufferEnd;
+    char*       currparm;
+    char*       savedStringBuffer = StringBufferEnd;
     int         i;
     //int         start = idx-1;
     int         parmidx;
@@ -191,8 +191,8 @@ int RunMacro(struct dsym* macro, int idx, struct asm_tok tokenarray[], char* out
     int         bracket_level = -1;/* () level (needed for macro functions) */
     int         parm_end_delim;   /* parameter end delimiter */
     //char        addprefix;
-    char* ptr;
-    char* parmstrings;
+    char*       ptr;
+    char*       parmstrings;
     struct macro_info* info;
     struct srcline* lnode;
     struct asym* sym;
@@ -205,7 +205,7 @@ int RunMacro(struct dsym* macro, int idx, struct asm_tok tokenarray[], char* out
     {
         EmitError(NESTING_LEVEL_TOO_DEEP);
         return(-1);
-}
+    }
     mi.parm_array = NULL;
     info = macro->e.macroinfo;
 #ifdef DEBUG_OUT
@@ -308,7 +308,7 @@ int RunMacro(struct dsym* macro, int idx, struct asm_tok tokenarray[], char* out
             if (varargcnt == 0)
             {
                 mi.parm_array[parmidx] = info->parmlist[parmidx].deflt;
-                DebugMsg1(("RunMacro(%s.%u): curr (=def) parameter value=>%s<\n", macro->sym.name, parmidx, mi.parm_array[parmidx]?parmidx, mi.parm_array[parmidx]:"NULL"));
+                DebugMsg1(("RunMacro(%s.%u): curr (=def) parameter value=>%s<\n", macro->sym.name, parmidx, mi.parm_array[parmidx] ? parmidx, mi.parm_array[parmidx] : "NULL"));
             }
         }
         else
@@ -615,7 +615,7 @@ int RunMacro(struct dsym* macro, int idx, struct asm_tok tokenarray[], char* out
                 if (varargcnt == 0)
                     mi.parm_array[parmidx] = currparm;
                 DebugMsg1(("RunMacro(%s.%u[%u]): curr parameter value=>%s<\n", macro->sym.name, parmidx, varargcnt, currparm));
-                currparm = (macro->sym.predefined?GetAlignedPointer(currparm, ptr - currparm):ptr);
+                currparm = (macro->sym.predefined ? GetAlignedPointer(currparm, ptr - currparm) : ptr);
                 /* v2.08: Masm swallows the last trailing comma */
                 //if ( tokenarray[idx].token == T_COMMA ) {
                 if (tokenarray[idx].token == T_COMMA)
@@ -811,7 +811,7 @@ int RunMacro(struct dsym* macro, int idx, struct asm_tok tokenarray[], char* out
                             }
                         }
                     }
-                    DebugMsg1(("RunMacro(%s): EXITM, result=>%s<\n", macro->sym.name, out?out:"NULL"));
+                    DebugMsg1(("RunMacro(%s): EXITM, result=>%s<\n", macro->sym.name, out ? out : "NULL"));
 
                     /* v2.10: if a goto had occured, rescan the full macro to ensure that
                      * the "if"-nesting level is ok.
@@ -863,8 +863,8 @@ int RunMacro(struct dsym* macro, int idx, struct asm_tok tokenarray[], char* out
                                     /* label found! */
                                     break;
                                 }
-            }
-        }
+                            }
+                        }
                         if (!lnode)
                         {
                             /* v2.05: display error msg BEFORE SkipMacro()! */
@@ -881,15 +881,15 @@ int RunMacro(struct dsym* macro, int idx, struct asm_tok tokenarray[], char* out
                             cntgoto++;
                             continue;
                         }
-    }
+                    }
                     else
                     {
                         EmitErr(SYNTAX_ERROR_EX, tokenarray->tokpos);
                     }
                     SkipMacro(tokenarray);
                     break;
-        }
-    }
+                }
+            }
             ParseLine(tokenarray);
             if (Options.preprocessor_stdout == TRUE)
                 WritePreprocessedLine(CurrSource);
@@ -968,19 +968,19 @@ static void AddTokens(struct asm_tok tokenarray[], int start, int count, int end
 ret_code ExpandText(char* line, struct asm_tok tokenarray[], unsigned int substitute)
 /*************************************************************************************/
 {
-    char* pSrc;
-    char* pDst;
-    char* pIdent;
-    int  lvl;
-    bool is_exitm;
-    int old_tokencount = Token_Count;
-    char* old_stringbufferend = StringBufferEnd;
-    char quoted_string = 0;
-    char macro_proc = FALSE;
-    //char *pStart;
-    ret_code rc;
-    struct asym* sym;
-    char* sp[MAX_TEXTMACRO_NESTING];
+    char*           pSrc;
+    char*           pDst;
+    char*           pIdent;
+    int             lvl;
+    bool            is_exitm;
+    int             old_tokencount = Token_Count;
+    char*           old_stringbufferend = StringBufferEnd;
+    char            quoted_string = 0;
+    char            macro_proc = FALSE;
+    //char*         pStart;
+    ret_code        rc;
+    struct asym*    sym;
+    char*           sp[MAX_TEXTMACRO_NESTING];
 
     DebugMsg1(("ExpandText(line=>%s<, subst=%u ) enter\n", line, substitute));
     sp[0] = line;
@@ -1005,7 +1005,7 @@ ret_code ExpandText(char* line, struct asm_tok tokenarray[], unsigned int substi
 #ifdef DEBUG_OUT
                 if (sym && (sym->state == SYM_TMACRO || sym->state == SYM_MACRO))
                 {
-                    DebugMsg1(("ExpandText: symbol found: %s, %s, defined=%u, *pDst-1=%c\n", sym->name, sym->state == SYM_TMACRO?"SYM_TMACRO":"SYM_MACRO", sym->isdefined, *(pDst - 1)));
+                    DebugMsg1(("ExpandText: symbol found: %s, %s, defined=%u, *pDst-1=%c\n", sym->name, sym->state == SYM_TMACRO ? "SYM_TMACRO" : "SYM_MACRO", sym->isdefined, *(pDst - 1)));
                 }
 #endif
                 if (sym && sym->isdefined == TRUE)
@@ -1077,7 +1077,7 @@ ret_code ExpandText(char* line, struct asm_tok tokenarray[], unsigned int substi
                             //*StringBufferEnd = NULLC;
                             i = RunMacro((struct dsym*)sym, i, tokenarray, pDst, 0, &is_exitm);
                             Token_Count = old_tokencount;
-                            DebugMsg1(("ExpandText: back from RunMacro(%s), rc=%u, text returned=>%s<, rest=>%s<\n", sym->name, i, pDst, i >= 0?tokenarray[i].tokpos:""));
+                            DebugMsg1(("ExpandText: back from RunMacro(%s), rc=%u, text returned=>%s<, rest=>%s<\n", sym->name, i, pDst, i >= 0 ? tokenarray[i].tokpos : ""));
                             if (i == -1)
                             {
                                 return(ERROR);
@@ -1149,14 +1149,14 @@ ret_code ExpandText(char* line, struct asm_tok tokenarray[], unsigned int substi
 static ret_code ExpandTMacro(char* const outbuf, struct asm_tok tokenarray[], int equmode, int level)
 /******************************************************************************************************/
 {
-    int old_tokencount = Token_Count;
-    int i;
-    char expanded = TRUE;
-    int len;
-    bool is_exitm;
-    struct asym* sym;
+    int             old_tokencount = Token_Count;
+    int             i;
+    char            expanded = TRUE;
+    int             len;
+    bool            is_exitm;
+    struct asym*    sym;
     //char lvalue[MAX_LINE_LEN];    /* holds literal value */
-    char buffer[MAX_LINE_LEN];
+    char            buffer[MAX_LINE_LEN];
 
     DebugMsg1(("ExpandTMacro(text=>%s< equm=%u lvl=%u) enter\n", outbuf, equmode, level));
 
@@ -1237,11 +1237,11 @@ static ret_code ExpandTMacro(char* const outbuf, struct asm_tok tokenarray[], in
 static ret_code RebuildLine(const char* newstring, int i, struct asm_tok tokenarray[], unsigned oldlen, unsigned pos_line, int addbrackets)
 /*******************************************************************************************************************************************/
 {
-    char* dest;
-    const char* src;
-    unsigned  newlen;
-    unsigned  rest = strlen(tokenarray[i].tokpos + oldlen) + 1;
-    char buffer[MAX_LINE_LEN];
+    char*       dest;
+    char*       src;
+    unsigned    newlen;
+    unsigned    rest = strlen(tokenarray[i].tokpos + oldlen) + 1;
+    char        buffer[MAX_LINE_LEN];
 
     dest = tokenarray[i].tokpos;
     memcpy(buffer, dest + oldlen, rest); /* save content of line behind item */
@@ -1249,7 +1249,7 @@ static ret_code RebuildLine(const char* newstring, int i, struct asm_tok tokenar
     if (addbrackets)
     {
         newlen += 2;   /* count '<' and '>' */
-        for (src = newstring; *src; src++)
+        for (src = (char*)newstring; *src; src++)
             if (*src == '<' || *src == '>' || *src == '!')    /* count '!' operator */
                 newlen++;
     }
@@ -1262,7 +1262,7 @@ static ret_code RebuildLine(const char* newstring, int i, struct asm_tok tokenar
     if (addbrackets)
     {
         *dest++ = '<';
-        for (src = newstring; *src; src++)
+        for (src = (char*)newstring; *src; src++)
         {
             if (*src == '<' || *src == '>' || *src == '!')    /* count '!' operator */
                 *dest++ = '!';
@@ -1294,19 +1294,19 @@ static ret_code RebuildLine(const char* newstring, int i, struct asm_tok tokenar
 static ret_code ExpandToken(char* line, int* pi, struct asm_tok tokenarray[], int max, int bracket_flags, int equmode)
 /**********************************************************************************************************************/
 {
-    int pos;
-    int tmp;
-    int i = *pi;
-    int size;
-    int addbrackets = bracket_flags;
-    char evaluate = FALSE;
-    //char *p;
-    bool is_exitm;
-    struct expr opndx;
-    struct asym* sym;
-    ret_code rc = NOT_ERROR;
-    char buffer[MAX_LINE_LEN];
-    char inLocal = FALSE;
+    int             pos;
+    int             tmp;
+    int             i = *pi;
+    int             size;
+    int             addbrackets = bracket_flags;
+    char            evaluate = FALSE;
+    //char*         p;
+    bool            is_exitm;
+    struct expr     opndx;
+    struct asym*    sym;
+    ret_code        rc = NOT_ERROR;
+    char            buffer[MAX_LINE_LEN];
+    char            inLocal = FALSE;
 
     for (; i < max && tokenarray[i].token != T_COMMA; i++)
     {
@@ -1373,7 +1373,7 @@ static ret_code ExpandToken(char* line, int* pi, struct asm_tok tokenarray[], in
                         //DebugMsg1(("ExpandToken: macro function %s to be expanded\n", sym->name ));
                         i = RunMacro((struct dsym*)sym, i, tokenarray, buffer,
 #if MACROLABEL
-                        (tmp == 1?MF_LABEL:0),
+                        (tmp == 1 ? MF_LABEL : 0),
 #else
                                      0,
 #endif
@@ -1431,7 +1431,7 @@ static ret_code ExpandToken(char* line, int* pi, struct asm_tok tokenarray[], in
                         DebugMsg1(("ExpandToken(%s): macro proc to be expanded\n", sym->name));
                         i = RunMacro((struct dsym*)sym, i + 1, tokenarray, NULL,
 #if MACROLABEL
-                                     MF_NOSAVE | (i == 1?MF_LABEL:0),
+                                     MF_NOSAVE | (i == 1 ? MF_LABEL : 0),
 #else
                                      MF_NOSAVE,
 #endif
@@ -1473,7 +1473,7 @@ static ret_code ExpandToken(char* line, int* pi, struct asm_tok tokenarray[], in
                 }
             }
         }
-}
+    }
     *pi = i;
     if (evaluate)
     {
@@ -1567,9 +1567,9 @@ int ExpandLineItems(char* line, int i, struct asm_tok tokenarray[], int addbrack
             EmitError(MACRO_NESTING_LEVEL_TOO_DEEP);
             break;
         }
-        }
-    return(lvl);
     }
+    return(lvl);
+}
 
 /* v2.09: added, expand literals for structured data items.
  * since 2.09, initialization of structure members is no longer
@@ -1610,14 +1610,14 @@ void ExpandLiterals(int i, struct asm_tok tokenarray[])
 ret_code ExpandLine(char* string, struct asm_tok tokenarray[])
 /**************************************************************/
 {
-    int count;
-    unsigned int bracket_flags; /* flags */
-    int flags;
-    int lvl;
-    int i;
-    int j;
-    ret_code rc;
-    struct asym* sym;
+    int             count;
+    unsigned int    bracket_flags; /* flags */
+    int             flags;
+    int             lvl;
+    int             i;
+    int             j;
+    ret_code        rc;
+    struct asym*    sym;
 
     /* filter certain conditions.
      * bracket_flags: for (preprocessor) directives that expect a literal
@@ -1629,7 +1629,7 @@ ret_code ExpandLine(char* string, struct asm_tok tokenarray[])
         bracket_flags = 0;
         count = 0;
         rc = NOT_ERROR;
-        i = (Token_Count > 2 && (tokenarray[1].token == T_COLON || tokenarray[1].token == T_DBL_COLON) && tokenarray[2].token == T_DIRECTIVE)?2:0;
+        i = (Token_Count > 2 && (tokenarray[1].token == T_COLON || tokenarray[1].token == T_DBL_COLON) && tokenarray[2].token == T_DIRECTIVE) ? 2 : 0;
         if (tokenarray[i].token == T_DIRECTIVE)
         {
             flags = GetValueSp(tokenarray[i].tokval);
@@ -1663,58 +1663,58 @@ ret_code ExpandLine(char* string, struct asm_tok tokenarray[])
         {
             switch (tokenarray[1].dirtype)
             {
-            case DRT_CATSTR:
-                bracket_flags = -1;
-                count = 2;
-                break;
-            case DRT_SUBSTR:
-                /* syntax: name SUBSTR <literal>, pos [, size] */
-                bracket_flags = 0x1;
-                count = 2;
-                break;
-            case DRT_SIZESTR:
-                /* syntax: label SIZESTR literal */
-                rc = ExpandToken(string, &count, tokenarray, 1, FALSE, FALSE);
-                bracket_flags = 0x1;
-                count = 2;
-                break;
-            case DRT_INSTR:
-                /* syntax: label INSTR [number,] literal, literal */
-                rc = ExpandToken(string, &count, tokenarray, 1, FALSE, FALSE);
-                /* check if the optional <number> argument is given */
-                for (i = 2, count = 0, j = 0; i < Token_Count; i++)
-                {
-                    if (tokenarray[i].token == T_OP_BRACKET)
-                        count++;
-                    else if (tokenarray[i].token == T_CL_BRACKET)
-                        count--;
-                    else if (tokenarray[i].token == T_COMMA && count == 0)
-                        j++;
-                }
-
-                bracket_flags = ((j > 1)?0x6:0x3);
-                count = 2;
-                break;
-            case DRT_MACRO:
-                sym = SymSearch(tokenarray[0].string_ptr);
-                /* don't expand macro DEFINITIONs!
-                 * the name is an exception, if it's not the macro itself
-                 */
-                if (sym && sym->state != SYM_MACRO)
+                case DRT_CATSTR:
+                    bracket_flags = -1;
+                    count = 2;
+                    break;
+                case DRT_SUBSTR:
+                    /* syntax: name SUBSTR <literal>, pos [, size] */
+                    bracket_flags = 0x1;
+                    count = 2;
+                    break;
+                case DRT_SIZESTR:
+                    /* syntax: label SIZESTR literal */
                     rc = ExpandToken(string, &count, tokenarray, 1, FALSE, FALSE);
-                count = Token_Count; /* stop further expansion */
-                break;
-            case DRT_EQU:
-                /* EQU is a special case. If the - expanded - expression is
-                 * a number, then the value for EQU is numeric. Else the
-                 * expression isn't expanded at all. This effectively makes it
-                 * impossible to expand EQU lines here.
-                 */
+                    bracket_flags = 0x1;
+                    count = 2;
+                    break;
+                case DRT_INSTR:
+                    /* syntax: label INSTR [number,] literal, literal */
+                    rc = ExpandToken(string, &count, tokenarray, 1, FALSE, FALSE);
+                    /* check if the optional <number> argument is given */
+                    for (i = 2, count = 0, j = 0; i < Token_Count; i++)
+                    {
+                        if (tokenarray[i].token == T_OP_BRACKET)
+                            count++;
+                        else if (tokenarray[i].token == T_CL_BRACKET)
+                            count--;
+                        else if (tokenarray[i].token == T_COMMA && count == 0)
+                            j++;
+                    }
+
+                    bracket_flags = ((j > 1) ? 0x6 : 0x3);
+                    count = 2;
+                    break;
+                case DRT_MACRO:
+                    sym = SymSearch(tokenarray[0].string_ptr);
+                    /* don't expand macro DEFINITIONs!
+                     * the name is an exception, if it's not the macro itself
+                     */
+                    if (sym && sym->state != SYM_MACRO)
+                        rc = ExpandToken(string, &count, tokenarray, 1, FALSE, FALSE);
+                    count = Token_Count; /* stop further expansion */
+                    break;
+                case DRT_EQU:
+                    /* EQU is a special case. If the - expanded - expression is
+                     * a number, then the value for EQU is numeric. Else the
+                     * expression isn't expanded at all. This effectively makes it
+                     * impossible to expand EQU lines here.
+                     */
 #if 0 /* v2.09: EQU should NEVER be expanded here. See regression test equate20.aso */
-                sym = SymSearch(tokenarray[0].string_ptr);
-                if (sym == NULL || sym->state == SYM_TMACRO)
+                    sym = SymSearch(tokenarray[0].string_ptr);
+                    if (sym == NULL || sym->state == SYM_TMACRO)
 #endif
-                    return(NOT_ERROR);
+                        return(NOT_ERROR);
             }
         }
         else

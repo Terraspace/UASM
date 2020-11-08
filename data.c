@@ -137,7 +137,7 @@ static ret_code InitializeArray(const struct sfield* f, int* pi, struct asm_tok 
 
     DebugMsg1(("InitializeArray(%s) enter, items=%" I32_SPEC "u size=%" I32_SPEC "u mem_type=%xh type=%s currofs=%" I32_SPEC "X [%s]\n",
               f->sym.name, f->sym.total_length, no_of_bytes, f->sym.mem_type,
-              f->sym.type?f->sym.type->name:"NULL", oldofs, tokenarray[i].tokpos));
+              f->sym.type ? f->sym.type->name : "NULL", oldofs, tokenarray[i].tokpos));
 
     /* If current item is a literal enclosed in <> or {}, just use this
      * item. Else, use all items until a comma or EOL is found.
@@ -270,7 +270,7 @@ static ret_code InitStructuredVar(int index, struct asm_tok tokenarray[], const 
     //char            line[MAX_LINE_LEN];
 
     DebugMsg1(("InitStructuredVar(%s) enter, total_size=%" I32_SPEC "u, init=>%s<, embedded=%s, alignm=%u\n",
-              symtype->sym.name, symtype->sym.total_size, tokenarray[index].string_ptr, embedded?embedded->name:"NULL", symtype->e.structinfo->alignment));
+              symtype->sym.name, symtype->sym.total_size, tokenarray[index].string_ptr, embedded ? embedded->name : "NULL", symtype->e.structinfo->alignment));
 
     /**/myassert(symtype->sym.state == SYM_TYPE && symtype->sym.typekind != TYPE_TYPEDEF);
 
@@ -298,7 +298,7 @@ static ret_code InitStructuredVar(int index, struct asm_tok tokenarray[], const 
     }
     else
     {
-        return(EmitErr(INITIALIZER_MUST_BE_A_STRING_OR_SINGLE_ITEM, embedded?embedded->name:""));
+        return(EmitErr(INITIALIZER_MUST_BE_A_STRING_OR_SINGLE_ITEM, embedded ? embedded->name : ""));
     }
     if (symtype->sym.typekind == TYPE_RECORD)
     {
@@ -479,13 +479,13 @@ static ret_code InitStructuredVar(int index, struct asm_tok tokenarray[], const 
         int no_of_bytes;
         switch (symtype->sym.mem_type)
         {
-        case MT_BYTE: no_of_bytes = 1; break;
-        case MT_WORD: no_of_bytes = 2; break;
+            case MT_BYTE: no_of_bytes = 1; break;
+            case MT_WORD: no_of_bytes = 2; break;
 #if AMD64_SUPPORT
-        case MT_QWORD: no_of_bytes = 8; break;
-        case MT_OWORD: no_of_bytes = 16; break;
+            case MT_QWORD: no_of_bytes = 8; break;
+            case MT_OWORD: no_of_bytes = 16; break;
 #endif
-        default: no_of_bytes = 4;
+            default: no_of_bytes = 4;
         }
         if (is_record_set)
         {
@@ -613,8 +613,8 @@ static ret_code data_item(int* start_pos, struct asm_tok tokenarray[], struct as
     struct expr         opndx;
     uint_16 buff[256];
     DebugMsg1(("data_item( idx=%u [%s], label=%s, no_of_bytes=%" I32_SPEC "u, type=%s, dup=%" I32_SPEC "Xh, inside_struct=%u, is_float=%u ) enter\n",
-              *start_pos, tokenarray[*start_pos].tokpos, sym?sym->name:"NULL",
-              no_of_bytes, type_sym?type_sym->name:"NULL",
+              *start_pos, tokenarray[*start_pos].tokpos, sym ? sym->name : "NULL",
+              no_of_bytes, type_sym ? type_sym->name : "NULL",
               dup, inside_struct, is_float));
 
     for (; dup; dup--)
@@ -663,7 +663,7 @@ static ret_code data_item(int* start_pos, struct asm_tok tokenarray[], struct as
                 i++;
                 goto item_done;
 #if 0 /* v2.08: just let EvalOperand() emit 'Unexpected literal...' error */
-}
+            }
             else
             {
                 DebugMsg(("data_item: invalid string initializer >%s<\n", tokenarray[i].tokpos));
@@ -736,10 +736,10 @@ static ret_code data_item(int* start_pos, struct asm_tok tokenarray[], struct as
             }
             else
             {
-                DebugMsg1(("data_item(%s): op DUP, count=%" I32_SPEC "Xh, calling data_item()\n", sym?sym->name:"NULL", opndx.uvalue));
+                DebugMsg1(("data_item(%s): op DUP, count=%" I32_SPEC "Xh, calling data_item()\n", sym ? sym->name : "NULL", opndx.uvalue));
                 if (data_item(&i, tokenarray, sym, no_of_bytes, type_sym, opndx.uvalue, inside_struct, is_float, first, end) == ERROR)
                 {
-                    DebugMsg(("data_item(%s): op DUP, count=%" I32_SPEC "Xh, returned with error\n", sym?sym->name:"NULL", opndx.uvalue));
+                    DebugMsg(("data_item(%s): op DUP, count=%" I32_SPEC "Xh, returned with error\n", sym ? sym->name : "NULL", opndx.uvalue));
                     return(ERROR);
                 }
             }
@@ -814,554 +814,554 @@ static ret_code data_item(int* start_pos, struct asm_tok tokenarray[], struct as
         {
             EmitWarn(2,
                      INITIALIZED_DATA_NOT_SUPPORTED_IN_SEGMENT,
-                     (CurrSeg->e.seginfo->segtype == SEGTYPE_BSS)?"BSS":"AT");
+                     (CurrSeg->e.seginfo->segtype == SEGTYPE_BSS) ? "BSS" : "AT");
             initwarn = TRUE;
         };
 
         switch (opndx.kind)
         {
-        case EXPR_EMPTY:
-            DebugMsg(("data_item.EMPTY: idx=%u, tokenarray.token=%X\n", i, tokenarray[i].token));
-            if (tokenarray[i].token != T_FINAL)
-                EmitErr(SYNTAX_ERROR_EX, tokenarray[i].tokpos);
-            else
-                EmitError(SYNTAX_ERROR);
-            return(ERROR);
-        case EXPR_FLOAT:
-            DebugMsg1(("data_item.FLOAT: >%s<, inside_struct=%u, no_of_bytes=%u, curr_ofs=%X\n",
-                      opndx.float_tok->string_ptr, inside_struct, no_of_bytes, GetCurrOffset()));
-            if (!inside_struct)
-                output_float(&opndx, no_of_bytes);
-            total++;
-            break;
-        case EXPR_CONST:
-            if (is_float)
-            {
-                opndx.fvalue = (float)opndx.value;
-                opndx.kind = EXPR_FLOATI;
-                opndx.negative = (opndx.fvalue < 0)?1:0;
-                if (opndx.negative)
-                    opndx.fvalue *= -1;
-                output_float(&opndx, no_of_bytes); /* Coerce const integer value to float in data definitions */
+            case EXPR_EMPTY:
+                DebugMsg(("data_item.EMPTY: idx=%u, tokenarray.token=%X\n", i, tokenarray[i].token));
+                if (tokenarray[i].token != T_FINAL)
+                    EmitErr(SYNTAX_ERROR_EX, tokenarray[i].tokpos);
+                else
+                    EmitError(SYNTAX_ERROR);
+                return(ERROR);
+            case EXPR_FLOAT:
+                DebugMsg1(("data_item.FLOAT: >%s<, inside_struct=%u, no_of_bytes=%u, curr_ofs=%X\n",
+                          opndx.float_tok->string_ptr, inside_struct, no_of_bytes, GetCurrOffset()));
+                if (!inside_struct)
+                    output_float(&opndx, no_of_bytes);
                 total++;
                 break;
-                //return( EmitError( MUST_USE_FLOAT_INITIALIZER ) );
-            }
-
-            /* a string returned by the evaluator (enclosed in quotes!)? */
-
-            if (opndx.quoted_string)
-            {
-                DebugMsg1(("data_item.CONST: string found: >%s<, inside_struct=%u, no_of_bytes=%u, curr_ofs=%X\n",
-                          opndx.quoted_string->string_ptr, inside_struct, no_of_bytes, GetCurrOffset()));
-                pchar = (uint_8*)opndx.quoted_string->string_ptr + 1;
-                string_len = opndx.quoted_string->stringlen; /* this is the length without quotes */
-                /* v2.07: check for empty string for ALL types */
-                if (string_len == 0)
+            case EXPR_CONST:
+                if (is_float)
                 {
-                    if (inside_struct)
+                    opndx.fvalue = (float)opndx.value;
+                    opndx.kind = EXPR_FLOATI;
+                    opndx.negative = (opndx.fvalue < 0) ? 1 : 0;
+                    if (opndx.negative)
+                        opndx.fvalue *= -1;
+                    output_float(&opndx, no_of_bytes); /* Coerce const integer value to float in data definitions */
+                    total++;
+                    break;
+                    //return( EmitError( MUST_USE_FLOAT_INITIALIZER ) );
+                }
+
+                /* a string returned by the evaluator (enclosed in quotes!)? */
+
+                if (opndx.quoted_string)
+                {
+                    DebugMsg1(("data_item.CONST: string found: >%s<, inside_struct=%u, no_of_bytes=%u, curr_ofs=%X\n",
+                              opndx.quoted_string->string_ptr, inside_struct, no_of_bytes, GetCurrOffset()));
+                    pchar = (uint_8*)opndx.quoted_string->string_ptr + 1;
+                    string_len = opndx.quoted_string->stringlen; /* this is the length without quotes */
+                    /* v2.07: check for empty string for ALL types */
+                    if (string_len == 0)
                     {
-                        /* when the struct is declared, it's no error -
-                         * but won't be accepted when the struct is instanced.
-                         * v2.07: don't modify string_len! Instead
-                         * mark field as array!
-                         */
-                         //string_len = 1;
-                        sym->isarray = TRUE;
+                        if (inside_struct)
+                        {
+                            /* when the struct is declared, it's no error -
+                             * but won't be accepted when the struct is instanced.
+                             * v2.07: don't modify string_len! Instead
+                             * mark field as array!
+                             */
+                             //string_len = 1;
+                            sym->isarray = TRUE;
+                        }
+                        else
+                        {
+                            return(EmitError(EMPTY_STRING)); /* MASM doesn't like "" */
+                        }
                     }
-                    else
+                    /* a string is only regarded as an array if item size is 1 */
+                    /* else it is regarded as ONE item */
+                    if (no_of_bytes != 1)
                     {
-                        return(EmitError(EMPTY_STRING)); /* MASM doesn't like "" */
+                        if (Options.masm51_compat || Options.strict_masm_compat || !Options.literal_strings)
+                        {
+                            if (string_len > no_of_bytes)
+                                return(EmitError(INITIALIZER_OUT_OF_RANGE));
+                        }
+                        else
+                        {
+                            if (string_len > no_of_bytes && sym && sym->mem_type != MT_WORD)
+                                return(EmitError(INITIALIZER_OUT_OF_RANGE));
+                            /* if characters are not single byte, 2 bytes are used for 1 size v2.38 */
+                            p = pchar;
+                            half = FALSE;
+                            for (j = 0; j < string_len; j++, p++)
+                            {
+                                if ((unsigned char)*p > 0x7F)
+                                {
+                                    half = TRUE;
+                                    break;
+                                }
+                            }
+                            if (half)
+                            {
+                                memset(&buff, 0, string_len * 2);
+                                j = UTF8toWideChar(pchar, string_len, NULL, (unsigned short*)&buff, string_len);
+                                opndx.quoted_string->stringlen = j;
+                                string_len = j;
+                                sym->mem_type = MT_BYTE;      /* each byte must be stored without zeros between */
+                                                 /* total has to be devided by 2 for the length */
+                            }
+                        }
+                    }
+
+                    if (sym && Parse_Pass == PASS_1 && string_len > 0)
+                    {
+                        total++;
+                        if (no_of_bytes == 1 && string_len > 1)
+                        {
+                            total += (string_len - 1);
+                            sym->isarray = TRUE; /* v2.07: added */
+                            if (first)
+                            {
+                                sym->first_length = 1;
+                                sym->first_size = 1;
+                                first = FALSE; /* avoid to touch first_xxx fields below */
+                            }
+                        }
+                        else if (no_of_bytes == 2 && string_len > 1)
+                        {
+                            sym->isarray = TRUE;
+                            total += (string_len - 1);
+                            if (first)
+                            {
+                                sym->first_length = 1;
+                                sym->first_size = 2;
+                                first = FALSE;
+                            }
+                        }
+                    }
+
+                    if (!inside_struct)
+                    {
+                        /* anything bigger than a byte must be stored in little-endian format -- LSB first */
+                        if (Options.masm51_compat || Options.strict_masm_compat || !Options.literal_strings)
+                        {
+                            if (string_len > 1 && no_of_bytes > 1)
+                                pchar = little_endian((const char*)pchar, string_len);
+                            OutputDataBytes(pchar, string_len);
+                            if (no_of_bytes > string_len)
+                                FillDataBytes(0, no_of_bytes - string_len);
+                        }
+                        else
+                        {
+                            if (string_len > 1 && no_of_bytes > 1 && sym && sym->mem_type == MT_WORD)
+                            {
+                                OutputInterleavedDataBytes(pchar, string_len);
+                            }
+                            else
+                            {
+                                if (string_len > 1 && no_of_bytes > 1)
+                                {
+                                    if (half)   /* no need for little_endian, already converted, v2.38 */
+                                        OutputDataBytes((uint_8*)&buff, j * 2);
+                                }
+                                else
+                                {
+                                    if (no_of_bytes > 1)
+                                        pchar = little_endian((const char*)pchar, string_len);
+                                    OutputDataBytes(pchar, string_len);
+                                }
+                            }
+                            if (no_of_bytes > string_len)
+                                FillDataBytes(0, no_of_bytes - string_len);
+                        }
                     }
                 }
-                /* a string is only regarded as an array if item size is 1 */
-                /* else it is regarded as ONE item */
-                if (no_of_bytes != 1)
+                else
                 {
-                    if (Options.masm51_compat || Options.strict_masm_compat || !Options.literal_strings)
+                    /* it's NOT a string */
+                    DebugMsg1(("data_item.CONST: const found, value=%" I32_SPEC "Xh, no_of_bytes=%u, curr_ofs=%" I32_SPEC "X\n", opndx.value, no_of_bytes, GetCurrOffset()));
+                    if (!inside_struct)
                     {
-                        if (string_len > no_of_bytes)
-                            return(EmitError(INITIALIZER_OUT_OF_RANGE));
-                    }
-                    else
-                    {
-                        if (string_len > no_of_bytes && sym && sym->mem_type != MT_WORD)
-                            return(EmitError(INITIALIZER_OUT_OF_RANGE));
-                        /* if characters are not single byte, 2 bytes are used for 1 size v2.38 */
-                        p = pchar;
-                        half = FALSE;
-                        for (j = 0; j < string_len; j++, p++)
+                        /* the evaluator cannot handle types with size > 16.
+                         * so if a (simple) type is larger ( YMMWORD? ),
+                         * clear anything which is above.
+                         */
+                        if (no_of_bytes > 16)
                         {
-                            if ((unsigned char)*p > 0x7F)
+                            OutputDataBytes(opndx.chararray, 16);
+                            tmp = (opndx.chararray[15] < 0x80 ? 0 : 0xFF);
+                            FillDataBytes(tmp, no_of_bytes - 16);
+                        }
+                        else
+                        {
+                            /* v2.06: TBYTE/OWORD/XMMWORD: extend a negative value to 16-byte */
+                            if (no_of_bytes > sizeof(int_64))
                             {
-                                half = TRUE;
+                                if (opndx.negative && opndx.value64 < 0 && opndx.hlvalue == 0)
+                                    opndx.hlvalue = -1;
+                            }
+                            OutputDataBytes(opndx.chararray, no_of_bytes);
+                            /* check that there's no significant data left
+                             * which hasn't been emitted.
+                             */
+                             /* v2.06: rewritten, now more rigid and checks
+                              * 1-8 and 10 bytes instead of just 1-4.
+                              */
+                            if (no_of_bytes <= sizeof(int_64))
+                            {
+                                tmp = (opndx.chararray[7] < 0x80 ? 0 : 0xFF);
+                                memset(opndx.chararray, tmp, no_of_bytes);
+                                if (opndx.llvalue != 0 && opndx.llvalue != -1)
+                                {
+                                    DebugMsg(("data_item.CONST: error, unhandled data is %" I64_SPEC "X_%016" I64_SPEC "X\n", opndx.hlvalue, opndx.llvalue));
+                                    return(EmitErr(INITIALIZER_MAGNITUDE_TOO_LARGE, opndx.sym ? opndx.sym->name : ""));
+                                }
+                            }
+                            else if (no_of_bytes == 10)
+                            {
+                                //if ( opndx.hlvalue > 0xffff ) {
+                                if (opndx.hlvalue > 0xffff && opndx.hlvalue < -0xffff)
+                                {
+                                    return(EmitErr(INITIALIZER_MAGNITUDE_TOO_LARGE, opndx.sym ? opndx.sym->name : ""));
+                                }
+                            }
+                        }
+                    }
+                    total++;
+                }
+                break;
+            case EXPR_ADDR:
+                /* since a fixup will be created, 8 bytes is max.
+                 * there's no way to define an initialized tbyte "far64" address,
+                 * because there's no fixup available for the selector part.
+                 */
+                if (no_of_bytes > sizeof(uint_64))
+                {
+                    EmitErr(INVALID_DATA_INITIALIZER, sym ? sym->name : "");
+                    break;
+                }
+                /* indirect addressing (incl. stack variables) is invalid */
+                if (opndx.indirect == TRUE)
+                {
+                    DebugMsg(("data_item.ADDR: error, indirect=%u, sym=%X\n", opndx.indirect, opndx.sym));
+                    EmitError(INVALID_USE_OF_REGISTER);
+                    break;
+                }
+#if AMD64_SUPPORT
+                if (ModuleInfo.Ofssize != USE64)
+#endif
+                    if (opndx.hvalue && (opndx.hvalue != -1 || opndx.value >= 0))
+                    {
+                        /* v2.05: compared to Masm, the above is too restrictive.
+                         * the line below might be better.
+                         */
+                         //if ( opndx.hvalue != 0 && ( opndx.hvalue != -1 || opndx.value == 0 ) ) {
+                        DebugMsg(("data_item.ADDR: displacement doesn't fit in 32 bits: %" I64_SPEC "X\n", opndx.value64));
+                        return(EmitConstError(&opndx));
+                    }
+
+                if (is_float)
+                {
+                    DebugMsg(("data_item.ADDR: error, is_float=%u\n", is_float));
+                    EmitError(MUST_USE_FLOAT_INITIALIZER);
+                    break;
+                }
+
+                total++;
+                /* for STRUCT fields, don't emit anything! */
+                if (inside_struct)
+                {
+                    break;
+                }
+
+                /* determine what type of fixup is to be created */
+
+                switch (opndx.instr)
+                {
+                    case T_SEG:
+                        if (no_of_bytes < 2)
+                        {
+                            DebugMsg(("data_item.ADDR: error, a SEG wont fit in a BYTE\n"));
+                            EmitError(MAGNITUDE_TOO_LARGE_FOR_SPECIFIED_SIZE);
+                        }
+                        fixup_type = FIX_SEG;
+                        break;
+                    case T_OFFSET:
+                        switch (no_of_bytes)
+                        {
+                            case 1:
+                                /* forward reference? */
+                                if (Parse_Pass == PASS_1 && opndx.sym && opndx.sym->state == SYM_UNDEFINED)
+                                {
+                                    DebugMsg(("data_item.ADDR: forward reference + OFFSET operator + DB -> may become error in Pass 2\n"));
+                                    fixup_type = FIX_VOID; /* v2.10: was regression in v2.09 */
+                                }
+                                else
+                                {
+                                    DebugMsg(("data_item.ADDR: error, an offset wont fit in a BYTE\n"));
+                                    EmitError(OFFSET_MAGNITUDE_TOO_LARGE);
+                                    fixup_type = FIX_OFF8;
+                                }
+                                break;
+                            case 2:
+                                fixup_type = FIX_OFF16;
+                                break;
+#if AMD64_SUPPORT
+                            case 8:
+                                if (ModuleInfo.Ofssize == USE64)
+                                {
+                                    fixup_type = FIX_OFF64;
+                                    break;
+                                }
+#endif
+                            default:
+                                if (opndx.sym && (GetSymOfssize(opndx.sym) == USE16))
+                                    fixup_type = FIX_OFF16;
+                                else
+                                    fixup_type = FIX_OFF32;
+                                break;
+                        }
+                        break;
+#if IMAGERELSUPP
+                    case T_IMAGEREL:
+                        if (no_of_bytes < sizeof(uint_32))
+                        {
+                            DebugMsg(("data_item.ADDR: IMAGEREL, error, size=%u (should be 4)\n", no_of_bytes));
+                            EmitError(OFFSET_MAGNITUDE_TOO_LARGE);
+                        }
+                        fixup_type = FIX_OFF32_IMGREL;
+                        break;
+#endif
+#if SECTIONRELSUPP
+                    case T_SECTIONREL:
+                        if (no_of_bytes < sizeof(uint_32))
+                        {
+                            DebugMsg(("data_item.ADDR: SECTIONREL, error, size=%u (should be 4)\n", no_of_bytes));
+                            EmitError(OFFSET_MAGNITUDE_TOO_LARGE);
+                        }
+                        fixup_type = FIX_OFF32_SECREL;
+                        break;
+#endif
+                    case T_LOW:
+                        fixup_type = FIX_OFF8; /* OMF, BIN + GNU-ELF only */
+                        break;
+                    case T_HIGH:
+                        DebugMsg(("data_item.ADDR: HIGH detected\n"));
+                        fixup_type = FIX_HIBYTE; /* OMF only */
+                        break;
+                    case T_LOWWORD:
+                        fixup_type = FIX_OFF16;
+                        if (no_of_bytes < 2)
+                        {
+                            EmitError(MAGNITUDE_TOO_LARGE_FOR_SPECIFIED_SIZE);
+                            break;
+                        }
+                        break;
+#if LOHI32
+                    case T_HIGH32:
+                        /* no break */
+#endif
+                    case T_HIGHWORD:
+                        fixup_type = FIX_VOID;
+                        EmitError(CONSTANT_EXPECTED);
+                        break;
+#if LOHI32
+                    case T_LOW32:
+                        fixup_type = FIX_OFF32;
+                        if (no_of_bytes < 4)
+                        {
+                            EmitError(MAGNITUDE_TOO_LARGE_FOR_SPECIFIED_SIZE);
+                            break;
+                        }
+                        break;
+#endif
+                    default:
+                        /* size < 2 can work with T_LOW|T_HIGH operator only */
+                        if (no_of_bytes < 2)
+                        {
+                            /* forward reference? */
+                            if (Parse_Pass == PASS_1 && opndx.sym && opndx.sym->state == SYM_UNDEFINED)
+                                ;
+                            else
+                            {
+                                /* v2.08: accept 1-byte absolute externals */
+                                if (opndx.sym && opndx.sym->state == SYM_EXTERNAL && opndx.is_abs == TRUE)
+                                {
+                                }
+                                else
+                                {
+                                    DebugMsg(("data_item.ADDR: error, no of bytes=%u\n", no_of_bytes));
+                                    EmitError(MAGNITUDE_TOO_LARGE_FOR_SPECIFIED_SIZE);
+                                }
+                                fixup_type = FIX_OFF8;
                                 break;
                             }
                         }
-                        if (half)
-                        {
-                            memset(&buff, 0, string_len * 2);
-                            j = UTF8toWideChar(pchar, string_len, NULL, (unsigned short*)&buff, string_len);
-                            opndx.quoted_string->stringlen = j;
-                            string_len = j;
-                            sym->mem_type = MT_BYTE;      /* each byte must be stored without zeros between */
-                                             /* total has to be devided by 2 for the length */
-                        }
-                    }
-                }
-
-                if (sym && Parse_Pass == PASS_1 && string_len > 0)
-                {
-                    total++;
-                    if (no_of_bytes == 1 && string_len > 1)
-                    {
-                        total += (string_len - 1);
-                        sym->isarray = TRUE; /* v2.07: added */
-                        if (first)
-                        {
-                            sym->first_length = 1;
-                            sym->first_size = 1;
-                            first = FALSE; /* avoid to touch first_xxx fields below */
-                        }
-                    }
-                    else if (no_of_bytes == 2 && string_len > 1)
-                    {
-                        sym->isarray = TRUE;
-                        total += (string_len - 1);
-                        if (first)
-                        {
-                            sym->first_length = 1;
-                            sym->first_size = 2;
-                            first = FALSE;
-                        }
-                    }
-                }
-
-                if (!inside_struct)
-                {
-                    /* anything bigger than a byte must be stored in little-endian format -- LSB first */
-                    if (Options.masm51_compat || Options.strict_masm_compat || !Options.literal_strings)
-                    {
-                        if (string_len > 1 && no_of_bytes > 1)
-                            pchar = little_endian((const char*)pchar, string_len);
-                        OutputDataBytes(pchar, string_len);
-                        if (no_of_bytes > string_len)
-                            FillDataBytes(0, no_of_bytes - string_len);
-                    }
-                    else
-                    {
-                        if (string_len > 1 && no_of_bytes > 1 && sym && sym->mem_type == MT_WORD)
-                        {
-                            OutputInterleavedDataBytes(pchar, string_len);
-                        }
-                        else
-                        {
-                            if (string_len > 1 && no_of_bytes > 1)
-                            {
-                                if (half)   /* no need for little_endian, already converted, v2.38 */
-                                    OutputDataBytes((uint_8*)&buff, j * 2);
-                            }
-                            else
-                            {
-                                if (no_of_bytes > 1)
-                                    pchar = little_endian((const char*)pchar, string_len);
-                                OutputDataBytes(pchar, string_len);
-                            }
-                        }
-                        if (no_of_bytes > string_len)
-                            FillDataBytes(0, no_of_bytes - string_len);
-                    }
-                }
-            }
-            else
-            {
-                /* it's NOT a string */
-                DebugMsg1(("data_item.CONST: const found, value=%" I32_SPEC "Xh, no_of_bytes=%u, curr_ofs=%" I32_SPEC "X\n", opndx.value, no_of_bytes, GetCurrOffset()));
-                if (!inside_struct)
-                {
-                    /* the evaluator cannot handle types with size > 16.
-                     * so if a (simple) type is larger ( YMMWORD? ),
-                     * clear anything which is above.
-                     */
-                    if (no_of_bytes > 16)
-                    {
-                        OutputDataBytes(opndx.chararray, 16);
-                        tmp = (opndx.chararray[15] < 0x80?0:0xFF);
-                        FillDataBytes(tmp, no_of_bytes - 16);
-                    }
-                    else
-                    {
-                        /* v2.06: TBYTE/OWORD/XMMWORD: extend a negative value to 16-byte */
-                        if (no_of_bytes > sizeof(int_64))
-                        {
-                            if (opndx.negative && opndx.value64 < 0 && opndx.hlvalue == 0)
-                                opndx.hlvalue = -1;
-                        }
-                        OutputDataBytes(opndx.chararray, no_of_bytes);
-                        /* check that there's no significant data left
-                         * which hasn't been emitted.
+                        /* if the symbol references a segment or group,
+                         then generate a segment fixup.
                          */
-                         /* v2.06: rewritten, now more rigid and checks
-                          * 1-8 and 10 bytes instead of just 1-4.
-                          */
-                        if (no_of_bytes <= sizeof(int_64))
+                        if (opndx.sym && (opndx.sym->state == SYM_SEG || opndx.sym->state == SYM_GRP))
                         {
-                            tmp = (opndx.chararray[7] < 0x80?0:0xFF);
-                            memset(opndx.chararray, tmp, no_of_bytes);
-                            if (opndx.llvalue != 0 && opndx.llvalue != -1)
-                            {
-                                DebugMsg(("data_item.CONST: error, unhandled data is %" I64_SPEC "X_%016" I64_SPEC "X\n", opndx.hlvalue, opndx.llvalue));
-                                return(EmitErr(INITIALIZER_MAGNITUDE_TOO_LARGE, opndx.sym?opndx.sym->name:""));
-                            }
+                            fixup_type = FIX_SEG;
+                            break;
                         }
-                        else if (no_of_bytes == 10)
+
+                        switch (no_of_bytes)
                         {
-                            //if ( opndx.hlvalue > 0xffff ) {
-                            if (opndx.hlvalue > 0xffff && opndx.hlvalue < -0xffff)
-                            {
-                                return(EmitErr(INITIALIZER_MAGNITUDE_TOO_LARGE, opndx.sym?opndx.sym->name:""));
-                            }
+                            case 2:
+                                /* accept "near16" override, else complain
+                                 * if symbol's offset is 32bit */
+                                 /* v2.06: if condition changed */
+                                 //if ( opndx.explicit == TRUE && opndx.mem_type == MT_NEAR && opndx.Ofssize == USE16 )
+                                if (opndx.explicit == TRUE)
+                                {
+                                    if (SizeFromMemtype(opndx.mem_type, opndx.Ofssize, opndx.type) > no_of_bytes)
+                                    {
+                                        DebugMsg(("data_item.ADDR: error, memtype %X wont fit in a WORD\n", opndx.mem_type));
+                                        EmitErr(INITIALIZER_MAGNITUDE_TOO_LARGE, opndx.sym ? opndx.sym->name : "");
+                                    };
+                                }
+                                else if (opndx.sym && opndx.sym->state == SYM_EXTERNAL && opndx.is_abs == TRUE)
+                                {
+                                    /* v2.07a: accept ABSolute externals (regression in v2.07) */
+                                }
+                                else if (opndx.sym &&
+                                         opndx.sym->state != SYM_UNDEFINED &&
+                                         (GetSymOfssize(opndx.sym) > USE16))
+                                {
+                                    DebugMsg(("data_item.ADDR: error, a 32bit offset (%s) wont fit in a WORD\n", opndx.sym->name));
+                                    EmitErr(INITIALIZER_MAGNITUDE_TOO_LARGE, opndx.sym ? opndx.sym->name : "");
+                                }
+                                fixup_type = FIX_OFF16;
+                                break;
+                            case 4:
+                                /* masm generates:
+                                 * off32 if curr segment is 32bit,
+                                 * ptr16 if curr segment is 16bit,
+                                 * and ignores type overrides.
+                                 * if it's a NEAR external, size is 16, and
+                                 * format isn't OMF, error 'symbol type conflict'
+                                 * is displayed
+                                 */
+                                if (opndx.explicit == TRUE)
+                                {
+                                    if (opndx.mem_type == MT_FAR)
+                                    {
+                                        if (opndx.Ofssize != USE_EMPTY && opndx.Ofssize != USE16)
+                                        {
+                                            DebugMsg(("data_item.ADDR: error, FAR32 won't fit in a DWORD\n"));
+                                            EmitErr(INITIALIZER_MAGNITUDE_TOO_LARGE, opndx.sym ? opndx.sym->name : "");
+                                        }
+                                        fixup_type = FIX_PTR16;
+                                    }
+                                    else if (opndx.mem_type == MT_NEAR)
+                                    {
+                                        if (opndx.Ofssize == USE16)
+                                            fixup_type = FIX_OFF16;
+                                        else if (opndx.sym && (GetSymOfssize(opndx.sym) == USE16))
+                                            fixup_type = FIX_OFF16;
+                                        else
+                                            fixup_type = FIX_OFF32;
+                                    }
+                                }
+                                else
+                                {
+                                    /* what's done if code size is 16 is Masm-compatible.
+                                     * It's not very smart, however.
+                                     * A better strategy is to choose fixup type depending
+                                     * on the symbol's offset size.
+                                     */
+                                     //if ( opndx.sym && ( GetSymOfssize( opndx.sym ) == USE16 ) )
+                                    if (ModuleInfo.Ofssize == USE16)
+#if COFF_SUPPORT || ELF_SUPPORT
+                                        if (opndx.mem_type == MT_NEAR &&
+                                            (Options.output_format == OFORMAT_COFF
+#if ELF_SUPPORT
+                                            || Options.output_format == OFORMAT_ELF
+#endif
+                                            ))
+                                        {
+                                            fixup_type = FIX_OFF16;
+                                            EmitErr(SYMBOL_TYPE_CONFLICT, sym->name);
+                                        }
+                                        else
+#endif
+                                            fixup_type = FIX_PTR16;
+                                    else
+                                        fixup_type = FIX_OFF32;
+                                }
+                                break;
+                            case 6:
+                                /* Masm generates a PTR32 fixup in OMF!
+                                 * and a DIR32 fixup in COFF.
+                                 */
+                                 /* COFF/ELF has no far fixups */
+#if COFF_SUPPORT || ELF_SUPPORT
+                                if (Options.output_format == OFORMAT_COFF
+#if ELF_SUPPORT
+                                    || Options.output_format == OFORMAT_ELF
+#endif
+                                    )
+                                {
+                                    fixup_type = FIX_OFF32;
+                                }
+                                else
+#endif
+                                    fixup_type = FIX_PTR32;
+                                break;
+                            default:
+                                /* Masm generates
+                                 * off32 if curr segment is 32bit
+                                 * ptr16 if curr segment is 16bit
+                                 * Uasm additionally accepts a FAR32 PTR override
+                                 * and generates a ptr32 fixup then */
+                                if (opndx.explicit == TRUE && opndx.mem_type == MT_FAR && opndx.Ofssize == USE32)
+                                    fixup_type = FIX_PTR32;
+                                else if (ModuleInfo.Ofssize == USE32)
+                                    fixup_type = FIX_OFF32;
+#if AMD64_SUPPORT
+                                else if (ModuleInfo.Ofssize == USE64)
+                                    fixup_type = FIX_OFF64;
+#endif
+                                else
+                                    fixup_type = FIX_PTR16;
                         }
-                    }
+                        break;
+                } /* end switch ( opndx.instr ) */
+
+                /* v2.07: fixup type check moved here */
+                if ((1 << fixup_type) & ModuleInfo.fmtopt->invalid_fixup_type)
+                {
+                    return(EmitErr(UNSUPPORTED_FIXUP_TYPE,
+                           ModuleInfo.fmtopt->formatname,
+                           opndx.sym ? opndx.sym->name : szNull));
                 }
-                total++;
-            }
-            break;
-        case EXPR_ADDR:
-            /* since a fixup will be created, 8 bytes is max.
-             * there's no way to define an initialized tbyte "far64" address,
-             * because there's no fixup available for the selector part.
-             */
-            if (no_of_bytes > sizeof(uint_64))
-            {
-                EmitErr(INVALID_DATA_INITIALIZER, sym?sym->name:"");
+                fixup = NULL;
+                if (write_to_file)
+                {
+                    /* there might be a segment override:
+                     * a segment, a group or a segment register.
+                     * Init var SegOverride, it's used inside set_frame()
+                     */
+                    SegOverride = NULL;
+                    segm_override(&opndx, NULL);
+
+                    /* set global vars Frame and Frame_Datum */
+                    /* opndx.sym may be NULL, then SegOverride is set. */
+                    if (ModuleInfo.offsettype == OT_SEGMENT &&
+                        (opndx.instr == T_OFFSET || opndx.instr == T_SEG))
+                        set_frame2(opndx.sym);
+                    else
+                        set_frame(opndx.sym);
+                    /* uses Frame and Frame_Datum  */
+                    fixup = CreateFixup(opndx.sym, fixup_type, OPTJ_NONE);
+                    //store_fixup( fixup, &opndx.value ); /* may fail, but ignore error! */
+                }
+                OutputBytes((unsigned char*)&opndx.value, no_of_bytes, fixup);
                 break;
-            }
-            /* indirect addressing (incl. stack variables) is invalid */
-            if (opndx.indirect == TRUE)
-            {
-                DebugMsg(("data_item.ADDR: error, indirect=%u, sym=%X\n", opndx.indirect, opndx.sym));
+            case EXPR_REG:
                 EmitError(INVALID_USE_OF_REGISTER);
                 break;
-            }
-#if AMD64_SUPPORT
-            if (ModuleInfo.Ofssize != USE64)
-#endif
-                if (opndx.hvalue && (opndx.hvalue != -1 || opndx.value >= 0))
-                {
-                    /* v2.05: compared to Masm, the above is too restrictive.
-                     * the line below might be better.
-                     */
-                     //if ( opndx.hvalue != 0 && ( opndx.hvalue != -1 || opndx.value == 0 ) ) {
-                    DebugMsg(("data_item.ADDR: displacement doesn't fit in 32 bits: %" I64_SPEC "X\n", opndx.value64));
-                    return(EmitConstError(&opndx));
-                }
-
-            if (is_float)
-            {
-                DebugMsg(("data_item.ADDR: error, is_float=%u\n", is_float));
-                EmitError(MUST_USE_FLOAT_INITIALIZER);
-                break;
-            }
-
-            total++;
-            /* for STRUCT fields, don't emit anything! */
-            if (inside_struct)
-            {
-                break;
-            }
-
-            /* determine what type of fixup is to be created */
-
-            switch (opndx.instr)
-            {
-            case T_SEG:
-                if (no_of_bytes < 2)
-                {
-                    DebugMsg(("data_item.ADDR: error, a SEG wont fit in a BYTE\n"));
-                    EmitError(MAGNITUDE_TOO_LARGE_FOR_SPECIFIED_SIZE);
-                }
-                fixup_type = FIX_SEG;
-                break;
-            case T_OFFSET:
-                switch (no_of_bytes)
-                {
-                case 1:
-                    /* forward reference? */
-                    if (Parse_Pass == PASS_1 && opndx.sym && opndx.sym->state == SYM_UNDEFINED)
-                    {
-                        DebugMsg(("data_item.ADDR: forward reference + OFFSET operator + DB -> may become error in Pass 2\n"));
-                        fixup_type = FIX_VOID; /* v2.10: was regression in v2.09 */
-                    }
-                    else
-                    {
-                        DebugMsg(("data_item.ADDR: error, an offset wont fit in a BYTE\n"));
-                        EmitError(OFFSET_MAGNITUDE_TOO_LARGE);
-                        fixup_type = FIX_OFF8;
-                    }
-                    break;
-                case 2:
-                    fixup_type = FIX_OFF16;
-                    break;
-#if AMD64_SUPPORT
-                case 8:
-                    if (ModuleInfo.Ofssize == USE64)
-                    {
-                        fixup_type = FIX_OFF64;
-                        break;
-                    }
-#endif
-                default:
-                    if (opndx.sym && (GetSymOfssize(opndx.sym) == USE16))
-                        fixup_type = FIX_OFF16;
-                    else
-                        fixup_type = FIX_OFF32;
-                    break;
-                }
-                break;
-#if IMAGERELSUPP
-            case T_IMAGEREL:
-                if (no_of_bytes < sizeof(uint_32))
-                {
-                    DebugMsg(("data_item.ADDR: IMAGEREL, error, size=%u (should be 4)\n", no_of_bytes));
-                    EmitError(OFFSET_MAGNITUDE_TOO_LARGE);
-                }
-                fixup_type = FIX_OFF32_IMGREL;
-                break;
-#endif
-#if SECTIONRELSUPP
-            case T_SECTIONREL:
-                if (no_of_bytes < sizeof(uint_32))
-                {
-                    DebugMsg(("data_item.ADDR: SECTIONREL, error, size=%u (should be 4)\n", no_of_bytes));
-                    EmitError(OFFSET_MAGNITUDE_TOO_LARGE);
-                }
-                fixup_type = FIX_OFF32_SECREL;
-                break;
-#endif
-            case T_LOW:
-                fixup_type = FIX_OFF8; /* OMF, BIN + GNU-ELF only */
-                break;
-            case T_HIGH:
-                DebugMsg(("data_item.ADDR: HIGH detected\n"));
-                fixup_type = FIX_HIBYTE; /* OMF only */
-                break;
-            case T_LOWWORD:
-                fixup_type = FIX_OFF16;
-                if (no_of_bytes < 2)
-                {
-                    EmitError(MAGNITUDE_TOO_LARGE_FOR_SPECIFIED_SIZE);
-                    break;
-                }
-                break;
-#if LOHI32
-            case T_HIGH32:
-                /* no break */
-#endif
-            case T_HIGHWORD:
-                fixup_type = FIX_VOID;
-                EmitError(CONSTANT_EXPECTED);
-                break;
-#if LOHI32
-            case T_LOW32:
-                fixup_type = FIX_OFF32;
-                if (no_of_bytes < 4)
-                {
-                    EmitError(MAGNITUDE_TOO_LARGE_FOR_SPECIFIED_SIZE);
-                    break;
-                }
-                break;
-#endif
-            default:
-                /* size < 2 can work with T_LOW|T_HIGH operator only */
-                if (no_of_bytes < 2)
-                {
-                    /* forward reference? */
-                    if (Parse_Pass == PASS_1 && opndx.sym && opndx.sym->state == SYM_UNDEFINED)
-                        ;
-                    else
-                    {
-                        /* v2.08: accept 1-byte absolute externals */
-                        if (opndx.sym && opndx.sym->state == SYM_EXTERNAL && opndx.is_abs == TRUE)
-                        {
-                        }
-                        else
-                        {
-                            DebugMsg(("data_item.ADDR: error, no of bytes=%u\n", no_of_bytes));
-                            EmitError(MAGNITUDE_TOO_LARGE_FOR_SPECIFIED_SIZE);
-                        }
-                        fixup_type = FIX_OFF8;
-                        break;
-                    }
-                }
-                /* if the symbol references a segment or group,
-                 then generate a segment fixup.
-                 */
-                if (opndx.sym && (opndx.sym->state == SYM_SEG || opndx.sym->state == SYM_GRP))
-                {
-                    fixup_type = FIX_SEG;
-                    break;
-                }
-
-                switch (no_of_bytes)
-                {
-                case 2:
-                    /* accept "near16" override, else complain
-                     * if symbol's offset is 32bit */
-                     /* v2.06: if condition changed */
-                     //if ( opndx.explicit == TRUE && opndx.mem_type == MT_NEAR && opndx.Ofssize == USE16 )
-                    if (opndx.explicit == TRUE)
-                    {
-                        if (SizeFromMemtype(opndx.mem_type, opndx.Ofssize, opndx.type) > no_of_bytes)
-                        {
-                            DebugMsg(("data_item.ADDR: error, memtype %X wont fit in a WORD\n", opndx.mem_type));
-                            EmitErr(INITIALIZER_MAGNITUDE_TOO_LARGE, opndx.sym?opndx.sym->name:"");
-                        };
-                    }
-                    else if (opndx.sym && opndx.sym->state == SYM_EXTERNAL && opndx.is_abs == TRUE)
-                    {
-                        /* v2.07a: accept ABSolute externals (regression in v2.07) */
-                    }
-                    else if (opndx.sym &&
-                             opndx.sym->state != SYM_UNDEFINED &&
-                             (GetSymOfssize(opndx.sym) > USE16))
-                    {
-                        DebugMsg(("data_item.ADDR: error, a 32bit offset (%s) wont fit in a WORD\n", opndx.sym->name));
-                        EmitErr(INITIALIZER_MAGNITUDE_TOO_LARGE, opndx.sym?opndx.sym->name:"");
-                    }
-                    fixup_type = FIX_OFF16;
-                    break;
-                case 4:
-                    /* masm generates:
-                     * off32 if curr segment is 32bit,
-                     * ptr16 if curr segment is 16bit,
-                     * and ignores type overrides.
-                     * if it's a NEAR external, size is 16, and
-                     * format isn't OMF, error 'symbol type conflict'
-                     * is displayed
-                     */
-                    if (opndx.explicit == TRUE)
-                    {
-                        if (opndx.mem_type == MT_FAR)
-                        {
-                            if (opndx.Ofssize != USE_EMPTY && opndx.Ofssize != USE16)
-                            {
-                                DebugMsg(("data_item.ADDR: error, FAR32 won't fit in a DWORD\n"));
-                                EmitErr(INITIALIZER_MAGNITUDE_TOO_LARGE, opndx.sym?opndx.sym->name:"");
-                            }
-                            fixup_type = FIX_PTR16;
-                        }
-                        else if (opndx.mem_type == MT_NEAR)
-                        {
-                            if (opndx.Ofssize == USE16)
-                                fixup_type = FIX_OFF16;
-                            else if (opndx.sym && (GetSymOfssize(opndx.sym) == USE16))
-                                fixup_type = FIX_OFF16;
-                            else
-                                fixup_type = FIX_OFF32;
-                        }
-                    }
-                    else
-                    {
-                        /* what's done if code size is 16 is Masm-compatible.
-                         * It's not very smart, however.
-                         * A better strategy is to choose fixup type depending
-                         * on the symbol's offset size.
-                         */
-                         //if ( opndx.sym && ( GetSymOfssize( opndx.sym ) == USE16 ) )
-                        if (ModuleInfo.Ofssize == USE16)
-#if COFF_SUPPORT || ELF_SUPPORT
-                            if (opndx.mem_type == MT_NEAR &&
-                                (Options.output_format == OFORMAT_COFF
-#if ELF_SUPPORT
-                                || Options.output_format == OFORMAT_ELF
-#endif
-                                ))
-                            {
-                                fixup_type = FIX_OFF16;
-                                EmitErr(SYMBOL_TYPE_CONFLICT, sym->name);
-                            }
-                            else
-#endif
-                                fixup_type = FIX_PTR16;
-                        else
-                            fixup_type = FIX_OFF32;
-                    }
-                    break;
-                case 6:
-                    /* Masm generates a PTR32 fixup in OMF!
-                     * and a DIR32 fixup in COFF.
-                     */
-                     /* COFF/ELF has no far fixups */
-#if COFF_SUPPORT || ELF_SUPPORT
-                    if (Options.output_format == OFORMAT_COFF
-#if ELF_SUPPORT
-                        || Options.output_format == OFORMAT_ELF
-#endif
-                        )
-                    {
-                        fixup_type = FIX_OFF32;
-                    }
-                    else
-#endif
-                        fixup_type = FIX_PTR32;
-                    break;
-                default:
-                    /* Masm generates
-                     * off32 if curr segment is 32bit
-                     * ptr16 if curr segment is 16bit
-                     * Uasm additionally accepts a FAR32 PTR override
-                     * and generates a ptr32 fixup then */
-                    if (opndx.explicit == TRUE && opndx.mem_type == MT_FAR && opndx.Ofssize == USE32)
-                        fixup_type = FIX_PTR32;
-                    else if (ModuleInfo.Ofssize == USE32)
-                        fixup_type = FIX_OFF32;
-#if AMD64_SUPPORT
-                    else if (ModuleInfo.Ofssize == USE64)
-                        fixup_type = FIX_OFF64;
-#endif
-                    else
-                        fixup_type = FIX_PTR16;
-                }
-                break;
-            } /* end switch ( opndx.instr ) */
-
-            /* v2.07: fixup type check moved here */
-            if ((1 << fixup_type) & ModuleInfo.fmtopt->invalid_fixup_type)
-            {
-                return(EmitErr(UNSUPPORTED_FIXUP_TYPE,
-                       ModuleInfo.fmtopt->formatname,
-                       opndx.sym?opndx.sym->name:szNull));
-            }
-            fixup = NULL;
-            if (write_to_file)
-            {
-                /* there might be a segment override:
-                 * a segment, a group or a segment register.
-                 * Init var SegOverride, it's used inside set_frame()
-                 */
-                SegOverride = NULL;
-                segm_override(&opndx, NULL);
-
-                /* set global vars Frame and Frame_Datum */
-                /* opndx.sym may be NULL, then SegOverride is set. */
-                if (ModuleInfo.offsettype == OT_SEGMENT &&
-                    (opndx.instr == T_OFFSET || opndx.instr == T_SEG))
-                    set_frame2(opndx.sym);
-                else
-                    set_frame(opndx.sym);
-                /* uses Frame and Frame_Datum  */
-                fixup = CreateFixup(opndx.sym, fixup_type, OPTJ_NONE);
-                //store_fixup( fixup, &opndx.value ); /* may fail, but ignore error! */
-            }
-            OutputBytes((unsigned char*)&opndx.value, no_of_bytes, fixup);
-            break;
-        case EXPR_REG:
-            EmitError(INVALID_USE_OF_REGISTER);
-            break;
-        default: /* unknown opndx.kind, shouldn't happen */
-            DebugMsg(("data_item: error, opndx.kind=%u\n", opndx.kind));
-            return(EmitError(SYNTAX_ERROR));
+            default: /* unknown opndx.kind, shouldn't happen */
+                DebugMsg(("data_item: error, opndx.kind=%u\n", opndx.kind));
+                return(EmitError(SYNTAX_ERROR));
         } /* end switch (opndx.kind) */
     item_done:
         if (sym && first && Parse_Pass == PASS_1)
@@ -1438,13 +1438,13 @@ ret_code data_dir(int i, struct asm_tok tokenarray[], struct asym* type_sym)
 /****************************************************************************/
 {
     uint_32             no_of_bytes;
-    struct asym* sym = NULL;
+    struct asym*        sym = NULL;
     uint_32             old_offset;
     uint_32             currofs; /* for LST output */
     enum memtype        mem_type;
     bool                is_float = FALSE;
     int                 idx;
-    char* name;
+    char*               name;
 
     struct dsym* symtype = ((struct dsym*)type_sym);
     struct sfield* f;
@@ -1455,7 +1455,7 @@ ret_code data_dir(int i, struct asm_tok tokenarray[], struct asym* type_sym)
     uint_32 subcnt = 0;
     uint_32 k = 0;
 
-    DebugMsg1(("data_dir( i=%u, type=%s ) enter\n", i, type_sym?type_sym->name:"NULL"));
+    DebugMsg1(("data_dir( i=%u, type=%s ) enter\n", i, type_sym ? type_sym->name : "NULL"));
 
     /* v2.05: the previous test in parser.c wasn't fool-proofed */
     if (i > 1 && ModuleInfo.m510 == FALSE)
@@ -1538,7 +1538,7 @@ ret_code data_dir(int i, struct asm_tok tokenarray[], struct asym* type_sym)
      * (note: if -Zm is set, a code label may be at pos 0, and
      * i is 2 then.)
      */
-    name = ((i == 1)?tokenarray[0].string_ptr:NULL);
+    name = ((i == 1) ? tokenarray[0].string_ptr : NULL);
 
     /* in a struct declaration? */
     if (CurrStruct)
@@ -1554,7 +1554,10 @@ ret_code data_dir(int i, struct asm_tok tokenarray[], struct asym* type_sym)
                 return (ERROR);
             }
 #if FASTPASS
-            if (StoreState) {FStoreLine(0);}
+            if (StoreState)
+            {
+                FStoreLine(0);
+            }
 #endif
             currofs = sym->offset;
             sym->isdata = TRUE; /* 'first_size' is valid */
@@ -1748,12 +1751,12 @@ ret_code data_dir(int i, struct asm_tok tokenarray[], struct asym* type_sym)
         UpdateStructSize(sym);
 
     if (ModuleInfo.list)
-        LstWrite(CurrStruct?LSTTYPE_STRUCT:LSTTYPE_DATA, currofs, sym);
+        LstWrite(CurrStruct ? LSTTYPE_STRUCT : LSTTYPE_DATA, currofs, sym);
 
     DebugMsg1(("data_dir: exit, no error, label=%s, is_array=%u Curr%s.ofs=%X\n",
-              sym?sym->name:"NULL",
-              sym?sym->isarray:0,
-              CurrStruct?"Struct":"Seg",
-              CurrStruct?CurrStruct->sym.offset:CurrSeg->sym.offset));
+              sym ? sym->name : "NULL",
+              sym ? sym->isarray : 0,
+              CurrStruct ? "Struct" : "Seg",
+              CurrStruct ? CurrStruct->sym.offset : CurrSeg->sym.offset));
     return(NOT_ERROR);
 }

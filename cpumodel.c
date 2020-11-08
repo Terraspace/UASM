@@ -139,7 +139,7 @@ void SetModel(void)
 /**************************/
 {
     int         value;
-    const char* textvalue;
+    char* textvalue;
 
     DebugMsg1(("SetModel() enter (model=%u)\n", ModuleInfo.model));
     /* if model is set, it disables OT_SEGMENT of -Zm switch */
@@ -215,11 +215,11 @@ void SetModel(void)
     }
     sym_DataSize = AddPredefinedConstant("@DataSize", value);
 
-    textvalue = (ModuleInfo.model == MODEL_FLAT?"FLAT":szDgroup);
+    textvalue = (char*)(ModuleInfo.model == MODEL_FLAT?"FLAT":szDgroup);
     AddPredefinedText("@data", textvalue);
 
     if (ModuleInfo.distance == STACK_FAR)
-        textvalue = "STACK";
+        textvalue = (char*)"STACK";
     AddPredefinedText("@stack", textvalue);
 
     /* Default this to null so it can be checked for */
@@ -471,7 +471,9 @@ ret_code SetCPU(enum cpu_info newcpu)
         }
         else
 #endif
-            {SetDefaultOfssize(((ModuleInfo.curr_cpu & P_CPU_MASK) >= P_386)?USE32:USE16);}
+        {
+            SetDefaultOfssize(((ModuleInfo.curr_cpu & P_CPU_MASK) >= P_386)?USE32:USE16);
+        }
     }
 
     /* Set @Cpu */
@@ -534,8 +536,7 @@ ret_code CpuDirective(int i, struct asm_tok tokenarray[])
     else
         newcpu = GetSflagsSp(tokenarray[i].tokval);
 
-    if (tokenarray[i].tokval == T_DOT_X64 ||
-        tokenarray[i].tokval == T_DOT_AMD64)
+    if (tokenarray[i].tokval == T_DOT_X64 || tokenarray[i].tokval == T_DOT_AMD64)
     {
         if (tokenarray[i + 1].token == T_COLON)
         {
@@ -545,10 +546,10 @@ ret_code CpuDirective(int i, struct asm_tok tokenarray[])
             else
                 SetWin64(&x, tokenarray);
         }
-}
+    }
 
 #if DOT_XMMARG
-    if (tokenarray[i].tokval == T_DOT_XMM && tokenarray[i + 1].token == T_FINAL)
+    if (tokenarray[i].tokval == T_DOT_XMM && tokenarray[i + 1].token != T_FINAL)
     {
         struct expr opndx;
         i++;

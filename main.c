@@ -46,6 +46,12 @@ void tm_Init(void);
 void tm_Fini(void);
 #endif
 
+#if CATCHBREAK
+#ifndef SIGBREAK
+#define SIGBREAK SIGINT
+#endif
+#endif
+
 static void genfailure(int signo)
 /*********************************/
 {
@@ -83,7 +89,7 @@ int main(int argc, char** argv)
     for (i = 1; i < argc; i++)
     {
         printf("argv[%u]=>%s<\n", i, argv[i]);
-}
+    }
 #endif
 
 #ifdef TRMEM
@@ -116,7 +122,7 @@ int main(int argc, char** argv)
 #endif
 
     /* ParseCmdLine() returns NULL if no source file name has been found (anymore) */
-    while (ParseCmdline((const char**)argv, &numArgs))
+    while (ParseCmdline((char**)argv, &numArgs))
     {
         numFiles++;
         write_logo();
@@ -136,9 +142,9 @@ int main(int argc, char** argv)
             strcpy(&fname[dirsize], finfo.name);
             DebugMsg(("main: fname=%s\n", fname));
             rc = AssembleModule(fname);  /* assemble 1 module */
-    }
+        }
         while ((_findnext(fh, &finfo) != -1));
-    _findclose(fh);
+        _findclose(fh);
 #else
         rc = AssembleModule(Options.names[ASM]);
 #endif

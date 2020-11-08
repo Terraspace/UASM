@@ -172,11 +172,11 @@ char* DefaultDir[NUM_FILE_TYPES] = { NULL, NULL, NULL, NULL };
 
 #define MAX_RSP_NESTING 15  /* nesting of response files */
 
-static unsigned         OptValue;  /* value of option's numeric argument  */
-static char* OptName;  /* value of option's name argument     */
-static const char* cmdsave[MAX_RSP_NESTING]; /* response files */
-static const char* cmdbuffers[MAX_RSP_NESTING]; /* response files */
-static int              rspidx = 0; /* response file level */
+static unsigned         OptValue;                   /* value of option's numeric argument  */
+static char*            OptName;                    /* value of option's name argument     */
+static char*            cmdsave[MAX_RSP_NESTING];   /* response files */
+static char*            cmdbuffers[MAX_RSP_NESTING]; /* response files */
+static int              rspidx = 0;                 /* response file level */
 
 /* array for options -0 ... -10 */
 static const enum cpu_info cpuoption[] = {
@@ -268,7 +268,7 @@ static void SetCpuCmdline(enum cpu_info value, const char* parm)
             if (Options.names[OPTN_DEFNAME_MANGLER] != NULL)
             {
                 MemFree(Options.names[OPTN_DEFNAME_MANGLER);
-}
+            }
             Options.names[OPTN_DEFNAME_MANGLER = MemAlloc(dest - parm + 1);
             dest = Options.names[OPTN_DEFNAME_MANGLER];
             for (; *parm != '"'; dest++, parm++)
@@ -319,12 +319,12 @@ static void get_fname(int type, const char* token)
  * v2.12: _splitpath()/_makepath() removed.
  */
 {
-    const char* pName;
+    char*       pName;
     char        name[FILENAME_MAX];
 
     DebugMsg(("get_fname( type=%u, >%s< ) enter\n", type, token));
     //_splitpath( token, drive, dir, fname, ext );
-    pName = GetFNamePart(token);
+    pName = (char*)GetFNamePart(token);
     /*
      * If name's ending with a '\' (or '/' in Unix), it's supposed
      * to be a directory name only.
@@ -370,7 +370,7 @@ static void get_fname(int type, const char* token)
     }
     Options.names[type] = MemAlloc(strlen(name) + 1);
     strcpy(Options.names[type], name);
-        }
+}
 
 static void set_option_n_name(int idx, const char* name)
 /********************************************************/
@@ -393,7 +393,7 @@ static void set_option_n_name(int idx, const char* name)
     }
     Options.names[idx] = MemAlloc(strlen(name) + 1);
     strcpy(Options.names[idx], name);
-    }
+}
 
 //static void OPTQUAL Ignore( void ) {};
 
@@ -577,7 +577,7 @@ static void OPTQUAL Set_True(void)
 static void OPTQUAL Set_m(void)
 {
     Options.model = OptValue;
-    }
+}
 static void OPTQUAL Set_n(void)
 {
     set_option_n_name(OptValue, OptName);
@@ -623,12 +623,12 @@ static void OPTQUAL Set_ofmt(void)
     }
     if (Options.output_format == OFORMAT_ELF && Options.sub_format == SFORMAT_64BIT)
     {
-        ModuleInfo.langtype = LANG_SYSVCALL;
+        Options.langtype = LANG_SYSVCALL;
         ModuleInfo.frame_auto = 1;
     }
     if (Options.output_format == OFORMAT_MAC && Options.sub_format == SFORMAT_64BIT)
     {
-        ModuleInfo.langtype = LANG_SYSVCALL;
+        Options.langtype = LANG_SYSVCALL;
         ModuleInfo.frame_auto = 1;
     }
 }
@@ -663,7 +663,7 @@ static void OPTQUAL Set_zr(void)
 static void OPTQUAL Set_zv(void)
 {
     Options.vectorcall_decoration = OptValue;
-    }
+}
 
 static void OPTQUAL Set_ze(void)
 {
@@ -940,8 +940,8 @@ is_quote:
                 ++str;
             }
             *dst++ = *str++;
+        }
     }
-}
     else
     {
         for (; max; max--)
@@ -997,7 +997,7 @@ static char* ReadParamFile(const char* name)
         //EmitErr( CANNOT_OPEN_FILE, name, ErrnoStr() );
         Fatal(CANNOT_OPEN_FILE, name, ErrnoStr());
         return(NULL);
-}
+    }
     len = 0;
     if (fseek(file, 0, SEEK_END) == 0)
     {
@@ -1037,11 +1037,11 @@ static char* ReadParamFile(const char* name)
 
 /* current cmdline string is done, get the next one! */
 
-static const char* getnextcmdstring(const char** cmdline)
+static const char* getnextcmdstring(char** cmdline)
 /*********************************************************/
 {
-    const char** src;
-    const char** dst;
+    char** src;
+    char** dst;
 
     /* something onto the response file stack? */
     if (rspidx)
@@ -1074,13 +1074,13 @@ static const char* GetNumber(const char* p)
 
 /* scan option table and if option is known, process it */
 
-static void ProcessOption(const char** cmdline, char* buffer)
+static void ProcessOption(char** cmdline, char* buffer)
 /*************************************************************/
 {
     int   i;
     int   j;
-    const char* p = *cmdline;
-    const char* opt;
+    char* p = *cmdline;
+    char* opt;
     //char  c;
 
     DebugMsg(("ProcessOption(%s)\n", p));
@@ -1090,15 +1090,15 @@ static void ProcessOption(const char** cmdline, char* buffer)
      */
     if (*p >= '0' && *p <= '9')
     {
-        p = GetNumber(p);
+        p = (char*)GetNumber(p);
         if (OptValue < sizeof(cpuoption) / sizeof(cpuoption[0]))
         {
-            p = GetNameToken(buffer, p, 16, 0); /* get optional 'p' */
+            p = (char*)GetNameToken(buffer, p, 16, 0); /* get optional 'p' */
             *cmdline = p;
             SetCpuCmdline(cpuoption[OptValue], buffer);
             return;
         }
-        p = *cmdline; /* v2.11: restore option pointer */
+        p = (char*)*cmdline; /* v2.11: restore option pointer */
     }
     for (i = 0; i < (sizeof(cmdl_options) / sizeof(cmdl_options[0])); i++)
     {
@@ -1126,14 +1126,14 @@ static void ProcessOption(const char** cmdline, char* buffer)
                     break;
                 case '#':             /* collect a number */
                     if (*p >= '0' && *p <= '9')
-                        p = GetNumber(p);
+                        p = (char*)GetNumber(p);
                     break;
                 case '$':      /* collect an identifer+value */
                 case '@':      /* collect a filename */
                     OptName = buffer;
 #if 0  /* v2.05: removed */
                     if (rspidx)
-                        p = GetNameToken(buffer, p, FILENAME_MAX - 1, *opt);
+                        p = (char*)GetNameToken(buffer, p, FILENAME_MAX - 1, *opt);
                     else
                     {
                         j = strlen(p);
@@ -1142,7 +1142,7 @@ static void ProcessOption(const char** cmdline, char* buffer)
                     }
 #else
                     /* v2.10: spaces in filename now handled inside GetNameToken() */
-                    p = GetNameToken(buffer, p, FILENAME_MAX - 1, *opt);
+                    p = (char*)GetNameToken(buffer, p, FILENAME_MAX - 1, *opt);
 #endif
                     break;
                 case '=':    /* collect an optional '=' */
@@ -1153,13 +1153,13 @@ static void ProcessOption(const char** cmdline, char* buffer)
                     while (isspace(*p)) p++;
                     if (*p == NULLC)
                     {
-                        p = getnextcmdstring(cmdline);
+                        p = (char*)getnextcmdstring(cmdline);
                         if (p == NULL)
                         {
                             EmitWarn(1, MISSING_ARGUMENT_FOR_CMDLINE_OPTION);
                             return;
                         }
-                }
+                    }
                     break;
                 default:
                     /* internal error: unknown format of option item! */
@@ -1169,12 +1169,12 @@ static void ProcessOption(const char** cmdline, char* buffer)
                 }
             }
         }
-            }
+    }
 opt_error_exit:
     EmitWarn(1, INVALID_CMDLINE_OPTION, *cmdline - 1);
     *cmdline = "";
     return;
-        }
+}
 
 #if BUILD_TARGET
 
@@ -1235,11 +1235,11 @@ static void set_default_build_target(void)
  * - handle (nested) response files
  */
 
-char* EXPQUAL ParseCmdline(const char** cmdline, int* pCntArgs)
+char* EXPQUAL ParseCmdline(char** cmdline, int* pCntArgs)
 /****************************************************************/
 {
     int i;
-    const char* str = *cmdline;
+    char* str = *cmdline;
     char paramfile[FILENAME_MAX];
 
     for (i = 0; i < NUM_FILE_TYPES; i++)
@@ -1261,7 +1261,7 @@ char* EXPQUAL ParseCmdline(const char** cmdline, int* pCntArgs)
             str++;
             break;
         case NULLC:
-            str = getnextcmdstring(cmdline);
+            str = (char*)getnextcmdstring(cmdline);
             break;
         case '-':
 #if SWITCHCHAR
@@ -1285,7 +1285,7 @@ char* EXPQUAL ParseCmdline(const char** cmdline, int* pCntArgs)
             /* todo: might be unnecessary since v.2.10, since GetNameToken() handles spaces inside filenames differently */
             if (rspidx)
             {
-                cmdsave[rspidx] = GetNameToken(paramfile, str, sizeof(paramfile) - 1, '@');
+                cmdsave[rspidx] = (char*)GetNameToken(paramfile, str, sizeof(paramfile) - 1, '@');
             }
             else
             {
@@ -1318,7 +1318,7 @@ char* EXPQUAL ParseCmdline(const char** cmdline, int* pCntArgs)
 #if 1 /* v2.06: activated (was removed in v2.05). Needed for quoted filenames */
             if (rspidx)
             {
-                str = GetNameToken(paramfile, str, sizeof(paramfile) - 1, '@');
+                str = (char*)GetNameToken(paramfile, str, sizeof(paramfile) - 1, '@');
                 get_fname(OPTN_ASM_FN, paramfile);
             }
             else

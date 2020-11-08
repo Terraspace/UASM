@@ -900,6 +900,7 @@ struct module_info {
     unsigned            EndDirFound : 1;
 #if AMD64_SUPPORT
     unsigned            frame_auto : 1;    /* win64 only */
+    unsigned            noframe : 1;    /* win64 only */
 #endif
     unsigned            NoSignExtend : 1;  /* option nosignextend */
     unsigned            switch_style : 1;

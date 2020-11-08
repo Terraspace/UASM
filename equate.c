@@ -124,9 +124,9 @@ static void SetValue(struct asym* sym, struct expr* opndx)
             BackPatch(sym);
         }
 #endif
-            }
-    return;
     }
+    return;
+}
 
 /* the '=' directive defines an assembly time variable.
  * this can only be a number (constant or relocatable).
@@ -183,7 +183,7 @@ static struct asym* CreateAssemblyTimeVariable(struct asm_tok tokenarray[])
             ((opnd.kind != EXPR_ADDR || opnd.indirect == TRUE) ||
             (opnd.sym != NULL && opnd.sym->state != SYM_INTERNAL)))
         {
-            DebugMsg(("CreateAssemblyTimeVariable(%s) kind=%u sym=%p state=%u\n", name, opnd.kind, opnd.sym, opnd.sym?opnd.sym->state:0));
+            DebugMsg(("CreateAssemblyTimeVariable(%s) kind=%u sym=%p state=%u\n", name, opnd.kind, opnd.sym, opnd.sym ? opnd.sym->state : 0));
             /* v2.09: no error if argument is a forward reference,
              * but don't create the variable either. Will enforce an
              * error if referenced symbol is still undefined in pass 2.
@@ -191,7 +191,10 @@ static struct asym* CreateAssemblyTimeVariable(struct asm_tok tokenarray[])
             if (opnd.sym && opnd.sym->state == SYM_UNDEFINED && opnd.indirect == FALSE)
             {
 #if FASTPASS
-                if (StoreState == FALSE) {FStoreLine(0);} /* make sure this line is evaluated in pass two */
+                if (StoreState == FALSE)
+                {
+                    FStoreLine(0);
+                } /* make sure this line is evaluated in pass two */
 #endif
             }
             else
@@ -257,7 +260,7 @@ static struct asym* CreateAssemblyTimeVariable(struct asm_tok tokenarray[])
             SaveVariableState(sym);
         }
 #endif
-        }
+    }
 
     sym->variable = TRUE;
 
@@ -286,7 +289,7 @@ static struct asym* CreateAssemblyTimeVariable(struct asm_tok tokenarray[])
 
     DebugMsg1(("CreateAssemblyTimeVariable(%s) memtype=%Xh value=%d\n", name, sym->mem_type, sym->value));
     return(sym);
-    }
+}
 
 /* '=' directive.*/
 
@@ -384,17 +387,17 @@ struct asym* CreateVariable(const char* name, int value)
 struct asym* CreateConstant(struct asm_tok tokenarray[])
     /********************************************************/
 {
-    struct asym* sym;
-    struct asym* symA;
+    struct asym*        sym;
+    struct asym*        symA;
     char                retok[MAX_LINE_LEN];
-    char* p2 = retok;
-    char* pSrc;
+    char*               p2 = retok;
+    char*               pSrc;
     struct asm_tok      tokenarray2[32];
-    const char* name = tokenarray[0].string_ptr;
+    const char*         name = tokenarray[0].string_ptr;
     int                 i = 2;
     /*int                 j;*/
     ret_code            rc;
-    char* p;
+    char*               p;
     bool                cmpvalue = FALSE;
     struct expr         opnd;
     char                argbuffer[MAX_LINE_LEN];
@@ -586,7 +589,7 @@ struct asym* CreateConstant(struct asm_tok tokenarray[])
         sym->variable = FALSE;
         SetValue(sym, &opnd);
         DebugMsg1(("CreateConstant(%s): memtype=%Xh value=%" I64_SPEC "X isproc=%u variable=%u type=%s\n",
-                  name, sym->mem_type, (uint_64)sym->value + ((uint_64)sym->value3264 << 32), sym->isproc, sym->variable, sym->type?sym->type->name:"NULL"));
+                  name, sym->mem_type, (uint_64)sym->value + ((uint_64)sym->value3264 << 32), sym->isproc, sym->variable, sym->type ? sym->type->name : "NULL"));
         return(sym);
     }
     DebugMsg1(("CreateConstant(%s): calling SetTextMacro() [MI.Ofssize=%u]\n", name, ModuleInfo.Ofssize));

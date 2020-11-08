@@ -98,14 +98,14 @@ UINT_PTR UTF8toWideChar(const unsigned char* pSource, UINT_PTR nSourceLen, UINT_
 
 UINT_PTR UTF8toWideChar(const unsigned char* pSource, UINT_PTR nSourceLen, UINT_PTR* nSourceDone, unsigned short* szTarget, UINT_PTR nTargetMax)
 {
-    static const unsigned int lpOffsetsFromUTF8[6] = { 0x00000000, 0x00003080, 0x000E2080, 0x03C82080, 0xFA082080, 0x82082080 };
-    const unsigned char* pSrc = pSource;
-    const unsigned char* pSrcEnd = pSource + nSourceLen;
-    const unsigned char* pSrcDone = pSource;
-    unsigned short* pDst;
-    unsigned short* pDstEnd;
-    unsigned long nChar;
-    unsigned int nTrailing;
+    static const unsigned int   lpOffsetsFromUTF8[6] = { 0x00000000, 0x00003080, 0x000E2080, 0x03C82080, 0xFA082080, 0x82082080 };
+    unsigned char*              pSrc = (unsigned char*)pSource;
+    unsigned char*              pSrcEnd = (unsigned char*)pSource + nSourceLen;
+    unsigned char*              pSrcDone = (unsigned char*)pSource;
+    unsigned short*             pDst;
+    unsigned short*             pDstEnd;
+    unsigned long               nChar;
+    unsigned int                nTrailing;
 
     if (!szTarget && !nTargetMax)
     {
@@ -157,25 +157,25 @@ UINT_PTR UTF8toWideChar(const unsigned char* pSource, UINT_PTR nSourceLen, UINT_
 
         switch (nTrailing)
         {
-        case 3:
-        {
-            nChar += *pSrc++;
-            nChar = nChar << 6;
-        }
-        case 2:
-        {
-            nChar += *pSrc++;
-            nChar = nChar << 6;
-        }
-        case 1:
-        {
-            nChar += *pSrc++;
-            nChar = nChar << 6;
-        }
-        case 0:
-        {
-            nChar += *pSrc++;
-        }
+            case 3:
+            {
+                nChar += *pSrc++;
+                nChar = nChar << 6;
+            }
+            case 2:
+            {
+                nChar += *pSrc++;
+                nChar = nChar << 6;
+            }
+            case 1:
+            {
+                nChar += *pSrc++;
+                nChar = nChar << 6;
+            }
+            case 0:
+            {
+                nChar += *pSrc++;
+            }
         }
         nChar -= lpOffsetsFromUTF8[nTrailing];
 
@@ -235,9 +235,9 @@ int TextItemError(struct asm_tok* item)
 ret_code CatStrDir(int i, struct asm_tok tokenarray[])
 /******************************************************/
 {
-    struct asym* sym;
-    int count;
-    char* p;
+    struct asym*        sym;
+    int                 count;
+    char*               p;
     /* struct expr opndx; */
 
     DebugMsg1(("CatStrDir(%u) enter\n", i));
@@ -455,9 +455,9 @@ struct asym* AddPredefinedText(const char* name, const char* value)
 ret_code SubStrDir(int i, struct asm_tok tokenarray[])
 /******************************************************/
 {
-    struct asym* sym;
-    char* name;
-    char* p;
+    struct asym*        sym;
+    char*               name;
+    char*               p;
     //char                *newvalue;
     int                 pos;
     int                 size;
@@ -659,7 +659,7 @@ ret_code SizeStrDir(int i, struct asm_tok tokenarray[])
 /*******************************************************/
 {
     struct asym* sym;
-    int sizestr;
+    int         sizestr;
 
     DebugMsg1(("SizeStrDir entry\n"));
     DebugCmd(sizstrcnt++);
@@ -704,17 +704,17 @@ ret_code SizeStrDir(int i, struct asm_tok tokenarray[])
 ret_code InStrDir(int i, struct asm_tok tokenarray[])
 /*****************************************************/
 {
-    struct asym* sym;
-    int sizestr;
-    int j;
-    /* int commas; */
-    char* src;
-    char* p;
-    char* q;
-    char* string1;
-    struct expr opndx;
-    int start = 1;
-    int strpos;
+    struct asym*    sym;
+    int             sizestr;
+    int             j;
+    /* int            commas; */
+    char*           src;
+    char*           p;
+    char*           q;
+    char*           string1;
+    struct expr     opndx;
+    int             start = 1;
+    int             strpos;
 
     DebugMsg1(("InStrDir entry\n"));
     DebugCmd(instrcnt++);
@@ -823,12 +823,12 @@ static ret_code CatStrFunc(struct macro_instance* mi, char* buffer, struct asm_t
 /************************************************************************************************/
 {
 #ifdef DEBUG_OUT
-    int cnt = 0;
+    int         cnt = 0;
 #endif
-    size_t i;
-    char* p;
+    size_t      i;
+    char*       p;
 
-    DebugMsg1(("@CatStr( %s )\n", mi->parm_array[0]?mi->parm_array[0]:"NULL"));
+    DebugMsg1(("@CatStr( %s )\n", mi->parm_array[0] ? mi->parm_array[0] : "NULL"));
 
     for (p = mi->parm_array[0]; mi->parmcnt; mi->parmcnt--)
     {
@@ -850,9 +850,9 @@ static ret_code CatStrFunc(struct macro_instance* mi, char* buffer, struct asm_t
 static ret_code GetNumber(char* string, int* pi, struct asm_tok tokenarray[])
 /*****************************************************************************/
 {
-    struct expr opndx;
-    int i;
-    int last;
+    struct expr     opndx;
+    int             i;
+    int             last;
 
     last = Tokenize(string, Token_Count + 1, tokenarray, TOK_RESCAN);
     i = Token_Count + 1;
@@ -877,14 +877,14 @@ static ret_code GetNumber(char* string, int* pi, struct asm_tok tokenarray[])
 static ret_code InStrFunc(struct macro_instance* mi, char* buffer, struct asm_tok tokenarray[])
 /***********************************************************************************************/
 {
-    int pos = 1;
-    char* p;
-    uint_32 found;
+    int         pos = 1;
+    char*       p;
+    uint_32     found;
 
     DebugMsg1(("@InStr( %s, %s, %s)\n",
-              mi->parm_array[0]?mi->parm_array[0]:"",
-              mi->parm_array[1]?mi->parm_array[1]:"",
-              mi->parm_array[2]?mi->parm_array[2]:""));
+              mi->parm_array[0] ? mi->parm_array[0] : "",
+              mi->parm_array[1] ? mi->parm_array[1] : "",
+              mi->parm_array[2] ? mi->parm_array[2] : ""));
 
     /* init buffer with "0" */
     *buffer = '0';
@@ -930,7 +930,7 @@ static ret_code InStrFunc(struct macro_instance* mi, char* buffer, struct asm_to
 static ret_code SizeStrFunc(struct macro_instance* mi, char* buffer, struct asm_tok tokenarray[])
 /*************************************************************************************************/
 {
-    DebugMsg1(("@SizeStr(%s)\n", mi->parm_array[0]?mi->parm_array[0]:""));
+    DebugMsg1(("@SizeStr(%s)\n", mi->parm_array[0] ? mi->parm_array[0] : ""));
     if (mi->parm_array[0])
         myltoa(strlen(mi->parm_array[0]), buffer, ModuleInfo.radix, FALSE, TRUE);
     else
@@ -948,14 +948,14 @@ static ret_code SizeStrFunc(struct macro_instance* mi, char* buffer, struct asm_
 static ret_code SubStrFunc(struct macro_instance* mi, char* buffer, struct asm_tok tokenarray[])
 /************************************************************************************************/
 {
-    int pos;
-    size_t size;
+    int         pos;
+    size_t      size;
     char* src = mi->parm_array[0];
 
     DebugMsg1(("@SubStr( %s, %s, %s)\n",
-              src?src:"",
-              mi->parm_array[1]?mi->parm_array[1]:"",
-              mi->parm_array[2]?mi->parm_array[2]:""));
+              src ? src : "",
+              mi->parm_array[1] ? mi->parm_array[1] : "",
+              mi->parm_array[2] ? mi->parm_array[2] : ""));
 
     if (GetNumber(mi->parm_array[1], &pos, tokenarray) == ERROR)
         return(ERROR);
@@ -1014,8 +1014,8 @@ static ret_code SubStrFunc(struct macro_instance* mi, char* buffer, struct asm_t
 void StringInit(void)
 /*********************/
 {
-    int i;
-    struct dsym* macro;
+    int             i;
+    struct dsym*    macro;
 
     DebugMsg(("StringInit() enter\n"));
 

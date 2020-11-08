@@ -99,7 +99,7 @@ static bool IsMultiLine(struct asm_tok tokenarray[])
 
     if (tokenarray[1].token == T_DIRECTIVE && tokenarray[1].tokval == T_EQU)
         return(FALSE);
-    i = (tokenarray[1].token == T_COLON?2:0);
+    i = (tokenarray[1].token == T_COLON ? 2 : 0);
     /* don't concat macros */
     if (tokenarray[i].token == T_ID)
     {
@@ -159,10 +159,10 @@ void get_broads(struct line_status* p)
 /* EVEX Mask decorators are handled here: {k1) or {k1){z} or {z}{k1) or {z} */
 void get_decos(struct line_status* p, bool zdeclined)
 {
-    unsigned char c;
-    struct        asym* sym = NULL;
-    char          buff[32];
-    char* p1 = buff;
+    unsigned char   c;
+    struct asym*    sym = NULL;
+    char            buff[32];
+    char*           p1 = buff;
 
     if (!extraflags.evex)
         EmitError(UNAUTHORISED_USE_OF_EVEX_ENCODING);
@@ -316,7 +316,7 @@ static ret_code get_float(struct asm_tok* buf, struct line_status* p)
 
     char    got_decimal = FALSE;
     char    got_e = FALSE;
-    char* ptr = p->input;
+    char*   ptr = p->input;
 
     for (; *ptr != NULLC; ptr++)
     {
@@ -359,8 +359,8 @@ static ret_code get_float(struct asm_tok* buf, struct line_status* p)
 static ret_code ConcatLine(char* src, int cnt, char* out, struct line_status* ls)
 /*********************************************************************************/
 {
-    char* p = src + 1;
-    int max;
+    char*   p = src + 1;
+    int     max;
 
     while (isspace(*p)) p++;
     if (*p == NULLC || *p == ';')
@@ -394,9 +394,9 @@ static ret_code get_string(struct asm_tok* buf, struct line_status* p)
     char    symbol_o;
     char    symbol_c;
     char    c;
-    char* src = p->input;
-    char* dst = p->output;
-    char* input1 = NULL;
+    char*   src = p->input;
+    char*   dst = p->output;
+    char*   input1 = NULL;
     int     count = 0;
     int     level;
 
@@ -404,235 +404,235 @@ static ret_code get_string(struct asm_tok* buf, struct line_status* p)
 
     switch (symbol_o)
     {
-    case '"':
-    case '\'':
-        buf->string_delim = symbol_o;
-        *dst++ = symbol_o;
-        src++;
-        for (; count < MAX_STRING_LEN; src++, count++)
-        {
-            c = *src;
-            if (c == symbol_o)
-            { /* another quote? */
-                *dst++ = c; /* store it */
-                src++;
-                if (*src != c)
-                    break; /* exit loop */
-                /* a pair of quotes inside the string is
-                 * handled as a single quote */
-            }
-            else if (c == NULLC)
+        case '"':
+        case '\'':
+            buf->string_delim = symbol_o;
+            *dst++ = symbol_o;
+            src++;
+            for (; count < MAX_STRING_LEN; src++, count++)
             {
-                /* missing terminating quote, change to undelimited string */
-                buf->string_delim = NULLC;
-                count++; /* count the first quote */
-                break;
-            }
-            else
-            {
-                *dst++ = c;
-            }
-        }
-        break;  /* end of string marker is the same */
-    case '{':
-        input1 = p->input + 1;
-        while (isspace(*input1)) input1++;
-        if ((*input1 | 0x20) == 'z')
-        {
-            p->input++;
-            get_decos(p, FALSE);    // mask decorators
-            while (isspace(*p->input)) p->input++;
-            if (*p->input == ',')
-            {
-                p->input++;
-                buf->token = T_COMMA;
-                return(NOT_ERROR);
-            }
-        }
-        else if ((*input1 | 0x20) == 'k')
-        {
-            p->input++;
-            get_decos(p, TRUE);    // mask decorators
-            while (isspace(*p->input)) p->input++;
-            if (*p->input == ',')
-            {
-                p->input++;
-                buf->token = T_COMMA;
-                return(NOT_ERROR);
-            }
-            //else
-            //  EmitError(TOO_MANY_DECORATORS);
-        }
-        else if (p->flags & TOK_NOCURLBRACES)
-            goto undelimited_string;
-    case '<':
-        buf->string_delim = symbol_o;
-        symbol_c = (symbol_o == '<'?'>':'}');
-        src++;
-        for (level = 0; count < MAX_STRING_LEN; )
-        {
-            c = *src;
-            if (c == symbol_o)
-            { /* < or { ? */
-                level++;
-                *dst++ = c; src++;
-                count++;
-            }
-            else if (c == symbol_c)
-            { /* > or }? */
-                if (level)
+                c = *src;
+                if (c == symbol_o)
+                { /* another quote? */
+                    *dst++ = c; /* store it */
+                    src++;
+                    if (*src != c)
+                        break; /* exit loop */
+                    /* a pair of quotes inside the string is
+                     * handled as a single quote */
+                }
+                else if (c == NULLC)
                 {
-                    level--;
+                    /* missing terminating quote, change to undelimited string */
+                    buf->string_delim = NULLC;
+                    count++; /* count the first quote */
+                    break;
+                }
+                else
+                {
+                    *dst++ = c;
+                }
+            }
+            break;  /* end of string marker is the same */
+        case '{':
+            input1 = p->input + 1;
+            while (isspace(*input1)) input1++;
+            if ((*input1 | 0x20) == 'z')
+            {
+                p->input++;
+                get_decos(p, FALSE);    // mask decorators
+                while (isspace(*p->input)) p->input++;
+                if (*p->input == ',')
+                {
+                    p->input++;
+                    buf->token = T_COMMA;
+                    return(NOT_ERROR);
+                }
+            }
+            else if ((*input1 | 0x20) == 'k')
+            {
+                p->input++;
+                get_decos(p, TRUE);    // mask decorators
+                while (isspace(*p->input)) p->input++;
+                if (*p->input == ',')
+                {
+                    p->input++;
+                    buf->token = T_COMMA;
+                    return(NOT_ERROR);
+                }
+                //else
+                //  EmitError(TOO_MANY_DECORATORS);
+            }
+            else if (p->flags & TOK_NOCURLBRACES)
+                goto undelimited_string;
+        case '<':
+            buf->string_delim = symbol_o;
+            symbol_c = (symbol_o == '<' ? '>' : '}');
+            src++;
+            for (level = 0; count < MAX_STRING_LEN; )
+            {
+                c = *src;
+                if (c == symbol_o)
+                { /* < or { ? */
+                    level++;
                     *dst++ = c; src++;
                     count++;
                 }
-                else
-                {
-                    /* store the string delimiter unless it is <> */
-                    /* v2.08: don't store delimiters for {}-literals */
-                    //if (symbol_o != '<')
-                    //    *dst++ = c;
-                    src++;
-                    break; /* exit loop */
-                }
-#if 1
-                /*
-                 a " or ' inside a <>/{} string? Since it's not a must that
-                 [double-]quotes are paired in a literal it must be done
-                 directive-dependant!
-                 see: IFIDN <">,<">
-                 */
-            }
-            else if ((c == '"' || c == '\'') && (p->flags2 & DF_STRPARM) == 0)
-            {
-                char delim = c;
-                char* tdst;
-                char* tsrc;
-                int tcount;
-                *dst++ = c; src++;
-                count++;
-                tdst = dst;
-                tsrc = src;
-                tcount = count;
-                while (*src != delim && *src != NULLC && count < MAX_STRING_LEN - 1)
-                {
-                    if (symbol_o == '<' && *src == '!' && *(src + 1) != NULLC)
-                        src++;
-                    *dst++ = *src++;
-                    count++;
-                }
-                if (*src == delim)
-                {
-                    *dst++ = *src++;
-                    count++;
-                    continue;
-                }
-                else
-                {
-                    /* restore values */
-                    src = tsrc;
-                    dst = tdst;
-                    count = tcount;
-                }
-#endif
-            }
-            else if (c == '!' && symbol_o == '<' && *(src + 1))
-            {
-                /* handle literal-character operator '!'.
-                 * it makes the next char to enter the literal uninterpreted.
-                 */
-                 /* v2.09: don't store the '!' */
-                 //*dst++ = c; src++;
-                 //count++;
-                 //if ( count == MAX_STRING_LEN )
-                 //    break;
-                src++;
-                *dst++ = *src++;
-                count++;
-            }
-            else if (c == '\\' && ConcatLine(src, count, dst, p) != EMPTY)
-            {
-                p->flags3 |= TF3_ISCONCAT;
-            }
-            else if (c == NULLC || (c == ';' && symbol_o == '{'))
-            {
-                if (p->flags == TOK_DEFAULT && ((p->flags2 & DF_NOCONCAT) == 0))
-                { /* <{ */
-/* if last nonspace character was a comma
- * get next line and continue string scan
- */
-                    char* tmp = dst - 1;
-                    while (isspace(*tmp)) tmp--;
-                    if (*tmp == ',')
+                else if (c == symbol_c)
+                { /* > or }? */
+                    if (level)
                     {
-                        DebugMsg1(("Tokenize.get_string: comma concatenation: %s\n", src));
-                        tmp = GetAlignedPointer(p->output, strlen(p->output));
-                        if (GetTextLine(tmp))
+                        level--;
+                        *dst++ = c; src++;
+                        count++;
+                    }
+                    else
+                    {
+                        /* store the string delimiter unless it is <> */
+                        /* v2.08: don't store delimiters for {}-literals */
+                        //if (symbol_o != '<')
+                        //    *dst++ = c;
+                        src++;
+                        break; /* exit loop */
+                    }
+#if 1
+                    /*
+                     a " or ' inside a <>/{} string? Since it's not a must that
+                     [double-]quotes are paired in a literal it must be done
+                     directive-dependant!
+                     see: IFIDN <">,<">
+                     */
+                }
+                else if ((c == '"' || c == '\'') && (p->flags2 & DF_STRPARM) == 0)
+                {
+                    char delim = c;
+                    char* tdst;
+                    char* tsrc;
+                    int tcount;
+                    *dst++ = c; src++;
+                    count++;
+                    tdst = dst;
+                    tsrc = src;
+                    tcount = count;
+                    while (*src != delim && *src != NULLC && count < MAX_STRING_LEN - 1)
+                    {
+                        if (symbol_o == '<' && *src == '!' && *(src + 1) != NULLC)
+                            src++;
+                        *dst++ = *src++;
+                        count++;
+                    }
+                    if (*src == delim)
+                    {
+                        *dst++ = *src++;
+                        count++;
+                        continue;
+                    }
+                    else
+                    {
+                        /* restore values */
+                        src = tsrc;
+                        dst = tdst;
+                        count = tcount;
+                    }
+#endif
+                }
+                else if (c == '!' && symbol_o == '<' && *(src + 1))
+                {
+                    /* handle literal-character operator '!'.
+                     * it makes the next char to enter the literal uninterpreted.
+                     */
+                     /* v2.09: don't store the '!' */
+                     //*dst++ = c; src++;
+                     //count++;
+                     //if ( count == MAX_STRING_LEN )
+                     //    break;
+                    src++;
+                    *dst++ = *src++;
+                    count++;
+                }
+                else if (c == '\\' && ConcatLine(src, count, dst, p) != EMPTY)
+                {
+                    p->flags3 |= TF3_ISCONCAT;
+                }
+                else if (c == NULLC || (c == ';' && symbol_o == '{'))
+                {
+                    if (p->flags == TOK_DEFAULT && ((p->flags2 & DF_NOCONCAT) == 0))
+                    { /* <{ */
+    /* if last nonspace character was a comma
+     * get next line and continue string scan
+     */
+                        char* tmp = dst - 1;
+                        while (isspace(*tmp)) tmp--;
+                        if (*tmp == ',')
                         {
-                            /* skip leading spaces */
-                            while (isspace(*tmp)) tmp++;
-                            /* this size check isn't fool-proved yet */
-                            if (strlen(tmp) + count >= MAX_LINE_LEN)
+                            DebugMsg1(("Tokenize.get_string: comma concatenation: %s\n", src));
+                            tmp = GetAlignedPointer(p->output, strlen(p->output));
+                            if (GetTextLine(tmp))
                             {
-                                EmitError(LINE_TOO_LONG);
-                                return(ERROR);
+                                /* skip leading spaces */
+                                while (isspace(*tmp)) tmp++;
+                                /* this size check isn't fool-proved yet */
+                                if (strlen(tmp) + count >= MAX_LINE_LEN)
+                                {
+                                    EmitError(LINE_TOO_LONG);
+                                    return(ERROR);
+                                }
+                                strcpy(src, tmp);
+                                continue;
                             }
-                            strcpy(src, tmp);
-                            continue;
                         }
                     }
+                    src = p->input;
+                    dst = p->output;
+                    *dst++ = *src++;
+                    count = 1;
+                    goto undelimited_string;
                 }
-                src = p->input;
-                dst = p->output;
-                *dst++ = *src++;
-                count = 1;
-                goto undelimited_string;
+                else
+                {
+                    *dst++ = c; src++;
+                    count++;
+                }
             }
-            else
+            break;
+        default:
+        undelimited_string:
+            buf->string_delim = NULLC;
+            /* this is an undelimited string,
+             * so just copy it until we hit something that looks like the end.
+             * this format is used by the INCLUDE directive, but may also
+             * occur inside the string macros!
+             */
+             /* v2.05: also stop if a ')' is found - see literal2.asm regression test */
+             //for( count = 0 ; count < MAX_STRING_LEN && *src != NULLC && !isspace( *src ) && *src != ',' && *src != ';'; ) {
+            for (; count < MAX_STRING_LEN &&
+                 /* v2.08: stop also at < and % */
+                 //*src != NULLC && !isspace( *src ) && *src != ',' && *src != ';' && *src != ')'; ) {
+                 //*src && !isspace( *src ) && *src != ',' && *src != ')' && *src != '<' && *src != '%'; ) {
+                 *src && !islspace(*src) && *src != ',' && *src != ')' && *src != '%'; )
             {
-                *dst++ = c; src++;
+                if (*src == ';' && p->flags == TOK_DEFAULT)
+                    break;
+                /* v2.11: handle '\' also for expanded lines */
+                //if (  *src == '\\' && !( p->flags & TOK_NOCURLBRACES ) ) {
+                if (*src == '\\' && (p->flags == TOK_DEFAULT || (p->flags & TOK_LINE)))
+                {
+                    if (ConcatLine(src, count, dst, p) != EMPTY)
+                    {
+                        DebugMsg1(("Tokenize.get_string: backslash concatenation: >%s<\n", src));
+                        p->flags3 |= TF3_ISCONCAT;
+                        if (count)
+                            continue;
+                        return(EMPTY);
+                    }
+                }
+                /* v2.08: handle '!' operator */
+                if (*src == '!' && *(src + 1) && count < MAX_STRING_LEN - 1)
+                    *dst++ = *src++;
+                *dst++ = *src++;
                 count++;
             }
-        }
-        break;
-    default:
-    undelimited_string:
-        buf->string_delim = NULLC;
-        /* this is an undelimited string,
-         * so just copy it until we hit something that looks like the end.
-         * this format is used by the INCLUDE directive, but may also
-         * occur inside the string macros!
-         */
-         /* v2.05: also stop if a ')' is found - see literal2.asm regression test */
-         //for( count = 0 ; count < MAX_STRING_LEN && *src != NULLC && !isspace( *src ) && *src != ',' && *src != ';'; ) {
-        for (; count < MAX_STRING_LEN &&
-             /* v2.08: stop also at < and % */
-             //*src != NULLC && !isspace( *src ) && *src != ',' && *src != ';' && *src != ')'; ) {
-             //*src && !isspace( *src ) && *src != ',' && *src != ')' && *src != '<' && *src != '%'; ) {
-             *src && !islspace(*src) && *src != ',' && *src != ')' && *src != '%'; )
-        {
-            if (*src == ';' && p->flags == TOK_DEFAULT)
-                break;
-            /* v2.11: handle '\' also for expanded lines */
-            //if (  *src == '\\' && !( p->flags & TOK_NOCURLBRACES ) ) {
-            if (*src == '\\' && (p->flags == TOK_DEFAULT || (p->flags & TOK_LINE)))
-            {
-                if (ConcatLine(src, count, dst, p) != EMPTY)
-                {
-                    DebugMsg1(("Tokenize.get_string: backslash concatenation: >%s<\n", src));
-                    p->flags3 |= TF3_ISCONCAT;
-                    if (count)
-                        continue;
-                    return(EMPTY);
-                }
-            }
-            /* v2.08: handle '!' operator */
-            if (*src == '!' && *(src + 1) && count < MAX_STRING_LEN - 1)
-                *dst++ = *src++;
-            *dst++ = *src++;
-            count++;
-        }
-        break;
+            break;
     }
 
     if (count == MAX_STRING_LEN)
@@ -659,172 +659,172 @@ static ret_code get_special_symbol(struct asm_tok* buf, struct line_status* p)
     buf->tokval = 0;
     switch (symbol)
     {
-    case ':': /* T_COLON binary operator (0x3A) */
-        p->input++;
-        if (*p->input == ':')
-        {
+        case ':': /* T_COLON binary operator (0x3A) */
             p->input++;
-            buf->token = T_DBL_COLON;
-            buf->string_ptr = "::";
-        }
-        else
-        {
-            buf->token = T_COLON;
-            buf->string_ptr = ":";
-        }
-        break;
-    case '-':
-        p->input++;
-        if (*p->input == '>')
-        {
+            if (*p->input == ':')
+            {
+                p->input++;
+                buf->token = T_DBL_COLON;
+                buf->string_ptr = "::";
+            }
+            else
+            {
+                buf->token = T_COLON;
+                buf->string_ptr = ":";
+            }
+            break;
+        case '-':
             p->input++;
-            buf->token = T_POINTER;
-            buf->string_ptr = "->";
-        }
-        else
-        {
-            p->input--;
-            goto minuslbl; // Handle a - binary operator the normal way.
-        }
-        break;
-    case '%': /* T_PERCENT (0x25) */
+            if (*p->input == '>')
+            {
+                p->input++;
+                buf->token = T_POINTER;
+                buf->string_ptr = "->";
+            }
+            else
+            {
+                p->input--;
+                goto minuslbl; // Handle a - binary operator the normal way.
+            }
+            break;
+        case '%': /* T_PERCENT (0x25) */
 #if PERCENT_OUT
         /* %OUT directive? */
-        if ((_memicmp(p->input + 1, "OUT", 3) == 0) && !is_valid_id_char(*(p->input + 4)))
-        {
-            buf->token = T_DIRECTIVE;
-            buf->tokval = T_ECHO;
-            buf->dirtype = DRT_ECHO;
-            memcpy(p->output, p->input, 4);
-            p->input += 4;
-            p->output += 4;
-            *(p->output)++ = NULLC;
-            break;
-        }
-#endif
-        p->input++;
-        if (p->flags == TOK_DEFAULT && p->index == 0)
-        {
-            p->flags3 |= TF3_EXPANSION;
-            return(EMPTY);
-        }
-        buf->token = T_PERCENT;
-        buf->string_ptr = "%";
-        break;
-    case '(': /* 0x28: T_OP_BRACKET operator - needs a matching ')' */
-        /* v2.11: reset c-expression flag if a macro function call is detected */
-        if ((p->flags2 & DF_CEXPR) && p->index && (buf - 1)->token == T_ID)
-        {
-            struct asym* sym = SymSearch((buf - 1)->string_ptr);
-            if (sym && (sym->state == SYM_MACRO) && sym->isfunc)
-                p->flags2 &= ~DF_CEXPR;
-        }
-        /* no break */
-    case ')': /* 0x29: T_CL_BRACKET */
-    case '*': /* 0x2A: binary operator */
-    case '+': /* 0x2B: unary|binary operator */
-    case ',': /* 0x2C: T_COMMA */
-    //case '-' : /* 0x2D: unary|binary operator */
-    case '.': /* 0x2E: T_DOT binary operator */
-    case '/': /* 0x2F: binary operator */
-    minuslbl:
-        /* all of these are themselves a token */
-        p->input++;
-        buf->token = symbol;
-        buf->specval = 0; /* initialize, in case the token needs extra data */
-        /* v2.06: use constants for the token string */
-        buf->string_ptr = (char*)&stokstr1[symbol - '('];
-        break;
-    case '[': /* T_OP_SQ_BRACKET operator - needs a matching ']' (0x5B) */
-        a = '[';
-    case ']': /* T_CL_SQ_BRACKET (0x5D) */
-        p->input++;
-#if AVXSUPP
-        while (isspace(*p->input)) p->input++;
-        c = *p->input;
-#endif
-        buf->token = symbol;
-        /* v2.06: use constants for the token string */
-        buf->string_ptr = (char*)&stokstr2[symbol - '['];
-#if AVXSUPP
-        /* Intercept here '{' for EVEX mask or broadcast events
-         * it could be {k1}, ]{k1}{z}, {1to2},{1to4},{1to8},{1to16}
-        */
-        if (c == '{')
-        {
-            p->input++;
-            while (isspace(*p->input)) p->input++;
-            if ((*p->input | 0x20) == 'z')
+            if ((_memicmp(p->input + 1, "OUT", 3) == 0) && !is_valid_id_char(*(p->input + 4)))
             {
-                EmitError(Z_MASK_NOT_PERMITTED_WHEN_FIRST_OPERATOR_IS_MEMORY);
-                return ERROR;
+                buf->token = T_DIRECTIVE;
+                buf->tokval = T_ECHO;
+                buf->dirtype = DRT_ECHO;
+                memcpy(p->output, p->input, 4);
+                p->input += 4;
+                p->output += 4;
+                *(p->output)++ = NULLC;
+                break;
             }
-            else if ((*p->input | 0x20) == 'k')
-                get_decos(p, FALSE);    // mask decorators
-            else
-                get_broads(p);   // broadcast decorators
-        }
-        /* skip '+' if RIP is suppressed and index only used EG: [+xmm] v2.38 */
-        else if (c == '+' && a == '[') p->input++;
 #endif
-        break;
-    case '=': /* (0x3D) */
-        if (*(p->input + 1) != '=')
-        {
-            buf->token = T_DIRECTIVE;
-            buf->tokval = T_EQU;
-            buf->dirtype = DRT_EQUALSGN; /* to make it differ from EQU directive */
-            buf->string_ptr = "=";
             p->input++;
-            break;
-        }
-        /* fall through */
-    default:
-        /* detect C style operators.
-         * DF_CEXPR is set if .IF, .WHILE, .ELSEIF or .UNTIL
-         * has been detected in the current line.
-         * will catch: '!', '<', '>', '&', '==', '!=', '<=', '>=', '&&', '||'
-         * A single '|' will also be caught, although it isn't a valid
-         * operator - it will cause a 'operator expected' error msg later.
-         * the tokens are stored as one- or two-byte sized "strings".
-         */
-        if ((p->flags2 & DF_CEXPR) && strchr("=!<>&|", symbol))
-        {
-            *(p->output)++ = symbol;
-            p->input++;
-            buf->stringlen = 1;
-            if (symbol == '&' || symbol == '|')
+            if (p->flags == TOK_DEFAULT && p->index == 0)
             {
-                if (*p->input == symbol)
+                p->flags3 |= TF3_EXPANSION;
+                return(EMPTY);
+            }
+            buf->token = T_PERCENT;
+            buf->string_ptr = "%";
+            break;
+        case '(': /* 0x28: T_OP_BRACKET operator - needs a matching ')' */
+            /* v2.11: reset c-expression flag if a macro function call is detected */
+            if ((p->flags2 & DF_CEXPR) && p->index && (buf - 1)->token == T_ID)
+            {
+                struct asym* sym = SymSearch((buf - 1)->string_ptr);
+                if (sym && (sym->state == SYM_MACRO) && sym->isfunc)
+                    p->flags2 &= ~DF_CEXPR;
+            }
+            /* no break */
+        case ')': /* 0x29: T_CL_BRACKET */
+        case '*': /* 0x2A: binary operator */
+        case '+': /* 0x2B: unary|binary operator */
+        case ',': /* 0x2C: T_COMMA */
+        //case '-' : /* 0x2D: unary|binary operator */
+        case '.': /* 0x2E: T_DOT binary operator */
+        case '/': /* 0x2F: binary operator */
+        minuslbl:
+            /* all of these are themselves a token */
+            p->input++;
+            buf->token = symbol;
+            buf->specval = 0; /* initialize, in case the token needs extra data */
+            /* v2.06: use constants for the token string */
+            buf->string_ptr = (char*)&stokstr1[symbol - '('];
+            break;
+        case '[': /* T_OP_SQ_BRACKET operator - needs a matching ']' (0x5B) */
+            a = '[';
+        case ']': /* T_CL_SQ_BRACKET (0x5D) */
+            p->input++;
+#if AVXSUPP
+            while (isspace(*p->input)) p->input++;
+            c = *p->input;
+#endif
+            buf->token = symbol;
+            /* v2.06: use constants for the token string */
+            buf->string_ptr = (char*)&stokstr2[symbol - '['];
+#if AVXSUPP
+            /* Intercept here '{' for EVEX mask or broadcast events
+             * it could be {k1}, ]{k1}{z}, {1to2},{1to4},{1to8},{1to16}
+            */
+            if (c == '{')
+            {
+                p->input++;
+                while (isspace(*p->input)) p->input++;
+                if ((*p->input | 0x20) == 'z')
                 {
-                    *(p->output)++ = symbol;
+                    EmitError(Z_MASK_NOT_PERMITTED_WHEN_FIRST_OPERATOR_IS_MEMORY);
+                    return ERROR;
+                }
+                else if ((*p->input | 0x20) == 'k')
+                    get_decos(p, FALSE);    // mask decorators
+                else
+                    get_broads(p);   // broadcast decorators
+            }
+            /* skip '+' if RIP is suppressed and index only used EG: [+xmm] v2.38 */
+            else if (c == '+' && a == '[') p->input++;
+#endif
+            break;
+        case '=': /* (0x3D) */
+            if (*(p->input + 1) != '=')
+            {
+                buf->token = T_DIRECTIVE;
+                buf->tokval = T_EQU;
+                buf->dirtype = DRT_EQUALSGN; /* to make it differ from EQU directive */
+                buf->string_ptr = "=";
+                p->input++;
+                break;
+            }
+            /* fall through */
+        default:
+            /* detect C style operators.
+             * DF_CEXPR is set if .IF, .WHILE, .ELSEIF or .UNTIL
+             * has been detected in the current line.
+             * will catch: '!', '<', '>', '&', '==', '!=', '<=', '>=', '&&', '||'
+             * A single '|' will also be caught, although it isn't a valid
+             * operator - it will cause a 'operator expected' error msg later.
+             * the tokens are stored as one- or two-byte sized "strings".
+             */
+            if ((p->flags2 & DF_CEXPR) && strchr("=!<>&|", symbol))
+            {
+                *(p->output)++ = symbol;
+                p->input++;
+                buf->stringlen = 1;
+                if (symbol == '&' || symbol == '|')
+                {
+                    if (*p->input == symbol)
+                    {
+                        *(p->output)++ = symbol;
+                        p->input++;
+                        buf->stringlen = 2;
+                    }
+                }
+                else if (*p->input == '=')
+                {
+                    *(p->output)++ = '=';
                     p->input++;
                     buf->stringlen = 2;
                 }
+                buf->token = T_STRING;
+                buf->string_delim = NULLC;
+                *(p->output)++ = NULLC;
+                break;
             }
-            else if (*p->input == '=')
+            /* v2.08: ampersand is a special token */
+            if (symbol == '&')
             {
-                *(p->output)++ = '=';
                 p->input++;
-                buf->stringlen = 2;
+                buf->token = '&';
+                buf->string_ptr = "&";
+                break;
             }
-            buf->token = T_STRING;
-            buf->string_delim = NULLC;
-            *(p->output)++ = NULLC;
-            break;
-        }
-        /* v2.08: ampersand is a special token */
-        if (symbol == '&')
-        {
-            p->input++;
-            buf->token = '&';
-            buf->string_ptr = "&";
-            break;
-        }
-        /* anything we don't recognise we will consider a string,
-         * delimited by space characters, commas, newlines or nulls
-         */
-        return(get_string(buf, p));
+            /* anything we don't recognise we will consider a string,
+             * delimited by space characters, commas, newlines or nulls
+             */
+            return(get_string(buf, p));
     }
     return(NOT_ERROR);
 }
@@ -852,9 +852,9 @@ static void array_mul_add(unsigned char* buf, unsigned base, unsigned num, unsig
 static ret_code get_number(struct asm_tok* buf, struct line_status* p)
 /**********************************************************************/
 {
-    char* ptr = p->input;
-    char* dig_start;
-    char* dig_end;
+    char*               ptr = p->input;
+    char*               dig_start;
+    char*               dig_end;
     unsigned            base = 0;
     unsigned            len;
     uint_32             digits_seen;
@@ -916,77 +916,77 @@ static ret_code get_number(struct asm_tok* buf, struct line_status* p)
 #endif
         switch (last_char)
         {
-        case 'r': /* a float with the "real number designator" */
-            buf->token = T_FLOAT;
-            buf->floattype = 'r';
-            ptr++;
-            goto number_done;
-        case 'h':
-            base = 16;
-            dig_end = ptr;
-            ptr++;
-            break;
-            //case 'b':
-        case 'y':
-            if (OK_NUM(BINARY))
-            {
-                base = 2;
+            case 'r': /* a float with the "real number designator" */
+                buf->token = T_FLOAT;
+                buf->floattype = 'r';
+                ptr++;
+                goto number_done;
+            case 'h':
+                base = 16;
                 dig_end = ptr;
                 ptr++;
-            }
-            break;
-            //case 'd':
-        case 't':
-            if (OK_NUM(DECIMAL))
-            {
-                base = 10;
-                dig_end = ptr;
-                ptr++;
-            }
-            break;
-        case 'q':
-        case 'o':
-            if (OK_NUM(OCTAL))
-            {
-                base = 8;
-                dig_end = ptr;
-                ptr++;
-            }
-            break;
-        default:
-            last_char = tolower(*(ptr - 1));
-            if ((last_char == 'b' || last_char == 'd') && digits_seen >= (1UL << ModuleInfo.radix))
-            {
-                char* tmp = dig_start;
-                char max = (last_char == 'b'?'1':'9');
-                for (dig_end = ptr - 1; tmp < dig_end && *tmp <= max; tmp++);
-                if (tmp == dig_end)
+                break;
+                //case 'b':
+            case 'y':
+                if (OK_NUM(BINARY))
                 {
-                    base = (last_char == 'b'?2:10);
-                    break;
+                    base = 2;
+                    dig_end = ptr;
+                    ptr++;
                 }
-            }
-            dig_end = ptr;
-#if COCTALS
-            if (Options.allow_c_octals && *dig_start == '0')
-            {
+                break;
+                //case 'd':
+            case 't':
+                if (OK_NUM(DECIMAL))
+                {
+                    base = 10;
+                    dig_end = ptr;
+                    ptr++;
+                }
+                break;
+            case 'q':
+            case 'o':
                 if (OK_NUM(OCTAL))
                 {
                     base = 8;
-                    break;
+                    dig_end = ptr;
+                    ptr++;
                 }
-            }
+                break;
+            default:
+                last_char = tolower(*(ptr - 1));
+                if ((last_char == 'b' || last_char == 'd') && digits_seen >= (1UL << ModuleInfo.radix))
+                {
+                    char* tmp = dig_start;
+                    char max = (last_char == 'b' ? '1' : '9');
+                    for (dig_end = ptr - 1; tmp < dig_end && *tmp <= max; tmp++);
+                    if (tmp == dig_end)
+                    {
+                        base = (last_char == 'b' ? 2 : 10);
+                        break;
+                    }
+                }
+                dig_end = ptr;
+#if COCTALS
+                if (Options.allow_c_octals && *dig_start == '0')
+                {
+                    if (OK_NUM(OCTAL))
+                    {
+                        base = 8;
+                        break;
+                    }
+                }
 #endif
-            /* radix      max. digits_seen
-             -----------------------------------------------------------
-             2            3      2^2-1  (0,1)
-             8            255    2^8-1  (0,1,2,3,4,5,6,7)
-             10           1023   2^10-1 (0,1,2,3,4,5,6,7,8,9)
-             16           65535  2^16-1 (0,1,2,3,4,5,6,7,8,9,a,b,c,d,e,f)
-             */
-            if (digits_seen < (1UL << ModuleInfo.radix))
-                base = ModuleInfo.radix;
-            break;
+                /* radix      max. digits_seen
+                 -----------------------------------------------------------
+                 2            3      2^2-1  (0,1)
+                 8            255    2^8-1  (0,1,2,3,4,5,6,7)
+                 10           1023   2^10-1 (0,1,2,3,4,5,6,7,8,9)
+                 16           65535  2^16-1 (0,1,2,3,4,5,6,7,8,9,a,b,c,d,e,f)
+                 */
+                if (digits_seen < (1UL << ModuleInfo.radix))
+                    base = ModuleInfo.radix;
+                break;
         }
 
 #if MASMNUMBER
@@ -1026,7 +1026,7 @@ number_done:
 static ret_code get_id_in_backquotes(struct asm_tok* buf, struct line_status* p)
 /********************************************************************************/
 {
-    char* optr = p->output;
+    char*   optr = p->output;
     buf->token = T_ID;
     buf->idarg = 0;
 
@@ -1053,15 +1053,15 @@ static ret_code get_id(struct asm_tok* buf, struct line_status* p)
 /******************************************************************/
 {
     //struct ReservedWord *resw;
-    char* src = p->input;
-    char* dst = p->output;
-    /*char* p1 = p->input;*/
-    int  index;
-    unsigned size;
+    char*       src = p->input;
+    char*       dst = p->output;
+    /*char*     p1 = p->input;*/
+    int         index;
+    unsigned    size;
     /*int len = 0;*/
     /*int i = 0;*/
 #if CONCATID || DOTNAMEX
-    continue_scan:
+    continue_scan :
 #endif
     do
     {
@@ -1220,57 +1220,57 @@ static ret_code get_id(struct asm_tok* buf, struct line_status* p)
 
     switch (SpecialTable[index].type)
     {
-    case RWT_REG:
-        buf->token = T_REG;
+        case RWT_REG:
+            buf->token = T_REG;
 #if AVXSUPP
-        if (!inMacroBody)
-        {
-            /* Intercept here '{' for EVEX mask  {k1}{z} */
-            while (isspace(*p->input)) p->input++;
-            if (*p->input == '{')
+            if (!inMacroBody)
             {
-                p->input++;
-                get_decos(p, FALSE); // mask decorators
-            }
-        }
-        else
-        {
-            while (isspace(*p->input)) p->input++;
-            if (*p->input == '{')
-            {
-                while ((*p->input) != '}')
+                /* Intercept here '{' for EVEX mask  {k1}{z} */
+                while (isspace(*p->input)) p->input++;
+                if (*p->input == '{')
                 {
                     p->input++;
+                    get_decos(p, FALSE); // mask decorators
                 }
-                p->input++;
-                //*buf->string_ptr = "{k0}";
             }
-        }
+            else
+            {
+                while (isspace(*p->input)) p->input++;
+                if (*p->input == '{')
+                {
+                    while ((*p->input) != '}')
+                    {
+                        p->input++;
+                    }
+                    p->input++;
+                    //*buf->string_ptr = "{k0}";
+                }
+            }
 #endif
-        break;
-    case RWT_DIRECTIVE:
-        buf->token = T_DIRECTIVE;
-        if (p->flags2 == 0)
-            p->flags2 = SpecialTable[index].value;
-        break;
-    case RWT_UNARY_OP: /* OFFSET, LOW, HIGH, LOWWORD, HIGHWORD, SHORT, ... */
-        buf->token = T_UNARY_OPERATOR;
-        break;
-    case RWT_BINARY_OP: /* GE, GT, LE, LT, EQ, NE, MOD, PTR */
-        buf->token = T_BINARY_OPERATOR;
-        break;
-    case RWT_STYPE:  /* BYTE, WORD, FAR, NEAR, FAR16, NEAR32 ... */
-        buf->token = T_STYPE;
-        break;
-    case RWT_RES_ID: /* DUP, ADDR, FLAT, VARARG, language types [, FRAME (64-bit)] */
-        buf->token = T_RES_ID;
-        break;
-    default: /* shouldn't happen */
-        DebugMsg(("get_id: error, unknown type in SpecialTable[%u]=%u\n", index, SpecialTable[index].type));
-        /**/myassert(0);
-        buf->token = T_ID;
-        buf->idarg = 0;
-        break;
+            break;
+        case RWT_DIRECTIVE:
+            buf->token = T_DIRECTIVE;
+            if (p->flags2 == 0)
+                p->flags2 = SpecialTable[index].value;
+            break;
+        case RWT_UNARY_OP: /* OFFSET, LOW, HIGH, LOWWORD, HIGHWORD, SHORT, ... */
+            buf->token = T_UNARY_OPERATOR;
+            break;
+        case RWT_BINARY_OP: /* GE, GT, LE, LT, EQ, NE, MOD, PTR */
+            buf->token = T_BINARY_OPERATOR;
+            break;
+        case RWT_STYPE:  /* BYTE, WORD, FAR, NEAR, FAR16, NEAR32 ... */
+            buf->token = T_STYPE;
+            break;
+        case RWT_RES_ID: /* DUP, ADDR, FLAT, VARARG, language types [, FRAME (64-bit)] */
+            buf->token = T_RES_ID;
+            break;
+        default: /* shouldn't happen */
+            DebugMsg(("get_id: error, unknown type in SpecialTable[%u]=%u\n", index, SpecialTable[index].type));
+            /**/myassert(0);
+            buf->token = T_ID;
+            buf->idarg = 0;
+            break;
     }
     return(NOT_ERROR);
     }
@@ -1352,11 +1352,11 @@ int Tokenize(char* line, unsigned int start, struct asm_tok tokenarray[], unsign
  * flags: 1=if the line has been tokenized already.
  */
 {
-    int                rc;
-    struct line_status p;
-    char* input1 = NULL;
-    char* p1 = NULL;
-    int    cnt = 0;
+    int                 rc;
+    struct line_status  p;
+    char*               input1 = NULL;
+    char*               p1 = NULL;
+    int                 cnt = 0;
     p.input = line;
     p.start = line;
     p.index = start;
@@ -1527,9 +1527,9 @@ int Tokenize(char* line, unsigned int start, struct asm_tok tokenarray[], unsign
                             p1++;                                /* skip the comma forward  */
                             input1 = p1;                         /* save that location in input1  */
                             while (isspace(*p1)) p1++;           /* skip the space  */
-                            strcpy((char*)buff, p1);                    /* copy to the buffer from variable on  */
+                            strcpy(&buff, p1);                    /* copy to the buffer from variable on  */
                             *input1++ = '\[';                    /* skip the space  */
-                            for (p1 = (char*)buff; *p1 != '\{'; p1++, input1++) /* till the end of var  */
+                            for (p1 = &buff; *p1 != '\{'; p1++, input1++) /* till the end of var  */
                                 *input1 = *p1;                      /* copy it back to input string  */
                             *input1++ = '\]';                    /* insert ']' before '{' */
                             strcpy(input1, p1);                  /* now copy the rest of string from buffer */

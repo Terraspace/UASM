@@ -63,7 +63,7 @@ const char* GetCodeClass(void)
 
 /* emit DGROUP GROUP instruction */
 
-static void AddToDgroup(enum sim_seg segm, const char* name)
+static void AddToDgroup(enum sim_seg segm, char* name)
 /************************************************************/
 {
     /* no DGROUP for FLAT or COFF/ELF */
@@ -94,16 +94,16 @@ static void close_currseg(void)
  * a standard segment directive line
  */
 
-static void SetSimSeg(enum sim_seg segm, const char* name)
+static void SetSimSeg(enum sim_seg segm, char* name)
 /**********************************************************/
 {
-    char* pAlign = "WORD";
-    char* pAlignSt = "PARA";
-    char* pUse = "";
-    char align[16];
-    struct asym* sym;
-    const char* pFmt;
-    const char* pClass;
+    char*           pAlign = "WORD";
+    char*           pAlignSt = "PARA";
+    char*           pUse = "";
+    char            align[16];
+    struct asym*    sym;
+    char*           pFmt;
+    char*           pClass;
 
     /* v2.34 /Sp[n] Set segment alignment */
     if (Options.seg_align != 4)
@@ -115,38 +115,38 @@ static void SetSimSeg(enum sim_seg segm, const char* name)
     if (ModuleInfo.defOfssize > USE16)
     {
         if (ModuleInfo.model == MODEL_FLAT)
-            pUse = "FLAT";
+            pUse = (char*)"FLAT";
         else
-            pUse = "USE32";
+            pUse = (char*)"USE32";
 
         if (Options.seg_align != 4)
             pAlign = align;
         else if ((ModuleInfo.curr_cpu & P_CPU_MASK) <= P_386)
-            pAlign = "DWORD";
+            pAlign = (char*)"DWORD";
         else
-            pAlign = "PARA";
+            pAlign = (char*)"PARA";
         pAlignSt = pAlign;
     }
 
     if (segm == SIM_CODE)
-        pClass = GetCodeClass();
+        pClass = (char*)GetCodeClass();
     else
-        pClass = SegmClass[segm];
+        pClass = (char*)SegmClass[segm];
 
     if (segm == SIM_STACK || segm == SIM_FARDATA || segm == SIM_FARDATA_UN)
         pAlign = pAlignSt;
 
-    pFmt = "%s %r %s %s %s '%s'";
+    pFmt = (char*)"%s %r %s %s %s '%s'";
     if (name == NULL)
     {
         name = SegmNames[segm];
-        if (name == NULL && ModuleInfo.flat) name = "_flat";
+        if (name == NULL && ModuleInfo.flat) name = (char*)"_flat";
 
         /* UASM 2.49 Prevent empty object with no options from crashing the assembler */
-        if (name == NULL) name = "_TEXT";
+        if (name == NULL) name = (char*)"_TEXT";
 
         if (ModuleInfo.simseg_init & (1 << segm))
-            pFmt = "%s %r";
+            pFmt = (char*)"%s %r";
         else
         {
             ModuleInfo.simseg_init |= (1 << segm);
@@ -162,7 +162,7 @@ static void SetSimSeg(enum sim_seg segm, const char* name)
                     ModuleInfo.simseg_defd |= (1 << segm);
             }
             if (ModuleInfo.simseg_defd & (1 << segm))
-                pFmt = "%s %r";
+                pFmt = (char*)"%s %r";
         }
     }
     else
@@ -174,13 +174,13 @@ static void SetSimSeg(enum sim_seg segm, const char* name)
          * v2.12: check 'isdefined' member instead of 'lname_idx'
          */
         if (sym && sym->state == SYM_SEG && sym->isdefined == TRUE)
-            pFmt = "%s %r";
+            pFmt = (char*)"%s %r";
     }
 
     if (ModuleInfo.flat)
     {
-        pUse = "USE64";
-        pFmt = "%s %r %s %s %s '%s'";
+        pUse = (char*)"USE64";
+        pFmt = (char*)"%s %r %s %s %s '%s'";
         AddLineQueueX(pFmt, "_flat", T_SEGMENT, "BYTE", "USE16", "PUBLIC", "CODE");
         AddLineQueueX("assume cs:_flat, ds:_flat, es:_flat, ss:_flat, fs:_flat, gs:_flat");
         if (Parse_Pass == PASS_1)
@@ -216,7 +216,7 @@ ret_code SimplifiedSegDir(int i, struct asm_tok tokenarray[])
  .CODE, .STACK, .DATA, .DATA?, .FARDATA, .FARDATA?, .CONST
  */
 {
-    const char* name = NULL;
+    char*       name = NULL;
     char        init;
     int         type;
     struct expr opndx;
@@ -225,7 +225,7 @@ ret_code SimplifiedSegDir(int i, struct asm_tok tokenarray[])
 
     if (ModuleInfo.model == MODEL_NONE)
     {
-        if ((Options.output_format == OFORMAT_MAC || Options.output_format == OFORMAT_ELF) && Options.sub_format == SFORMAT_64BIT)
+        if (Options.output_format == OFORMAT_MAC || Options.output_format == OFORMAT_ELF)
             RewindToSYSV64();
         else
             RewindToWin64();
@@ -291,74 +291,74 @@ ret_code SimplifiedSegDir(int i, struct asm_tok tokenarray[])
 
     switch (type)
     {
-    case SIM_CODE: /* .code */
+        case SIM_CODE: /* .code */
 
-        SetSimSeg(SIM_CODE, name);
+            SetSimSeg(SIM_CODE, name);
 
-        if (ModuleInfo.model == MODEL_TINY)
-        {
-            /* v2.05: add the named code segment to DGROUP */
-            if (name)
-                AddToDgroup(SIM_CODE, name);
-            name = szDgroup;
-        }
-        else if (ModuleInfo.model == MODEL_FLAT)
-        {
-            name = "FLAT";
-        }
-        else
-        {
-            if (name == NULL)
-                name = SegmNames[SIM_CODE];
-        }
-        AddLineQueueX("%r %r:%s", T_ASSUME, T_CS, name);
-        break;
-    case SIM_STACK: /* .stack */
-        /* if code is generated which does "emit" bytes,
-         * the original source line has to be saved.
-         * v2.05: must not be done after LstWrite() has been called!
-         * Also, there are no longer bytes "emitted".
-         */
-        SetSimSeg(SIM_STACK, NULL);
-        AddLineQueueX("ORG 0%xh", opndx.value);
-        EndSimSeg(SIM_STACK);
-        /* add stack to dgroup for some segmented models */
-        if (!init)
-            if (ModuleInfo.distance != STACK_FAR)
-                AddToDgroup(SIM_STACK, NULL);
-        break;
-    case SIM_DATA:    /* .data  */
-        /* UASM 2.50 in flat mode, .data does nothing */
-        //if (ModuleInfo.flat != TRUE)
-        //{
-        SetSimSeg(type, name);
-        AddLineQueueX("%r %r:ERROR", T_ASSUME, T_CS);
-        if (name || (!init))
-            AddToDgroup(type, name);
-        //}
-        break;
-    case SIM_DATA_UN: /* .data? */
+            if (ModuleInfo.model == MODEL_TINY)
+            {
+                /* v2.05: add the named code segment to DGROUP */
+                if (name)
+                    AddToDgroup(SIM_CODE, name);
+                name = (char*)szDgroup;
+            }
+            else if (ModuleInfo.model == MODEL_FLAT)
+            {
+                name = (char*)"FLAT";
+            }
+            else
+            {
+                if (name == NULL)
+                    name = (char*)SegmNames[SIM_CODE];
+            }
+            AddLineQueueX("%r %r:%s", T_ASSUME, T_CS, name);
+            break;
+        case SIM_STACK: /* .stack */
+            /* if code is generated which does "emit" bytes,
+             * the original source line has to be saved.
+             * v2.05: must not be done after LstWrite() has been called!
+             * Also, there are no longer bytes "emitted".
+             */
+            SetSimSeg(SIM_STACK, NULL);
+            AddLineQueueX("ORG 0%xh", opndx.value);
+            EndSimSeg(SIM_STACK);
+            /* add stack to dgroup for some segmented models */
+            if (!init)
+                if (ModuleInfo.distance != STACK_FAR)
+                    AddToDgroup(SIM_STACK, NULL);
+            break;
+        case SIM_DATA:    /* .data  */
+            /* UASM 2.50 in flat mode, .data does nothing */
+            //if (ModuleInfo.flat != TRUE)
+            //{
+            SetSimSeg(type, name);
+            AddLineQueueX("%r %r:ERROR", T_ASSUME, T_CS);
+            if (name || (!init))
+                AddToDgroup(type, name);
+            //}
+            break;
+        case SIM_DATA_UN: /* .data? */
 
-        /* UASM 2.49 Warn about BSS data in BIN, as the space won't be allocated */
-        if (Options.output_format == OFORMAT_BIN && Options.sub_format != SFORMAT_PE && ModuleInfo.flat)
-        {
-            EmitWarn(2, UNINIT_DATA_IN_BIN);
-        }
+            /* UASM 2.49 Warn about BSS data in BIN, as the space won't be allocated */
+            if (Options.output_format == OFORMAT_BIN && Options.sub_format != SFORMAT_PE && ModuleInfo.flat)
+            {
+                EmitWarn(2, UNINIT_DATA_IN_BIN);
+            }
 
-    case SIM_CONST:   /* .const */
-        SetSimSeg(type, name);
-        AddLineQueueX("%r %r:ERROR", T_ASSUME, T_CS);
-        if (name || (!init))
-            AddToDgroup(type, name);
-        break;
-    case SIM_FARDATA:     /* .fardata  */
-    case SIM_FARDATA_UN:  /* .fardata? */
-        SetSimSeg(type, name);
-        AddLineQueueX("%r %r:ERROR", T_ASSUME, T_CS);
-        break;
-    default: /* shouldn't happen */
-        /**/myassert(0);
-        break;
+        case SIM_CONST:   /* .const */
+            SetSimSeg(type, name);
+            AddLineQueueX("%r %r:ERROR", T_ASSUME, T_CS);
+            if (name || (!init))
+                AddToDgroup(type, name);
+            break;
+        case SIM_FARDATA:     /* .fardata  */
+        case SIM_FARDATA_UN:  /* .fardata? */
+            SetSimSeg(type, name);
+            AddLineQueueX("%r %r:ERROR", T_ASSUME, T_CS);
+            break;
+        default: /* shouldn't happen */
+            /**/myassert(0);
+            break;
     }
 
     RunLineQueue();

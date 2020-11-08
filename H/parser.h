@@ -311,7 +311,7 @@ struct code_info {
         unsigned char   adrsiz:1;      /* address size prefix 0x67 is to be emitted */
         unsigned char   opsiz:1;       /* operand size prefix 0x66 is to be emitted */
     } prefix;
-    struct instr_item *pinstr;   /* current pointer into InstrTable */   // KRAD-change const correctnesses
+    const struct instr_item *pinstr;   /* current pointer into InstrTable */
     enum instr_token token;
     enum memtype    mem_type;          /* byte / word / etc. NOT near/far */
     struct opnd_item opnd[MAX_OPND];

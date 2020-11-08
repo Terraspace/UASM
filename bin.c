@@ -627,7 +627,7 @@ static ret_code DoFixup(struct dsym* curr, struct calc_param* cp)
                 *codeptr.dq = value64;
             else
 #endif
-                * codeptr.dq = value;
+                *codeptr.dq = value;
             DebugMsg(("DoFixup(%s, %04" I32_SPEC "X): FIX_OFF64, value=%" I32_SPEC "Xh, *target=%" I64_SPEC "Xh\n", curr->sym.name, fixup->locofs, value, *codeptr.dq));
             break;
 #endif
@@ -757,7 +757,7 @@ static ret_code DoFixup(struct dsym* curr, struct calc_param* cp)
 static void pe_create_MZ_header(struct module_info* modinfo)
 /************************************************************/
 {
-    const char* p;
+    char* p;
     struct asym* sym;
 
     DebugMsg(("pe_create_MZ_header enter\n"));
@@ -768,7 +768,7 @@ static void pe_create_MZ_header(struct module_info* modinfo)
         DebugMsg(("pe_create_MZ_header: generate code\n"));
         AddLineQueueX("%r DOTNAME", T_OPTION);
         AddLineQueueX("%s1 %r USE16 %r %s", hdrname, T_SEGMENT, T_WORD, hdrattr);
-        for (p = mzcode; p < mzcode + sizeof(mzcode); p += strlen(p) + 1)
+        for (p = (char*)&mzcode; p < mzcode + sizeof(mzcode); p += strlen(p) + 1)
             AddLineQueue(p);
         AddLineQueueX("%s1 %r", hdrname, T_ENDS);
         RunLineQueue();
@@ -929,9 +929,9 @@ static void pe_create_section_table(void)
                     DebugMsg(("pe_create_section_table: %s, type=%u is object %u\n", curr->sym.name, curr->e.seginfo->segtype, objs));
                     objs++;
                     break;
+                }
             }
         }
-    }
         if (objs)
         {
             DebugMsg(("pe_create_section_table: items in object table: %u\n", objs));
@@ -939,7 +939,7 @@ static void pe_create_section_table(void)
             /* alloc space for 1 more section (.reloc) */
             objtab->e.seginfo->CodeBuffer = LclAlloc(objtab->sym.max_offset + sizeof(struct IMAGE_SECTION_HEADER));
         }
-}
+    }
 }
 
 /*
@@ -1480,7 +1480,7 @@ static void pe_set_values(struct calc_param* cp)
         if (curr->e.seginfo->lname_idx != i)
         {
             i = curr->e.seginfo->lname_idx;
-            secname = (curr->e.seginfo->aliasname?curr->e.seginfo->aliasname:ConvertSectionName(&curr->sym, NULL, buffer));
+            secname = (curr->e.seginfo->aliasname?curr->e.seginfo->aliasname:ConvertSectionName(&curr->sym, NULL, &buffer));
             strncpy(section->Name, secname, sizeof(section->Name));
             if (curr->e.seginfo->segtype != SEGTYPE_BSS)
                 section->PointerToRawData = curr->e.seginfo->fileoffset;
@@ -1759,7 +1759,7 @@ static ret_code bin_write_module(struct module_info* modinfo)
                 DebugMsg(("bin_write_module(%s): start ofs=%" I32_SPEC "Xh, size=%" I32_SPEC "Xh, file ofs=%" I32_SPEC "Xh, grp=%s\n",
                          curr->sym.name, curr->e.seginfo->start_offset, curr->sym.max_offset - curr->e.seginfo->start_loc, curr->e.seginfo->fileoffset, (curr->e.seginfo->group?curr->e.seginfo->group->name:"NULL")));
             }
-                }
+        }
     DebugMsg(("bin_write_module: all CalcOffset() done\n"));
 
     /* handle relocs */
@@ -1824,7 +1824,7 @@ static ret_code bin_write_module(struct module_info* modinfo)
             pMZ->e_ss = (addr >> 4) + ((addr & 0xF)?1:0); /* SS */
             /* v2.11: changed sym.offset to sym.max_offset */
             pMZ->e_sp = stack->sym.max_offset; /* SP */
-    }
+        }
         else
         {
             EmitWarn(2, NO_STACK);
@@ -1862,7 +1862,7 @@ static ret_code bin_write_module(struct module_info* modinfo)
         GetSegRelocs((uint_16*)(hdrbuf + pMZ->e_lfarlc));
         break;
 #endif
-            }
+    }
 
 #if SECTORMAP
     if (CurrFile[LST])
@@ -2015,7 +2015,7 @@ static ret_code bin_write_module(struct module_info* modinfo)
     DebugMsg(("bin_write_module: exit\n"));
 
     return(NOT_ERROR);
-        }
+}
 #endif
 
 static ret_code bin_check_external(struct module_info* modinfo)

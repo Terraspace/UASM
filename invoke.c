@@ -116,79 +116,79 @@ static int vcallpass = 0;  /* static global to determine which vectorcall pass w
 
 struct fastcall_conv
 {
-    int  (*invokestart)(struct dsym const*, int, int, struct asm_tok[], int*);
-    void (*invokeend)  (struct dsym const*, int, int);
-    int  (*handleparam)(struct dsym const*, int, struct dsym*, bool, struct expr*, char*, uint_8*);
+    int  (*invokestart)(struct dsym*, int, int, struct asm_tok[], int*);
+    void (*invokeend)  (struct dsym*, int, int);
+    int  (*handleparam)(struct dsym*, int, struct dsym*, bool, struct expr*, char*, uint_8*);
 };
 
 struct thiscall_conv
 {
-    int  (*invokestart)(struct dsym const*, int, int, struct asm_tok[], int*);
-    void (*invokeend)  (struct dsym const*, int, int);
-    int  (*handleparam)(struct dsym const*, int, struct dsym*, bool, struct expr*, char*, uint_8*);
+    int  (*invokestart)(struct dsym*, int, int, struct asm_tok[], int*);
+    void (*invokeend)  (struct dsym*, int, int);
+    int  (*handleparam)(struct dsym*, int, struct dsym*, bool, struct expr*, char*, uint_8*);
 };
 
 struct vectorcall_conv
 {
-    int  (*invokestart)(struct dsym const*, int, int, struct asm_tok[], int*);
-    void (*invokeend)  (struct dsym const*, int, int);
-    int  (*handleparam)(struct dsym const*, int, struct dsym*, bool, struct expr*, char*, uint_8*);
+    int  (*invokestart)(struct dsym*, int, int, struct asm_tok[], int*);
+    void (*invokeend)  (struct dsym*, int, int);
+    int  (*handleparam)(struct dsym*, int, struct dsym*, bool, struct expr*, char*, uint_8*);
 };
 
 struct sysvcall_conv
 {
-    int  (*invokestart)(struct dsym const*, int, int, struct asm_tok[], int*);
-    void (*invokeend)  (struct dsym const*, int, int);
-    int  (*handleparam)(struct dsym const*, int, struct dsym*, bool, struct expr*, char*, uint_8*);
+    int  (*invokestart)(struct dsym*, int, int, struct asm_tok[], int*);
+    void (*invokeend)  (struct dsym*, int, int);
+    int  (*handleparam)(struct dsym*, int, struct dsym*, bool, struct expr*, char*, uint_8*);
 };
 
 struct delphicall_conv
 {
-    int  (*invokestart)(struct dsym const*, int, int, struct asm_tok[], int*);
-    void (*invokeend)  (struct dsym const*, int, int);
-    int  (*handleparam)(struct dsym const*, int, struct dsym*, bool, struct expr*, char*, uint_8*);
+    int  (*invokestart)(struct dsym*, int, int, struct asm_tok[], int*);
+    void (*invokeend)  (struct dsym*, int, int);
+    int  (*handleparam)(struct dsym*, int, struct dsym*, bool, struct expr*, char*, uint_8*);
 };
 
 struct regcall_conv
 {
-    int(*invokestart)(struct dsym const*, int, int, struct asm_tok[], int*);
-    void(*invokeend)  (struct dsym const*, int, int);
-    int(*handleparam)(struct dsym const*, int, struct dsym*, bool, struct expr*, char*, uint_8*);
+    int(*invokestart)(struct dsym*, int, int, struct asm_tok[], int*);
+    void(*invokeend)  (struct dsym*, int, int);
+    int(*handleparam)(struct dsym*, int, struct dsym*, bool, struct expr*, char*, uint_8*);
 };
 
-static  int ms32_fcstart(struct dsym const*, int, int, struct asm_tok[], int*);
-static void ms32_fcend(struct dsym const*, int, int);
-static  int ms32_param(struct dsym const*, int, struct dsym*, bool, struct expr*, char*, uint_8*);
+static  int ms32_fcstart(struct dsym*, int, int, struct asm_tok[], int*);
+static void ms32_fcend(struct dsym*, int, int);
+static  int ms32_param(struct dsym*, int, struct dsym*, bool, struct expr*, char*, uint_8*);
 
 #if OWFC_SUPPORT
-static  int watc_fcstart(struct dsym const*, int, int, struct asm_tok[], int*);
-static void watc_fcend(struct dsym const*, int, int);
-static  int watc_param(struct dsym const*, int, struct dsym*, bool, struct expr*, char*, uint_8*);
+static  int watc_fcstart(struct dsym*, int, int, struct asm_tok[], int*);
+static void watc_fcend(struct dsym*, int, int);
+static  int watc_param(struct dsym*, int, struct dsym*, bool, struct expr*, char*, uint_8*);
 #endif
 
 #if AMD64_SUPPORT
-static  int ms64_fcstart(struct dsym const*, int, int, struct asm_tok[], int*);
-static void ms64_fcend(struct dsym const*, int, int);
-static  int ms64_param(struct dsym const*, int, struct dsym*, bool, struct expr*, char*, uint_8*);
+static  int ms64_fcstart(struct dsym*, int, int, struct asm_tok[], int*);
+static void ms64_fcend(struct dsym*, int, int);
+static  int ms64_param(struct dsym*, int, struct dsym*, bool, struct expr*, char*, uint_8*);
 #define REGPAR_WIN64 0x0306 /* regs 1, 2, 8 and 9 */
 #define REGCALLPAR_WIN64 0xDBC7 /* regs 0, 1, 2, 6, 7, 8, 9, 11, 12, 14 and 15 (RAX, RCX, RDX, RDI, RSI, R8, R9, R11, R12, R14 and R15) */
 #endif
 
 #if SYSV_SUPPORT
-static  int sysv_reg(struct dsym const*, unsigned int);
-static  int sysv_fcstart(struct dsym const*, int, int, struct asm_tok[], int*);
-static void sysv_fcend(struct dsym const*, int, int);
-static  int sysv_param(struct dsym const*, int, struct dsym*, bool, struct expr*, char*, uint_8*);
-static  int sysv_vararg_param(struct dsym const*, int, struct dsym*, bool, struct expr*, char*, uint_8*);
+static  int sysv_reg(struct dsym*, unsigned int);
+static  int sysv_fcstart(struct dsym*, int, int, struct asm_tok[], int*);
+static void sysv_fcend(struct dsym*, int, int);
+static  int sysv_param(struct dsym*, int, struct dsym*, bool, struct expr*, char*, uint_8*);
+static  int sysv_vararg_param(struct dsym*, int, struct dsym*, bool, struct expr*, char*, uint_8*);
 #define REGPAR_SYSV 0x03C6 /* regs 6, 7, 1, 2, 8 and 9 */
 #define REGCALLPAR_UNIX64 0xDFC7 /* regs 0, 1, 2, 6, 7, 8, 9, 10, 11, 12, 14 and 15 (RAX, RCX, RDX, RDI, RSI, R8, R9, R10, R11, R12, R14 and R15) */
 #endif
 
 /* added for delphi in v2.28 */
 #if DELPHI_SUPPORT
-static  int delphi32_fcstart(struct dsym const*, int, int, struct asm_tok[], int*);
-static void delphi32_fcend(struct dsym const*, int, int);
-static  int delphi32_param(struct dsym const*, int, struct dsym*, bool, struct expr*, char*, uint_8*);
+static  int delphi32_fcstart(struct dsym*, int, int, struct asm_tok[], int*);
+static void delphi32_fcend(struct dsym*, int, int);
+static  int delphi32_param(struct dsym*, int, struct dsym*, bool, struct expr*, char*, uint_8*);
 #define REGPAR_DELPHI 0x03 /* regs 0, 2, 1  */
 #endif
 
@@ -347,7 +347,7 @@ static const enum special_token vectorcall32_regsZMM[] = { T_ZMM0, T_ZMM1, T_ZMM
 //static const enum special_token segreg_tab[] = {
 //    T_ES, T_CS, T_SS, T_DS, T_FS, T_GS };
 
-static int ms32_fcstart(struct dsym const* proc, int numparams, int start, struct asm_tok tokenarray[], int* value)
+static int ms32_fcstart(struct dsym* proc, int numparams, int start, struct asm_tok tokenarray[], int* value)
 /*******************************************************************************************************************/
 {
     struct dsym* param;
@@ -361,14 +361,14 @@ static int ms32_fcstart(struct dsym const* proc, int numparams, int start, struc
     return(1);
 }
 
-static void ms32_fcend(struct dsym const* proc, int numparams, int value)
+static void ms32_fcend(struct dsym* proc, int numparams, int value)
 /*************************************************************************/
 {
     /* nothing to do */
     return;
 }
 
-static int ms32_param(struct dsym const* proc, int index, struct dsym* param, bool addr, struct expr* opnd, char* paramvalue, uint_8* r0used)
+static int ms32_param(struct dsym* proc, int index, struct dsym* param, bool addr, struct expr* opnd, char* paramvalue, uint_8* r0used)
 /*********************************************************************************************************************************************/
 {
     enum special_token const* pst;
@@ -418,7 +418,7 @@ static int ms32_param(struct dsym const* proc, int index, struct dsym* param, bo
         {
             if ((ModuleInfo.curr_cpu & P_CPU_MASK) >= P_386)
             {
-                AddLineQueueX(" %s %r, %s", (param->sym.mem_type & MT_SIGNED)?"movsx":"movzx", reg, paramvalue);
+                AddLineQueueX(" %s %r, %s", (param->sym.mem_type & MT_SIGNED) ? "movsx" : "movzx", reg, paramvalue);
             }
             else
             {
@@ -444,14 +444,14 @@ static int ms32_param(struct dsym const* proc, int index, struct dsym* param, bo
 }
 
 /* added for delphi in v2.28 */
-static int delphi32_fcstart(struct dsym const* proc, int numparams, int start, struct asm_tok tokenarray[], int* value)
+static int delphi32_fcstart(struct dsym* proc, int numparams, int start, struct asm_tok tokenarray[], int* value)
 /*******************************************************************************************************************/
 {
     return(0);
 }
 
 /* added for delphi in v2.28 */
-static void delphi32_fcend(struct dsym const* proc, int numparams, int value)
+static void delphi32_fcend(struct dsym* proc, int numparams, int value)
 /*************************************************************************/
 {
     /* nothing to do */
@@ -459,12 +459,12 @@ static void delphi32_fcend(struct dsym const* proc, int numparams, int value)
 }
 
 /* added for delphi in v2.28 */
-static int delphi32_param(struct dsym const* proc, int index, struct dsym* param, bool addr, struct expr* opnd, char* paramvalue, uint_8* r0used)
+static int delphi32_param(struct dsym* proc, int index, struct dsym* param, bool addr, struct expr* opnd, char* paramvalue, uint_8* r0used)
 /*********************************************************************************************************************************************/
 {
-    enum special_token const* pst;
-    struct proc_info* info;
-    enum special_token reg;
+    enum special_token*     pst;
+    struct proc_info*       info;
+    enum special_token      reg;
     info = proc->e.procinfo;
 
     DebugMsg1(("delphi_param(proc=%s, ofs=%u, index=%u, param=%s) fcscratch=%u\n", proc->sym.name, proc->sym.Ofssize, index, param->sym.name, fcscratch));
@@ -506,20 +506,20 @@ static int delphi32_param(struct dsym const* proc, int index, struct dsym* param
     {
         switch (fcscratch)
         {
-        case 0:
-            if (((_stricmp(paramvalue, "EDX") == 0) && info->delregsused[1]) ||
-                ((_stricmp(paramvalue, "ECX") == 0) && info->delregsused[2]))
-                EmitWarn(2, REGISTER_VALUE_OVERWRITTEN_BY_INVOKE);
-            break;
-        case 1:
-            if (((_stricmp(paramvalue, "EAX") == 0) && info->delregsused[0]) ||
-                ((_stricmp(paramvalue, "ECX") == 0) && info->delregsused[2]))
-                EmitWarn(2, REGISTER_VALUE_OVERWRITTEN_BY_INVOKE);
-            break;
-        case 2:
-            if (((_stricmp(paramvalue, "EAX") == 0) && info->delregsused[0]) ||
-                ((_stricmp(paramvalue, "EDX") == 0) && info->delregsused[1]))
-                EmitWarn(2, REGISTER_VALUE_OVERWRITTEN_BY_INVOKE);
+            case 0:
+                if (((_stricmp(paramvalue, "EDX") == 0) && info->delregsused[1]) ||
+                    ((_stricmp(paramvalue, "ECX") == 0) && info->delregsused[2]))
+                    EmitWarn(2, REGISTER_VALUE_OVERWRITTEN_BY_INVOKE);
+                break;
+            case 1:
+                if (((_stricmp(paramvalue, "EAX") == 0) && info->delregsused[0]) ||
+                    ((_stricmp(paramvalue, "ECX") == 0) && info->delregsused[2]))
+                    EmitWarn(2, REGISTER_VALUE_OVERWRITTEN_BY_INVOKE);
+                break;
+            case 2:
+                if (((_stricmp(paramvalue, "EAX") == 0) && info->delregsused[0]) ||
+                    ((_stricmp(paramvalue, "EDX") == 0) && info->delregsused[1]))
+                    EmitWarn(2, REGISTER_VALUE_OVERWRITTEN_BY_INVOKE);
         }
     }
 
@@ -539,7 +539,7 @@ WINDOWS 64 FASTCALL HANDLERS
 */
 #if AMD64_SUPPORT
 
-static int ms64_fcstart(struct dsym const* proc, int numparams, int start, struct asm_tok tokenarray[], int* value)
+static int ms64_fcstart(struct dsym* proc, int numparams, int start, struct asm_tok tokenarray[], int* value)
 /*******************************************************************************************************************/
 {
     int j;
@@ -583,7 +583,7 @@ static int ms64_fcstart(struct dsym const* proc, int numparams, int start, struc
     return(0);
 }
 
-static void ms64_fcend(struct dsym const* proc, int numparams, int value)
+static void ms64_fcend(struct dsym* proc, int numparams, int value)
 /*************************************************************************/
 {
     /* use <value>, which has been set by ms64_fcstart() */
@@ -639,25 +639,25 @@ static void ms64_fcend(struct dsym const* proc, int numparams, int value)
 * UASM 2.49 For structs that are not 1/2/4/8 bytes in size the address is used too, else they're passed
 * in registers.
 */
-static int ms64_param(struct dsym const* proc, int index, struct dsym* param, bool addr, struct expr* opnd, char* paramvalue, uint_8* regs_used)
+static int ms64_param(struct dsym* proc, int index, struct dsym* param, bool addr, struct expr* opnd, char* paramvalue, uint_8* regs_used)
 /************************************************************************************************************************************************/
 {
-    uint_32 size;
-    uint_32 psize;
-    int reg;
-    int reg2;
-    int i;
-    int j = 0;
-    int tCount = 0;
-    int freevecregs = 0;
-    int vecidx = -1;
-    int membersize = 0;     /* used for vectorcall array */
-    int memberCount = 0;     /* used for vectorcall array */
-    int base;
-    struct proc_info* info = proc->e.procinfo;
-    struct dsym* t = NULL; /* used for vectorcall array member size */
-    bool destroyed = FALSE;
-    struct asym* sym = NULL;
+    uint_32             size;
+    uint_32             psize;
+    int                 reg;
+    int                 reg2;
+    int                 i;
+    int                 j = 0;
+    int                 tCount = 0;
+    int                 freevecregs = 0;
+    int                 vecidx = -1;
+    int                 membersize = 0;     /* used for vectorcall array */
+    int                 memberCount = 0;     /* used for vectorcall array */
+    int                 base;
+    struct proc_info*   info = proc->e.procinfo;
+    struct dsym*        t = NULL; /* used for vectorcall array member size */
+    bool                destroyed = FALSE;
+    struct asym*        sym = NULL;
 
     DebugMsg1(("ms64_param(%s, index=%u, param.memtype=%Xh, addr=%u) enter\n", proc->sym.name, index, param->sym.mem_type, addr));
 
@@ -788,10 +788,10 @@ static int ms64_param(struct dsym const* proc, int index, struct dsym* param, bo
                 }
                 switch (psize)
                 {
-                case 1:   i = T_BYTE; break;
-                case 2:   i = T_WORD; break;
-                case 4:   i = T_DWORD; break;
-                default:  i = T_QWORD; break;
+                    case 1:   i = T_BYTE; break;
+                    case 2:   i = T_WORD; break;
+                    case 4:   i = T_DWORD; break;
+                    default:  i = T_QWORD; break;
                 }
                 AddLineQueueX(" mov %r ptr [%r+%u], %s", i, T_RSP, NUMQUAL index * 8, paramvalue);
                 return(1);
@@ -841,10 +841,10 @@ static int ms64_param(struct dsym const* proc, int index, struct dsym* param, bo
                     }
                     switch (psize)
                     {
-                    case 1:  i = T_AL;  break;
-                    case 2:  i = T_AX;  break;
-                    case 4:  i = T_EAX; break;
-                    default: i = T_RAX; break;
+                        case 1:  i = T_AL;  break;
+                        case 2:  i = T_AX;  break;
+                        case 4:  i = T_EAX; break;
+                        default: i = T_RAX; break;
                     }
                     *regs_used |= R0_USED;
                 }
@@ -853,16 +853,16 @@ static int ms64_param(struct dsym const* proc, int index, struct dsym* param, bo
             else
             {
                 if (opnd->mem_type == MT_EMPTY)
-                    size = (opnd->instr == T_OFFSET?8:4);
+                    size = (opnd->instr == T_OFFSET ? 8 : 4);
                 else
                     size = SizeFromMemtype(opnd->mem_type, USE64, opnd->type);
                 DebugMsg(("ms64_param(%s, param=%u): MEM size.p/a=%u/%u flags=%X\n", proc->sym.name, index, psize, size, *regs_used));
                 switch (psize)
                 {
-                case 1:  i = T_AL;  break;
-                case 2:  i = T_AX;  break;
-                case 4:  i = T_EAX; break;
-                default: i = T_RAX; break;
+                    case 1:  i = T_AL;  break;
+                    case 2:  i = T_AX;  break;
+                    case 4:  i = T_EAX; break;
+                    default: i = T_RAX; break;
                 }
                 if (proc->sym.langtype == LANG_VECTORCALL || proc->sym.langtype == LANG_REGCALL) return(1);
                 *regs_used |= R0_USED;
@@ -883,7 +883,7 @@ static int ms64_param(struct dsym const* proc, int index, struct dsym* param, bo
                         AddLineQueueX(" mov %r, %s", i, paramvalue);
                 }
                 else
-                    AddLineQueueX(" mov%sx %r, %s", IS_SIGNED(opnd->mem_type)?"s":"z", i, paramvalue);
+                    AddLineQueueX(" mov%sx %r, %s", IS_SIGNED(opnd->mem_type) ? "s" : "z", i, paramvalue);
             }
             else if (opnd->kind != EXPR_REG || opnd->indirect == TRUE)
                 AddLineQueueX(" mov %r, %s", i, paramvalue);
@@ -1556,75 +1556,75 @@ vcall:
 
                             switch (membersize)
                             {
-                            case 4:                             /* it could be 3 or more REAL4 */
-                                for (i = 0, j = 0; i < membersize; i++)
-                                {
-                                    while (info->xyzused[j] != 0) j++;
-                                    if (i == 0) AddLineQueueX("%s %r,dword ptr %s", MOVE_SINGLE(), T_XMM0 + j, paramvalue);
-                                    else      AddLineQueueX("%s %r,dword ptr [%s+%d]", MOVE_SINGLE(), T_XMM0 + j, paramvalue, i * 4);
-                                    info->xyzused[j] = 1;
-                                }
-                                break;
-                            case 8:
-                                for (i = 0, j = 0; i < memberCount; i++)
-                                {
-                                    while (info->xyzused[j] != 0) j++;
-                                    if (i == 0) AddLineQueueX("%s %r,oword ptr %s", MOVE_DOUBLE(), T_XMM0 + j, paramvalue);
-                                    else      AddLineQueueX("%s %r,oword ptr [%s+%d]", MOVE_DOUBLE(), T_XMM0 + j, paramvalue, i * 8);
-                                    info->xyzused[j] = 1;
-                                }
-                                break;
-                            case 16:
-                                if ((vcallpass == 0) && t->e.structinfo->stype == MM128)
-                                {
-                                    AddLineQueueX("%s %r,oword ptr %s", MOVE_ALIGNED_FLOAT(), T_XMM0 + index, paramvalue);
-                                    info->xyzused[index] = 1;
-                                }
-                                else if ((vcallpass == 1) && (t->e.structinfo->isHFA || t->e.structinfo->isHVA))
-                                {
+                                case 4:                             /* it could be 3 or more REAL4 */
+                                    for (i = 0, j = 0; i < membersize; i++)
+                                    {
+                                        while (info->xyzused[j] != 0) j++;
+                                        if (i == 0) AddLineQueueX("%s %r,dword ptr %s", MOVE_SINGLE(), T_XMM0 + j, paramvalue);
+                                        else      AddLineQueueX("%s %r,dword ptr [%s+%d]", MOVE_SINGLE(), T_XMM0 + j, paramvalue, i * 4);
+                                        info->xyzused[j] = 1;
+                                    }
+                                    break;
+                                case 8:
                                     for (i = 0, j = 0; i < memberCount; i++)
                                     {
                                         while (info->xyzused[j] != 0) j++;
-                                        if (i == 0) AddLineQueueX("%s %r,oword ptr %s", MOVE_ALIGNED_FLOAT(), T_XMM0 + j, paramvalue);
-                                        else      AddLineQueueX("%s %r,oword ptr [%s+%d]", MOVE_ALIGNED_FLOAT(), T_XMM0 + j, paramvalue, i * 16);
+                                        if (i == 0) AddLineQueueX("%s %r,oword ptr %s", MOVE_DOUBLE(), T_XMM0 + j, paramvalue);
+                                        else      AddLineQueueX("%s %r,oword ptr [%s+%d]", MOVE_DOUBLE(), T_XMM0 + j, paramvalue, i * 8);
                                         info->xyzused[j] = 1;
                                     }
-                                }
-                                break;
-                            case 32:
-                                if ((vcallpass == 0) && t->e.structinfo->stype == MM256)
-                                {
-                                    AddLineQueueX("vmovups %r,ymmword ptr %s", T_YMM0 + index, paramvalue);
-                                    info->xyzused[index] = 1;
-                                }
-                                else if ((vcallpass == 1) && (t->e.structinfo->isHFA || t->e.structinfo->isHVA))
-                                {
-                                    for (i = 0, j = 0; i < memberCount; i++)
+                                    break;
+                                case 16:
+                                    if ((vcallpass == 0) && t->e.structinfo->stype == MM128)
                                     {
-                                        while (info->xyzused[j] != 0) j++;
-                                        if (i == 0) AddLineQueueX("vmovups %r,ymmword ptr %s", T_YMM0 + j, paramvalue);
-                                        else      AddLineQueueX("vmovups %r,ymmword ptr [%s+%d]", T_YMM0 + j, paramvalue, i * 32);
-                                        info->xyzused[j] = 1;
+                                        AddLineQueueX("%s %r,oword ptr %s", MOVE_ALIGNED_FLOAT(), T_XMM0 + index, paramvalue);
+                                        info->xyzused[index] = 1;
                                     }
-                                }
-                                break;
-                            case 64:
-                                if ((vcallpass == 0) && t->e.structinfo->stype == MM512)
-                                {
-                                    AddLineQueueX("vmovups %r,zmmword ptr %s", T_ZMM0 + index, paramvalue);
-                                    info->xyzused[index] = 1;
-                                }
-                                else if ((vcallpass == 1) && (t->e.structinfo->isHFA || t->e.structinfo->isHVA))
-                                {
-                                    for (i = 0, j = 0; i < memberCount; i++)
+                                    else if ((vcallpass == 1) && (t->e.structinfo->isHFA || t->e.structinfo->isHVA))
                                     {
-                                        while (info->xyzused[j] != 0) j++;
-                                        if (i == 0) AddLineQueueX("vmovups %r,zmmword ptr %s", T_ZMM0 + j, paramvalue);
-                                        else      AddLineQueueX("vmovups %r,zmmword ptr [%s+%d]", T_ZMM0 + j, paramvalue, i * 64);
-                                        info->xyzused[j] = 1;
+                                        for (i = 0, j = 0; i < memberCount; i++)
+                                        {
+                                            while (info->xyzused[j] != 0) j++;
+                                            if (i == 0) AddLineQueueX("%s %r,oword ptr %s", MOVE_ALIGNED_FLOAT(), T_XMM0 + j, paramvalue);
+                                            else      AddLineQueueX("%s %r,oword ptr [%s+%d]", MOVE_ALIGNED_FLOAT(), T_XMM0 + j, paramvalue, i * 16);
+                                            info->xyzused[j] = 1;
+                                        }
                                     }
-                                }
-                                break;
+                                    break;
+                                case 32:
+                                    if ((vcallpass == 0) && t->e.structinfo->stype == MM256)
+                                    {
+                                        AddLineQueueX("vmovups %r,ymmword ptr %s", T_YMM0 + index, paramvalue);
+                                        info->xyzused[index] = 1;
+                                    }
+                                    else if ((vcallpass == 1) && (t->e.structinfo->isHFA || t->e.structinfo->isHVA))
+                                    {
+                                        for (i = 0, j = 0; i < memberCount; i++)
+                                        {
+                                            while (info->xyzused[j] != 0) j++;
+                                            if (i == 0) AddLineQueueX("vmovups %r,ymmword ptr %s", T_YMM0 + j, paramvalue);
+                                            else      AddLineQueueX("vmovups %r,ymmword ptr [%s+%d]", T_YMM0 + j, paramvalue, i * 32);
+                                            info->xyzused[j] = 1;
+                                        }
+                                    }
+                                    break;
+                                case 64:
+                                    if ((vcallpass == 0) && t->e.structinfo->stype == MM512)
+                                    {
+                                        AddLineQueueX("vmovups %r,zmmword ptr %s", T_ZMM0 + index, paramvalue);
+                                        info->xyzused[index] = 1;
+                                    }
+                                    else if ((vcallpass == 1) && (t->e.structinfo->isHFA || t->e.structinfo->isHVA))
+                                    {
+                                        for (i = 0, j = 0; i < memberCount; i++)
+                                        {
+                                            while (info->xyzused[j] != 0) j++;
+                                            if (i == 0) AddLineQueueX("vmovups %r,zmmword ptr %s", T_ZMM0 + j, paramvalue);
+                                            else      AddLineQueueX("vmovups %r,zmmword ptr [%s+%d]", T_ZMM0 + j, paramvalue, i * 64);
+                                            info->xyzused[j] = 1;
+                                        }
+                                    }
+                                    break;
                             }
                         }
                     }
@@ -1632,47 +1632,47 @@ vcall:
                     {
                         switch (psize)
                         {
-                        case 4:
-                            if (opnd->kind == EXPR_FLOAT)
-                            {
-                                AddLineQueueX("%s %r,dword ptr %s", MOVE_SINGLE(), T_XMM0 + index, paramvalue);
-                                info->vregs[index] = 1;
-                            }
-                            else
-                                AddLineQueueX("mov %r, qword ptr %s", ms64_regs[index + 2 * 4], paramvalue);
-                            break;
-                        case 8:
-                            if (opnd->kind == EXPR_FLOAT)
-                            {
-                                AddLineQueueX("%s %r,qword ptr %s", MOVE_DOUBLE(), T_XMM0 + index, paramvalue);
-                                info->vregs[index] = 1;
-                            }
-                            else
-                                AddLineQueueX("mov %r, qword ptr %s", ms64_regs[index + 2 * 4], paramvalue);
-                            break;
-                        case 16:
-                            if (opnd->kind == EXPR_REG && opnd->indirect == FALSE)
-                            {
-                                if (GetValueSp(reg) & OP_XMM)
+                            case 4:
+                                if (opnd->kind == EXPR_FLOAT)
                                 {
-                                    if (reg == T_XMM0 + index)
-                                        DebugMsg(("ms64_param(%s, param=%u): argument optimized\n", proc->sym.name, index));
-                                    else
-                                        AddLineQueueX("%s %r,oword ptr %s", MOVE_ALIGNED_FLOAT(), T_XMM0 + index, paramvalue);
+                                    AddLineQueueX("%s %r,dword ptr %s", MOVE_SINGLE(), T_XMM0 + index, paramvalue);
+                                    info->vregs[index] = 1;
                                 }
-                            }
-                            else
-                                AddLineQueueX("%s %r,oword ptr %s", MOVE_ALIGNED_FLOAT(), T_XMM0 + index, paramvalue);
-                            info->vregs[index] = 1;
-                            break;
-                        case 32:
-                            info->vregs[index] = 1;
-                            AddLineQueueX("vmovups %r,ymmword ptr %s", T_YMM0 + index, paramvalue);
-                            break;
-                        case 64:
-                            info->vregs[index] = 1;
-                            AddLineQueueX("vmovups %r,zmmword ptr %s", T_ZMM0 + index, paramvalue);
-                            break;
+                                else
+                                    AddLineQueueX("mov %r, qword ptr %s", ms64_regs[index + 2 * 4], paramvalue);
+                                break;
+                            case 8:
+                                if (opnd->kind == EXPR_FLOAT)
+                                {
+                                    AddLineQueueX("%s %r,qword ptr %s", MOVE_DOUBLE(), T_XMM0 + index, paramvalue);
+                                    info->vregs[index] = 1;
+                                }
+                                else
+                                    AddLineQueueX("mov %r, qword ptr %s", ms64_regs[index + 2 * 4], paramvalue);
+                                break;
+                            case 16:
+                                if (opnd->kind == EXPR_REG && opnd->indirect == FALSE)
+                                {
+                                    if (GetValueSp(reg) & OP_XMM)
+                                    {
+                                        if (reg == T_XMM0 + index)
+                                            DebugMsg(("ms64_param(%s, param=%u): argument optimized\n", proc->sym.name, index));
+                                        else
+                                            AddLineQueueX("%s %r,oword ptr %s", MOVE_ALIGNED_FLOAT(), T_XMM0 + index, paramvalue);
+                                    }
+                                }
+                                else
+                                    AddLineQueueX("%s %r,oword ptr %s", MOVE_ALIGNED_FLOAT(), T_XMM0 + index, paramvalue);
+                                info->vregs[index] = 1;
+                                break;
+                            case 32:
+                                info->vregs[index] = 1;
+                                AddLineQueueX("vmovups %r,ymmword ptr %s", T_YMM0 + index, paramvalue);
+                                break;
+                            case 64:
+                                info->vregs[index] = 1;
+                                AddLineQueueX("vmovups %r,zmmword ptr %s", T_ZMM0 + index, paramvalue);
+                                break;
                         }
                     }
                 }
@@ -1793,75 +1793,75 @@ vcall:
 
                             switch (membersize)
                             {
-                            case 4:                             /* it could be 3 or more REAL4 */
-                                for (i = 0, j = 0; i < membersize; i++)
-                                {
-                                    while (info->regcxyzused[j] != 0) j++;
-                                    if (i == 0) AddLineQueueX("%s %r,dword ptr %s", MOVE_SINGLE(), T_XMM0 + j, paramvalue);
-                                    else      AddLineQueueX("%s %r,dword ptr [%s+%d]", MOVE_SINGLE(), T_XMM0 + j, paramvalue, i * 4);
-                                    info->regcxyzused[j] = 1;
-                                }
-                                break;
-                            case 8:
-                                for (i = 0, j = 0; i < memberCount; i++)
-                                {
-                                    while (info->regcxyzused[j] != 0) j++;
-                                    if (i == 0) AddLineQueueX("%s %r,oword ptr %s", MOVE_DOUBLE(), T_XMM0 + j, paramvalue);
-                                    else      AddLineQueueX("%s %r,oword ptr [%s+%d]", MOVE_DOUBLE(), T_XMM0 + j, paramvalue, i * 8);
-                                    info->regcxyzused[j] = 1;
-                                }
-                                break;
-                            case 16:
-                                if ((vcallpass == 0) && t->e.structinfo->stype == MM128)
-                                {
-                                    AddLineQueueX("%s %r,oword ptr %s", MOVE_ALIGNED_FLOAT(), T_XMM0 + index, paramvalue);
-                                    info->regcxyzused[index] = 1;
-                                }
-                                else if ((vcallpass == 1) && (t->e.structinfo->isHFA || t->e.structinfo->isHVA))
-                                {
+                                case 4:                             /* it could be 3 or more REAL4 */
+                                    for (i = 0, j = 0; i < membersize; i++)
+                                    {
+                                        while (info->regcxyzused[j] != 0) j++;
+                                        if (i == 0) AddLineQueueX("%s %r,dword ptr %s", MOVE_SINGLE(), T_XMM0 + j, paramvalue);
+                                        else      AddLineQueueX("%s %r,dword ptr [%s+%d]", MOVE_SINGLE(), T_XMM0 + j, paramvalue, i * 4);
+                                        info->regcxyzused[j] = 1;
+                                    }
+                                    break;
+                                case 8:
                                     for (i = 0, j = 0; i < memberCount; i++)
                                     {
                                         while (info->regcxyzused[j] != 0) j++;
-                                        if (i == 0) AddLineQueueX("%s %r,oword ptr %s", MOVE_ALIGNED_FLOAT(), T_XMM0 + j, paramvalue);
-                                        else      AddLineQueueX("%s %r,oword ptr [%s+%d]", MOVE_ALIGNED_FLOAT(), T_XMM0 + j, paramvalue, i * 16);
+                                        if (i == 0) AddLineQueueX("%s %r,oword ptr %s", MOVE_DOUBLE(), T_XMM0 + j, paramvalue);
+                                        else      AddLineQueueX("%s %r,oword ptr [%s+%d]", MOVE_DOUBLE(), T_XMM0 + j, paramvalue, i * 8);
                                         info->regcxyzused[j] = 1;
                                     }
-                                }
-                                break;
-                            case 32:
-                                if ((vcallpass == 0) && t->e.structinfo->stype == MM256)
-                                {
-                                    AddLineQueueX("vmovups %r,ymmword ptr %s", T_YMM0 + index, paramvalue);
-                                    info->regcxyzused[index] = 1;
-                                }
-                                else if ((vcallpass == 1) && (t->e.structinfo->isHFA || t->e.structinfo->isHVA))
-                                {
-                                    for (i = 0, j = 0; i < memberCount; i++)
+                                    break;
+                                case 16:
+                                    if ((vcallpass == 0) && t->e.structinfo->stype == MM128)
                                     {
-                                        while (info->regcxyzused[j] != 0) j++;
-                                        if (i == 0) AddLineQueueX("vmovups %r,ymmword ptr %s", T_YMM0 + j, paramvalue);
-                                        else      AddLineQueueX("vmovups %r,ymmword ptr [%s+%d]", T_YMM0 + j, paramvalue, i * 32);
-                                        info->regcxyzused[j] = 1;
+                                        AddLineQueueX("%s %r,oword ptr %s", MOVE_ALIGNED_FLOAT(), T_XMM0 + index, paramvalue);
+                                        info->regcxyzused[index] = 1;
                                     }
-                                }
-                                break;
-                            case 64:
-                                if ((vcallpass == 0) && t->e.structinfo->stype == MM512)
-                                {
-                                    AddLineQueueX("vmovups %r,zmmword ptr %s", T_ZMM0 + index, paramvalue);
-                                    info->regcxyzused[index] = 1;
-                                }
-                                else if ((vcallpass == 1) && (t->e.structinfo->isHFA || t->e.structinfo->isHVA))
-                                {
-                                    for (i = 0, j = 0; i < memberCount; i++)
+                                    else if ((vcallpass == 1) && (t->e.structinfo->isHFA || t->e.structinfo->isHVA))
                                     {
-                                        while (info->regcxyzused[j] != 0) j++;
-                                        if (i == 0) AddLineQueueX("vmovups %r,zmmword ptr %s", T_ZMM0 + j, paramvalue);
-                                        else      AddLineQueueX("vmovups %r,zmmword ptr [%s+%d]", T_ZMM0 + j, paramvalue, i * 64);
-                                        info->regcxyzused[j] = 1;
+                                        for (i = 0, j = 0; i < memberCount; i++)
+                                        {
+                                            while (info->regcxyzused[j] != 0) j++;
+                                            if (i == 0) AddLineQueueX("%s %r,oword ptr %s", MOVE_ALIGNED_FLOAT(), T_XMM0 + j, paramvalue);
+                                            else      AddLineQueueX("%s %r,oword ptr [%s+%d]", MOVE_ALIGNED_FLOAT(), T_XMM0 + j, paramvalue, i * 16);
+                                            info->regcxyzused[j] = 1;
+                                        }
                                     }
-                                }
-                                break;
+                                    break;
+                                case 32:
+                                    if ((vcallpass == 0) && t->e.structinfo->stype == MM256)
+                                    {
+                                        AddLineQueueX("vmovups %r,ymmword ptr %s", T_YMM0 + index, paramvalue);
+                                        info->regcxyzused[index] = 1;
+                                    }
+                                    else if ((vcallpass == 1) && (t->e.structinfo->isHFA || t->e.structinfo->isHVA))
+                                    {
+                                        for (i = 0, j = 0; i < memberCount; i++)
+                                        {
+                                            while (info->regcxyzused[j] != 0) j++;
+                                            if (i == 0) AddLineQueueX("vmovups %r,ymmword ptr %s", T_YMM0 + j, paramvalue);
+                                            else      AddLineQueueX("vmovups %r,ymmword ptr [%s+%d]", T_YMM0 + j, paramvalue, i * 32);
+                                            info->regcxyzused[j] = 1;
+                                        }
+                                    }
+                                    break;
+                                case 64:
+                                    if ((vcallpass == 0) && t->e.structinfo->stype == MM512)
+                                    {
+                                        AddLineQueueX("vmovups %r,zmmword ptr %s", T_ZMM0 + index, paramvalue);
+                                        info->regcxyzused[index] = 1;
+                                    }
+                                    else if ((vcallpass == 1) && (t->e.structinfo->isHFA || t->e.structinfo->isHVA))
+                                    {
+                                        for (i = 0, j = 0; i < memberCount; i++)
+                                        {
+                                            while (info->regcxyzused[j] != 0) j++;
+                                            if (i == 0) AddLineQueueX("vmovups %r,zmmword ptr %s", T_ZMM0 + j, paramvalue);
+                                            else      AddLineQueueX("vmovups %r,zmmword ptr [%s+%d]", T_ZMM0 + j, paramvalue, i * 64);
+                                            info->regcxyzused[j] = 1;
+                                        }
+                                    }
+                                    break;
                             }
                         }
                     }
@@ -1869,47 +1869,47 @@ vcall:
                     {
                         switch (psize)
                         {
-                        case 4:
-                            if (opnd->kind == EXPR_FLOAT)
-                            {
-                                AddLineQueueX("%s %r,dword ptr %s", MOVE_SINGLE(), T_XMM0 + index, paramvalue);
-                                info->rgcregs[index] = 1;
-                            }
-                            else
-                                AddLineQueueX("mov %r, qword ptr %s", regcallms64_regs[index + 2 * 11], paramvalue);
-                            break;
-                        case 8:
-                            if (opnd->kind == EXPR_FLOAT)
-                            {
-                                AddLineQueueX("%s %r,qword ptr %s", MOVE_DOUBLE(), T_XMM0 + index, paramvalue);
-                                info->rgcregs[index] = 1;
-                            }
-                            else
-                                AddLineQueueX("mov %r, qword ptr %s", regcallms64_regs[index + 2 * 11], paramvalue);
-                            break;
-                        case 16:
-                            if (opnd->kind == EXPR_REG && opnd->indirect == FALSE)
-                            {
-                                if (GetValueSp(reg) & OP_XMM)
+                            case 4:
+                                if (opnd->kind == EXPR_FLOAT)
                                 {
-                                    if (reg == T_XMM0 + index)
-                                        DebugMsg(("ms64_param(%s, param=%u): argument optimized\n", proc->sym.name, index));
-                                    else
-                                        AddLineQueueX("%s %r,oword ptr %s", MOVE_ALIGNED_FLOAT(), T_XMM0 + index, paramvalue);
+                                    AddLineQueueX("%s %r,dword ptr %s", MOVE_SINGLE(), T_XMM0 + index, paramvalue);
+                                    info->rgcregs[index] = 1;
                                 }
-                            }
-                            else
-                                AddLineQueueX("%s %r,oword ptr %s", MOVE_ALIGNED_FLOAT(), T_XMM0 + index, paramvalue);
-                            info->rgcregs[index] = 1;
-                            break;
-                        case 32:
-                            info->rgcregs[index] = 1;
-                            AddLineQueueX("vmovups %r,ymmword ptr %s", T_YMM0 + index, paramvalue);
-                            break;
-                        case 64:
-                            info->rgcregs[index] = 1;
-                            AddLineQueueX("vmovups %r,zmmword ptr %s", T_ZMM0 + index, paramvalue);
-                            break;
+                                else
+                                    AddLineQueueX("mov %r, qword ptr %s", regcallms64_regs[index + 2 * 11], paramvalue);
+                                break;
+                            case 8:
+                                if (opnd->kind == EXPR_FLOAT)
+                                {
+                                    AddLineQueueX("%s %r,qword ptr %s", MOVE_DOUBLE(), T_XMM0 + index, paramvalue);
+                                    info->rgcregs[index] = 1;
+                                }
+                                else
+                                    AddLineQueueX("mov %r, qword ptr %s", regcallms64_regs[index + 2 * 11], paramvalue);
+                                break;
+                            case 16:
+                                if (opnd->kind == EXPR_REG && opnd->indirect == FALSE)
+                                {
+                                    if (GetValueSp(reg) & OP_XMM)
+                                    {
+                                        if (reg == T_XMM0 + index)
+                                            DebugMsg(("ms64_param(%s, param=%u): argument optimized\n", proc->sym.name, index));
+                                        else
+                                            AddLineQueueX("%s %r,oword ptr %s", MOVE_ALIGNED_FLOAT(), T_XMM0 + index, paramvalue);
+                                    }
+                                }
+                                else
+                                    AddLineQueueX("%s %r,oword ptr %s", MOVE_ALIGNED_FLOAT(), T_XMM0 + index, paramvalue);
+                                info->rgcregs[index] = 1;
+                                break;
+                            case 32:
+                                info->rgcregs[index] = 1;
+                                AddLineQueueX("vmovups %r,ymmword ptr %s", T_YMM0 + index, paramvalue);
+                                break;
+                            case 64:
+                                info->rgcregs[index] = 1;
+                                AddLineQueueX("vmovups %r,zmmword ptr %s", T_ZMM0 + index, paramvalue);
+                                break;
                         }
                     }
                 }
@@ -1917,13 +1917,13 @@ vcall:
                 {
                 uselea:
 
-                    if ((proc->sym.langtype == LANG_VECTORCALL))
+                    if (proc->sym.langtype == LANG_VECTORCALL)
                     {
                         if (index < 4)
                         {
                             *regs_used |= (1 << (index + RPAR_START)); /* Flag the appropriate GP register as used now for the reference */
                             info->vecregs[index] = 0; /* In this case the vectorcall item is passed by reference in a GP register, so prevent it being homed in PROC */
-                            AddLineQueueX(" lea %r, %s", ms64_regs[index + 2 * 4 + (psize > 4?4:0)], paramvalue);
+                            AddLineQueueX(" lea %r, %s", ms64_regs[index + 2 * 4 + (psize > 4 ? 4 : 0)], paramvalue);
                         }
                         else
                         {
@@ -1933,13 +1933,13 @@ vcall:
                             return(1);
                         }
                     }
-                    else if ((proc->sym.langtype == LANG_REGCALL))
+                    else if (proc->sym.langtype == LANG_REGCALL)
                     {
                         if (index < 11)
                         {
                             *regs_used |= (1 << (index + RPAR_START)); /* Flag the appropriate GP register as used now for the reference */
                             info->regcregs[index] = 0; /* In this case the vectorcall item is passed by reference in a GP register, so prevent it being homed in PROC */
-                            AddLineQueueX(" lea %r, %s", regcallms64_regs[index + 2 * 11 + (psize > 4?11:0)], paramvalue);
+                            AddLineQueueX(" lea %r, %s", regcallms64_regs[index + 2 * 11 + (psize > 4 ? 11 : 0)], paramvalue);
                         }
                         else
                         {
@@ -1952,7 +1952,7 @@ vcall:
                     else
                     {
                         *regs_used |= (1 << (index + RPAR_START)); /* Flag the appropriate GP register as used now for the reference */
-                        AddLineQueueX(" lea %r, %s", ms64_regs[index + 2 * 4 + (psize > 4?4:0)], paramvalue);
+                        AddLineQueueX(" lea %r, %s", ms64_regs[index + 2 * 4 + (psize > 4 ? 4 : 0)], paramvalue);
                     }
                 }
             }
@@ -1991,7 +1991,7 @@ vcall:
                 size = psize;
             }
             else
-                size = (opnd->instr == T_OFFSET?8:4);
+                size = (opnd->instr == T_OFFSET ? 8 : 4);
 
             /* v2.11: allow argument extension, so long as the target isn't a pointer */
             //if ( size != psize && param->sym.is_vararg == FALSE ) {
@@ -2007,10 +2007,10 @@ vcall:
                 j = 11;
                 switch (psize)
                 {
-                case 1: base = 0 * j; break;
-                case 2: base = 1 * j; break;
-                case 4: base = 2 * j; break;
-                default:base = 3 * j; break;
+                    case 1: base = 0 * j; break;
+                    case 2: base = 1 * j; break;
+                    case 4: base = 2 * j; break;
+                    default:base = 3 * j; break;
                 }
 
                 /* optimization if the register holds the value already */
@@ -2044,7 +2044,7 @@ vcall:
                             AddLineQueueX(" mov %r, %s", regcallms64_regs[index + 2 * 11], paramvalue);
                     }
                     else
-                        AddLineQueueX(" mov%sx %r, %s", IS_SIGNED(opnd->mem_type)?"s":"z", regcallms64_regs[index + base], paramvalue);
+                        AddLineQueueX(" mov%sx %r, %s", IS_SIGNED(opnd->mem_type) ? "s" : "z", regcallms64_regs[index + base], paramvalue);
 
                     *regs_used |= (1 << (index + RPAR_START));
                 }
@@ -2068,10 +2068,10 @@ vcall:
                         {
                             switch (psize)
                             {
-                            case 1:   i = T_BYTE; break;
-                            case 2:   i = T_WORD; break;
-                            case 4:   i = T_DWORD; break;
-                            default:  i = T_QWORD; break;
+                                case 1:   i = T_BYTE; break;
+                                case 2:   i = T_WORD; break;
+                                case 4:   i = T_DWORD; break;
+                                default:  i = T_QWORD; break;
                             }
                             AddLineQueueX(" mov %r ptr [%r+%u], %s", i, T_RSP, NUMQUAL index * 8, paramvalue);
                         }
@@ -2086,10 +2086,10 @@ vcall:
                 j = 4;
                 switch (psize)
                 {
-                case 1: base = 0 * j; break;
-                case 2: base = 1 * j; break;
-                case 4: base = 2 * j; break;
-                default:base = 3 * j; break;
+                    case 1: base = 0 * j; break;
+                    case 2: base = 1 * j; break;
+                    case 4: base = 2 * j; break;
+                    default:base = 3 * j; break;
                 }
 
                 /* optimization if the register holds the value already */
@@ -2123,7 +2123,7 @@ vcall:
                             AddLineQueueX(" mov %r, %s", ms64_regs[index + 2 * 4], paramvalue);
                     }
                     else
-                        AddLineQueueX(" mov%sx %r, %s", IS_SIGNED(opnd->mem_type)?"s":"z", ms64_regs[index + base], paramvalue);
+                        AddLineQueueX(" mov%sx %r, %s", IS_SIGNED(opnd->mem_type) ? "s" : "z", ms64_regs[index + base], paramvalue);
 
                     *regs_used |= (1 << (index + RPAR_START));
                 }
@@ -2147,10 +2147,10 @@ vcall:
                         {
                             switch (psize)
                             {
-                            case 1:   i = T_BYTE; break;
-                            case 2:   i = T_WORD; break;
-                            case 4:   i = T_DWORD; break;
-                            default:  i = T_QWORD; break;
+                                case 1:   i = T_BYTE; break;
+                                case 2:   i = T_WORD; break;
+                                case 4:   i = T_DWORD; break;
+                                default:  i = T_QWORD; break;
                             }
                             AddLineQueueX(" mov %r ptr [%r+%u], %s", i, T_RSP, NUMQUAL index * 8, paramvalue);
                         }
@@ -2175,7 +2175,7 @@ vcalldone:
 */
 #if SYSV_SUPPORT
 
-static int sysv_fcstart(struct dsym const* proc, int numparams, int start, struct asm_tok tokenarray[], int* value)
+static int sysv_fcstart(struct dsym* proc, int numparams, int start, struct asm_tok tokenarray[], int* value)
 /*******************************************************************************************************************/
 {
     if (proc->e.procinfo->has_vararg)
@@ -2197,7 +2197,7 @@ static int sysv_fcstart(struct dsym const* proc, int numparams, int start, struc
     return(0);	// Return 0=left_to_right, 1=right_to_left
 }
 
-static void sysv_fcend(struct dsym const* proc, int numparams, int value)
+static void sysv_fcend(struct dsym* proc, int numparams, int value)
 /*************************************************************************/
 {
     /* use <value>, which has been set by sysv_fcstart() */
@@ -2215,7 +2215,7 @@ static void sysv_fcend(struct dsym const* proc, int numparams, int value)
 }
 
 /* Return a 0-7 index for any SystemV call reserved register */
-static int sysv_reg(struct dsym const* proc, unsigned int reg)
+static int sysv_reg(struct dsym* proc, unsigned int reg)
 {
     int i;
     int base = -1;
@@ -2232,70 +2232,70 @@ static int sysv_reg(struct dsym const* proc, unsigned int reg)
         {
             switch (i)
             {
-            case 0:			// RAX
-                base = 0;
-                break;
-            case 1:			// RCX
-                base = 1;
-                break;
-            case 2:			// RDX
-                base = 2;
-                break;
-            case 7:			// RDI
-                base = 3;
-                break;
-            case 6: 		// RSI
-                base = 4;
-                break;
-            case 8:			// R8
-                base = 5;
-                break;
-            case 9: 		// R9
-                base = 6;
-                break;
-            case 10: 		// R10
-                base = 7;
-                break;
-            case 11: 		// R11
-                base = 8;
-                break;
-            case 12: 		// R12
-                base = 9;
-                break;
-            case 14: 		// R14
-                base = 10;
-                break;
-            case 15: 		// R15
-                base = 11;
-                break;
+                case 0:			// RAX
+                    base = 0;
+                    break;
+                case 1:			// RCX
+                    base = 1;
+                    break;
+                case 2:			// RDX
+                    base = 2;
+                    break;
+                case 7:			// RDI
+                    base = 3;
+                    break;
+                case 6: 		// RSI
+                    base = 4;
+                    break;
+                case 8:			// R8
+                    base = 5;
+                    break;
+                case 9: 		// R9
+                    base = 6;
+                    break;
+                case 10: 		// R10
+                    base = 7;
+                    break;
+                case 11: 		// R11
+                    base = 8;
+                    break;
+                case 12: 		// R12
+                    base = 9;
+                    break;
+                case 14: 		// R14
+                    base = 10;
+                    break;
+                case 15: 		// R15
+                    base = 11;
+                    break;
             }
         }
         else
         {
             switch (i)
             {
-            case 7:
-                base = 0;
-                break;
-            case 6:
-                base = 1;
-                break;
-            case 2:
-                base = 2;
-                break;
-            case 1:
-                base = 3;
-                break;
-            case 8:
-                base = 4;
-                break;
-            case 9:
-                base = 5;
-                break;
-                /* Include RAX as we use it as a temporary register to transfer floating point constants to call arguments */
-            case 0:
-                base = 6;
-                break;
+                case 7:
+                    base = 0;
+                    break;
+                case 6:
+                    base = 1;
+                    break;
+                case 2:
+                    base = 2;
+                    break;
+                case 1:
+                    base = 3;
+                    break;
+                case 8:
+                    base = 4;
+                    break;
+                case 9:
+                    base = 5;
+                    break;
+                    /* Include RAX as we use it as a temporary register to transfer floating point constants to call arguments */
+                case 0:
+                    base = 6;
+                    break;
             }
         }
     }
@@ -2315,125 +2315,125 @@ static int sysv_regTo64(unsigned int reg)
     {
         switch (reg)
         {
-        case T_AL:
-        case T_AH:
-        case T_AX:
-        case T_EAX:
-        case T_RAX:
-            resultReg = T_RAX;
-            break;
-        case T_BL:
-        case T_BH:
-        case T_BX:
-        case T_EBX:
-        case T_RBX:
-            resultReg = T_RBX;
-            break;
-        case T_CL:
-        case T_CH:
-        case T_CX:
-        case T_ECX:
-        case T_RCX:
-            resultReg = T_RCX;
-            break;
-        case T_DL:
-        case T_DH:
-        case T_DX:
-        case T_EDX:
-        case T_RDX:
-            resultReg = T_RDX;
-            break;
-        case T_SIL:
-        case T_SI:
-        case T_ESI:
-        case T_RSI:
-            resultReg = T_RSI;
-            break;
-        case T_DIL:
-        case T_DI:
-        case T_EDI:
-        case T_RDI:
-            resultReg = T_RDI;
-            break;
-        case T_BPL:
-        case T_BP:
-        case T_EBP:
-        case T_RBP:
-            resultReg = T_RBP;
-            break;
-        case T_SPL:
-        case T_SP:
-        case T_ESP:
-        case T_RSP:
-            resultReg = T_RSP;
-            break;
-        case T_R8B:
-        case T_R8D:
-        case T_R8:
-            resultReg = T_R8;
-            break;
-        case T_R9B:
-        case T_R9D:
-        case T_R9:
-            resultReg = T_R9;
-            break;
-        case T_R10B:
-        case T_R10D:
-        case T_R10:
-            resultReg = T_R10;
-            break;
-        case T_R11B:
-        case T_R11D:
-        case T_R11:
-            resultReg = T_R11;
-            break;
-        case T_R12B:
-        case T_R12D:
-        case T_R12:
-            resultReg = T_R12;
-            break;
-        case T_R13B:
-        case T_R13D:
-        case T_R13:
-            resultReg = T_R13;
-            break;
-        case T_R14B:
-        case T_R14D:
-        case T_R14:
-            resultReg = T_R14;
-            break;
-        case T_R15B:
-        case T_R15D:
-        case T_R15:
-            resultReg = T_R15;
-            break;
+            case T_AL:
+            case T_AH:
+            case T_AX:
+            case T_EAX:
+            case T_RAX:
+                resultReg = T_RAX;
+                break;
+            case T_BL:
+            case T_BH:
+            case T_BX:
+            case T_EBX:
+            case T_RBX:
+                resultReg = T_RBX;
+                break;
+            case T_CL:
+            case T_CH:
+            case T_CX:
+            case T_ECX:
+            case T_RCX:
+                resultReg = T_RCX;
+                break;
+            case T_DL:
+            case T_DH:
+            case T_DX:
+            case T_EDX:
+            case T_RDX:
+                resultReg = T_RDX;
+                break;
+            case T_SIL:
+            case T_SI:
+            case T_ESI:
+            case T_RSI:
+                resultReg = T_RSI;
+                break;
+            case T_DIL:
+            case T_DI:
+            case T_EDI:
+            case T_RDI:
+                resultReg = T_RDI;
+                break;
+            case T_BPL:
+            case T_BP:
+            case T_EBP:
+            case T_RBP:
+                resultReg = T_RBP;
+                break;
+            case T_SPL:
+            case T_SP:
+            case T_ESP:
+            case T_RSP:
+                resultReg = T_RSP;
+                break;
+            case T_R8B:
+            case T_R8D:
+            case T_R8:
+                resultReg = T_R8;
+                break;
+            case T_R9B:
+            case T_R9D:
+            case T_R9:
+                resultReg = T_R9;
+                break;
+            case T_R10B:
+            case T_R10D:
+            case T_R10:
+                resultReg = T_R10;
+                break;
+            case T_R11B:
+            case T_R11D:
+            case T_R11:
+                resultReg = T_R11;
+                break;
+            case T_R12B:
+            case T_R12D:
+            case T_R12:
+                resultReg = T_R12;
+                break;
+            case T_R13B:
+            case T_R13D:
+            case T_R13:
+                resultReg = T_R13;
+                break;
+            case T_R14B:
+            case T_R14D:
+            case T_R14:
+                resultReg = T_R14;
+                break;
+            case T_R15B:
+            case T_R15D:
+            case T_R15:
+                resultReg = T_R15;
+                break;
         }
         return(resultReg);
     }
 }
 
 /* Return the first free GPR register useable in a SystemV invoke/call */
-static int sysv_GetNextGPR(struct dsym const* proc, struct proc_info* info, int size)
+static int sysv_GetNextGPR(struct dsym* proc, struct proc_info* info, int size)
 {
     int base = 0;
 
     switch (size)
     {
-    case 1:
-        base = 0;
-        break;
-    case 2:
-        base = 1;
-        break;
-    case 4:
-        base = 2;
-        break;
-    case 8:
-        base = 3;
-        break;
-    default:
-        base = 3;
-        break;
+        case 1:
+            base = 0;
+            break;
+        case 2:
+            base = 1;
+            break;
+        case 4:
+            base = 2;
+            break;
+        case 8:
+            base = 3;
+            break;
+        default:
+            base = 3;
+            break;
     }
     if (proc->sym.langtype == LANG_REGCALL)
     {
@@ -2453,7 +2453,7 @@ static int sysv_GetNextGPR(struct dsym const* proc, struct proc_info* info, int 
 }
 
 /* Return the first free Vector register useable in a SystemV invoke/call */
-static int sysv_GetNextVEC(struct dsym const* proc, struct proc_info* info, int size)
+static int sysv_GetNextVEC(struct dsym* proc, struct proc_info* info, int size)
 {
     //int base = 0;
     if (proc->sym.langtype == LANG_REGCALL)
@@ -2490,13 +2490,13 @@ static int sysv_GetNextVEC(struct dsym const* proc, struct proc_info* info, int 
 * the argument is used instead of the value, unless it's _m128/_m256 then it uses a vector register.
 * structure members are inspected one by one and slotted into available registers where possible else on stack.
 */
-static int sysv_vararg_param(struct dsym const* proc, int index, struct dsym* param, bool addr, struct expr* opnd, char* paramvalue, uint_8* regs_used)
+static int sysv_vararg_param(struct dsym* proc, int index, struct dsym* param, bool addr, struct expr* opnd, char* paramvalue, uint_8* regs_used)
 /************************************************************************************************************************************************/
 {
-    uint_32 psize;
-    int reg;
-    int regsize;
-    struct proc_info* info = proc->e.procinfo;
+    uint_32             psize;
+    int                 reg;
+    int                 regsize;
+    struct proc_info*   info = proc->e.procinfo;
 
     DebugMsg1(("sysv_vararg_param(%s, index=%u, param.memtype=%Xh, addr=%u) enter\n", proc->sym.name, index, param->sym.mem_type, addr));
 
@@ -2906,17 +2906,17 @@ static int sysv_vararg_param(struct dsym const* proc, int index, struct dsym* pa
 * the argument is used instead of the value, unless it's _m128/_m256 then it uses a vector register.
 * structure members are inspected one by one and slotted into available registers where possible else on stack.
 */
-static int sysv_param(struct dsym const* proc, int index, struct dsym* param, bool addr, struct expr* opnd, char* paramvalue, uint_8* regs_used)
+static int sysv_param(struct dsym* proc, int index, struct dsym* param, bool addr, struct expr* opnd, char* paramvalue, uint_8* regs_used)
 /************************************************************************************************************************************************/
 {
-    uint_32 psize;
-    int reg;
-    int reg2;
-    int i;
-    int base;
-    int regsize;
-    struct proc_info* info = proc->e.procinfo;
-    bool destroyed = FALSE;
+    uint_32             psize;
+    int                 reg;
+    int                 reg2;
+    int                 i;
+    int                 base;
+    int                 regsize;
+    struct proc_info*   info = proc->e.procinfo;
+    bool                destroyed = FALSE;
 
     DebugMsg1(("sysv_param(%s, index=%u, param.memtype=%Xh, addr=%u) enter\n", proc->sym.name, index, param->sym.mem_type, addr));
 
@@ -3261,7 +3261,7 @@ static int sysv_param(struct dsym const* proc, int index, struct dsym* param, bo
                     if (_stricmp(param->sym.string_ptr, paramvalue) == 0)
                         DebugMsg(("sysv_param(%s, param=%u): argument optimized\n", proc->sym.name, index));
                     else
-                        AddLineQueueX("vmovdqa32 %s, %s", param->sym.string_ptr, paramvalue);
+                        AddLineQueueX("%s %s, %s", "vmovdqa32", param->sym.string_ptr, paramvalue);
                     //AddLineQueueX("%s %s, %s", MOVE_ALIGNED_INT(), param->sym.string_ptr, paramvalue);
                 }
                 else
@@ -3274,7 +3274,7 @@ static int sysv_param(struct dsym const* proc, int index, struct dsym* param, bo
             /* Vector register load from indirect register ie: [rax] etc */
             if (opnd->kind == EXPR_REG && opnd->indirect == TRUE)
             {
-                AddLineQueueX("vmovdqu32 %s, zmmword ptr %s", param->sym.string_ptr, paramvalue);
+                AddLineQueueX("%s %s, zmmword ptr %s", "vmovdqu32", param->sym.string_ptr, paramvalue);
                 //AddLineQueueX("%s %s, zmmword ptr %s", MOVE_UNALIGNED_INT(), param->sym.string_ptr, paramvalue);
                 return(1);
             }
@@ -3282,7 +3282,7 @@ static int sysv_param(struct dsym const* proc, int index, struct dsym* param, bo
             if (opnd->kind == EXPR_ADDR && !addr)
             {
                 if (psize == param->sym.total_size || opnd->mem_type == MT_EMPTY)
-                    AddLineQueueX("vmovdqu32 %s, zmmword ptr %s", param->sym.string_ptr, paramvalue);
+                    AddLineQueueX("%s %s, zmmword ptr %s", "vmovdqu32", param->sym.string_ptr, paramvalue);
                 //AddLineQueueX("%s %s, zmmword ptr %s", MOVE_UNALIGNED_INT(), param->sym.string_ptr, paramvalue);
                 else
                     EmitErr(INVOKE_ARGUMENT_TYPE_MISMATCH, index + 1);
@@ -3899,9 +3899,9 @@ static short GetSegmentPart(struct expr* opnd, char* buffer, const char* fullpar
 {
     short reg = T_NULL;
     DebugMsg1(("GetSegmentPart(%s) enter [override=%s sym=%s segment=%s]\n",
-              fullparam, opnd->override?opnd->override->string_ptr:"NULL",
-              opnd->sym?opnd->sym->name:"NULL",
-              opnd->sym?opnd->sym->segment?opnd->sym->segment->name:"NULL":"NULL"));
+              fullparam, opnd->override ? opnd->override->string_ptr : "NULL",
+              opnd->sym ? opnd->sym->name : "NULL",
+              opnd->sym ? opnd->sym->segment ? opnd->sym->segment->name : "NULL" : "NULL"));
     if (opnd->override != NULL)
     {
         if (opnd->override->token == T_REG)
@@ -3947,7 +3947,7 @@ static short GetSegmentPart(struct expr* opnd, char* buffer, const char* fullpar
         strcpy(buffer, "seg ");
         strcat(buffer, fullparam);
     }
-    DebugMsg1(("GetSegmentPart: reg%u, buffer=%s\n", reg, reg?"":buffer));
+    DebugMsg1(("GetSegmentPart: reg%u, buffer=%s\n", reg, reg ? "" : buffer));
     return(reg);
 }
 
@@ -3963,14 +3963,14 @@ static short GetSegmentPart(struct expr* opnd, char* buffer, const char* fullpar
 *   the third!
 */
 
-static int watc_fcstart(struct dsym const* proc, int numparams, int start, struct asm_tok tokenarray[], int* value)
+static int watc_fcstart(struct dsym* proc, int numparams, int start, struct asm_tok tokenarray[], int* value)
 /*******************************************************************************************************************/
 {
     DebugMsg1(("watc_fcstart(%s, %u, %u)\n", proc->sym.name, numparams, start));
     return(1);
 }
 
-static void watc_fcend(struct dsym const* proc, int numparams, int value)
+static void watc_fcend(struct dsym* proc, int numparams, int value)
 /*************************************************************************/
 {
     DebugMsg1(("watc_fcend(%s, %u, %u)\n", proc->sym.name, numparams, value));
@@ -3988,16 +3988,16 @@ static void watc_fcend(struct dsym const* proc, int numparams, int value)
 /* get the register for parms 0 to 3,
 * using the watcom register parm passing conventions ( A D B C )
 */
-static int watc_param(struct dsym const* proc, int index, struct dsym* param, bool addr, struct expr* opnd, char* paramvalue, uint_8* r0used)
+static int watc_param(struct dsym* proc, int index, struct dsym* param, bool addr, struct expr* opnd, char* paramvalue, uint_8* r0used)
 /*********************************************************************************************************************************************/
 {
-    int opc;
-    int qual;
-    int i;
-    char regs[64];
-    char* reg[4];
-    char* p;
-    int psize = SizeFromMemtype(param->sym.mem_type, USE_EMPTY, param->sym.type);
+    int         opc;
+    int         qual;
+    int         i;
+    char        regs[64];
+    char*       reg[4];
+    char*       p;
+    int         psize = SizeFromMemtype(param->sym.mem_type, USE_EMPTY, param->sym.type);
 
     DebugMsg1(("watc_param(%s, param=%u [name=%s, state=%u]),addr=%u: psize=%u\n", proc->sym.name, index, param->sym.name, param->sym.state, addr, psize));
     if (param->sym.state != SYM_TMACRO)
@@ -4120,12 +4120,12 @@ if we're in a vararg, just being a raw string is sufficient,
 for normal parameters it must be qualified as PTR */
 static int ParamIsString(char* pStr, int param, struct dsym* proc)
 {
-    char c;
-    char* pS = pStr;
-    int i = 0;
-    struct dsym* p = proc->e.procinfo->paralist;
-    struct asym* type = NULL;
-    enum memtype mtype = MT_EMPTY;
+    char            c;
+    char*           pS = pStr;
+    int             i = 0;
+    struct dsym*    p = proc->e.procinfo->paralist;
+    struct asym*    type = NULL;
+    enum memtype    mtype = MT_EMPTY;
 
     if (!Options.literal_strings)
         return(FALSE);
@@ -4148,7 +4148,7 @@ static int ParamIsString(char* pStr, int param, struct dsym* proc)
             if (p->sym.target_type)
             {
                 type = p->sym.target_type;
-                while (type->target_type && ((int)type->target_type > 0x2000))
+                while (type->target_type && (type->target_type > (struct asym*)0x2000))
                 {
                     type = type->target_type;
                     if (type->mem_type == MT_PTR)
@@ -4195,9 +4195,9 @@ static int ParamIsString(char* pStr, int param, struct dsym* proc)
 static unsigned int hashpjw(const char* s)
 /******************************************/
 {
-    uint_64 fnv_basis = 14695981039346656037;
-    uint_64 register fnv_prime = 1099511628211;
-    uint_64 h;
+    uint_64             fnv_basis = 0xCBF29CE484222325 /*14695981039346656037ull*/;
+    uint_64 register    fnv_prime = 1099511628211;
+    uint_64             h;
     for (h = fnv_basis; *s; ++s)
     {
         h ^= (*s | ' ');
@@ -4220,38 +4220,38 @@ static unsigned int hashpjw(const char* s)
 static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym* proc, struct dsym* curr, int reqParam, uint_8* r0flags)
 /**********************************************************************************************************************************/
 {
-    int currParm;
-    int psize;
-    int asize;
-    int pushsize;
-    int j;
-    int previ;
-    int fptrsize;
-    char Ofssize;
-    bool addr = FALSE; /* ADDR operator found */
-    struct expr opnd;
-    char fullparam[MAX_LINE_LEN];
-    char buffer[MAX_LINE_LEN];
-    char stringparam[256][32];
-    bool isString[256];
-    int reg = 0;
+    int             currParm;
+    int             psize;
+    int             asize;
+    int             pushsize;
+    int             j;
+    int             previ;
+    int             fptrsize;
+    char            Ofssize;
+    bool            addr = FALSE; /* ADDR operator found */
+    struct expr     opnd;
+    char            fullparam[MAX_LINE_LEN];
+    char            buffer[MAX_LINE_LEN];
+    char            stringparam[256][32];
+    bool            isString[256];
+    int             reg = 0;
 
-    struct asym* lbl = NULL;
-    struct dsym* curseg;
-    struct dsym* prev;
-    struct dsym* currs;
-    size_t slen;
-    char* pSrc;
-    char* pDest;
-    char* labelstr = "__ls";
-    char buf[32];
-    char c1;
-    char c2;
-    size_t finallen;
-    uint_16 buff[256];
-    uint_8  buff2[256];
+    struct asym*    lbl = NULL;
+    struct dsym*    curseg;
+    struct dsym*    prev;
+    struct dsym*    currs;
+    size_t          slen;
+    char*           pSrc;
+    char*           pDest;
+    char*           labelstr = "__ls";
+    char            buf[32];
+    char            c1;
+    char            c2;
+    size_t          finallen;
+    uint_16         buff[256];
+    uint_8          buff2[256];
 
-    DebugMsg1(("PushInvokeParam(%s, param=%s:%u, i=%u ) enter\n", proc->sym.name, curr?curr->sym.name:"NULL", reqParam, i));
+    DebugMsg1(("PushInvokeParam(%s, param=%s:%u, i=%u ) enter\n", proc->sym.name, curr ? curr->sym.name : "NULL", reqParam, i));
 
     previ = i;
     i++;
@@ -4292,7 +4292,7 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym* proc
                 lbl = SymLookup(buf);
                 SetSymSegOfs(lbl);
                 memset(&buff, 0, 256);
-                pDest = (char*)buff;
+                pDest = buff;
                 finallen = slen;
 
                 while (*pSrc != '"')
@@ -4396,7 +4396,7 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym* proc
                 }
                 *pDest++ = 0;
 
-                j = UTF8toWideChar((const uint_8*)buff2, slen, NULL, (unsigned short*)&buff, slen);
+                j = UTF8toWideChar(&buff2, slen, NULL, (unsigned short*)&buff, slen);
                 /* j contains a proper number of wide chars, it can be different than slen, v2.38 */
                 SetSymSegOfs(lbl);
                 OutputBytes((unsigned char*)&buff, (j * 2) + 2, NULL);
@@ -4496,7 +4496,7 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym* proc
 
     /* v2.11: GetSymOfssize() doesn't work for state SYM_TYPE */
     //fptrsize = 2 + ( 2 << GetSymOfssize( &proc->sym ) );
-    Ofssize = (proc->sym.state == SYM_TYPE?proc->sym.seg_ofssize:GetSymOfssize(&proc->sym));
+    Ofssize = (proc->sym.state == SYM_TYPE ? proc->sym.seg_ofssize : GetSymOfssize(&proc->sym));
     fptrsize = 2 + (2 << Ofssize);
     if (proc->sym.langtype == LANG_DELPHICALL)
     {
@@ -4643,7 +4643,7 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym* proc
         }
         if (curr->sym.is_vararg)
         {
-            size_vararg += CurrWordSize + (curr->sym.isfar?CurrWordSize:0);
+            size_vararg += CurrWordSize + (curr->sym.isfar ? CurrWordSize : 0);
             DebugMsg1(("PushInvokeParm(%u): new value of size_vararg=%u [CurrWordSize=%u]\n", reqParam, size_vararg, CurrWordSize));
         }
     }
@@ -4853,9 +4853,9 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym* proc
 
             if (curr->sym.is_vararg)
             {
-                size_vararg += (asize > pushsize?asize:pushsize);
+                size_vararg += (asize > pushsize ? asize : pushsize);
                 DebugMsg1(("PushInvokeParm(%u): asize=%u added to size_vararg, now=%u\n",
-                          reqParam, asize > pushsize?asize:pushsize, size_vararg));
+                          reqParam, asize > pushsize ? asize : pushsize, size_vararg));
             }
 
             if (asize > pushsize)
@@ -4965,111 +4965,111 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym* proc
                     //switch (sym->mem_type) {
                     switch (opnd.mem_type)
                     {
-                    case MT_BYTE:
-                    case MT_SBYTE:
-                        if (psize == 1 && curr->sym.is_vararg == FALSE)
-                        {
-                            AddLineQueueX(" mov %r, %s", T_AL, fullparam);
-                            AddLineQueueX(" push %r", regax[ModuleInfo.Ofssize]);
-                        }
-                        else if (pushsize == 2)
-                        { /* 16-bit code? */
-                            if (opnd.mem_type == MT_BYTE)
+                        case MT_BYTE:
+                        case MT_SBYTE:
+                            if (psize == 1 && curr->sym.is_vararg == FALSE)
                             {
-                                if (psize == 4)
-                                {
-                                    if ((ModuleInfo.curr_cpu & P_CPU_MASK) < P_186)
-                                    {
-                                        if (!(*r0flags & R0_X_CLEARED))
-                                            AddLineQueueX(" xor %r, %r", T_AX, T_AX);
-                                        *r0flags |= (R0_X_CLEARED | R0_H_CLEARED);
-                                        AddLineQueueX(" push %r", T_AX);
-                                    }
-                                    else
-                                    {
-                                        AddLineQueue(" push 0");
-                                    }
-                                }
                                 AddLineQueueX(" mov %r, %s", T_AL, fullparam);
-                                if (!(*r0flags & R0_H_CLEARED))
+                                AddLineQueueX(" push %r", regax[ModuleInfo.Ofssize]);
+                            }
+                            else if (pushsize == 2)
+                            { /* 16-bit code? */
+                                if (opnd.mem_type == MT_BYTE)
                                 {
-                                    AddLineQueueX(" mov %r, 0", T_AH);
-                                    *r0flags |= R0_H_CLEARED;
+                                    if (psize == 4)
+                                    {
+                                        if ((ModuleInfo.curr_cpu & P_CPU_MASK) < P_186)
+                                        {
+                                            if (!(*r0flags & R0_X_CLEARED))
+                                                AddLineQueueX(" xor %r, %r", T_AX, T_AX);
+                                            *r0flags |= (R0_X_CLEARED | R0_H_CLEARED);
+                                            AddLineQueueX(" push %r", T_AX);
+                                        }
+                                        else
+                                        {
+                                            AddLineQueue(" push 0");
+                                        }
+                                    }
+                                    AddLineQueueX(" mov %r, %s", T_AL, fullparam);
+                                    if (!(*r0flags & R0_H_CLEARED))
+                                    {
+                                        AddLineQueueX(" mov %r, 0", T_AH);
+                                        *r0flags |= R0_H_CLEARED;
+                                    }
                                 }
+                                else
+                                {
+                                    AddLineQueueX(" mov %r, %s", T_AL, fullparam);
+                                    *r0flags = 0; /* reset AH_CLEARED */
+                                    AddLineQueue(" cbw");
+                                    if (psize == 4)
+                                    {
+                                        AddLineQueue(" cwd");
+                                        AddLineQueueX(" push %r", T_DX);
+                                        *r0flags |= R2_USED;
+                                    }
+                                }
+                                AddLineQueueX(" push %r", T_AX);
                             }
                             else
                             {
-                                AddLineQueueX(" mov %r, %s", T_AL, fullparam);
-                                *r0flags = 0; /* reset AH_CLEARED */
-                                AddLineQueue(" cbw");
-                                if (psize == 4)
-                                {
-                                    AddLineQueue(" cwd");
-                                    AddLineQueueX(" push %r", T_DX);
-                                    *r0flags |= R2_USED;
-                                }
+                                AddLineQueueX(" mov%sx %r, %s", opnd.mem_type == MT_BYTE ? "z" : "s", T_EAX, fullparam);
+                                AddLineQueueX(" push %r", T_EAX);
                             }
-                            AddLineQueueX(" push %r", T_AX);
-                        }
-                        else
-                        {
-                            AddLineQueueX(" mov%sx %r, %s", opnd.mem_type == MT_BYTE?"z":"s", T_EAX, fullparam);
-                            AddLineQueueX(" push %r", T_EAX);
-                        }
-                        *r0flags |= R0_USED;
-                        break;
-                    case MT_WORD:
-                    case MT_SWORD:
-                        /* pushsize is 4 here, hence it's always 32-bit code!
-                        * v2.04: use the Masm-compatible, non-destructive
-                        * PUSH if psize is 2.
-                        */
-                        //if ( Options.masm_compat_gencode ) {
-                        /* v2.11: don't push 0 if src operand is signed */
-                        //if ( Options.masm_compat_gencode || psize == 2 ) {
-                        if (opnd.mem_type == MT_WORD && (Options.masm_compat_gencode || psize == 2))
-                        {
-                            /* v2.05: push a 0 word if argument is VARARG
-                            * v2.10: push a 0 word if psize != 2
+                            *r0flags |= R0_USED;
+                            break;
+                        case MT_WORD:
+                        case MT_SWORD:
+                            /* pushsize is 4 here, hence it's always 32-bit code!
+                            * v2.04: use the Masm-compatible, non-destructive
+                            * PUSH if psize is 2.
                             */
-                            //if ( curr->sym.is_vararg )
-                            if (curr->sym.is_vararg || psize != 2)
-                                AddLineQueueX(" pushw 0");
-                            else
+                            //if ( Options.masm_compat_gencode ) {
+                            /* v2.11: don't push 0 if src operand is signed */
+                            //if ( Options.masm_compat_gencode || psize == 2 ) {
+                            if (opnd.mem_type == MT_WORD && (Options.masm_compat_gencode || psize == 2))
                             {
+                                /* v2.05: push a 0 word if argument is VARARG
+                                * v2.10: push a 0 word if psize != 2
+                                */
+                                //if ( curr->sym.is_vararg )
+                                if (curr->sym.is_vararg || psize != 2)
+                                    AddLineQueueX(" pushw 0");
+                                else
+                                {
 #if AMD64_SUPPORT
-                                AddLineQueueX(" sub %r, 2", stackreg[ModuleInfo.Ofssize]);
+                                    AddLineQueueX(" sub %r, 2", stackreg[ModuleInfo.Ofssize]);
 #else
-                                AddLineQueueX(" sub %r, 2", T_ESP);
+                                    AddLineQueueX(" sub %r, 2", T_ESP);
 #endif
-                            }
-                            AddLineQueueX(" push %s", fullparam);
-                        }
-                        else
-                        {
-                            AddLineQueueX(" mov%sx %r, %s", opnd.mem_type == MT_WORD?"z":"s", T_EAX, fullparam);
-                            AddLineQueueX(" push %r", T_EAX);
-                            *r0flags = R0_USED; /* reset R0_H_CLEARED  */
-                        }
-                        break;
-                    default:
-                        /* fix for v2.49 */
-                        if (asize == 3)
-                        {
-                            if (pushsize == 4)
-                            {
-                                AddLineQueueX(" mov al, byte ptr %s[2]", fullparam);
-                                AddLineQueue(" push ax");
-                                AddLineQueueX(" push word ptr %s[2]", fullparam);
+                                }
+                                AddLineQueueX(" push %s", fullparam);
                             }
                             else
                             {
-                                AddLineQueueX(" push word ptr %s[2]", fullparam);
-                                AddLineQueueX(" push word ptr %s", fullparam);
+                                AddLineQueueX(" mov%sx %r, %s", opnd.mem_type == MT_WORD ? "z" : "s", T_EAX, fullparam);
+                                AddLineQueueX(" push %r", T_EAX);
+                                *r0flags = R0_USED; /* reset R0_H_CLEARED  */
                             }
-                        }
-                        else
-                            AddLineQueueX(" push %s", fullparam);
+                            break;
+                        default:
+                            /* fix for v2.49 */
+                            if (asize == 3)
+                            {
+                                if (pushsize == 4)
+                                {
+                                    AddLineQueueX(" mov al, byte ptr %s[2]", fullparam);
+                                    AddLineQueue(" push ax");
+                                    AddLineQueueX(" push word ptr %s[2]", fullparam);
+                                }
+                                else
+                                {
+                                    AddLineQueueX(" push word ptr %s[2]", fullparam);
+                                    AddLineQueueX(" push word ptr %s", fullparam);
+                                }
+                            }
+                            else
+                                AddLineQueueX(" push %s", fullparam);
                     }
                 }
             }
@@ -5109,11 +5109,11 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym* proc
                         }
                         else
                             AddLineQueueX(" pushw 0");
-                        }
-                    AddLineQueueX(" push %s", fullparam);
                     }
+                    AddLineQueueX(" push %s", fullparam);
                 }
             }
+        }
         else
         { /* the parameter is a register or constant value! */
 
@@ -5177,8 +5177,8 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym* proc
                                     reg = T_EAX;
                                 }
                                 asize = 2; /* done */
-                                }
                             }
+                        }
                         else if (IS_SIGNED(opnd.mem_type) && pushsize < 4)
                         {
                             /* psize is 4 in this branch */
@@ -5247,7 +5247,7 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym* proc
                             AddLineQueueX(" push %r", T_AX);
                             *r0flags = R0_USED | R0_H_CLEARED | R0_X_CLEARED;
                         }
-                        }
+                    }
 
                     if (asize == 1)
                     {
@@ -5256,9 +5256,9 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym* proc
                             if (psize != 1 && (ModuleInfo.curr_cpu & P_CPU_MASK) >= P_386)
                             {
                                 /* v2.10: consider signed type coercion! */
-                                AddLineQueueX(" mov%sx %r, %s", IS_SIGNED(opnd.mem_type)?"s":"z",
+                                AddLineQueueX(" mov%sx %r, %s", IS_SIGNED(opnd.mem_type) ? "s" : "z",
                                               regax[ModuleInfo.Ofssize], fullparam);
-                                *r0flags = (IS_SIGNED(opnd.mem_type)?R0_USED:R0_USED | R0_H_CLEARED);
+                                *r0flags = (IS_SIGNED(opnd.mem_type) ? R0_USED : R0_USED | R0_H_CLEARED);
                             }
                             else
                             {
@@ -5303,7 +5303,7 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym* proc
                         *r0flags = 0;
                     }
 #endif
-                    }
+                }
 
                 if (optype & OP_XMM)
                 {
@@ -5319,7 +5319,7 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym* proc
                 if (psize < pushsize)
                     /* v2.04: adjust psize ( for siz_vararg update ) */
                     psize = pushsize;
-                }
+            }
             else
             { /* constant value */
 
@@ -5369,39 +5369,39 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym* proc
                     *r0flags |= R0_USED;
                     switch (psize)
                     {
-                    case 2:
-                        if (opnd.value != 0 || opnd.kind == EXPR_ADDR)
-                        {
-                            AddLineQueueX(" mov %r, %s", T_AX, fullparam);
-                        }
-                        else
-                        {
-                            if (!(*r0flags & R0_X_CLEARED))
+                        case 2:
+                            if (opnd.value != 0 || opnd.kind == EXPR_ADDR)
                             {
-                                AddLineQueueX(" xor %r, %r", T_AX, T_AX);
+                                AddLineQueueX(" mov %r, %s", T_AX, fullparam);
                             }
-                            *r0flags |= R0_H_CLEARED | R0_X_CLEARED;
-                        }
-                        break;
-                    case 4:
-                        if (opnd.uvalue <= 0xFFFF)
-                            AddLineQueueX(" xor %r, %r", T_AX, T_AX);
-                        else
-                            AddLineQueueX(" mov %r, %r (%s)", T_AX, T_HIGHWORD, fullparam);
-                        AddLineQueueX(" push %r", T_AX);
-                        if (opnd.uvalue != 0 || opnd.kind == EXPR_ADDR)
-                        {
-                            AddLineQueueX(" mov %r, %r (%s)", T_AX, T_LOWWORD, fullparam);
-                        }
-                        else
-                        {
-                            *r0flags |= R0_H_CLEARED | R0_X_CLEARED;
-                        }
-                        break;
-                    default:
-                        DebugMsg1(("PushInvokeParm(%u): error, CONST, asize=%u, psize=%u, pushsize=%u\n",
-                                  reqParam, asize, psize, pushsize));
-                        EmitErr(INVOKE_ARGUMENT_TYPE_MISMATCH, reqParam + 1);
+                            else
+                            {
+                                if (!(*r0flags & R0_X_CLEARED))
+                                {
+                                    AddLineQueueX(" xor %r, %r", T_AX, T_AX);
+                                }
+                                *r0flags |= R0_H_CLEARED | R0_X_CLEARED;
+                            }
+                            break;
+                        case 4:
+                            if (opnd.uvalue <= 0xFFFF)
+                                AddLineQueueX(" xor %r, %r", T_AX, T_AX);
+                            else
+                                AddLineQueueX(" mov %r, %r (%s)", T_AX, T_HIGHWORD, fullparam);
+                            AddLineQueueX(" push %r", T_AX);
+                            if (opnd.uvalue != 0 || opnd.kind == EXPR_ADDR)
+                            {
+                                AddLineQueueX(" mov %r, %r (%s)", T_AX, T_LOWWORD, fullparam);
+                            }
+                            else
+                            {
+                                *r0flags |= R0_H_CLEARED | R0_X_CLEARED;
+                            }
+                            break;
+                        default:
+                            DebugMsg1(("PushInvokeParm(%u): error, CONST, asize=%u, psize=%u, pushsize=%u\n",
+                                      reqParam, asize, psize, pushsize));
+                            EmitErr(INVOKE_ARGUMENT_TYPE_MISMATCH, reqParam + 1);
                     }
                     AddLineQueueX(" push %r", T_AX);
                 }
@@ -5415,46 +5415,46 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym* proc
                     {
                         switch (psize)
                         {
-                        case 2:
-                            instr = "w";
-                            break;
-                        case 6: /* v2.04: added */
-                                /* v2.11: use pushw only for 16-bit target */
-                            if (Ofssize == USE16)
-                                suffix = "w";
-                            else if (Ofssize == USE32 && CurrWordSize == 2)
-                                suffix = "d";
-                            else
-                                suffix = "";
-                            AddLineQueueX(" push%s (%s) shr 32t", suffix, fullparam);
-                            /* no break */
-                        case 4:
-                            if ((ModuleInfo.curr_cpu & P_CPU_MASK) >= P_386)
-                                instr = "d";
-                            else
-                            {
-                                AddLineQueueX(" pushw %r (%s)", T_HIGHWORD, fullparam);
+                            case 2:
                                 instr = "w";
-                                qual = T_LOWWORD;
-                            }
-                            break;
-                        case 8:
+                                break;
+                            case 6: /* v2.04: added */
+                                    /* v2.11: use pushw only for 16-bit target */
+                                if (Ofssize == USE16)
+                                    suffix = "w";
+                                else if (Ofssize == USE32 && CurrWordSize == 2)
+                                    suffix = "d";
+                                else
+                                    suffix = "";
+                                AddLineQueueX(" push%s (%s) shr 32t", suffix, fullparam);
+                                /* no break */
+                            case 4:
+                                if ((ModuleInfo.curr_cpu & P_CPU_MASK) >= P_386)
+                                    instr = "d";
+                                else
+                                {
+                                    AddLineQueueX(" pushw %r (%s)", T_HIGHWORD, fullparam);
+                                    instr = "w";
+                                    qual = T_LOWWORD;
+                                }
+                                break;
+                            case 8:
 #if AMD64_SUPPORT
-                            if ((ModuleInfo.curr_cpu & P_CPU_MASK) >= P_64)
-                                break;
+                                if ((ModuleInfo.curr_cpu & P_CPU_MASK) >= P_64)
+                                    break;
 #endif
-                            /* v2.06: added support for double constants */
-                            if (opnd.kind == EXPR_CONST || opnd.kind == EXPR_FLOAT)
-                            {
-                                AddLineQueueX(" pushd %r (%s)", T_HIGH32, fullparam);
-                                qual = T_LOW32;
-                                instr = "d";
-                                break;
-                            }
-                        default:
-                            DebugMsg1(("PushInvokeParm(%u): error, CONST, asize=%u, psize=%u, pushsize=%u\n",
-                                      reqParam, asize, psize, pushsize));
-                            EmitErr(INVOKE_ARGUMENT_TYPE_MISMATCH, reqParam + 1);
+                                /* v2.06: added support for double constants */
+                                if (opnd.kind == EXPR_CONST || opnd.kind == EXPR_FLOAT)
+                                {
+                                    AddLineQueueX(" pushd %r (%s)", T_HIGH32, fullparam);
+                                    qual = T_LOW32;
+                                    instr = "d";
+                                    break;
+                                }
+                            default:
+                                DebugMsg1(("PushInvokeParm(%u): error, CONST, asize=%u, psize=%u, pushsize=%u\n",
+                                          reqParam, asize, psize, pushsize));
+                                EmitErr(INVOKE_ARGUMENT_TYPE_MISMATCH, reqParam + 1);
                         }
                     }
                     if (qual != EMPTY)
@@ -5468,31 +5468,31 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym* proc
                 size_vararg += psize;
                 DebugMsg1(("PushInvokeParm(%u): psize=%u added to size_vararg, now=%u\n", reqParam, psize, size_vararg));
             }
-            }
         }
+    }
     return(NOT_ERROR);
-            }
+}
 
 /* generate a call for a prototyped procedure */
 ret_code InvokeDirective(int i, struct asm_tok tokenarray[])
 /************************************************************/
 {
-    struct asym* sym;
-    struct dsym* proc;
-    char* p;
-    int            numParam;
-    int            value;
-    int            size;
-    int            parmpos;
-    int            namepos;
-    int            porder;
-    int            j;
-    uint_8         r0flags = 0;
-    struct proc_info* info;
-    struct dsym* curr;
-    struct expr    opnd;
-    struct asym* lastret;
-    bool           wasEquateProc = FALSE;
+    struct asym*        sym;
+    struct dsym*        proc;
+    char*               p;
+    int                 numParam;
+    int                 value;
+    int                 size;
+    int                 parmpos;
+    int                 namepos;
+    int                 porder;
+    int                 j;
+    uint_8              r0flags = 0;
+    struct proc_info*   info;
+    struct dsym*        curr;
+    struct expr         opnd;
+    struct asym*        lastret;
+    bool                wasEquateProc = FALSE;
 
     i++; /* skip INVOKE directive */
     namepos = i;
@@ -5521,7 +5521,7 @@ ret_code InvokeDirective(int i, struct asm_tok tokenarray[])
                 sym = NULL;
         }
         else
-            sym = (opnd.mbr?opnd.mbr:opnd.sym);
+            sym = (opnd.mbr ? opnd.mbr : opnd.sym);
     }
     else
     {
@@ -5785,12 +5785,12 @@ ret_code InvokeDirective(int i, struct asm_tok tokenarray[])
                 else
                     AddLineQueueX("xor eax,eax");
             }
-            }
+        }
 
         /* Restore starting first free gpr and vec */
         proc->e.procinfo->firstGPR = sGPR;
         proc->e.procinfo->firstVEC = sVEC;
-        }
+    }
 
     /* -----------------------------------------------------------------------------------------------
     HANDLE PARAMETERS (SECOND PASS FOR VECTORCALL)
@@ -5930,7 +5930,7 @@ ret_code InvokeDirective(int i, struct asm_tok tokenarray[])
     }
 
 #if 0  /* v2.09: uselabel obsolete */
-    }
+}
 #endif
 AddLineQueue(StringBufferEnd);
 

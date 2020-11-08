@@ -960,7 +960,7 @@ static bool  b64bit = FALSE; /* resw tables in 64bit mode? */
 static unsigned get_hash(const char* s, unsigned char size)
 /***********************************************************/
 {
-    uint_64 fnv_basis = 14695981039346656037;
+    uint_64 fnv_basis = 0xCBF29CE484222325 /*14695981039346656037ull*/;
     uint_64 register fnv_prime = 1099511628211;
     uint_64 h;
     for (h = fnv_basis; size; size--)
@@ -1147,7 +1147,7 @@ void RenameKeyword(unsigned token, const char* newname, uint_8 length)
 void Set64Bit(bool newmode)
 /***************************/
 {
-    static const char* syscallname;   /* "true" syscall name stored here */
+    /*static const*/ char* syscallname;   /* "true" syscall name stored here */
     int token;
     int i;
 

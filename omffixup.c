@@ -82,13 +82,13 @@ static uint_8* putFrameDatum(uint_8* p, uint_8 method, uint_16 datum)
 {
     switch (method)
     {
-    case FRAME_SEG:
-    case FRAME_GRP:
-    case FRAME_EXT:
-        return(putIndex(p, datum));
+        case FRAME_SEG:
+        case FRAME_GRP:
+        case FRAME_EXT:
+            return(putIndex(p, datum));
 #if 0  /* v2.12: FRAME_ABS is invalid according to TIS OMF docs. */
-    case FRAME_ABS:
-        return(put16(p, datum));
+        case FRAME_ABS:
+            return(put16(p, datum));
 #endif
     }
     /* for FRAME_LOC & FRAME_TARG ( & FRAME_NONE ) there's no datum to write. */
@@ -191,7 +191,7 @@ static uint TranslatePhysref(const struct physref* ref, uint_8* buf, enum fixgen
 unsigned TranslateRef(const union logphys* ref, int is_logical, uint_8* buf, enum fixgen_types type)
 /****************************************************************************************************/
 {
-    return(is_logical?TranslateLogref(&ref->log, buf, type):TranslatePhysref(&ref->phys, buf, type));
+    return(is_logical ? TranslateLogref(&ref->log, buf, type) : TranslatePhysref(&ref->phys, buf, type));
 }
 
 #endif
@@ -229,7 +229,7 @@ unsigned OmfFixGenFixModend(const struct fixup* fixup, uint_8* buf, uint_32 disp
     else
     { /* SYM_INTERNAL */
         DebugMsg(("OmfFixGenFixModend(%p): fixup->frame_type/datum=%u/%u sym->name=%s state=%X segm=%s\n",
-                 fixup, fixup->frame_type, fixup->frame_datum, sym->name, sym->state, sym->segment?sym->segment->name:"NULL"));
+                 fixup, fixup->frame_type, fixup->frame_datum, sym->name, sym->state, sym->segment ? sym->segment->name : "NULL"));
         /**/myassert(sym->state == SYM_INTERNAL);
 
         lr.target = TARGET_SEG & TARGET_WITH_DISPL;
@@ -257,7 +257,7 @@ static int omf_fill_logref(const struct fixup* fixup, struct logref* lr)
     sym = fixup->sym; /* may be NULL! */
 
     DebugMsg1(("omf_fill_logref: sym=%s, state=%d, fixup->type=%u\n",
-              sym?sym->name:"NULL", sym?sym->state:-1, fixup->type));
+              sym ? sym->name : "NULL", sym ? sym->state : -1, fixup->type));
 
     /*------------------------------------*/
     /* Determine the Target and the Frame */
@@ -334,11 +334,11 @@ static int omf_fill_logref(const struct fixup* fixup, struct logref* lr)
             /* must be SYM_INTERNAL */
             /**/myassert(sym->state == SYM_INTERNAL);
             DebugMsg1(("omf_fill_logref: sym->state is SYM_INTERNAL, sym->segment=%s, fixup->frame/datum=%u/%u\n",
-                      sym->segment?sym->segment->name:"NULL", fixup->frame_type, fixup->frame_datum));
+                      sym->segment ? sym->segment->name : "NULL", fixup->frame_type, fixup->frame_datum));
             /* v2.08: don't use info from assembly-time variables */
             if (sym->variable)
             {
-                lr->target = (fixup->frame_type == FRAME_GRP?TARGET_GRP:TARGET_SEG);
+                lr->target = (fixup->frame_type == FRAME_GRP ? TARGET_GRP : TARGET_SEG);
                 lr->target_datum = fixup->frame_datum;
             }
             else if (sym->segment == NULL)
@@ -420,43 +420,43 @@ unsigned OmfFixGenFix(const struct fixup* fixup, uint_32 start_loc, uint_8* buf,
 
     switch (fixup->type)
     {
-    case FIX_RELOFF8:
-        self_relative = TRUE;
-        /* no break */
-    case FIX_OFF8:
-        locat1 = (LOC_OFFSET_LO << 2);
-        break;
-    case FIX_RELOFF16:
-        self_relative = TRUE;
-        /* no break */
-    case FIX_OFF16:
-        locat1 = (fixup->loader_resolved?LOC_MS_LINK_OFFSET << 2:LOC_OFFSET << 2);
-        break;
-    case FIX_RELOFF32:
-        self_relative = TRUE;
-        /* no break */
-    case FIX_OFF32:
-        locat1 = (fixup->loader_resolved?LOC_MS_LINK_OFFSET_32 << 2:LOC_MS_OFFSET_32 << 2);
-        break;
-    case FIX_HIBYTE:
-        locat1 = (LOC_OFFSET_HI << 2);
-        break;
-    case FIX_SEG:
-        locat1 = (LOC_BASE << 2);
-        break;
-    case FIX_PTR16:
-        locat1 = (LOC_BASE_OFFSET << 2);
-        break;
-    case FIX_PTR32:
-        locat1 = (LOC_MS_BASE_OFFSET_32 << 2);
-        break;
-    default: /* shouldn't happen. Check for valid fixup has already happened */
-        EmitErr(UNSUPPORTED_FIXUP_TYPE,
-                ModuleInfo.fmtopt->formatname,
-                fixup->sym?fixup->sym->name:szNull);
-        return(0);
+        case FIX_RELOFF8:
+            self_relative = TRUE;
+            /* no break */
+        case FIX_OFF8:
+            locat1 = (LOC_OFFSET_LO << 2);
+            break;
+        case FIX_RELOFF16:
+            self_relative = TRUE;
+            /* no break */
+        case FIX_OFF16:
+            locat1 = (fixup->loader_resolved ? LOC_MS_LINK_OFFSET << 2 : LOC_OFFSET << 2);
+            break;
+        case FIX_RELOFF32:
+            self_relative = TRUE;
+            /* no break */
+        case FIX_OFF32:
+            locat1 = (fixup->loader_resolved ? LOC_MS_LINK_OFFSET_32 << 2 : LOC_MS_OFFSET_32 << 2);
+            break;
+        case FIX_HIBYTE:
+            locat1 = (LOC_OFFSET_HI << 2);
+            break;
+        case FIX_SEG:
+            locat1 = (LOC_BASE << 2);
+            break;
+        case FIX_PTR16:
+            locat1 = (LOC_BASE_OFFSET << 2);
+            break;
+        case FIX_PTR32:
+            locat1 = (LOC_MS_BASE_OFFSET_32 << 2);
+            break;
+        default: /* shouldn't happen. Check for valid fixup has already happened */
+            EmitErr(UNSUPPORTED_FIXUP_TYPE,
+                    ModuleInfo.fmtopt->formatname,
+                    fixup->sym ? fixup->sym->name : szNull);
+            return(0);
     }
-    locat1 |= self_relative?0x80:0xc0; /* bit 7: 1=is a fixup subrecord */
+    locat1 |= self_relative ? 0x80 : 0xc0; /* bit 7: 1=is a fixup subrecord */
 
     if (omf_fill_logref(fixup, &lr) == 0)
         return(0);

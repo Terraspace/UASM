@@ -70,7 +70,7 @@ extern char* GetExtPart(const char* fname);
 
 extern struct src_item* PushSrcItem(char type, void* pv);
 
-extern FILE* SearchFile(const char* path, bool);
+extern FILE* SearchFile(char* path, bool);
 extern char* GetTextLine(char* buffer);
 extern void     PushMacro(struct macro_instance*);
 extern void     SetLineNumber(unsigned);

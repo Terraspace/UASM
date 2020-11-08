@@ -365,18 +365,18 @@ static int TB_create(union u96* value, int_32 exponent, struct TB_LD* ld)
     decimal exponent, round result
 */
 {
-    const struct ELD* tabExp;
+    struct ELD* tabExp;
     int i;
     struct ELD res;
 
     if (exponent < 0)
     {
         exponent = -exponent;
-        tabExp = tab_minus_exp;
+        tabExp = (struct ELD*)tab_minus_exp;
     }
     else
     {
-        tabExp = tab_plus_exp;
+        tabExp = (struct ELD*)tab_plus_exp;
     }
     U96LD(value, &res);
     for (i = 0; i < MAX_EXP_INDEX; i++)
@@ -429,12 +429,12 @@ struct TB_LD* strtotb(const char* p, struct TB_LD* ld, char negative)
     while (isspace(*p)) p++;
     switch (*p)
     {
-    case '-':
-        sign = -1;
-    case '+':
-        p++;
-    default:
-        break;
+        case '-':
+            sign = -1;
+        case '+':
+            p++;
+        default:
+            break;
     }
     if (negative)
     {
@@ -503,26 +503,26 @@ struct TB_LD* strtotb(const char* p, struct TB_LD* ld, char negative)
     {
         switch (*++p)
         {
-        case '-':
-            exp_sign = -1;
-        case '+': p++;
-            break;
-        case '0':
-        case '1':
-        case '2':
-        case '3':
-        case '4':
-        case '5':
-        case '6':
-        case '7':
-        case '8':
-        case '9':
-            break;
-        default:
-            ld->m = 0;
-            ld->e = 0;
-            SET_SIGN(ld, sign);
-            return(ld);
+            case '-':
+                exp_sign = -1;
+            case '+': p++;
+                break;
+            case '0':
+            case '1':
+            case '2':
+            case '3':
+            case '4':
+            case '5':
+            case '6':
+            case '7':
+            case '8':
+            case '9':
+                break;
+            default:
+                ld->m = 0;
+                ld->e = 0;
+                SET_SIGN(ld, sign);
+                return(ld);
         }
         while ((unsigned int)(*p - '0') < 10u)
             exp_value = 10 * exp_value + (*p++ - '0');

@@ -101,7 +101,7 @@ void AddLinnumDataRef(unsigned srcfile, uint_32 line_num)
                 dmyproc->offset;
         }
         sprintf(procname, "$$$%05u", procidx);
-        DebugMsg1(("AddLinnumDataRef(src=%u.%u): CurrProc==NULL, dmyproc=%s searching proc=%s\n", srcfile, line_num, dmyproc?dmyproc->name:"NULL", procname));
+        DebugMsg1(("AddLinnumDataRef(src=%u.%u): CurrProc==NULL, dmyproc=%s searching proc=%s\n", srcfile, line_num, dmyproc ? dmyproc->name : "NULL", procname));
         dmyproc = SymSearch(procname);
 
         /* in pass 1, create the proc */
@@ -133,8 +133,8 @@ void AddLinnumDataRef(unsigned srcfile, uint_32 line_num)
                 DebugMsg1(("AddLinnumDataRef: CURRPROC=NULL, sym=%s, calling AddLinnumData(src=%u.%u)\n", curr->sym->name, curr->file, curr->line_number));
                 AddLinnumData(curr);
             }
-            }
         }
+    }
 #endif
 
     if (line_num && (write_to_file == FALSE || lastLineNumber == line_num))
@@ -145,7 +145,7 @@ void AddLinnumDataRef(unsigned srcfile, uint_32 line_num)
 #endif
         return;
     }
-    DebugMsg1(("AddLinnumDataRef(src=%u.%u): currofs=%Xh, CurrProc=%s, GeneratedCode=%u\n", srcfile, line_num, GetCurrOffset(), CurrProc?CurrProc->sym.name:"NULL", ModuleInfo.GeneratedCode));
+    DebugMsg1(("AddLinnumDataRef(src=%u.%u): currofs=%Xh, CurrProc=%s, GeneratedCode=%u\n", srcfile, line_num, GetCurrOffset(), CurrProc ? CurrProc->sym.name : "NULL", ModuleInfo.GeneratedCode));
 
     curr = (struct line_num_info*)LclAlloc(sizeof(struct line_num_info));
     curr->number = line_num;
@@ -159,7 +159,7 @@ void AddLinnumDataRef(unsigned srcfile, uint_32 line_num)
             AddPublicData((struct asym*)CurrProc);
         }
         /* changed v2.03 */
-        curr->sym = (CurrProc?(struct asym*)CurrProc:dmyproc);
+        curr->sym = (CurrProc ? (struct asym*)CurrProc : dmyproc);
         curr->line_number = GetLineNumber();
 
         /* if there is no prologue, 2 lines get skipped, this corrects line_number; v2.28 */
@@ -171,9 +171,7 @@ void AddLinnumDataRef(unsigned srcfile, uint_32 line_num)
         if (dmyproc)
         {
             /**/myassert(dmyproc->segment);
-            dmyproc->total_size =
-                ((struct dsym*)dmyproc->segment)->e.seginfo->current_loc -
-                dmyproc->offset;
+            dmyproc->total_size = ((struct dsym*)dmyproc->segment)->e.seginfo->current_loc - dmyproc->offset;
             dmyproc = NULL;
         }
         /* v2.11: write a 0x7fff line item if prologue exists */
@@ -213,11 +211,11 @@ void AddLinnumDataRef(unsigned srcfile, uint_32 line_num)
             EmitWarn(2, LINNUM_INFO_FOR_SEGMENT_WITHOUT_CLASS_CODE, CurrSeg->sym.name);
         }
     }
-    DebugMsg1(("AddLinnumDataRef: calling AddLinnumData(src=%u.%u ofs=%X)\n", curr->number == 0?curr->file:curr->srcfile, curr->number, curr->offset));
+    DebugMsg1(("AddLinnumDataRef: calling AddLinnumData(src=%u.%u ofs=%X)\n", curr->number == 0 ? curr->file : curr->srcfile, curr->number, curr->offset));
     AddLinnumData(curr);
 
     return;
-    }
+}
 
 void QueueDeleteLinnum(struct qdesc* queue)
 /*******************************************/

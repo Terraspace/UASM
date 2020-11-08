@@ -241,16 +241,16 @@ static int FFQUAL writeSegdef(struct outbuff* out, const struct omf_rec* objr)
 #else
     switch (align)
     {
-    case SEGDEF_ALIGN_ABS:      acbp |= ALIGN_ABS << 5;     break;
-    case SEGDEF_ALIGN_BYTE:     acbp |= ALIGN_BYTE << 5;    break;
-    case SEGDEF_ALIGN_WORD:     acbp |= ALIGN_WORD << 5;    break;
-    case SEGDEF_ALIGN_PARA:     acbp |= ALIGN_PARA << 5;    break;
-    case SEGDEF_ALIGN_PAGE:     acbp |= ALIGN_PAGE << 5;    break;
-    case SEGDEF_ALIGN_DWORD:    acbp |= ALIGN_DWORD << 5;   break;
+        case SEGDEF_ALIGN_ABS:      acbp |= ALIGN_ABS << 5;     break;
+        case SEGDEF_ALIGN_BYTE:     acbp |= ALIGN_BYTE << 5;    break;
+        case SEGDEF_ALIGN_WORD:     acbp |= ALIGN_WORD << 5;    break;
+        case SEGDEF_ALIGN_PARA:     acbp |= ALIGN_PARA << 5;    break;
+        case SEGDEF_ALIGN_PAGE:     acbp |= ALIGN_PAGE << 5;    break;
+        case SEGDEF_ALIGN_DWORD:    acbp |= ALIGN_DWORD << 5;   break;
 #if PAGE4K
-    case SEGDEF_ALIGN_4KPAGE:   acbp |= ALIGN_4KPAGE << 5;  break;
+        case SEGDEF_ALIGN_4KPAGE:   acbp |= ALIGN_4KPAGE << 5;  break;
 #endif
-    default: /**/myassert(0);
+        default: /**/myassert(0);
     }
 #endif
     /* set BIG bit. should also be done for 32-bit segments
@@ -354,7 +354,7 @@ static int FFQUAL writeModend(struct outbuff* out, const struct omf_rec* objr)
 
     /**/myassert(objr->command == CMD_MODEND);
 
-    is32 = ((objr->is_32 && objr->d.modend.start_addrs)?TRUE:FALSE);
+    is32 = ((objr->is_32 && objr->d.modend.start_addrs) ? TRUE : FALSE);
     WBegRec(out, CMD_MODEND + is32);
     /* first byte is Module Type:
      * bit 7: 1=main program module
@@ -364,7 +364,7 @@ static int FFQUAL writeModend(struct outbuff* out, const struct omf_rec* objr)
      * bit 0: start address contains relocatable address ( according to OMF, this bit should be 1 )
      * Masm does set bit 0, but does not set bit 5!
      */
-    mtype = objr->d.modend.main_module?0x80:0;
+    mtype = objr->d.modend.main_module ? 0x80 : 0;
     if (objr->d.modend.start_addrs)
     {
         //is_log = objr->d.modend.is_logical;

@@ -67,7 +67,7 @@ struct fixup* CreateFixup(struct asym* sym, enum fixup_types type, enum fixup_op
     fixup = LclAlloc(sizeof(struct fixup));
 #ifdef TRMEM
     fixup->marker = 'XF';
-    DebugMsg1(("CreateFixup, pass=%u: fix=%p sym=%s\n", Parse_Pass + 1, fixup, sym?sym->name:"NULL"));
+    DebugMsg1(("CreateFixup, pass=%u: fix=%p sym=%s\n", Parse_Pass + 1, fixup, sym ? sym->name : "NULL"));
 #endif
 
     /* add the fixup to the symbol's linked list (used for backpatch)
@@ -96,7 +96,7 @@ struct fixup* CreateFixup(struct asym* sym, enum fixup_types type, enum fixup_op
                 fixup->nextrlc = CurrSeg->e.seginfo->FixupList.head;
                 CurrSeg->e.seginfo->FixupList.head = fixup;
             }
-}
+    }
     /* initialize locofs member with current offset.
      * It's unlikely to be the final location, but sufficiently exact for backpatching.
      */
@@ -111,7 +111,7 @@ struct fixup* CreateFixup(struct asym* sym, enum fixup_types type, enum fixup_op
     fixup->sym = sym;
 
     DebugMsg1(("CreateFixup(sym=%s type=%u, opt=%u) cnt=%" I32_SPEC "X, loc=%" I32_SPEC "Xh\n",
-              sym?sym->name:"NULL", type, option, ++cnt, fixup->locofs));
+              sym ? sym->name : "NULL", type, option, ++cnt, fixup->locofs));
     return(fixup);
 }
 
@@ -164,42 +164,42 @@ void SetFixupFrame(const struct asym* sym, char ign_grp)
     {
         switch (sym->state)
         {
-        case SYM_INTERNAL:
-        case SYM_EXTERNAL:
-            if (sym->segment != NULL)
-            {
-                if (ign_grp == FALSE && (grp = (struct dsym*)GetGroup(sym)))
+            case SYM_INTERNAL:
+            case SYM_EXTERNAL:
+                if (sym->segment != NULL)
                 {
-                    Frame_Type = FRAME_GRP;
-                    Frame_Datum = grp->e.grpinfo->grp_idx;
+                    if (ign_grp == FALSE && (grp = (struct dsym*)GetGroup(sym)))
+                    {
+                        Frame_Type = FRAME_GRP;
+                        Frame_Datum = grp->e.grpinfo->grp_idx;
+                    }
+                    else
+                    {
+                        Frame_Type = FRAME_SEG;
+                        Frame_Datum = GetSegIdx(sym->segment);
+                    }
                 }
-                else
-                {
-                    Frame_Type = FRAME_SEG;
-                    Frame_Datum = GetSegIdx(sym->segment);
-                }
-            }
-            break;
-        case SYM_SEG:
-            Frame_Type = FRAME_SEG;
-            Frame_Datum = GetSegIdx(sym->segment);
-            break;
-        case SYM_GRP:
-            Frame_Type = FRAME_GRP;
-            Frame_Datum = ((struct dsym*)sym)->e.grpinfo->grp_idx;
-            break;
+                break;
+            case SYM_SEG:
+                Frame_Type = FRAME_SEG;
+                Frame_Datum = GetSegIdx(sym->segment);
+                break;
+            case SYM_GRP:
+                Frame_Type = FRAME_GRP;
+                Frame_Datum = ((struct dsym*)sym)->e.grpinfo->grp_idx;
+                break;
 #ifdef DEBUG_OUT
-        case SYM_UNDEFINED:
-        case SYM_STACK:
-            break;
-        default:
-            DebugMsg(("SetFixupFrame(%s): unexpected state=%u\n", sym->name, sym->state));
-            /**/myassert(0);
-            break;
+            case SYM_UNDEFINED:
+            case SYM_STACK:
+                break;
+            default:
+                DebugMsg(("SetFixupFrame(%s): unexpected state=%u\n", sym->name, sym->state));
+                /**/myassert(0);
+                break;
 #endif
-            }
         }
     }
+}
 
 /*
  * Store fixup information in segment's fixup linked list.
@@ -237,7 +237,7 @@ void store_fixup(struct fixup* fixup, struct dsym* seg, int_32* pdata)
     {
         EmitErr(UNSUPPORTED_FIXUP_TYPE,
                 ModuleInfo.fmtopt->formatname,
-                fixup->sym?fixup->sym->name:szNull);
+                fixup->sym ? fixup->sym->name : szNull);
         return(ERROR);
     }
 #endif
@@ -280,7 +280,7 @@ void store_fixup(struct fixup* fixup, struct dsym* seg, int_32* pdata)
                 else if (fixup->type == FIX_RELOFF8)
                     *pdata = -1;
 #endif
-            }
+        }
 #endif
 #if DJGPP_SUPPORT
         /* Djgpp's COFF variant needs special handling for
@@ -297,7 +297,7 @@ void store_fixup(struct fixup* fixup, struct dsym* seg, int_32* pdata)
                 *pdata += fixup->sym->offset;
                 fixup->offset += fixup->sym->offset; /* ok? */
                 fixup->segment = fixup->sym->segment;/* ok? */
-        }
+            }
         }
         else
 #endif

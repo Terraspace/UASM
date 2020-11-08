@@ -59,7 +59,7 @@ void atofloat(void* out, const char* inp, unsigned size, bool negative, uint_8 f
             {
                 DebugMsg(("atofloat(%s, 4): magnitude too large\n", inp));
                 EmitErr(MAGNITUDE_TOO_LARGE_FOR_SPECIFIED_SIZE);
-}
+            }
             if (negative)
                 float_value *= -1;
 #else

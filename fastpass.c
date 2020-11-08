@@ -81,7 +81,7 @@ void StoreLine(const char* srcline, int flags, uint_32 lst_position)
         SaveState();
 
     i = strlen(srcline);
-    j = (((flags & 1) && ModuleInfo.CurrComment)?strlen(ModuleInfo.CurrComment):0);
+    j = (((flags & 1) && ModuleInfo.CurrComment) ? strlen(ModuleInfo.CurrComment) : 0);
     LineStoreCurr = LclAlloc(i + j + sizeof(struct line_item));
     LineStoreCurr->next = NULL;
     LineStoreCurr->lineno = GetLineNumber();
@@ -93,7 +93,7 @@ void StoreLine(const char* srcline, int flags, uint_32 lst_position)
     {
         LineStoreCurr->srcfile = get_curr_srcfile();
     }
-    LineStoreCurr->list_pos = (lst_position?lst_position:list_pos);
+    LineStoreCurr->list_pos = (lst_position ? lst_position : list_pos);
     if (j)
     {
         memcpy(LineStoreCurr->line, srcline, i);

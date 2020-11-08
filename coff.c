@@ -82,7 +82,7 @@ struct coffmod
         struct stringitem* head;
         struct stringitem* tail;
         uint_32 size;
-} LongNames;
+    } LongNames;
 #ifdef DEBUG_OUT
     uint_32     start_symtab;   /* calculated start of symbol table when section table is written */
 #endif
@@ -179,7 +179,7 @@ static ret_code coff_write_section_table(struct module_info* modinfo, struct cof
         //}
         segtype = SEGTYPE_UNDEF;
         /* v2.07: prefer ALIAS name if defined. */
-        secname = (curr->e.seginfo->aliasname?curr->e.seginfo->aliasname:ConvertSectionName(&curr->sym, &segtype, buffer));
+        secname = (curr->e.seginfo->aliasname?curr->e.seginfo->aliasname:ConvertSectionName(&curr->sym, &segtype, &buffer));
         len = strlen(secname);
         /* if section name is longer than 8 chars, a '/' is stored,
          followed by a number in ascii which is the offset for the string table
@@ -384,9 +384,9 @@ static short CoffGetClass(const struct asym* sym)
 static unsigned GetFileAuxEntries(uint_16 file, char** fname)
 /**************************************************************/
 {
-    const struct fname_item* curr;
+    struct fname_item* curr;
     unsigned len;
-    curr = GetFName(file);
+    curr = (struct fname_item*)GetFName(file);
     if (fname)
         *fname = curr->fname;
     len = strlen(curr->fname);
@@ -450,17 +450,17 @@ static uint_32 CRC32Comdat(uint_8* lpBuffer, uint_32 dwBufLen, uint_32 dwCRC)
 static uint_32 coff_write_symbols(struct module_info* modinfo, struct coffmod* cm)
 /**********************************************************************************/
 {
-    uint_32     cntSymbols = 0;
-    struct dsym* curr;
-    struct asym* sym;
-    struct qnode* q;
-    char* p;
-    unsigned    len;
-    unsigned    i;
-    IMAGE_SYMBOL is;
+    uint_32         cntSymbols = 0;
+    struct dsym*    curr;
+    struct asym*    sym;
+    struct qnode*   q;
+    char*           p;
+    unsigned        len;
+    unsigned        i;
+    IMAGE_SYMBOL    is;
     IMAGE_AUX_SYMBOL ias;
-    unsigned    lastfile = 0;
-    char        buffer[MAX_ID_LEN + MANGLE_BYTES + 1];
+    unsigned        lastfile = 0;
+    char            buffer[MAX_ID_LEN + MANGLE_BYTES + 1];
 
     DebugMsg(("coff_write_symbols: enter\n"));
 
@@ -749,7 +749,7 @@ static uint_32 coff_write_symbols(struct module_info* modinfo, struct coffmod* c
 
             cntSymbols += 6;
         }
-}
+    }
 
     /* aliases. A weak external entry with 1 aux entry is created.
      */
@@ -795,7 +795,7 @@ static uint_32 coff_write_symbols(struct module_info* modinfo, struct coffmod* c
 
     DebugMsg(("coff_write_symbols: exit cntSymbols=%u\n", cntSymbols));
     return(cntSymbols);
-    }
+}
 
 static int GetStartLabel(char* buffer, bool msg)
 /************************************************/
@@ -816,7 +816,7 @@ static int GetStartLabel(char* buffer, bool msg)
             {
                 if (*ModuleInfo.g.start_label->name != '_')
                 {
-                    if (msg && (ModuleInfo.fctype != FCT_WIN64) && (ModuleInfo.fctype != FCT_SYSV64))
+                    if (msg && (ModuleInfo.fctype != FCT_WIN64))
                         EmitWarn(2, LEADING_UNDERSCORE_REQUIRED_FOR_START_LABEL, ModuleInfo.g.start_label->name);
                     strcpy(buffer, temp);
                 }
@@ -875,13 +875,13 @@ static uint_8* coff_flushfunc(struct dsym* seg, uint_8* curr, unsigned size, voi
 static uint_32 SetSymbolIndices(struct module_info* ModuleInfo, struct coffmod* cm)
 /***********************************************************************************/
 {
-    struct qnode* q;
-    struct dsym* curr;
-    struct asym* sym;
-    uint_32 index;
-    uint_32 i;
-    struct asym* lastfproc;
-    unsigned lastfile = 0;
+    struct qnode*   q;
+    struct dsym*    curr;
+    struct asym*    sym;
+    uint_32         index;
+    uint_32         i;
+    struct asym*    lastfproc;
+    unsigned        lastfile = 0;
 
     index = 0;
     cm->lastproc = NULL;
@@ -963,9 +963,9 @@ static uint_32 SetSymbolIndices(struct module_info* ModuleInfo, struct coffmod* 
 static void coff_write_fixups(struct dsym* section, uint_32* poffset, uint_32* pindex)
 /**************************************************************************************/
 {
-    uint_32 offset = *poffset;
-    uint_32 index = *pindex;
-    struct fixup* fix;
+    uint_32         offset = *poffset;
+    uint_32         index = *pindex;
+    struct fixup*   fix;
     IMAGE_RELOCATION ir;
 
     /* v2.10: handle the reloc-overflow-case */
@@ -1121,11 +1121,11 @@ static void coff_write_fixups(struct dsym* section, uint_32* poffset, uint_32* p
                  section->sym.name, offset, ir.VirtualAddress, ir.Type, ir.SymbolTableIndex, fix->sym->name));
         offset += sizeof(ir);
         section->e.seginfo->num_relocs++;
-        } /* end for */
+    } /* end for */
     DebugMsg(("coff_write_fixups(%s): exit, num_relocs=%" I32_SPEC "u\n", section->sym.name, section->e.seginfo->num_relocs));
     *poffset = offset;
     *pindex = index;
-    }
+}
 
 /* write section data */
 
@@ -1396,8 +1396,8 @@ static void coff_create_drectve(struct module_info* modinfo, struct coffmod* cm)
                     size += Mangle(&tmp->sym, buffer);
                     size += 1 + strlen(tmp->sym.dll->name);
                     size += 1 + tmp->sym.name_size;
+                }
             }
-        }
 #endif
             cm->directives->sym.max_offset = size;
             /* v2.09: allocate 1 byte more, because sprintf() is used, which
@@ -1457,8 +1457,8 @@ static void coff_create_drectve(struct module_info* modinfo, struct coffmod* cm)
 #endif
             /**/myassert(size == p - cm->directives->e.seginfo->CodeBuffer);
             //size_drectve = p - directives->e.seginfo->CodeBuffer; /* v2.11:removed */
+        }
     }
-}
 }
 
 /* Write current object module in COFF format.

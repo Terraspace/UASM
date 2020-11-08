@@ -15,7 +15,7 @@ extern void     AddLineQueueX(const char* fmt, ...);
 
 void AddSimdTypes()
 {
-    /*struct asym* sym = NULL;*/
+    struct asym* sym = 0;
 
     AddLineQueue("__m128b struct");
     AddLineQueue("b0 BYTE ?");
