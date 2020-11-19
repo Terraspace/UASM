@@ -145,9 +145,9 @@ void LstWrite(enum lsttype type, uint_32 oldofs, void* value)
 {
     uint_32             newofs = 0;
     struct asym*        sym = value;
-    size_t              len;
+    int              len;
     int                 i;
-    size_t              len2;
+    int              len2;
     int                 idx;
     int                 srcfile;
     char*               p1;
@@ -625,7 +625,7 @@ static const char* GetLanguage(const struct asym* sym)
 static void log_struct(const struct asym* sym, const char* name, int_32 ofs)
 /****************************************************************************/
 {
-    size_t              i;
+    unsigned              i;
     struct dsym*        dir;
     char*               pdots;
     struct struct_info* si;
@@ -1394,12 +1394,12 @@ void LstInit(void)
     if (Options.write_listing)
     {
         int namelen;
-        buffer = (char*)MsgGetEx(MSG_UASM);
+        buffer = MsgGetEx(MSG_UASM);
         list_pos = strlen(buffer) - 1;
         fwrite(buffer, 1, list_pos, CurrFile[LST]);
         LstNL();
         LstNL();
-        fn = (struct fname_item*)GetFName(ModuleInfo.srcfile);
+        fn = GetFName(ModuleInfo.srcfile);
         namelen = strlen(fn->fname);
         fwrite(fn->fname, 1, namelen, CurrFile[LST]);
         list_pos += namelen;

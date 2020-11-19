@@ -372,11 +372,11 @@ static int TB_create(union u96* value, int_32 exponent, struct TB_LD* ld)
     if (exponent < 0)
     {
         exponent = -exponent;
-        tabExp = (struct ELD*)tab_minus_exp;
+        tabExp = tab_minus_exp;
     }
     else
     {
-        tabExp = (struct ELD*)tab_plus_exp;
+        tabExp = tab_plus_exp;
     }
     U96LD(value, &res);
     for (i = 0; i < MAX_EXP_INDEX; i++)

@@ -248,7 +248,7 @@ void ModelAssumeInit(void)
                 break;
 #endif
             if (ModuleInfo.model == MODEL_TINY)
-                pCS = (char*)szDgroup;
+                pCS = szDgroup;
             else
                 pCS = SimGetSegName(SIM_CODE);
 

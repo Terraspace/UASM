@@ -968,7 +968,7 @@ static ret_code set_rm_sib(struct code_info* CodeInfo, unsigned CurrOpnd, char s
 
                 /* s-i-b is present ( r/m = 100b ) */
                 rm_field |= RM_SIB;
-                CodeInfo->sib = (ss | idx_reg << 3 | base_reg);
+                CodeInfo->sib = (ss | (idx_reg << 3) | base_reg);
 #if AMD64_SUPPORT
                 rex = (bit3_idx << 1) + (bit3_base); /* set REX_X + REX_B */
 #endif
@@ -2207,7 +2207,7 @@ static ret_code process_address(struct code_info* CodeInfo, unsigned CurrOpnd, s
                  * If so, assume the undefined symbol is a constant. */
                 if (CurrOpnd == OPND2 && ((CodeInfo->opnd[OPND1].type & OP_SR) == 0))
                 {
-                    struct instr_item* p = (struct instr_item*)CodeInfo->pinstr;
+                    struct instr_item* p = CodeInfo->pinstr;
                     do
                     {
                         if (opnd_clstab[p->opclsidx].opnd_type[OPND2] & OP_I)
@@ -3358,7 +3358,7 @@ ret_code ParseLine(struct asm_tok tokenarray[])
     unsigned           CurrOpnd;
     ret_code           temp;
     struct asym*        sym;
-    uint_32            oldofs;
+    uint_32            oldofs  = 0;
     enum special_token regtok;
     /*int                c0;
     int                c1;*/

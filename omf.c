@@ -364,7 +364,7 @@ static void omf_write_linnum(uint_8 is32)
 /*****************************************/
 {
     unsigned                ofssize = (is32 ? sizeof(uint_32) : sizeof(uint_16));
-    size_t                  size;
+    unsigned                  size;
     uint_8*                 data;
     struct line_num_info*   node;
     struct line_num_info*   next;
@@ -558,7 +558,7 @@ static void omf_write_theadr(const char* name)
 /**********************************************/
 {
     struct omf_rec obj;
-    size_t    len;
+    unsigned    len;
     //const struct fname_item *fn;
 
     DebugMsg1(("omf_write_theadr(%s) enter\n", name));
@@ -971,7 +971,7 @@ static void omf_write_segdef(void)
 static void omf_write_lnames(void)
 /**********************************/
 {
-    size_t          size;
+    int          size;
     int             items;
     unsigned char*  p;
     //void        *pv = NULL;
@@ -1361,7 +1361,7 @@ static ret_code omf_write_autodep(void)
     struct omf_rec      obj;
     struct fname_item*  curr;
     char*               p = StringBufferEnd;
-    size_t              len;
+    unsigned int              len;
     unsigned            idx;
 
     DebugMsg(("omf_write_autodep() enter\n"));

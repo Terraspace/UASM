@@ -1249,7 +1249,7 @@ static ret_code RebuildLine(const char* newstring, int i, struct asm_tok tokenar
     if (addbrackets)
     {
         newlen += 2;   /* count '<' and '>' */
-        for (src = (char*)newstring; *src; src++)
+        for (src = newstring; *src; src++)
             if (*src == '<' || *src == '>' || *src == '!')    /* count '!' operator */
                 newlen++;
     }
@@ -1262,7 +1262,7 @@ static ret_code RebuildLine(const char* newstring, int i, struct asm_tok tokenar
     if (addbrackets)
     {
         *dest++ = '<';
-        for (src = (char*)newstring; *src; src++)
+        for (src = newstring; *src; src++)
         {
             if (*src == '<' || *src == '>' || *src == '!')    /* count '!' operator */
                 *dest++ = '!';

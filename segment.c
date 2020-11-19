@@ -1008,7 +1008,7 @@ ret_code SegmentDir(int i, struct asm_tok tokenarray[])
             EmitErr(UNKNOWN_SEGMENT_ATTRIBUTE, token);
             continue;
         }
-        type = (struct typeinfo*)&SegAttrValue[typeidx];
+        type = &SegAttrValue[typeidx];
 
         /* initstate is used to check if any field is already
          * initialized

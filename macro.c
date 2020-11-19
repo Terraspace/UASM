@@ -85,7 +85,7 @@ void fill_placeholders(char* dst, const char* src, unsigned argc, unsigned local
     unsigned    parmno;
 
     /* scan the string, replace the placeholders #nn */
-    for (p = (char*)src; *p != NULLC; )
+    for (p = src; *p != NULLC; )
     {
         if (*p == PLACEHOLDER_CHAR)
         {

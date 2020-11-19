@@ -609,12 +609,12 @@ static ret_code  InitRecordVar(struct expr* opnd1, int index, struct asm_tok tok
     else
     {
         goto all;
-        /*		strcpy(&buffer, tokenarray->tokpos);
-                ptr = &buffer;
+        /*		strcpy(buffer, tokenarray->tokpos);
+                ptr = buffer;
                 while (*ptr != ',') ptr++;
                 ptr++;
                 sprintf(ptr, "0x%" PRIx64, dwRecInit);
-                strcpy(tokenarray->tokpos, &buffer);
+                strcpy(tokenarray->tokpos, buffer);
                 Token_Count = Tokenize(tokenarray->tokpos, 0, tokenarray, TOK_DEFAULT);*/
     }
 exit:
@@ -4553,7 +4553,7 @@ static ret_code evaluate(struct expr* opnd1, int* i, struct asm_tok tokenarray[]
                 {
                     if (opnd1->type != NULL)
                     {
-                        recordsym = (struct dsym*)SymSearch(opnd1->type->name);
+                        recordsym = SymSearch(opnd1->type->name);
                         /* if it is a RECORD don't throw an error but decorate it with an actual value v2.41*/
                         if (recordsym && recordsym->sym.typekind == TYPE_RECORD)
                         {

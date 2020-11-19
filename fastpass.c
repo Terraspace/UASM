@@ -68,7 +68,7 @@ static void SaveState(void)
 void StoreLine(const char* srcline, int flags, uint_32 lst_position)
 /********************************************************************/
 {
-    size_t i, j;
+    int i, j;
     char* p;
 
 #ifdef DEBUG_OUT

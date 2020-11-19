@@ -88,6 +88,7 @@ jmp_buf jmpenv;
 extern int_32           LastCodeBufSize;
 extern char* DefaultDir[NUM_FILE_TYPES];
 extern const char* ModelToken[];
+extern void AddSimdTypes();
 #if FASTMEM==0
 extern void             FreeLibQueue();
 #endif
@@ -645,7 +646,7 @@ static void add_cmdline_tmacros(void)
         else
         {
             len = value - name;
-            name = (char*)myalloca(len + 1);
+            name = (char*)malloc(len + 1);
             memcpy(name, p->value, len);
             *(name + len) = NULLC;
             value++;
@@ -799,7 +800,7 @@ void WritePreprocessedLine(const char* string)
     if (Token_Count > 0)
     {
         /* v2.08: don't print a leading % (this char is no longer filtered) */
-        for (p = (char*)string; isspace(*p); p++);
+        for (p = string; isspace(*p); p++);
         printf("%s\n", *p == '%' ? p + 1 : string);
         PrintEmptyLine = TRUE;
     }
@@ -865,8 +866,6 @@ static void ModulePassInit(void)
         ModuleInfo.fctype = Options.fctype;
 
 #if AMD64_SUPPORT
-        /*if (Options.sub_format == SFORMAT_64BIT)
-        {*/
         if (Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC)
         {
             ModuleInfo.fctype = FCT_SYSV64;
@@ -877,7 +876,6 @@ static void ModulePassInit(void)
             ModuleInfo.fctype = FCT_WIN64;
             Options.fctype = FCT_WIN64;
         }
-        /*}*/
 #endif
 
 #if AMD64_SUPPORT
@@ -1604,7 +1602,7 @@ static void SetFilenames(const char* name)
     strcpy(CurrFName[ASM], name);
 
     /* set [OBJ], [ERR], [LST] */
-    fn = (char*)GetFNamePart(name);
+    fn = GetFNamePart(name);
     for (i = ASM + 1; i < NUM_FILE_TYPES; i++)
     {
         if (Options.names[i] == NULL)
@@ -1622,7 +1620,7 @@ static void SetFilenames(const char* name)
             /* filename has been set by cmdline option -Fo, -Fl or -Fr */
             char* fn2;
             strcpy(path, Options.names[i]);
-            fn2 = (char*)GetFNamePart(path);
+            fn2 = GetFNamePart(path);
             if (*fn2 == NULLC)
                 strcpy(fn2, fn);
             ext = GetExtPart(fn2);
@@ -1983,42 +1981,42 @@ done:
 }
 
 /* ARCH SSE/AVX specific instructions */
-const char* MOVE_ALIGNED_FLOAT()
+const char* MOVE_ALIGNED_FLOAT(void)
 {
     return (extraflags.MODULEARCH == ARCH_AVX ? "vmovaps" : "movaps");
 }
 
-const char* MOVE_ALIGNED_INT()
+const char* MOVE_ALIGNED_INT(void)
 {
     return (extraflags.MODULEARCH == ARCH_AVX ? (extraflags.evexflag == TRUE ? "vmovdqa32" : "vmovdqa") : "movdqa");
 }
 
-const char* MOVE_UNALIGNED_FLOAT()
+const char* MOVE_UNALIGNED_FLOAT(void)
 {
     return (extraflags.MODULEARCH == ARCH_AVX ? "vmovups" : "movups");
 }
 
-const char* MOVE_UNALIGNED_INT()
+const char* MOVE_UNALIGNED_INT(void)
 {
     return (extraflags.MODULEARCH == ARCH_AVX ? (extraflags.evexflag == TRUE ? "vmovdqu32" : "vmovdqu") : "movdqu");
 }
 
-const char* MOVE_SINGLE()
+const char* MOVE_SINGLE(void)
 {
     return (extraflags.MODULEARCH == ARCH_AVX ? "vmovss" : "movss");
 }
 
-const char* MOVE_DOUBLE()
+const char* MOVE_DOUBLE(void)
 {
     return (extraflags.MODULEARCH == ARCH_AVX ? "vmovsd" : "movsd");
 }
 
-const char* MOVE_SIMD_DWORD()
+const char* MOVE_SIMD_DWORD(void)
 {
     return (extraflags.MODULEARCH == ARCH_AVX ? "vmovd" : "movd");
 }
 
-const char* MOVE_SIMD_QWORD()
+const char* MOVE_SIMD_QWORD(void)
 {
     return (extraflags.MODULEARCH == ARCH_AVX ? "vmovq" : "movq");
 }

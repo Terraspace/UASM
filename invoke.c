@@ -70,6 +70,7 @@ extern int_64           minintvalues[];
 extern enum special_token stackreg[];
 extern struct dsym* CurrStruct;
 extern UINT_PTR UTF8toWideChar(const unsigned char* pSource, UINT_PTR nSourceLen, UINT_PTR* nSourceDone, unsigned short* szTarget, UINT_PTR nTargetMax);
+extern ret_code      BackPatch(struct asym* sym);
 
 #ifdef __I86__
 #define NUMQUAL (long)
@@ -3262,7 +3263,6 @@ static int sysv_param(struct dsym* proc, int index, struct dsym* param, bool add
                         DebugMsg(("sysv_param(%s, param=%u): argument optimized\n", proc->sym.name, index));
                     else
                         AddLineQueueX("%s %s, %s", "vmovdqa32", param->sym.string_ptr, paramvalue);
-                    //AddLineQueueX("%s %s, %s", MOVE_ALIGNED_INT(), param->sym.string_ptr, paramvalue);
                 }
                 else
                 {
@@ -3275,7 +3275,6 @@ static int sysv_param(struct dsym* proc, int index, struct dsym* param, bool add
             if (opnd->kind == EXPR_REG && opnd->indirect == TRUE)
             {
                 AddLineQueueX("%s %s, zmmword ptr %s", "vmovdqu32", param->sym.string_ptr, paramvalue);
-                //AddLineQueueX("%s %s, zmmword ptr %s", MOVE_UNALIGNED_INT(), param->sym.string_ptr, paramvalue);
                 return(1);
             }
             /* Operand is a memory address (IE: symbol name) or memory address expression like [rbp+rax] etc */
@@ -3283,7 +3282,6 @@ static int sysv_param(struct dsym* proc, int index, struct dsym* param, bool add
             {
                 if (psize == param->sym.total_size || opnd->mem_type == MT_EMPTY)
                     AddLineQueueX("%s %s, zmmword ptr %s", "vmovdqu32", param->sym.string_ptr, paramvalue);
-                //AddLineQueueX("%s %s, zmmword ptr %s", MOVE_UNALIGNED_INT(), param->sym.string_ptr, paramvalue);
                 else
                     EmitErr(INVOKE_ARGUMENT_TYPE_MISMATCH, index + 1);
                 return(1);
@@ -4148,7 +4146,7 @@ static int ParamIsString(char* pStr, int param, struct dsym* proc)
             if (p->sym.target_type)
             {
                 type = p->sym.target_type;
-                while (type->target_type && (type->target_type > (struct asym*)0x2000))
+                while (type->target_type && (int)type->target_type > 0x2000)
                 {
                     type = type->target_type;
                     if (type->mem_type == MT_PTR)

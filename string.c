@@ -825,7 +825,7 @@ static ret_code CatStrFunc(struct macro_instance* mi, char* buffer, struct asm_t
 #ifdef DEBUG_OUT
     int         cnt = 0;
 #endif
-    size_t      i;
+    int      i;
     char*       p;
 
     DebugMsg1(("@CatStr( %s )\n", mi->parm_array[0] ? mi->parm_array[0] : "NULL"));
@@ -949,7 +949,7 @@ static ret_code SubStrFunc(struct macro_instance* mi, char* buffer, struct asm_t
 /************************************************************************************************/
 {
     int         pos;
-    size_t      size;
+    int      size;
     char* src = mi->parm_array[0];
 
     DebugMsg1(("@SubStr( %s, %s, %s)\n",

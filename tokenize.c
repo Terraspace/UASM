@@ -1527,9 +1527,9 @@ int Tokenize(char* line, unsigned int start, struct asm_tok tokenarray[], unsign
                             p1++;                                /* skip the comma forward  */
                             input1 = p1;                         /* save that location in input1  */
                             while (isspace(*p1)) p1++;           /* skip the space  */
-                            strcpy(&buff, p1);                    /* copy to the buffer from variable on  */
+                            strcpy(buff, p1);                    /* copy to the buffer from variable on  */
                             *input1++ = '\[';                    /* skip the space  */
-                            for (p1 = &buff; *p1 != '\{'; p1++, input1++) /* till the end of var  */
+                            for (p1 = buff; *p1 != '\{'; p1++, input1++) /* till the end of var  */
                                 *input1 = *p1;                      /* copy it back to input string  */
                             *input1++ = '\]';                    /* insert ']' before '{' */
                             strcpy(input1, p1);                  /* now copy the rest of string from buffer */

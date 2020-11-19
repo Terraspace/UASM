@@ -570,8 +570,8 @@ static FILE* open_file_in_include_path(const char* name, char fullpath[])
 {
     char*       curr;
     char*       next;
-    size_t      i;
-    size_t      namelen;
+    int      i;
+    int      namelen;
     FILE*       file = NULL;
 
     while (isspace(*name))
@@ -643,7 +643,7 @@ FILE* SearchFile(char* path, bool queue)
 
     //_splitpath( path, drive, dir, fname, ext );
     //DebugMsg1(("SearchFile(): drive=%s, dir=%s, fname=%s, ext=%s\n", drive, dir, fname, ext ));
-    fn = (char*)GetFNamePart(path);
+    fn = GetFNamePart(path);
 
     /* if no absolute path is given, then search in the directory
      * of the current source file first!
@@ -663,10 +663,10 @@ FILE* SearchFile(char* path, bool queue)
                 //_splitpath( GetFName( fl->srcfile )->fname, drive2, dir2, NULL, NULL );
                 //DebugMsg1(("SearchFile(): curr src=%s, split into drive=%s, dir=%s\n", GetFName( fl->srcfile)->fname, drive2, dir2 ));
                 src = GetFName(fl->srcfile)->fname;
-                fn2 = (char*)GetFNamePart(src);
+                fn2 = GetFNamePart(src);
                 if (fn2 != src)
                 {
-                    size_t i = fn2 - src;
+                    int i = fn2 - src;
                     /* v2.10: if there's a directory part, add it to the directory part of the current file.
                      * fixme: check that both parts won't exceed FILENAME_MAX!
                      * fixme: 'path' is relative, but it may contain a drive letter!
@@ -814,7 +814,7 @@ void AddStringToIncludePath(const char* string)
 /***********************************************/
 {
     char* tmp;
-    size_t len;
+    int len;
 
     DebugMsg(("AddStringToIncludePath(%s) enter\n", string));
     while (isspace(*string))
@@ -890,7 +890,7 @@ struct asm_tok* PushInputStatus(struct input_status* oldstat)
     /* if there's a comment, attach it to current source */
     if (ModuleInfo.CurrComment)
     {
-        size_t i = strlen(CurrSource);
+        int i = strlen(CurrSource);
         oldstat->CurrComment = CurrSource + i;
         strcpy(oldstat->CurrComment, ModuleInfo.CurrComment);
     }

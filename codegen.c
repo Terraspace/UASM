@@ -1670,9 +1670,8 @@ static void output_opc(struct code_info* CodeInfo)
                             CodeInfo->evex_p2 &= ~EVEX_P2L1MASK;
                     }
                     /*  v2.46 fixed EVEX_P2VMASK  */
-                    if (((CodeInfo->token >= T_VPSLLW) && (CodeInfo->token <= T_VPSRLQ)) ||
-                        ((CodeInfo->token >= T_VPSLLVD) && (CodeInfo->token <= T_VPSRLVW)) ||
-                        ((CodeInfo->token >= T_VPSLLVD && CodeInfo->token <= T_VPSRLVW)))
+                    if ((CodeInfo->token >= T_VPSLLW && CodeInfo->token <= T_VPSRLQ) ||
+                        (CodeInfo->token >= T_VPSLLVD && CodeInfo->token <= T_VPSRLVW))
                     {
                         if (CodeInfo->opnd[OPND2].type & OP_I8_U)
                         {

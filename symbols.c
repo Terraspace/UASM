@@ -918,13 +918,13 @@ void SymSimd(struct dsym* sym)
 
     sym->e.structinfo->memberCount = memberCount;
     if (vtotal == 0x20 && sym->e.structinfo->isHomogenous == 1 && ((sym->sym.typekind == TYPE_UNION) ||
-        (htype == MT_REAL4 || htype == MT_REAL8 || htype == MT_BYTE || htype == MT_WORD | htype == MT_DWORD || htype == MT_QWORD)))
+        (htype == MT_REAL4 || htype == MT_REAL8 || htype == MT_BYTE || htype == MT_WORD || htype == MT_DWORD || htype == MT_QWORD)))
         sym->e.structinfo->stype = MM256;
     else if (vtotal == 0x10 && sym->e.structinfo->isHomogenous == 1 && ((sym->sym.typekind == TYPE_UNION) ||
-             (htype == MT_REAL4 || htype == MT_REAL8 || htype == MT_BYTE || htype == MT_WORD | htype == MT_DWORD || htype == MT_QWORD)))
+             (htype == MT_REAL4 || htype == MT_REAL8 || htype == MT_BYTE || htype == MT_WORD || htype == MT_DWORD || htype == MT_QWORD)))
         sym->e.structinfo->stype = MM128;
     else if (vtotal == 0x40 && sym->e.structinfo->isHomogenous == 1 && ((sym->sym.typekind == TYPE_UNION) ||
-             (htype == MT_REAL4 || htype == MT_REAL8 || htype == MT_BYTE || htype == MT_WORD | htype == MT_DWORD || htype == MT_QWORD)))
+             (htype == MT_REAL4 || htype == MT_REAL8 || htype == MT_BYTE || htype == MT_WORD || htype == MT_DWORD || htype == MT_QWORD)))
         sym->e.structinfo->stype = MM512;
 
     // Ensure unions of multiple MM128 or MM256 types default to a 4/8 member float arrangement.

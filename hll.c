@@ -1582,7 +1582,7 @@ ret_code HllStartDir(int i, struct asm_tok tokenarray[])
 {
     struct hll_item*    hll;
     ret_code            rc = NOT_ERROR;
-    uint_32             cmd = tokenarray[i].tokval;
+    int             cmd = tokenarray[i].tokval;
     char                buff[16];
     char                buffer[MAX_LINE_LEN * 2];
     char                forbuff[MAX_LINE_LEN];
@@ -1590,9 +1590,9 @@ ret_code HllStartDir(int i, struct asm_tok tokenarray[])
     char                forbuffcond[MAX_LINE_LEN];
     char                forbuffcnt[MAX_LINE_LEN];
     char                transformed[MAX_LINE_LEN];
-    size_t              j;
-    size_t              b;
-    size_t              size;
+    int              j;
+    int              b;
+    int              size;
     int                 eqcnt;
     int                 cmcnt;
     char*               p;
@@ -1871,7 +1871,7 @@ ret_code HllStartDir(int i, struct asm_tok tokenarray[])
                 {
                     //skip altering conditions the first time
                     AddLineQueueX(" jmp %s", GetLabelStr(hll->labels[LSKIP], buff));
-                    size = /*(int)*/strlen(forbuffcnt) + 1;
+                    size = (int)strlen(forbuffcnt) + 1;
                     hll->counterlines = LclAlloc(size);
                     memcpy(hll->counterlines, forbuffcnt, size);
                     hll->cmcnt = cmcnt + 1;
@@ -1890,7 +1890,7 @@ ret_code HllStartDir(int i, struct asm_tok tokenarray[])
                         rc = EvaluateHllExpression(hll, &i, tokenarray, LSTART, TRUE, buffer);
                         if (rc == NOT_ERROR)
                         {
-                            size = /*(int)*/strlen(buffer) + 1;
+                            size = (int)strlen(buffer) + 1;
                             hll->condlines = LclAlloc(size);
                             memcpy(hll->condlines, buffer, size);
                             DebugCmd(cntCond++); DebugCmd(cntCondBytes += size);
@@ -1921,8 +1921,8 @@ ret_code HllStartDir(int i, struct asm_tok tokenarray[])
                     rc = EvaluateHllExpression(hll, &i, tokenarray, LSTART, TRUE, buffer);
                     if (rc == NOT_ERROR)
                     {
-                        /*int size;*/
-                        size = /*(int)*/strlen(buffer) + 1;
+                        int size;
+                        size = (int)strlen(buffer) + 1;
                         hll->condlines = LclAlloc(size);
                         memcpy(hll->condlines, buffer, size);
                         DebugCmd(cntCond++); DebugCmd(cntCondBytes += size);

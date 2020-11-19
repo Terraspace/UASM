@@ -835,7 +835,7 @@ FILE* FileTrmem;  /* file handle we'll write() to */
 
 #define TRMEM_LOGFN "~Uasm.trk"
 
-static void memLine(FILE* fh, const char* buf, size_t size)
+static void memLine(FILE* fh, const char* buf, unsigned size)
 /*************************************************************/
 {
     //fwrite( "***",1, 3, stderr );

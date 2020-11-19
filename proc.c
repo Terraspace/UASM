@@ -1706,19 +1706,20 @@ static ret_code ParseParams(struct dsym* proc, int i, struct asm_tok tokenarray[
             paranode->sym.is_ptr = ti.is_ptr;
             paranode->sym.ptr_memtype = ti.ptr_memtype;
             paranode->sym.is_vararg = is_vararg;
-            if ((proc->sym.langtype == LANG_FASTCALL && fastcall_tab[ModuleInfo.fctype].paramcheck(proc, paranode, &fcint, &vecint)) ||
+            if ((proc->sym.langtype == LANG_FASTCALL && fastcall_tab[ModuleInfo.fctype].paramcheck(proc, paranode, &fcint, &vecint)) /*||
                 (proc->sym.langtype == LANG_VECTORCALL && Options.output_format == OFORMAT_COFF && vectorcall_tab[ModuleInfo.fctype].paramcheck(proc, paranode, &fcint, &vecint)) ||
                 ((proc->sym.langtype == LANG_SYSVCALL || (proc->sym.langtype == LANG_SYSCALL && Options.sub_format == SFORMAT_64BIT)) && (Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC) && sysvcall_tab[ModuleInfo.fctype].paramcheck(proc, paranode, &fcint, &vecint)) ||
                 (proc->sym.langtype == LANG_REGCALL && Options.output_format == OFORMAT_COFF && regcallms_tab[ModuleInfo.fctype].paramcheck(proc, paranode, &fcint, &vecint)) ||
                 (proc->sym.langtype == LANG_REGCALL && (Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC) && regcallunix_tab[ModuleInfo.fctype].paramcheck(proc, paranode, &fcint, &vecint)) ||
                 (proc->sym.langtype == LANG_THISCALL && Options.output_format == OFORMAT_COFF && thiscall_tab[ModuleInfo.fctype].paramcheck(proc, paranode, &fcint, &vecint)) ||
-                (proc->sym.langtype == LANG_DELPHICALL && delphicall_tab[ModuleInfo.fctype].paramcheck(proc, paranode, &fcint, &vecint)))
+                (proc->sym.langtype == LANG_DELPHICALL && delphicall_tab[ModuleInfo.fctype].paramcheck(proc, paranode, &fcint, &vecint))*/
+                )
             {
             }
-            /*else if (proc->sym.langtype == LANG_VECTORCALL && Options.output_format == OFORMAT_COFF && vectorcall_tab[ModuleInfo.fctype].paramcheck(proc, paranode, &fcint, &vecint))
+            else if (proc->sym.langtype == LANG_VECTORCALL && Options.output_format == OFORMAT_COFF && vectorcall_tab[ModuleInfo.fctype].paramcheck(proc, paranode, &fcint, &vecint))
             {
             }
-            else if ((proc->sym.langtype == LANG_SYSVCALL || proc->sym.langtype == LANG_SYSCALL) && (Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC) && sysvcall_tab[ModuleInfo.fctype].paramcheck(proc, paranode, &fcint, &vecint))
+            else if ((proc->sym.langtype == LANG_SYSVCALL || (proc->sym.langtype == LANG_SYSCALL && Options.sub_format == SFORMAT_64BIT)) && (Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC) && sysvcall_tab[ModuleInfo.fctype].paramcheck(proc, paranode, &fcint, &vecint))
             {
             }
             else if (proc->sym.langtype == LANG_REGCALL && Options.output_format == OFORMAT_COFF && regcallms_tab[ModuleInfo.fctype].paramcheck(proc, paranode, &fcint, &vecint))
@@ -1727,12 +1728,12 @@ static ret_code ParseParams(struct dsym* proc, int i, struct asm_tok tokenarray[
             else if (proc->sym.langtype == LANG_REGCALL && (Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC) && regcallunix_tab[ModuleInfo.fctype].paramcheck(proc, paranode, &fcint, &vecint))
             {
             }
-            else if (proc->sym.langtype == LANG_THISCALL && Options.output_format == OFORMAT_COFF && thiscall_tab[ModuleInfo.fctype].paramcheck(proc, paranode, &fcint))
+            else if (proc->sym.langtype == LANG_THISCALL && Options.output_format == OFORMAT_COFF && thiscall_tab[ModuleInfo.fctype].paramcheck(proc, paranode, &fcint, &vecint))
             {
             }
-            else if (proc->sym.langtype == LANG_DELPHICALL && delphicall_tab[ModuleInfo.fctype].paramcheck(proc, paranode, &fcint))
+            else if (proc->sym.langtype == LANG_DELPHICALL && delphicall_tab[ModuleInfo.fctype].paramcheck(proc, paranode, &fcint, &vecint))
             {
-            }*/
+            }
             else
             {
                 paranode->sym.state = SYM_STACK;
@@ -5285,7 +5286,7 @@ static void write_win64_default_prologue_RSP(struct proc_info* info)
             vectstart = info->localsize + info->xmmsize & ~(16 - 1);
             if (info->vecused)
             {
-                if (info->vecregs)
+                if (&info->vecregs)
                 {
                     for (n = 0, m = 0, xsize = 0; n < 6; n++)
                     {
@@ -5443,7 +5444,7 @@ static void write_win64_default_prologue_RSP(struct proc_info* info)
             vectstart = info->localsize + info->xmmsize & ~(16 - 1);
             if (info->vecused)
             {
-                if (info->regcregs)
+                if (&info->regcregs)
                 {
                     for (n = 0, m = 0, xsize = 0; n < 16; n++)
                     {
@@ -7105,6 +7106,7 @@ static ret_code write_generic_prologue(struct proc_info* info)
             AddLineQueueX("push %r", *regist);
         }
     }
+    return(NOT_ERROR);
 }
 
 /* Write out UASM internal prologue */

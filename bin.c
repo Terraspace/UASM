@@ -768,7 +768,7 @@ static void pe_create_MZ_header(struct module_info* modinfo)
         DebugMsg(("pe_create_MZ_header: generate code\n"));
         AddLineQueueX("%r DOTNAME", T_OPTION);
         AddLineQueueX("%s1 %r USE16 %r %s", hdrname, T_SEGMENT, T_WORD, hdrattr);
-        for (p = (char*)&mzcode; p < mzcode + sizeof(mzcode); p += strlen(p) + 1)
+        for (p = mzcode; p < mzcode + sizeof(mzcode); p += strlen(p) + 1)
             AddLineQueue(p);
         AddLineQueueX("%s1 %r", hdrname, T_ENDS);
         RunLineQueue();

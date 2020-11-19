@@ -104,17 +104,17 @@ static int RegcallMangler(const struct asym* sym, char* buffer)
     switch (Options.regcall_version)
     {
         case RGCV_1:
-            return(sprintf(buffer, "__regcall1__%s", sym->name, dir->e.procinfo->parasize));
+            return(sprintf(buffer, "__regcall1__%s", sym->name));
         case RGCV_2:
-            return(sprintf(buffer, "__regcall2__%s", sym->name, dir->e.procinfo->parasize));
+            return(sprintf(buffer, "__regcall2__%s", sym->name));
         case RGCV_3:
-            return(sprintf(buffer, "__regcall3__%s", sym->name, dir->e.procinfo->parasize));
+            return(sprintf(buffer, "__regcall3__%s", sym->name));
         case RGCV_4:
-            return(sprintf(buffer, "__regcall4__%s", sym->name, dir->e.procinfo->parasize));
+            return(sprintf(buffer, "__regcall4__%s", sym->name));
         case RGCV_5:
-            return(sprintf(buffer, "__regcall5__%s", sym->name, dir->e.procinfo->parasize));
+            return(sprintf(buffer, "__regcall5__%s", sym->name));
         default:
-            return(sprintf(buffer, "__regcall3__%s", sym->name, dir->e.procinfo->parasize));
+            return(sprintf(buffer, "__regcall3__%s", sym->name));
     }
 }
 

@@ -12,6 +12,7 @@ and their sub-types
 
 extern void     AddLineQueue(const char* line);
 extern void     AddLineQueueX(const char* fmt, ...);
+extern void     RunLineQueue(void);
 
 void AddSimdTypes()
 {

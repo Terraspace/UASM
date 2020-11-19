@@ -70,7 +70,7 @@ bool is_linequeue_populated(void)
 void AddLineQueue(const char* line)
 /***********************************/
 {
-    size_t i = strlen(line);
+    unsigned i = strlen(line);
     struct lq_line* new;
 
     DebugMsg1(("AddLineQueue(%p): #=%u >%s<\n", line, ++lqlines_written, line));
@@ -105,7 +105,7 @@ void AddLineQueueX(const char* fmt, ...)
 {
     va_list args;
     char* d;
-    uint_32 i;
+    int i;
     int_32 l;
     int_64 q;
     const char* s;
@@ -186,7 +186,7 @@ void BuildCodeLine(char* buffer, const char* fmt, ...)
 {
     va_list args;
     char* d;
-    uint_32 i;
+    int i;
     int_32 l;
     int_64 q;
     const char* s;

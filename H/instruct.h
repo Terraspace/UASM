@@ -1792,10 +1792,10 @@ insx(VPTESTNMB, vptestnmb,  OpCls( XMM,      XMM_M128,  NONE ), F_F30F38, 1,  no
 insx(VPTESTNMW, vptestnmw,  OpCls( XMM,      XMM_M128,  NONE ), F_F30F38, 1,  no_WDS,0x26,     0x00,     P_686|P_AVX,W1|IZSZ|WSIZE|FVM,RWF_EVEX|RWF_VEX)
 insx(VPTESTNMD, vptestnmd,  OpCls( XMM,      XMM_M128,  NONE ), F_F30F38, 1,  no_WDS,0x27,     0x00,     P_686|P_AVX,IZSZ|DSIZE|FV,RWF_EVEX|RWF_VEX)
 insx(VPTESTNMQ, vptestnmq,  OpCls( XMM,      XMM_M128,  NONE ), F_F30F38, 1,  no_WDS,0x27,     0x00,     P_686|P_AVX,W1|IZSZ|QSIZE|FV,RWF_EVEX|RWF_VEX)
-insx(VREDUCEPD, vreducepd,  OpCls( XMM,  XMM_M128, I8_U ),F_660F3A, 1,  no_WDS,0x56,     0x00,     P_686|P_AVX,W1|IZSZ|QSIZE|FV, RWF_EVEX|RWF_VEX )                                                                                                                       
-insx(VREDUCESD, vreducesd,  OpCls( XMM,  XMM_M128, I8_U ),F_660F3A, 1,  no_WDS,0x57,     0x00,     P_686|P_AVX,W1|IZSZ|QSIZE|T1S, RWF_EVEX|RWF_VEX )
-insx(VREDUCEPS, vreduceps,  OpCls( XMM,  XMM_M128, I8_U ),F_660F3A, 1,  no_WDS,0x56,     0x00,     P_686|P_AVX,IZSZ|DSIZE|FV, RWF_EVEX|RWF_VEX )                                                                                                                       
-insx(VREDUCESS, vreducess,  OpCls( XMM,  XMM_M128, I8_U ),F_660F3A, 1,  no_WDS,0x57,     0x00,     P_686|P_AVX,IZSZ|DSIZE|T1S, RWF_EVEX|RWF_VEX )
+insx(VREDUCEPD, vreducepd,  OpCls( XMM,      XMM_M128,  I8_U ), F_660F3A, 1,  no_WDS,0x56,     0x00,     P_686|P_AVX,W1|IZSZ|QSIZE|FV,RWF_EVEX|RWF_VEX )                                                                                                                       
+insx(VREDUCESD, vreducesd,  OpCls( XMM,      XMM_M128,  I8_U ), F_660F3A, 1,  no_WDS,0x57,     0x00,     P_686|P_AVX,W1|IZSZ|QSIZE|T1S,RWF_EVEX|RWF_VEX )
+insx(VREDUCEPS, vreduceps,  OpCls( XMM,      XMM_M128,  I8_U ), F_660F3A, 1,  no_WDS,0x56,     0x00,     P_686|P_AVX,IZSZ|DSIZE|FV,RWF_EVEX|RWF_VEX )                                                                                                                       
+insx(VREDUCESS, vreducess,  OpCls( XMM,      XMM_M128,  I8_U ), F_660F3A, 1,  no_WDS,0x57,     0x00,     P_686|P_AVX,IZSZ|DSIZE|T1S,RWF_EVEX|RWF_VEX )
 
 
 insx(VPXORD, vpxord,        OpCls( XMM,      XMM_M128,  NONE ), F_660F,   1,  no_WDS,0xEF,     0x00,     P_686|P_AVX,IZSZ|DSIZE|FV,RWF_EVEX|RWF_VEX)

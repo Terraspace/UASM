@@ -115,38 +115,38 @@ static void SetSimSeg(enum sim_seg segm, char* name)
     if (ModuleInfo.defOfssize > USE16)
     {
         if (ModuleInfo.model == MODEL_FLAT)
-            pUse = (char*)"FLAT";
+            pUse = "FLAT";
         else
-            pUse = (char*)"USE32";
+            pUse = "USE32";
 
         if (Options.seg_align != 4)
             pAlign = align;
         else if ((ModuleInfo.curr_cpu & P_CPU_MASK) <= P_386)
-            pAlign = (char*)"DWORD";
+            pAlign = "DWORD";
         else
-            pAlign = (char*)"PARA";
+            pAlign = "PARA";
         pAlignSt = pAlign;
     }
 
     if (segm == SIM_CODE)
-        pClass = (char*)GetCodeClass();
+        pClass = GetCodeClass();
     else
-        pClass = (char*)SegmClass[segm];
+        pClass = SegmClass[segm];
 
     if (segm == SIM_STACK || segm == SIM_FARDATA || segm == SIM_FARDATA_UN)
         pAlign = pAlignSt;
 
-    pFmt = (char*)"%s %r %s %s %s '%s'";
+    pFmt = "%s %r %s %s %s '%s'";
     if (name == NULL)
     {
         name = SegmNames[segm];
-        if (name == NULL && ModuleInfo.flat) name = (char*)"_flat";
+        if (name == NULL && ModuleInfo.flat) name = "_flat";
 
         /* UASM 2.49 Prevent empty object with no options from crashing the assembler */
-        if (name == NULL) name = (char*)"_TEXT";
+        if (name == NULL) name = "_TEXT";
 
         if (ModuleInfo.simseg_init & (1 << segm))
-            pFmt = (char*)"%s %r";
+            pFmt = "%s %r";
         else
         {
             ModuleInfo.simseg_init |= (1 << segm);
@@ -162,7 +162,7 @@ static void SetSimSeg(enum sim_seg segm, char* name)
                     ModuleInfo.simseg_defd |= (1 << segm);
             }
             if (ModuleInfo.simseg_defd & (1 << segm))
-                pFmt = (char*)"%s %r";
+                pFmt = "%s %r";
         }
     }
     else
@@ -174,13 +174,13 @@ static void SetSimSeg(enum sim_seg segm, char* name)
          * v2.12: check 'isdefined' member instead of 'lname_idx'
          */
         if (sym && sym->state == SYM_SEG && sym->isdefined == TRUE)
-            pFmt = (char*)"%s %r";
+            pFmt = "%s %r";
     }
 
     if (ModuleInfo.flat)
     {
-        pUse = (char*)"USE64";
-        pFmt = (char*)"%s %r %s %s %s '%s'";
+        pUse = "USE64";
+        pFmt = "%s %r %s %s %s '%s'";
         AddLineQueueX(pFmt, "_flat", T_SEGMENT, "BYTE", "USE16", "PUBLIC", "CODE");
         AddLineQueueX("assume cs:_flat, ds:_flat, es:_flat, ss:_flat, fs:_flat, gs:_flat");
         if (Parse_Pass == PASS_1)
@@ -300,16 +300,16 @@ ret_code SimplifiedSegDir(int i, struct asm_tok tokenarray[])
                 /* v2.05: add the named code segment to DGROUP */
                 if (name)
                     AddToDgroup(SIM_CODE, name);
-                name = (char*)szDgroup;
+                name = szDgroup;
             }
             else if (ModuleInfo.model == MODEL_FLAT)
             {
-                name = (char*)"FLAT";
+                name = "FLAT";
             }
             else
             {
                 if (name == NULL)
-                    name = (char*)SegmNames[SIM_CODE];
+                    name = SegmNames[SIM_CODE];
             }
             AddLineQueueX("%r %r:%s", T_ASSUME, T_CS, name);
             break;

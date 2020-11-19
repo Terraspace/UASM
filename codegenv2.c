@@ -1,5 +1,6 @@
 #include "codegenv2.h"
 
+#include <ctype.h>
 #include <time.h>
 #include "globals.h"
 #include "parser.h"
@@ -18,6 +19,8 @@
 const char        szNullStr[] = { "<NULL>" };
 struct Mem_Def* MemTable = NULL;
 struct Instr_Def* InstrHash[16384];
+extern unsigned get_curr_srcfile(void);
+extern uint_32 GetLineNumber(void);
 
 #ifdef _WIN32
 #else
@@ -155,7 +158,7 @@ enum op_type DemoteOperand(enum op_type op)
 
 enum op_type MatchOperand(struct code_info* CodeInfo, struct opnd_item op, struct expr opExpr)
 {
-    enum op_type result;
+    enum op_type result = op.type;
     switch (op.type)
     {
     case OP_M:

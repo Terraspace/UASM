@@ -42,6 +42,7 @@ static const char szStructure[] = "structure";
 static const char szRecord[] = "record";
 
 static const char szNonUnique[] = "NONUNIQUE";
+extern void SymSimd(struct dsym* sym);
 
 void TypesInit(void)
 /********************/

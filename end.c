@@ -130,18 +130,18 @@ ret_code StartupExitDirective(int i, struct asm_tok tokenarray[])
                     {
                         if ((ModuleInfo.cpu & M_CPUMSK) <= M_8086)
                         {
-                            p = (struct code_line*)StartupDosNear0;
+                            p = StartupDosNear0;
                             count = sizeof(StartupDosNear0) / sizeof(StartupDosNear0[0]);
                         }
                         else
                         {
-                            p = (struct code_line*)StartupDosNear1;
+                            p = StartupDosNear1;
                             count = sizeof(StartupDosNear1) / sizeof(StartupDosNear1[0]);
                         }
                     }
                     else
                     {
-                        p = (struct code_line*)StartupDosFar;
+                        p = StartupDosFar;
                         count = sizeof(StartupDosFar) / sizeof(StartupDosFar[0]);
                     }
                     for (; count; count--, p++)

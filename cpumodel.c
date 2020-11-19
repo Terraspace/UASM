@@ -215,11 +215,11 @@ void SetModel(void)
     }
     sym_DataSize = AddPredefinedConstant("@DataSize", value);
 
-    textvalue = (char*)(ModuleInfo.model == MODEL_FLAT?"FLAT":szDgroup);
+    textvalue = (ModuleInfo.model == MODEL_FLAT?"FLAT":szDgroup);
     AddPredefinedText("@data", textvalue);
 
     if (ModuleInfo.distance == STACK_FAR)
-        textvalue = (char*)"STACK";
+        textvalue = "STACK";
     AddPredefinedText("@stack", textvalue);
 
     /* Default this to null so it can be checked for */

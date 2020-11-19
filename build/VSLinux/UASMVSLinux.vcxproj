@@ -84,20 +84,19 @@
       <PreprocessorDefinitions>MACROLIB=1;__UNIX__;__LINUX__;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>../../H;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <ShowIncludes>true</ShowIncludes>
-      <AdditionalOptions>-Wno-sign-conversion -Wno-implicit-int-conversion -Wno-comment -Wno-switch -Wno-implicit-function-declaration -Wno-enum-conversion -O2 -std=c11 -march=x86-64 -target x86_64-pc-linux-gnu -funsigned-char -fwritable-strings -mstack-alignment=16 -fpie</AdditionalOptions>
+      <AdditionalOptions>-Wno-sign-conversion -Wno-implicit-int-conversion -Wno-comment -Wno-switch -Wno-implicit-function-declaration -Wno-enum-conversion -O2 -std=c11 -march=x86-64 -target x86_64-pc-linux-gnu -funsigned-char -fwritable-strings -mstack-alignment=16</AdditionalOptions>
       <ExceptionHandling>Disabled</ExceptionHandling>
-      <RuntimeTypeInfo>false</RuntimeTypeInfo>
-      <Optimization>MaxSpeed</Optimization>
+      <Optimization>Full</Optimization>
+      <CppLanguageStandard>c++17</CppLanguageStandard>
     </ClCompile>
     <Link />
     <RemotePostBuildEvent>
       <Command>
       </Command>
     </RemotePostBuildEvent>
+    <Link />
     <Link>
-      <DebuggerSymbolInformation>OmitDebuggerSymbolInformation</DebuggerSymbolInformation>
-      <NoExecStackRequired>false</NoExecStackRequired>
-      <Relocation>false</Relocation>
+      <DebuggerSymbolInformation>OmitAllSymbolInformation</DebuggerSymbolInformation>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
@@ -105,10 +104,10 @@
       <PreprocessorDefinitions>MACROLIB=1;__UNIX__;__LINUX__;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>../../H;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <ShowIncludes>true</ShowIncludes>
-      <AdditionalOptions>-Wno-sign-conversion -Wno-implicit-int-conversion -Wno-comment -Wno-switch -Wno-implicit-function-declaration -Wno-enum-conversion -O2 -std=c11 -march=x86-64 -target x86_64-pc-linux-gnu -funsigned-char -fwritable-strings -mstack-alignment=16 -fpie</AdditionalOptions>
+      <AdditionalOptions>-Wno-sign-conversion -Wno-implicit-int-conversion -Wno-comment -Wno-switch -Wno-implicit-function-declaration -Wno-enum-conversion -O2 -std=c11 -march=x86-64 -target x86_64-pc-linux-gnu -funsigned-char -fwritable-strings -mstack-alignment=16</AdditionalOptions>
       <ExceptionHandling>Disabled</ExceptionHandling>
-      <RuntimeTypeInfo>false</RuntimeTypeInfo>
-      <Optimization>MaxSpeed</Optimization>
+      <Optimization>Full</Optimization>
+      <CppLanguageStandard>c++17</CppLanguageStandard>
     </ClCompile>
     <Link />
     <RemotePostBuildEvent>
@@ -116,9 +115,7 @@
       </Command>
     </RemotePostBuildEvent>
     <Link>
-      <DebuggerSymbolInformation>OmitDebuggerSymbolInformation</DebuggerSymbolInformation>
-      <NoExecStackRequired>false</NoExecStackRequired>
-      <Relocation>false</Relocation>
+      <DebuggerSymbolInformation>OmitAllSymbolInformation</DebuggerSymbolInformation>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -126,38 +123,35 @@
       <PreprocessorDefinitions>MACROLIB=1;__UNIX__;__LINUX__;_DEBUG;DEBUG_OUT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>../../H;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <ShowIncludes>true</ShowIncludes>
-      <AdditionalOptions>-Wno-sign-conversion -Wno-implicit-int-conversion -Wno-comment -Wno-switch -Wno-implicit-function-declaration -Wno-enum-conversion -g -O0 -std=c11 -march=x86-64 -target x86_64-pc-linux-gnu -funsigned-char -fwritable-strings -mstack-alignment=16 -fpie</AdditionalOptions>
+      <AdditionalOptions>-Wno-sign-conversion -Wno-implicit-int-conversion -Wno-comment -Wno-switch -Wno-implicit-function-declaration -Wno-enum-conversion -g -O0 -std=c11 -march=x86-64 -target x86_64-pc-linux-gnu -funsigned-char -fwritable-strings -mstack-alignment=16</AdditionalOptions>
       <ExceptionHandling>Disabled</ExceptionHandling>
-      <RuntimeTypeInfo>false</RuntimeTypeInfo>
+      <CppLanguageStandard>c++17</CppLanguageStandard>
     </ClCompile>
     <Link />
     <RemotePostBuildEvent>
       <Command>
       </Command>
     </RemotePostBuildEvent>
-    <Link>
-      <NoExecStackRequired>false</NoExecStackRequired>
-      <Relocation>false</Relocation>
-    </Link>
+    <Link />
+    <Link />
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
     <ClCompile>
       <PreprocessorDefinitions>MACROLIB=1;__UNIX__;__LINUX__;_DEBUG;DEBUG_OUT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>../../H;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <ShowIncludes>true</ShowIncludes>
-      <AdditionalOptions>-Wno-sign-conversion -Wno-implicit-int-conversion -Wno-comment -Wno-switch -Wno-implicit-function-declaration -Wno-enum-conversion -g -O0 -std=c11 -march=x86-64 -target x86_64-pc-linux-gnu -funsigned-char -fwritable-strings -mstack-alignment=16 -fpie</AdditionalOptions>
+      <AdditionalOptions>-Wno-sign-conversion -Wno-implicit-int-conversion -Wno-comment -Wno-switch -Wno-implicit-function-declaration -Wno-enum-conversion -g -O0 -std=c11 -march=x86-64 -target x86_64-pc-linux-gnu -funsigned-char -fwritable-strings -mstack-alignment=16</AdditionalOptions>
       <ExceptionHandling>Disabled</ExceptionHandling>
-      <RuntimeTypeInfo>false</RuntimeTypeInfo>
+      <CppLanguageStandard>c++17</CppLanguageStandard>
     </ClCompile>
     <Link />
     <RemotePostBuildEvent>
       <Command>
       </Command>
     </RemotePostBuildEvent>
-    <Link>
-      <NoExecStackRequired>false</NoExecStackRequired>
-      <Relocation>false</Relocation>
-    </Link>
+    <Link />
+    <Link />
+    <Link />
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\apiemu.c" />

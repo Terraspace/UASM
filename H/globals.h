@@ -72,16 +72,20 @@
 #endif
 
 #if (defined(BUILD_MACROLIB) && (BUILD_MACROLIB >= 1))
+#ifndef INCREASEDMAXLINELENGHT
 #   define INCREASEDMAXLINELENGHT   1
+#endif
 #else
+#ifndef INCREASEDMAXLINELENGHT
 #   define INCREASEDMAXLINELENGHT   0
+#endif
 #endif
 
 #if (defined(INCREASEDMAXLINELENGHT) && (INCREASEDMAXLINELENGHT >= 1))
-#define MAX_LINE_LEN            25600  /* no restriction for this number */
+#define MAX_LINE_LEN            25600  /* no restriction for this number*/ /*TODO-KRAD-High number can overflow the stack or get undesired effect. Rework code for stack/heap overflow hits.*/
 #define MAX_TOKEN               MAX_LINE_LEN - 800  /* max tokens in one line */
 #define MAX_STRING_LEN          MAX_LINE_LEN - 800 /* must be < MAX_LINE_LEN */
-#define MAX_ID_LEN              MAX_LINE_LEN - 6175 /* must be < MAX_LINE_LEN */
+#define MAX_ID_LEN              247 /*MAX_LINE_LEN - 6175*/ /* must be < MAX_LINE_LEN */ /*TODO-KRAD-Maintain low number here, we don't want to crash the offsets*/
 #define MAX_STRUCT_ALIGN        64
 #define MAX_SEGMENT_ALIGN       4096 /* maximum alignment/packing setting for segments */
 #define MAX_IF_NESTING          32 /* IFxx block nesting. Must be <=32, see condasm.c */
@@ -343,7 +347,7 @@ enum lang_type {
     LANG_SYSVCALL = 9,
     LANG_REGCALL = 10,
     LANG_THISCALL = 11,
-    LANG_DELPHICALL = 12  // 
+    LANG_DELPHICALL = 12,
 };
 
 /* Memory model type.
@@ -854,7 +858,7 @@ struct module_info {
 #if DLLIMPORT
     struct dll_desc* CurrDll;        /* OPTION DLLIMPORT dll */
 #endif
-    const struct format_options* fmtopt; /* v2.07: added */
+    struct format_options* fmtopt; /* v2.07: added */
     unsigned            hll_label;       /* hll directive label counter */
     enum dist_type      distance;        /* stack distance */
     enum model_type     model;           /* memory model */
@@ -986,14 +990,14 @@ struct format_options {
 /* global variables */
 
 /* global strings for arch:sse/avx instructions to use */
-extern const char* MOVE_ALIGNED_FLOAT();
-extern const char* MOVE_ALIGNED_INT();
-extern const char* MOVE_UNALIGNED_FLOAT();
-extern const char* MOVE_UNALIGNED_INT();
-extern const char* MOVE_SINGLE();
-extern const char* MOVE_DOUBLE();
-extern const char* MOVE_SIMD_DWORD();
-extern const char* MOVE_SIMD_QWORD();
+extern const char* MOVE_ALIGNED_FLOAT(void);
+extern const char* MOVE_ALIGNED_INT(void);
+extern const char* MOVE_UNALIGNED_FLOAT(void);
+extern const char* MOVE_UNALIGNED_INT(void);
+extern const char* MOVE_SINGLE(void);
+extern const char* MOVE_DOUBLE(void);
+extern const char* MOVE_SIMD_DWORD(void);
+extern const char* MOVE_SIMD_QWORD(void);
 
 /* global flag to indicate when inside macro body */
 extern bool inMacroBody;
@@ -1032,6 +1036,8 @@ extern char* ConvertSectionName(const struct asym*, enum seg_type* pst, char* bu
 extern void             RewindToWin64(void);
 extern void             RewindToSYSV64(void);
 
+#ifndef _MSC_VER
 extern char* strupr(char* str);
+#endif
 
 #endif

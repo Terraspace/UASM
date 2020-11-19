@@ -449,7 +449,7 @@ const uint_8 vex_flags[] = {
   VX_LL | VX_L | VX_HALF,               /* VPSCATTERDD */
   VX_LL | VX_L | VX_HALF,               /* VPSCATTERDQ */
   VX_LL | VX_L | VX_HALF,               /* VPSCATTERQD */
-  VX_LL | VX_L | VX_HALF,                /* VPSCATTERQQ */
+  VX_LL | VX_L | VX_HALF,               /* VPSCATTERQQ */
   VX_LL | VX_L | VX_HALF,               /* VSCATTERDPS */
   VX_LL | VX_L | VX_HALF,               /* VSCATTERDPD */
   VX_LL | VX_L | VX_HALF,               /* VSCATTERQPS */
@@ -1147,7 +1147,7 @@ void RenameKeyword(unsigned token, const char* newname, uint_8 length)
 void Set64Bit(bool newmode)
 /***************************/
 {
-    /*static const*/ char* syscallname;   /* "true" syscall name stored here */
+    static const char* syscallname;   /* "true" syscall name stored here */
     int token;
     int i;
 

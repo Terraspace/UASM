@@ -324,7 +324,7 @@ static void get_fname(int type, const char* token)
 
     DebugMsg(("get_fname( type=%u, >%s< ) enter\n", type, token));
     //_splitpath( token, drive, dir, fname, ext );
-    pName = (char*)GetFNamePart(token);
+    pName = GetFNamePart(token);
     /*
      * If name's ending with a '\' (or '/' in Unix), it's supposed
      * to be a directory name only.
@@ -1090,15 +1090,15 @@ static void ProcessOption(char** cmdline, char* buffer)
      */
     if (*p >= '0' && *p <= '9')
     {
-        p = (char*)GetNumber(p);
+        p = GetNumber(p);
         if (OptValue < sizeof(cpuoption) / sizeof(cpuoption[0]))
         {
-            p = (char*)GetNameToken(buffer, p, 16, 0); /* get optional 'p' */
+            p = GetNameToken(buffer, p, 16, 0); /* get optional 'p' */
             *cmdline = p;
             SetCpuCmdline(cpuoption[OptValue], buffer);
             return;
         }
-        p = (char*)*cmdline; /* v2.11: restore option pointer */
+        p = *cmdline; /* v2.11: restore option pointer */
     }
     for (i = 0; i < (sizeof(cmdl_options) / sizeof(cmdl_options[0])); i++)
     {
@@ -1126,14 +1126,14 @@ static void ProcessOption(char** cmdline, char* buffer)
                     break;
                 case '#':             /* collect a number */
                     if (*p >= '0' && *p <= '9')
-                        p = (char*)GetNumber(p);
+                        p = GetNumber(p);
                     break;
                 case '$':      /* collect an identifer+value */
                 case '@':      /* collect a filename */
                     OptName = buffer;
 #if 0  /* v2.05: removed */
                     if (rspidx)
-                        p = (char*)GetNameToken(buffer, p, FILENAME_MAX - 1, *opt);
+                        p = GetNameToken(buffer, p, FILENAME_MAX - 1, *opt);
                     else
                     {
                         j = strlen(p);
@@ -1142,7 +1142,7 @@ static void ProcessOption(char** cmdline, char* buffer)
                     }
 #else
                     /* v2.10: spaces in filename now handled inside GetNameToken() */
-                    p = (char*)GetNameToken(buffer, p, FILENAME_MAX - 1, *opt);
+                    p = GetNameToken(buffer, p, FILENAME_MAX - 1, *opt);
 #endif
                     break;
                 case '=':    /* collect an optional '=' */
@@ -1153,7 +1153,7 @@ static void ProcessOption(char** cmdline, char* buffer)
                     while (isspace(*p)) p++;
                     if (*p == NULLC)
                     {
-                        p = (char*)getnextcmdstring(cmdline);
+                        p = getnextcmdstring(cmdline);
                         if (p == NULL)
                         {
                             EmitWarn(1, MISSING_ARGUMENT_FOR_CMDLINE_OPTION);
@@ -1261,7 +1261,7 @@ char* EXPQUAL ParseCmdline(char** cmdline, int* pCntArgs)
             str++;
             break;
         case NULLC:
-            str = (char*)getnextcmdstring(cmdline);
+            str = getnextcmdstring(cmdline);
             break;
         case '-':
 #if SWITCHCHAR
@@ -1318,7 +1318,7 @@ char* EXPQUAL ParseCmdline(char** cmdline, int* pCntArgs)
 #if 1 /* v2.06: activated (was removed in v2.05). Needed for quoted filenames */
             if (rspidx)
             {
-                str = (char*)GetNameToken(paramfile, str, sizeof(paramfile) - 1, '@');
+                str = GetNameToken(paramfile, str, sizeof(paramfile) - 1, '@');
                 get_fname(OPTN_ASM_FN, paramfile);
             }
             else

@@ -466,13 +466,13 @@
     PROCSTART MACRO functionName:REQ, callconvType:REQ, retType:REQ, inpFrame:REQ, usesStr:REQ, args:VARARG
         _currfunctionName_ TEXTEQU <functionName>
         _currargs_ TEXTEQU <args>
-        fnexproto TEXTEQU <>
-        fnexproto CATSTR fnexproto, <&functionName&>
-        fnexproto CATSTR fnexproto, < PROTO >, <&callconvType&>, < >, <(&retType&)>, < >, <&args&>
+        ;;fnexproto TEXTEQU <>
+        ;;fnexproto CATSTR fnexproto, <&functionName&>
+        ;;fnexproto CATSTR fnexproto, < PROTO >, <&callconvType&>, < >, <(&retType&)>, < >, <&args&>
         fnexproc TEXTEQU <>
         fnexproc CATSTR fnexproc, <&functionName&>
         fnexproc CATSTR fnexproc, < PROC >, <&callconvType&>, < >, <(&retType&)>, < >, <&inpFrame&>, < >, <&usesStr&>, < >, <&args&>
-        fnexproto
+        ;;fnexproto
         fnexproc
     ENDM
     ENDIF

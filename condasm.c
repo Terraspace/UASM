@@ -596,7 +596,7 @@ ret_code ErrorDirective(int i, struct asm_tok tokenarray[])
         {
             uint_32 value;
             int j = idloc;
-            size_t size;
+            int size;
             value = 0;
             do
             {

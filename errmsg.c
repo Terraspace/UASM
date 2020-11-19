@@ -249,12 +249,12 @@ static void PutMsg(FILE* fp, int severity, int msgnum, va_list args)
         {
             fwrite(buffer, 1, j, fp);
         }
-        pMsg = (char*)MsgGetEx(msgnum);
+        pMsg = MsgGetEx(msgnum);
         switch (severity)
         {
-            case 1:  type = (char*)MsgGetEx(MSG_FATAL_PREFIX);   break;
-            case 2:  type = (char*)MsgGetEx(MSG_ERROR_PREFIX);   break;
-            case 4:  type = (char*)MsgGetEx(MSG_WARNING_PREFIX); break;
+            case 1:  type = MsgGetEx(MSG_FATAL_PREFIX);   break;
+            case 2:  type = MsgGetEx(MSG_ERROR_PREFIX);   break;
+            case 4:  type = MsgGetEx(MSG_WARNING_PREFIX); break;
             default:  type = NULL; i = 0; break;
         }
         if (type)
