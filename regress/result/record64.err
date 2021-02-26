@@ -1,9 +1,0 @@
-..\src\win64\record64.asm(140) : Error A2062: Too many tokens in a line
-..\src\win64\record64.asm(156) : Error A2210: Syntax error: rc
-..\src\win64\record64.asm(176) : Error A2210: Syntax error: terra
-..\src\win64\record64.asm(242) : Error A2221: Missing macro argument: MOVXMMR128, parameter 3
-..\src\win64\record64.asm(258) : Error A2221: Missing macro argument: MOVXMMR128, parameter 3
-..\src\win64\record64.asm(263) : Error A2230: Invalid operand for MASK: MYREC128
-..\src\win64\record64.asm(263) : Error A2210: Syntax error: 8
-..\src\win64\record64.asm(280) : Error A2063: Symbol not defined : REGISTERX.rc
-..\src\win64\record64.asm(281) : Error A2063: Symbol not defined : REGISTERX.rc
