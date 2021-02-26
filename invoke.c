@@ -567,8 +567,7 @@ static int ms64_fcstart(struct dsym const *proc, int numparams, int start, struc
 
 			}
 	}
-	if (sym_ReservedStack)
-		sym_ReservedStack->hasinvoke = 1;
+
 	DebugMsg1(("ms64_fcstart(%s, numparams=%u) vararg=%u\n", proc->sym.name, numparams, proc->e.procinfo->has_vararg));
 
 	if (proc->sym.langtype == LANG_REGCALL) { j = 11; 
@@ -815,12 +814,12 @@ static int ms64_param(struct dsym const *proc, int index, struct dsym *param, bo
 				size = SizeFromRegister(reg);
 				if (size == 0x10 && param->sym.mem_type == MT_REAL4)
 				{
-					AddLineQueueX(" %s %r ptr [%r+%u], %s", MOVE_SINGLE, T_DWORD, T_RSP, NUMQUAL index*8, paramvalue);
+					AddLineQueueX(" %s %r ptr [%r+%u], %s", MOVE_SINGLE(), T_DWORD, T_RSP, NUMQUAL index*8, paramvalue);
 					return(1);
 				}
 				if (size == 0x10 && param->sym.mem_type == MT_REAL8)
 				{
-					AddLineQueueX(" %s %r ptr [%r+%u], %s", MOVE_DOUBLE, T_QWORD, T_RSP, NUMQUAL index * 8, paramvalue);
+					AddLineQueueX(" %s %r ptr [%r+%u], %s", MOVE_DOUBLE(), T_QWORD, T_RSP, NUMQUAL index * 8, paramvalue);
 					return(1);
 				}
 
@@ -896,9 +895,9 @@ static int ms64_param(struct dsym const *proc, int index, struct dsym *param, bo
 				else
 				{
 					if (param->sym.mem_type == MT_REAL4)
-						AddLineQueueX(" %s %r, %s", MOVE_ALIGNED_FLOAT, T_XMM0 + index, paramvalue);
+						AddLineQueueX(" %s %r, %s", MOVE_ALIGNED_FLOAT(), T_XMM0 + index, paramvalue);
 					else
-						AddLineQueueX(" %s %r, %s", MOVE_ALIGNED_FLOAT, T_XMM0 + index, paramvalue);
+						AddLineQueueX(" %s %r, %s", MOVE_ALIGNED_FLOAT(), T_XMM0 + index, paramvalue);
 				}
 				return(1);
 			}
@@ -909,9 +908,9 @@ static int ms64_param(struct dsym const *proc, int index, struct dsym *param, bo
 			else
 			{
 				if (param->sym.mem_type == MT_REAL4)
-					AddLineQueueX(" %s %r, %s", MOVE_SIMD_DWORD, T_XMM0 + index, paramvalue);
+					AddLineQueueX(" %s %r, %s", MOVE_SIMD_DWORD(), T_XMM0 + index, paramvalue);
 				else
-					AddLineQueueX(" %s %r, %s", MOVE_SIMD_QWORD, T_XMM0 + index, paramvalue);
+					AddLineQueueX(" %s %r, %s", MOVE_SIMD_QWORD(), T_XMM0 + index, paramvalue);
 			}
 			return(1);
 		}
@@ -931,12 +930,12 @@ static int ms64_param(struct dsym const *proc, int index, struct dsym *param, bo
 			if (param->sym.mem_type == MT_REAL4) {
 
 				AddLineQueueX("mov %r, %s", T_EAX, paramvalue);
-				AddLineQueueX("%s %r, %r", MOVE_SIMD_DWORD, T_XMM0 + index, T_EAX);
+				AddLineQueueX("%s %r, %r", MOVE_SIMD_DWORD(), T_XMM0 + index, T_EAX);
 				return(1);
 			}
 			else {
 				AddLineQueueX("mov %r, %r ptr %s", T_RAX, T_REAL8, paramvalue);
-				AddLineQueueX("%s %r, %r", MOVE_SIMD_QWORD, T_XMM0 + index, T_RAX);
+				AddLineQueueX("%s %r, %r", MOVE_SIMD_QWORD(), T_XMM0 + index, T_RAX);
 				return(1);
 			}
 		}
@@ -948,11 +947,11 @@ static int ms64_param(struct dsym const *proc, int index, struct dsym *param, bo
 				info->xyzused[index] = 1; /* JPH */
 				if (opnd->sym->mem_type == MT_REAL8)
 				{
-					AddLineQueueX("%s %r,qword ptr %s", MOVE_DOUBLE, T_XMM0 + index, paramvalue);
+					AddLineQueueX("%s %r,qword ptr %s", MOVE_DOUBLE(), T_XMM0 + index, paramvalue);
 				}
 				else
 				{
-					AddLineQueueX("%s %r,dword ptr %s", MOVE_SINGLE, T_XMM0 + index, paramvalue);
+					AddLineQueueX("%s %r,dword ptr %s", MOVE_SINGLE(), T_XMM0 + index, paramvalue);
 				}
 			}
 			else if(proc->sym.langtype == LANG_REGCALL)
@@ -972,9 +971,9 @@ static int ms64_param(struct dsym const *proc, int index, struct dsym *param, bo
 			else
 			{
 				if (param->sym.mem_type == MT_REAL8)
-					AddLineQueueX("%s %r,qword ptr %s", MOVE_SIMD_QWORD, T_XMM0 + index, paramvalue);
+					AddLineQueueX("%s %r,qword ptr %s", MOVE_SIMD_QWORD(), T_XMM0 + index, paramvalue);
 				else if (param->sym.mem_type == MT_REAL4)
-					AddLineQueueX("%s %r,dword ptr %s", MOVE_SIMD_DWORD, T_XMM0 + index, paramvalue);
+					AddLineQueueX("%s %r,dword ptr %s", MOVE_SIMD_DWORD(), T_XMM0 + index, paramvalue);
 			}
 			return(1);
 		}
@@ -1013,7 +1012,7 @@ vcall:
 					info->vsize += membersize;                  //vsize contains total size 
 					info->vecregsize[vecidx] = membersize;      //size of data tu be put in register
 					info->xyzused[vecidx] = 1;                  //mark that the placeholder for register is used
-					AddLineQueueX("%s %r,dword ptr [%s+%d]", MOVE_SINGLE, T_XMM0 + vecidx, paramvalue, j* membersize);
+					AddLineQueueX("%s %r,dword ptr [%s+%d]", MOVE_SINGLE(), T_XMM0 + vecidx, paramvalue, j* membersize);
 					tCount--;
 					j++;
 				}
@@ -1092,7 +1091,7 @@ vcall:
 						info->vsize += membersize;                      //vsize contains total size 
 						info->vecregsize[vecidx] = membersize;      //size of data tu be put in register
 						info->xyzused[vecidx] = 1;                  //mark that the placeholder for register is used
-						AddLineQueueX("%s %r,qword ptr [%s+%d]", MOVE_DOUBLE, T_XMM0 + vecidx, paramvalue, j * membersize);
+						AddLineQueueX("%s %r,qword ptr [%s+%d]", MOVE_DOUBLE(), T_XMM0 + vecidx, paramvalue, j * membersize);
 						tCount--;
 						j++;
 					}
@@ -1111,7 +1110,7 @@ vcall:
 						info->vsize += membersize;                  //vsize contains total size 
 						info->vecregsize[vecidx] = membersize;      //size of data tu be put in register
 						info->xyzused[vecidx] = 1;                  //mark that the placeholder for register is used
-						AddLineQueueX("%s %r,dword ptr [%s+%d]", MOVE_SINGLE, T_XMM0 + vecidx, paramvalue, j * membersize);
+						AddLineQueueX("%s %r,dword ptr [%s+%d]", MOVE_SINGLE(), T_XMM0 + vecidx, paramvalue, j * membersize);
 						tCount--;
 						j++;
 					}
@@ -1211,7 +1210,7 @@ vcall:
 					info->vsize += membersize;                  //vsize contains total size 
 					info->vecregsize[vecidx] = membersize;      //size of data tu be put in register
 					info->xyzused[vecidx] = 1;                  //mark that the placeholder for register is used
-					AddLineQueueX("%s %r,dword ptr [%s+%d]", MOVE_SINGLE, T_XMM0 + vecidx, paramvalue, j * membersize);
+					AddLineQueueX("%s %r,dword ptr [%s+%d]", MOVE_SINGLE(), T_XMM0 + vecidx, paramvalue, j * membersize);
 					tCount--;
 					j++;
 				}
@@ -1288,7 +1287,7 @@ vcall:
 					info->vsize += membersize;                      //vsize contains total size 
 					info->vecregsize[vecidx] = membersize;      //size of data tu be put in register
 					info->xyzused[vecidx] = 1;                  //mark that the placeholder for register is used
-					AddLineQueueX("%s %r,qword ptr [%s+%d]", MOVE_DOUBLE, T_XMM0 + vecidx, paramvalue, j * membersize);
+					AddLineQueueX("%s %r,qword ptr [%s+%d]", MOVE_DOUBLE(), T_XMM0 + vecidx, paramvalue, j * membersize);
 					tCount--;
 					j++;
 				}
@@ -1366,7 +1365,7 @@ vcall:
 					info->vsize += membersize;                      //vsize contains total size 
 					info->vecregsize[vecidx] = membersize;      //size of data tu be put in register
 					info->xyzused[vecidx] = 1;                  //mark that the placeholder for register is used
-					AddLineQueueX("%s %r,qword ptr [%s+%d]", MOVE_DOUBLE, T_XMM0 + vecidx, paramvalue, j * 8);
+					AddLineQueueX("%s %r,qword ptr [%s+%d]", MOVE_DOUBLE(), T_XMM0 + vecidx, paramvalue, j * 8);
 					tCount--;
 					j++;
 				}
@@ -1439,7 +1438,7 @@ vcall:
 									if (reg == T_XMM0 + index)
 										DebugMsg(("ms64_param(%s, param=%u): argument optimized\n", proc->sym.name, index));
 									else
-										AddLineQueueX("%s %r,oword ptr %s", MOVE_ALIGNED_FLOAT, T_XMM0 + index, paramvalue);
+										AddLineQueueX("%s %r,oword ptr %s", MOVE_ALIGNED_FLOAT(), T_XMM0 + index, paramvalue);
 									return(1);
 								}
 							}
@@ -1518,31 +1517,31 @@ vcall:
 							case 4:                             /* it could be 3 or more REAL4 */
 								for (i = 0, j = 0; i < membersize; i++) {
 									while (info->xyzused[j] != 0) j++;
-									if (i == 0) AddLineQueueX("%s %r,dword ptr %s", MOVE_SINGLE, T_XMM0 + j, paramvalue);
-									else      AddLineQueueX("%s %r,dword ptr [%s+%d]", MOVE_SINGLE, T_XMM0 + j, paramvalue, i * 4);
+									if (i == 0) AddLineQueueX("%s %r,dword ptr %s", MOVE_SINGLE(), T_XMM0 + j, paramvalue);
+									else      AddLineQueueX("%s %r,dword ptr [%s+%d]", MOVE_SINGLE(), T_XMM0 + j, paramvalue, i * 4);
 									info->xyzused[j] = 1;
 								}
 								break;
 							case 8:
 								for (i = 0, j = 0; i < memberCount; i++) {
 									while (info->xyzused[j] != 0) j++;
-									if (i == 0) AddLineQueueX("%s %r,oword ptr %s", MOVE_DOUBLE, T_XMM0 + j, paramvalue);
-									else      AddLineQueueX("%s %r,oword ptr [%s+%d]", MOVE_DOUBLE, T_XMM0 + j, paramvalue, i * 8);
+									if (i == 0) AddLineQueueX("%s %r,oword ptr %s", MOVE_DOUBLE(), T_XMM0 + j, paramvalue);
+									else      AddLineQueueX("%s %r,oword ptr [%s+%d]", MOVE_DOUBLE(), T_XMM0 + j, paramvalue, i * 8);
 									info->xyzused[j] = 1;
 								}
 								break;
 							case 16:
 								if ((vcallpass == 0) && t->e.structinfo->stype == MM128)
 								{
-									AddLineQueueX("%s %r,oword ptr %s", MOVE_ALIGNED_FLOAT, T_XMM0 + index, paramvalue);
+									AddLineQueueX("%s %r,oword ptr %s", MOVE_ALIGNED_FLOAT(), T_XMM0 + index, paramvalue);
 									info->xyzused[index] = 1;
 								}
 								else if ((vcallpass == 1) && (t->e.structinfo->isHFA || t->e.structinfo->isHVA))
 								{
 									for (i = 0, j = 0; i < memberCount; i++) {
 										while (info->xyzused[j] != 0) j++;
-										if (i == 0) AddLineQueueX("%s %r,oword ptr %s", MOVE_ALIGNED_FLOAT, T_XMM0 + j, paramvalue);
-										else      AddLineQueueX("%s %r,oword ptr [%s+%d]", MOVE_ALIGNED_FLOAT, T_XMM0 + j, paramvalue, i * 16);
+										if (i == 0) AddLineQueueX("%s %r,oword ptr %s", MOVE_ALIGNED_FLOAT(), T_XMM0 + j, paramvalue);
+										else      AddLineQueueX("%s %r,oword ptr [%s+%d]", MOVE_ALIGNED_FLOAT(), T_XMM0 + j, paramvalue, i * 16);
 										info->xyzused[j] = 1;
 									}
 								}
@@ -1586,7 +1585,7 @@ vcall:
 						switch (psize) {
 						case 4:
 							if (opnd->kind == EXPR_FLOAT) {
-								AddLineQueueX("%s %r,dword ptr %s", MOVE_SINGLE, T_XMM0 + index, paramvalue);
+								AddLineQueueX("%s %r,dword ptr %s", MOVE_SINGLE(), T_XMM0 + index, paramvalue);
 								info->vregs[index] = 1;
 							}
 							else
@@ -1594,7 +1593,7 @@ vcall:
 							break;
 						case 8:
 							if (opnd->kind == EXPR_FLOAT) {
-								AddLineQueueX("%s %r,qword ptr %s", MOVE_DOUBLE, T_XMM0 + index, paramvalue);
+								AddLineQueueX("%s %r,qword ptr %s", MOVE_DOUBLE(), T_XMM0 + index, paramvalue);
 								info->vregs[index] = 1;
 							}
 							else
@@ -1606,11 +1605,11 @@ vcall:
 									if (reg == T_XMM0 + index)
 										DebugMsg(("ms64_param(%s, param=%u): argument optimized\n", proc->sym.name, index));
 									else
-										AddLineQueueX("%s %r,oword ptr %s", MOVE_ALIGNED_FLOAT, T_XMM0 + index, paramvalue);
+										AddLineQueueX("%s %r,oword ptr %s", MOVE_ALIGNED_FLOAT(), T_XMM0 + index, paramvalue);
 								}
 							}
 							else
-								AddLineQueueX("%s %r,oword ptr %s", MOVE_ALIGNED_FLOAT, T_XMM0 + index, paramvalue);
+								AddLineQueueX("%s %r,oword ptr %s", MOVE_ALIGNED_FLOAT(), T_XMM0 + index, paramvalue);
 							info->vregs[index] = 1;
 							break;
 						case 32:
@@ -2455,12 +2454,12 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 				if (psize == 4)
 				{
 					AddLineQueueX("mov %r, %s", T_EAX, paramvalue);
-					AddLineQueueX("%s %r, %r", MOVE_SIMD_DWORD, reg, T_EAX);
+					AddLineQueueX("%s %r, %r", MOVE_SIMD_DWORD(), reg, T_EAX);
 				}
 				else if (psize == 8)
 				{
 					AddLineQueueX("mov %r, %r ptr %s", T_RAX, T_REAL8, opnd->float_tok->string_ptr);
-					AddLineQueueX("%s %r, %r", MOVE_SIMD_QWORD, reg, T_RAX);
+					AddLineQueueX("%s %r, %r", MOVE_SIMD_QWORD(), reg, T_RAX);
 				}
 			}
 
@@ -2510,7 +2509,7 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 			}
 			else
 			{
-				AddLineQueueX("%s %r, %s", MOVE_ALIGNED_INT, reg, paramvalue);
+				AddLineQueueX("%s %r, %s", MOVE_ALIGNED_INT(), reg, paramvalue);
 				/* Mark vector register as written */
 				info->vecused |= (1 << sysv_reg(proc, reg));
 				/* Increment count of vectors used in vararg call */
@@ -2546,7 +2545,7 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 			}
 			else if (GetValueSp(reg) & OP_XMM)
 			{
-				BuildCodeLine(info->stackOps[info->stackOpCount++], "%s xmmword ptr [%r], %s", MOVE_ALIGNED_INT, T_RSP, paramvalue);
+				BuildCodeLine(info->stackOps[info->stackOpCount++], "%s xmmword ptr [%r], %s", MOVE_ALIGNED_INT(), T_RSP, paramvalue);
 				if (info->stackOfs % 16 != 0)
 				{
 					BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 24", T_RSP);
@@ -2560,7 +2559,7 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 			}
 			else if (GetValueSp(reg) & OP_YMM)
 			{
-				BuildCodeLine(info->stackOps[info->stackOpCount++], "%s ymmword ptr [%r], %s", MOVE_UNALIGNED_INT, T_RSP, paramvalue);
+				BuildCodeLine(info->stackOps[info->stackOpCount++], "%s ymmword ptr [%r], %s", MOVE_UNALIGNED_INT(), T_RSP, paramvalue);
 				if (info->stackOfs % 16 != 0)
 				{
 					BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 40", T_RSP);
@@ -2574,7 +2573,7 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 			}
 			else if (GetValueSp(reg) & OP_ZMM)
 			{
-				BuildCodeLine(info->stackOps[info->stackOpCount++], "%s zmmword ptr [%r], %s", MOVE_UNALIGNED_INT, T_RSP, paramvalue);
+				BuildCodeLine(info->stackOps[info->stackOpCount++], "%s zmmword ptr [%r], %s", MOVE_UNALIGNED_INT(), T_RSP, paramvalue);
 				if (info->stackOfs % 16 != 0)
 				{
 					BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 72", T_RSP);
@@ -2691,7 +2690,7 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 		reg = sysv_GetNextVEC(proc, info, 16);
 		if (reg != -1)
 		{
-			AddLineQueueX("%s %r, xmmword ptr %s", MOVE_ALIGNED_INT, reg, paramvalue);
+			AddLineQueueX("%s %r, xmmword ptr %s", MOVE_ALIGNED_INT(), reg, paramvalue);
 			/* Mark vector register as written */
 			info->vecused |= (1 << sysv_reg(proc, reg));
 			/* Increment count of vectors used in vararg call */
@@ -2701,12 +2700,12 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 		else
 		{
 			if (info->stackOfs % 16 != 0)
-				BuildCodeLine(info->stackOps[info->stackOpCount++], "%s xmmword ptr [%r+%u], xmm8", MOVE_ALIGNED_INT, T_RSP, NUMQUAL info->stackAdj);
+				BuildCodeLine(info->stackOps[info->stackOpCount++], "%s xmmword ptr [%r+%u], xmm8", MOVE_ALIGNED_INT(), T_RSP, NUMQUAL info->stackAdj);
 			else
-				BuildCodeLine(info->stackOps[info->stackOpCount++], "%s xmmword ptr [%r], xmm8", MOVE_ALIGNED_INT, T_RSP);
+				BuildCodeLine(info->stackOps[info->stackOpCount++], "%s xmmword ptr [%r], xmm8", MOVE_ALIGNED_INT(), T_RSP);
 			BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 16", T_RSP);
 			info->stackOfs += 16;
-			BuildCodeLine(info->stackOps[info->stackOpCount++], "%s xmm8, xmmword ptr %s", MOVE_ALIGNED_INT, paramvalue);
+			BuildCodeLine(info->stackOps[info->stackOpCount++], "%s xmm8, xmmword ptr %s", MOVE_ALIGNED_INT(), paramvalue);
 		}
 		return(1);
 	}
@@ -2718,7 +2717,7 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 		reg = sysv_GetNextVEC(proc, info, 32);
 		if (reg != -1)
 		{
-			AddLineQueueX("%s %r, ymmword ptr %s", MOVE_ALIGNED_INT, reg, paramvalue);
+			AddLineQueueX("%s %r, ymmword ptr %s", MOVE_ALIGNED_INT(), reg, paramvalue);
 			/* Mark vector register as written */
 			info->vecused |= (1 << sysv_reg(proc, reg));
 			/* Increment count of vectors used in vararg call */
@@ -2728,12 +2727,12 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 		else
 		{
 			if (info->stackOfs % 16 != 0)
-				BuildCodeLine(info->stackOps[info->stackOpCount++], "%s ymmword ptr [%r+%u], ymm8", MOVE_UNALIGNED_INT, T_RSP, NUMQUAL info->stackAdj);
+				BuildCodeLine(info->stackOps[info->stackOpCount++], "%s ymmword ptr [%r+%u], ymm8", MOVE_UNALIGNED_INT(), T_RSP, NUMQUAL info->stackAdj);
 			else
-				BuildCodeLine(info->stackOps[info->stackOpCount++], "%s ymmword ptr [%r], ymm8", MOVE_UNALIGNED_INT, T_RSP);
+				BuildCodeLine(info->stackOps[info->stackOpCount++], "%s ymmword ptr [%r], ymm8", MOVE_UNALIGNED_INT(), T_RSP);
 			BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 32", T_RSP);
 			info->stackOfs += 32;
-			BuildCodeLine(info->stackOps[info->stackOpCount++], "%s ymm8, ymmword ptr %s", MOVE_UNALIGNED_INT, paramvalue);
+			BuildCodeLine(info->stackOps[info->stackOpCount++], "%s ymm8, ymmword ptr %s", MOVE_UNALIGNED_INT(), paramvalue);
 		}
 		return(1);
 	}
@@ -2745,7 +2744,7 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 		reg = sysv_GetNextVEC(proc, info, 64);
 		if (reg != -1)
 		{
-			AddLineQueueX("%s %r, zmmword ptr %s", MOVE_ALIGNED_INT, reg, paramvalue);
+			AddLineQueueX("%s %r, zmmword ptr %s", MOVE_ALIGNED_INT(), reg, paramvalue);
 			/* Mark vector register as written */
 			info->vecused |= (1 << sysv_reg(proc, reg));
 			/* Increment count of vectors used in vararg call */
@@ -2755,12 +2754,12 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 		else
 		{
 			if (info->stackOfs % 16 != 0)
-				BuildCodeLine(info->stackOps[info->stackOpCount++], "%s zmmword ptr [%r+%u], zmm8", MOVE_UNALIGNED_INT, T_RSP, NUMQUAL info->stackAdj);
+				BuildCodeLine(info->stackOps[info->stackOpCount++], "%s zmmword ptr [%r+%u], zmm8", MOVE_UNALIGNED_INT(), T_RSP, NUMQUAL info->stackAdj);
 			else
-				BuildCodeLine(info->stackOps[info->stackOpCount++], "%s zmmword ptr [%r], zmm8", MOVE_UNALIGNED_INT, T_RSP);
+				BuildCodeLine(info->stackOps[info->stackOpCount++], "%s zmmword ptr [%r], zmm8", MOVE_UNALIGNED_INT(), T_RSP);
 			BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 64", T_RSP);
 			info->stackOfs += 64;
-			BuildCodeLine(info->stackOps[info->stackOpCount++], "%s zmm8, zmmword ptr %s", MOVE_UNALIGNED_INT, paramvalue);
+			BuildCodeLine(info->stackOps[info->stackOpCount++], "%s zmm8, zmmword ptr %s", MOVE_UNALIGNED_INT(), paramvalue);
 		}
 		return(1);
 	}
@@ -2903,7 +2902,7 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 					*regs_used |= (1 << 6);
 				}
 				AddLineQueueX("mov %r, %s", T_EAX, paramvalue);
-				AddLineQueueX("%s %s, %r", MOVE_SIMD_DWORD, param->sym.string_ptr, T_EAX);
+				AddLineQueueX("%s %s, %r", MOVE_SIMD_DWORD(), param->sym.string_ptr, T_EAX);
 				return(1);
 			}
 			if (opnd->kind == EXPR_CONST)
@@ -2917,7 +2916,7 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 					*regs_used |= (1 << 6);
 				}
 				AddLineQueueX("mov %r, %s.0", T_EAX, paramvalue);
-				AddLineQueueX("%s %s, %r", MOVE_SIMD_DWORD, param->sym.string_ptr, T_EAX);
+				AddLineQueueX("%s %s, %r", MOVE_SIMD_DWORD(), param->sym.string_ptr, T_EAX);
 				return(1);
 			}
 			if (opnd->kind == EXPR_REG && opnd->indirect == FALSE)
@@ -2928,7 +2927,7 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 					if ( _stricmp(param->sym.string_ptr, paramvalue) == 0 )
 						DebugMsg(("sysv_param(%s, param=%u): argument optimized\n", proc->sym.name, index));
 					else
-						AddLineQueueX("%s %s, %s", MOVE_ALIGNED_FLOAT, param->sym.string_ptr, paramvalue);
+						AddLineQueueX("%s %s, %s", MOVE_ALIGNED_FLOAT(), param->sym.string_ptr, paramvalue);
 					return(1);
 				}
 				else
@@ -2942,12 +2941,12 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 				if (_stricmp(param->sym.string_ptr, paramvalue) == 0)
 					DebugMsg(("sysv_param(%s, param=%u): argument optimized\n", proc->sym.name, index));
 				else
-					AddLineQueueX("%s %s, %s", MOVE_SIMD_DWORD, param->sym.string_ptr, paramvalue);
+					AddLineQueueX("%s %s, %s", MOVE_SIMD_DWORD(), param->sym.string_ptr, paramvalue);
 				return(1);
 			}
 			if (opnd->kind == EXPR_ADDR)
 			{
-				AddLineQueueX("%s %s,dword ptr %s", MOVE_SIMD_DWORD, param->sym.string_ptr, paramvalue);
+				AddLineQueueX("%s %s,dword ptr %s", MOVE_SIMD_DWORD(), param->sym.string_ptr, paramvalue);
 				return(1);
 			}
 		}
@@ -2972,7 +2971,7 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 					*regs_used |= (1 << 6);
 				}
 				AddLineQueueX("mov %r, %r ptr %s", T_RAX, T_REAL8, paramvalue);
-				AddLineQueueX("%s %s, %r", MOVE_SIMD_QWORD, param->sym.string_ptr, T_RAX);
+				AddLineQueueX("%s %s, %r", MOVE_SIMD_QWORD(), param->sym.string_ptr, T_RAX);
 				return(1);
 			}
 			if (opnd->kind == EXPR_CONST)
@@ -2986,7 +2985,7 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 					*regs_used |= (1 << 6);
 				}
 				AddLineQueueX("mov %r, %r ptr %s.0", T_RAX, T_REAL8, paramvalue);
-				AddLineQueueX("%s %s, %r", MOVE_SIMD_QWORD, param->sym.string_ptr, T_RAX);
+				AddLineQueueX("%s %s, %r", MOVE_SIMD_QWORD(), param->sym.string_ptr, T_RAX);
 				return(1);
 			}
 			if (opnd->kind == EXPR_REG && opnd->indirect == FALSE)
@@ -2997,7 +2996,7 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 					if (_stricmp(param->sym.string_ptr, paramvalue) == 0)
 						DebugMsg(("sysv_param(%s, param=%u): argument optimized\n", proc->sym.name, index));
 					else
-						AddLineQueueX("%s %s, %s", MOVE_ALIGNED_FLOAT, param->sym.string_ptr, paramvalue);
+						AddLineQueueX("%s %s, %s", MOVE_ALIGNED_FLOAT(), param->sym.string_ptr, paramvalue);
 					return(1);
 				}
 				else
@@ -3011,12 +3010,12 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 				if (_stricmp(param->sym.string_ptr, paramvalue) == 0)
 					DebugMsg(("sysv_param(%s, param=%u): argument optimized\n", proc->sym.name, index));
 				else
-					AddLineQueueX("%s %s, %s", MOVE_SIMD_QWORD, param->sym.string_ptr, paramvalue);
+					AddLineQueueX("%s %s, %s", MOVE_SIMD_QWORD(), param->sym.string_ptr, paramvalue);
 				return(1);
 			}
 			if (opnd->kind == EXPR_ADDR)
 			{
-				AddLineQueueX("%s %s,dword ptr %s", MOVE_SIMD_QWORD, param->sym.string_ptr, paramvalue);
+				AddLineQueueX("%s %s,dword ptr %s", MOVE_SIMD_QWORD(), param->sym.string_ptr, paramvalue);
 				return(1);
 			}
 		}
@@ -3045,7 +3044,7 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 					if (_stricmp(param->sym.string_ptr, paramvalue) == 0)
 						DebugMsg(("sysv_param(%s, param=%u): argument optimized\n", proc->sym.name, index));
 					else
-						AddLineQueueX("%s %s, %s", MOVE_ALIGNED_INT, param->sym.string_ptr, paramvalue);
+						AddLineQueueX("%s %s, %s", MOVE_ALIGNED_INT(), param->sym.string_ptr, paramvalue);
 				}
 				else
 				{
@@ -3057,14 +3056,14 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 			/* Vector register load from indirect register ie: [rax] etc */
 			if (opnd->kind == EXPR_REG && opnd->indirect == TRUE)
 			{
-				AddLineQueueX("%s %s, xmmword ptr %s", MOVE_ALIGNED_INT, param->sym.string_ptr, paramvalue);
+				AddLineQueueX("%s %s, xmmword ptr %s", MOVE_ALIGNED_INT(), param->sym.string_ptr, paramvalue);
 				return(1);
 			}
 			/* Operand is a memory address (IE: symbol name) or memory address expression like [rbp+rax] etc */
 			if (opnd->kind == EXPR_ADDR && !addr)
 			{
 				if (psize == param->sym.total_size || opnd->mem_type == MT_EMPTY)
-					AddLineQueueX("%s %s, xmmword ptr %s", MOVE_ALIGNED_INT, param->sym.string_ptr, paramvalue);
+					AddLineQueueX("%s %s, xmmword ptr %s", MOVE_ALIGNED_INT(), param->sym.string_ptr, paramvalue);
 				else
 					EmitErr(INVOKE_ARGUMENT_TYPE_MISMATCH, index + 1);
 				return(1);
@@ -3151,7 +3150,7 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 					if (_stricmp(param->sym.string_ptr, paramvalue) == 0)
 						DebugMsg(("sysv_param(%s, param=%u): argument optimized\n", proc->sym.name, index));
 					else
-						AddLineQueueX("%s %s, %s", MOVE_ALIGNED_INT, param->sym.string_ptr, paramvalue);
+						AddLineQueueX("%s %s, %s", MOVE_ALIGNED_INT(), param->sym.string_ptr, paramvalue);
 				}
 				else
 				{
@@ -3163,14 +3162,14 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 			/* Vector register load from indirect register ie: [rax] etc */
 			if (opnd->kind == EXPR_REG && opnd->indirect == TRUE)
 			{
-				AddLineQueueX("%s %s, zmmword ptr %s", MOVE_UNALIGNED_INT, param->sym.string_ptr, paramvalue);
+				AddLineQueueX("%s %s, zmmword ptr %s", MOVE_UNALIGNED_INT(), param->sym.string_ptr, paramvalue);
 				return(1);
 			}
 			/* Operand is a memory address (IE: symbol name) or memory address expression like [rbp+rax] etc */
 			if (opnd->kind == EXPR_ADDR && !addr)
 			{
 				if (psize == param->sym.total_size || opnd->mem_type == MT_EMPTY)
-					AddLineQueueX("%s %s, zmmword ptr %s", MOVE_UNALIGNED_INT, param->sym.string_ptr, paramvalue);
+					AddLineQueueX("%s %s, zmmword ptr %s", MOVE_UNALIGNED_INT(), param->sym.string_ptr, paramvalue);
 				else
 					EmitErr(INVOKE_ARGUMENT_TYPE_MISMATCH, index + 1);
 				return(1);
@@ -3321,7 +3320,7 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 					*regs_used |= (1 << 6);
 				}
 				AddLineQueueX("mov %r, %s.0", T_EAX, paramvalue);
-				AddLineQueueX("%s %s, %r", MOVE_SIMD_DWORD, param->sym.string_ptr, T_EAX);
+				AddLineQueueX("%s %s, %r", MOVE_SIMD_DWORD(), param->sym.string_ptr, T_EAX);
 				return(1);
 			}
 			if (opnd->kind == EXPR_REG && opnd->indirect == FALSE)
@@ -3329,7 +3328,7 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 				reg = opnd->base_reg->tokval;
 				if (GetValueSp(reg) & OP_XMM)
 				{
-					BuildCodeLine(info->stackOps[info->stackOpCount++], "%s [%r], %s", MOVE_SINGLE, T_RSP, paramvalue);
+					BuildCodeLine(info->stackOps[info->stackOpCount++], "%s [%r], %s", MOVE_SINGLE(), T_RSP, paramvalue);
 					BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 8", T_RSP);
 					info->stackOfs += 8;
 					return(1);
@@ -3425,7 +3424,7 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 				reg = opnd->base_reg->tokval;
 				if (GetValueSp(reg) & OP_XMM)
 				{
-					BuildCodeLine(info->stackOps[info->stackOpCount++], "%s [%r], %s", MOVE_DOUBLE, T_RSP, paramvalue);
+					BuildCodeLine(info->stackOps[info->stackOpCount++], "%s [%r], %s", MOVE_DOUBLE(), T_RSP, paramvalue);
 					BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 8", T_RSP);
 					info->stackOfs += 8;
 					return(1);
@@ -3485,21 +3484,21 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 			if (opnd->kind == EXPR_REG)
 			{
 				if (info->stackOfs % 16 != 0)
-					BuildCodeLine(info->stackOps[info->stackOpCount++], "%s xmmword ptr [%r+%u], %s", MOVE_ALIGNED_INT, T_RSP, NUMQUAL info->stackAdj, paramvalue);
+					BuildCodeLine(info->stackOps[info->stackOpCount++], "%s xmmword ptr [%r+%u], %s", MOVE_ALIGNED_INT(), T_RSP, NUMQUAL info->stackAdj, paramvalue);
 				else
-					BuildCodeLine(info->stackOps[info->stackOpCount++], "%s xmmword ptr [%r], %s", MOVE_ALIGNED_INT, T_RSP, paramvalue);
+					BuildCodeLine(info->stackOps[info->stackOpCount++], "%s xmmword ptr [%r], %s", MOVE_ALIGNED_INT(), T_RSP, paramvalue);
 				BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 16", T_RSP);
 				info->stackOfs += 16;
 			}
 			else
 			{
 				if (info->stackOfs % 16 != 0)
-					BuildCodeLine(info->stackOps[info->stackOpCount++], "%s xmmword ptr [%r+%u], xmm8", MOVE_ALIGNED_INT, T_RSP, NUMQUAL info->stackAdj);
+					BuildCodeLine(info->stackOps[info->stackOpCount++], "%s xmmword ptr [%r+%u], xmm8", MOVE_ALIGNED_INT(), T_RSP, NUMQUAL info->stackAdj);
 				else
-					BuildCodeLine(info->stackOps[info->stackOpCount++], "%s xmmword ptr [%r], xmm8", MOVE_ALIGNED_INT, T_RSP);
+					BuildCodeLine(info->stackOps[info->stackOpCount++], "%s xmmword ptr [%r], xmm8", MOVE_ALIGNED_INT(), T_RSP);
 				BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 16", T_RSP);
 				info->stackOfs += 16;
-				BuildCodeLine(info->stackOps[info->stackOpCount++], "%s xmm8, xmmword ptr %s", MOVE_ALIGNED_INT, paramvalue);
+				BuildCodeLine(info->stackOps[info->stackOpCount++], "%s xmm8, xmmword ptr %s", MOVE_ALIGNED_INT(), paramvalue);
 			}
 			return(1);
 		}
@@ -3511,20 +3510,20 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 			if (opnd->kind == EXPR_REG)
 			{
 				if (info->stackOfs % 16 != 0)
-					BuildCodeLine(info->stackOps[info->stackOpCount++], "%s ymmword ptr [%r+%u], %s", MOVE_UNALIGNED_INT, T_RSP, NUMQUAL info->stackAdj, paramvalue);
+					BuildCodeLine(info->stackOps[info->stackOpCount++], "%s ymmword ptr [%r+%u], %s", MOVE_UNALIGNED_INT(), T_RSP, NUMQUAL info->stackAdj, paramvalue);
 				else
-					BuildCodeLine(info->stackOps[info->stackOpCount++], "%s ymmword ptr [%r], %s", MOVE_UNALIGNED_INT, T_RSP, paramvalue);
+					BuildCodeLine(info->stackOps[info->stackOpCount++], "%s ymmword ptr [%r], %s", MOVE_UNALIGNED_INT(), T_RSP, paramvalue);
 				BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 32", T_RSP);
 				info->stackOfs += 32;
 			}
 			else
 			{
 				if (info->stackOfs % 16 != 0)
-					BuildCodeLine(info->stackOps[info->stackOpCount++], "%s ymmword ptr [%r+%u], ymm8", MOVE_UNALIGNED_INT, T_RSP, NUMQUAL info->stackAdj);
+					BuildCodeLine(info->stackOps[info->stackOpCount++], "%s ymmword ptr [%r+%u], ymm8", MOVE_UNALIGNED_INT(), T_RSP, NUMQUAL info->stackAdj);
 				else
 					BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 32", T_RSP);
 				info->stackOfs += 32;
-				BuildCodeLine(info->stackOps[info->stackOpCount++], "%s ymm8, ymmword ptr %s", MOVE_UNALIGNED_INT, paramvalue);
+				BuildCodeLine(info->stackOps[info->stackOpCount++], "%s ymm8, ymmword ptr %s", MOVE_UNALIGNED_INT(), paramvalue);
 			}
 			return(1);
 		}
@@ -3536,18 +3535,18 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 			if (opnd->kind == EXPR_REG)
 			{
 				if (info->stackOfs % 16 != 0)
-					BuildCodeLine(info->stackOps[info->stackOpCount++], "%s zmmword ptr [%r+%u], %s", MOVE_UNALIGNED_INT, T_RSP, NUMQUAL info->stackAdj, paramvalue);
+					BuildCodeLine(info->stackOps[info->stackOpCount++], "%s zmmword ptr [%r+%u], %s", MOVE_UNALIGNED_INT(), T_RSP, NUMQUAL info->stackAdj, paramvalue);
 				else
-					BuildCodeLine(info->stackOps[info->stackOpCount++], "%s zmmword ptr [%r], %s", MOVE_UNALIGNED_INT, T_RSP, paramvalue);
+					BuildCodeLine(info->stackOps[info->stackOpCount++], "%s zmmword ptr [%r], %s", MOVE_UNALIGNED_INT(), T_RSP, paramvalue);
 				BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 64", T_RSP);
 				info->stackOfs += 64;
 			}
 			else
 			{
-				BuildCodeLine(info->stackOps[info->stackOpCount++], "%s zmmword ptr [%r+%u], zmm8", MOVE_UNALIGNED_INT, T_RSP, NUMQUAL info->stackAdj);
+				BuildCodeLine(info->stackOps[info->stackOpCount++], "%s zmmword ptr [%r+%u], zmm8", MOVE_UNALIGNED_INT(), T_RSP, NUMQUAL info->stackAdj);
 				BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 64", T_RSP);
 				info->stackOfs += 64;
-				BuildCodeLine(info->stackOps[info->stackOpCount++], "%s zmm8, zmmword ptr %s", MOVE_UNALIGNED_INT, paramvalue);
+				BuildCodeLine(info->stackOps[info->stackOpCount++], "%s zmm8, zmmword ptr %s", MOVE_UNALIGNED_INT(), paramvalue);
 			}
 			return(1);
 		}
@@ -3625,7 +3624,7 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 				}
 				else if (GetValueSp(reg) & OP_XMM)
 				{
-					BuildCodeLine(info->stackOps[info->stackOpCount++], "%s xmmword ptr [%r], %s", MOVE_ALIGNED_INT, T_RSP, paramvalue);
+					BuildCodeLine(info->stackOps[info->stackOpCount++], "%s xmmword ptr [%r], %s", MOVE_ALIGNED_INT(), T_RSP, paramvalue);
 					if (info->stackOfs % 16 != 0)
 					{
 						BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 24", T_RSP);
@@ -3639,7 +3638,7 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 				}
 				else if (GetValueSp(reg) & OP_YMM)
 				{
-					BuildCodeLine(info->stackOps[info->stackOpCount++], "%s ymmword ptr [%r], %s", MOVE_UNALIGNED_INT, T_RSP, paramvalue);
+					BuildCodeLine(info->stackOps[info->stackOpCount++], "%s ymmword ptr [%r], %s", MOVE_UNALIGNED_INT(), T_RSP, paramvalue);
 					if (info->stackOfs % 16 != 0)
 					{
 						BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 40", T_RSP);
@@ -3653,7 +3652,7 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 				}
 				else if (GetValueSp(reg) & OP_ZMM)
 				{
-					BuildCodeLine(info->stackOps[info->stackOpCount++], "%s zmmword ptr [%r], %s", MOVE_UNALIGNED_INT, T_RSP, paramvalue);
+					BuildCodeLine(info->stackOps[info->stackOpCount++], "%s zmmword ptr [%r], %s", MOVE_UNALIGNED_INT(), T_RSP, paramvalue);
 					if (info->stackOfs % 16 != 0)
 					{
 						BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 72", T_RSP);
@@ -4115,6 +4114,7 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 	char c2;
 	size_t finallen;
 	uint_16 buff[256];
+	uint_8  buff2[256];
 
 	DebugMsg1(("PushInvokeParam(%s, param=%s:%u, i=%u ) enter\n", proc->sym.name, curr ? curr->sym.name : "NULL", reqParam, i));
 
@@ -4229,7 +4229,38 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 				sprintf(buf, "%s%d", labelstr, hashpjw(pSrc));
 				lbl = SymLookup(buf);
 				memset(&buff, 0, 256);
-				j = UTF8toWideChar(pSrc, slen, NULL, (unsigned short *)&buff, slen);
+
+				pDest = buff2;
+				finallen = slen;
+
+				while (*pSrc != '"')
+				{
+					c1 = *pSrc++;
+					c2 = *(pSrc);
+					if (c1 == '\\' && c2 == 'n')
+					{
+						*pDest++ = 10;
+						finallen--;
+						pSrc++;
+					}
+					else if (c1 == '\\' && c2 == 'r')
+					{
+						*pDest++ = 13;
+						finallen--;
+						pSrc++;
+					}
+					else if (c1 == '\\' && c2 == 't')
+					{
+						*pDest++ = 9;
+						finallen--;
+						pSrc++;
+					}
+					else
+						*pDest++ = c1;
+				}
+				*pDest++ = 0;
+
+				j = UTF8toWideChar(&buff2, slen, NULL, (unsigned short *)&buff, slen);
 				/* j contains a proper number of wide chars, it can be different than slen, v2.38 */
 				SetSymSegOfs(lbl);
 				OutputBytes((unsigned char *)&buff, (j * 2) + 2, NULL);

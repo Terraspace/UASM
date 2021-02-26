@@ -1,0 +1,5 @@
+..\src\CodeGenV2Error\IMMSIZE64_ERR.ASM(11) : Error A2049: Invalid instruction operands
+..\src\CodeGenV2Error\IMMSIZE64_ERR.ASM(14) : Error A2048: Operands must be the same size: 1 - 2
+..\src\CodeGenV2Error\IMMSIZE64_ERR.ASM(15) : Error A2048: Operands must be the same size: 1 - 2
+..\src\CodeGenV2Error\IMMSIZE64_ERR.ASM(16) : Error A2048: Operands must be the same size: 1 - 2
+..\src\CodeGenV2Error\IMMSIZE64_ERR.ASM(17) : Error A2048: Operands must be the same size: 1 - 2

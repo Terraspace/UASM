@@ -4,7 +4,6 @@
     .code
 
 	USE64
-	
 	vcvtdq2pd zmm30{k7},YMMWORD PTR [rdx+0xfe0]
 	
 	VCVTDQ2PD zmm1{k1}{z}, dword bcst myVector

@@ -795,7 +795,7 @@ next_item:  /* <--- continue scan if a comma has been detected */
 				}
 				else
 				{
-                if (string_len > no_of_bytes && sym->mem_type != MT_WORD)
+                if (string_len > no_of_bytes && sym && sym->mem_type != MT_WORD)
 						return(EmitError(INITIALIZER_OUT_OF_RANGE));
                 /* if characters are not single byte, 2 bytes are used for 1 size v2.38 */
                  p = pchar;

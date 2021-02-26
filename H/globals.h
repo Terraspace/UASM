@@ -221,11 +221,11 @@
 
 /* Uasm version info */
 #ifdef _WIN64
-#define _UASM_VERSION_STR_ "2.49"
+#define _UASM_VERSION_STR_ "2.50"
 #else
-#define _UASM_VERSION_STR_ "2.49"
+#define _UASM_VERSION_STR_ "2.50"
 #endif
-#define _UASM_VERSION_INT_ 249
+#define _UASM_VERSION_INT_ 250
 #define _UASM_VERSION_SUFFIX_ "pre"
 #define _UASM_VERSION_ _UASM_VERSION_STR_ //_UASM_VERSION_SUFFIX_
 
@@ -733,6 +733,7 @@ struct global_options {
 	bool        vtable;                  /* Use vtable based method invocation */
 	bool        hlcall;                  /* Allow High Level C style Calling and object invocation */
 	bool        pie;					 /* Generate Position Independant Executable (Unix) */
+    bool        frameflags;              /* Use Lea instead of Add/Sub to preserve flags in frame prologue/epilogue */
 #if MANGLERSUPP
     enum naming_types naming_convention; /* OW naming peculiarities */
 #endif
@@ -961,14 +962,14 @@ struct format_options {
 /* global variables */
 
 /* global strings for arch:sse/avx instructions to use */
-extern char *MOVE_ALIGNED_FLOAT;
-extern char *MOVE_ALIGNED_INT;
-extern char *MOVE_UNALIGNED_FLOAT;
-extern char *MOVE_UNALIGNED_INT;
-extern char *MOVE_SINGLE;
-extern char *MOVE_DOUBLE;
-extern char *MOVE_SIMD_DWORD;
-extern char *MOVE_SIMD_QWORD;
+extern const char* MOVE_ALIGNED_FLOAT();
+extern const char* MOVE_ALIGNED_INT();
+extern const char* MOVE_UNALIGNED_FLOAT();
+extern const char* MOVE_UNALIGNED_INT();
+extern const char* MOVE_SINGLE();
+extern const char* MOVE_DOUBLE();
+extern const char* MOVE_SIMD_DWORD();
+extern const char* MOVE_SIMD_QWORD();
 
 /* global flag to indicate when inside macro body */
 extern bool inMacroBody;

@@ -30,15 +30,15 @@
 #include "orgfixup.h"
 #include "macrolib.h"
 
-#define MACRO_COUNT64 64
+#define MACRO_COUNT64 69
 #define MACRO_COUNT32 36
 
 /* MACRO names  */
 char *macName64[] = {
-  "NOTMASK128", "GETMASK128", "REGS15STORAGE", "MOV64", "MOV128", "MOVXMMR128","SLXMMR","SHIFTLEFT128","SRXMMR","SHIFTRIGHT128","MEMALLOC", "MEMFREE", "CSTR", "WSTR", "FP4", "FP8", "FP10", "LOADSS", "LOADSD", "LOADPS", "MEMALIGN", "RV", "REPARG", "EXPAND_PREFIX", "_ARRAY", "_DELETEARRAY", "OINTERFACE", "ENDOINTERFACE", "CVIRTUAL", "CLASS", "ENDCLASS", "CMETHOD", "METHOD", "STATICMETHOD", "VECMETHOD", "STATICVECMETHOD", "ENDMETHOD", "_DECLARE", "_STATICREF", "_NEW", "_RBXNEW", "_ITEM", "_ITEMR", "_INVOKE", "_I", "_STATIC", "_DELETE", "_VINVOKE", "_V", "CSTATIC", "LOADMSS", "LOADMSD", "UINVOKE", "ASFLOAT", "ASDOUBLE", "R4P", "R8P", "arginvoke", "COMINTERFACE", "ENDCOMINTERFACE", "ENDMETHODS", "_DEREF", "_DEREFI", "_SINVOKE"
+  "NOTMASK128", "GETMASK128", "REGS15STORAGE", "MOV64", "MOV128", "MOVXMMR128","SLXMMR","SHIFTLEFT128","SRXMMR","SHIFTRIGHT128","MEMALLOC", "MEMFREE", "CSTR", "WSTR", "FP4", "FP8", "FP10", "LOADSS", "LOADSD", "LOADPS", "ALIGNADDR", "RV", "REPARG", "EXPAND_PREFIX", "_ARRAY", "_DELETEARRAY", "OINTERFACE", "ENDOINTERFACE", "CVIRTUAL", "CLASS", "ENDCLASS", "CMETHOD", "METHOD", "STATICMETHOD", "VECMETHOD", "STATICVECMETHOD", "ENDMETHOD", "_DECLARE", "_STATICREF", "_NEW", "_RBXNEW", "_ITEM", "_ITEMR", "_INVOKE", "_I", "_STATIC", "_DELETE", "_VINVOKE", "_V", "CSTATIC", "LOADMSS", "LOADMSD", "UINVOKE", "ASFLOAT", "ASDOUBLE", "R4P", "R8P", "arginvoke", "COMINTERFACE", "ENDCOMINTERFACE", "ENDMETHODS", "_DEREF", "_DEREFI", "_SINVOKE", "RAWINTERFACE", "ENDRAWINTERFACE", "_DEREFR", "_DEREFRR","STDFUNC"
 };
 char *macName32[] = {
- "NOTMASK128", "GETMASK128", "MOV64", "MOV128", "MOVXMMR128","SLXMMR","SHIFTLEFT128","SRXMMR","SHIFTRIGHT128","MEMALLOC","MEMFREE","CSTR","WSTR","FP4","FP8","FP10","LOADSS","LOADPS","MEMALIGN", "RV", "REPARG", "EXPAND_PREFIX", "LOADMSS", "LOADMSD", "UINVOKE", "ASFLOAT", "ASDOUBLE", "R4P", "R8P", "arginvoke", "COMINTERFACE", "ENDCOMINTERFACE", "_VINVOKE", "_V", "CVIRTUAL", "ENDMETHODS"
+ "NOTMASK128", "GETMASK128", "MOV64", "MOV128", "MOVXMMR128","SLXMMR","SHIFTLEFT128","SRXMMR","SHIFTRIGHT128","MEMALLOC","MEMFREE","CSTR","WSTR","FP4","FP8","FP10","LOADSS","LOADPS","ALIGNADDR", "RV", "REPARG", "EXPAND_PREFIX", "LOADMSS", "LOADMSD", "UINVOKE", "ASFLOAT", "ASDOUBLE", "R4P", "R8P", "arginvoke", "COMINTERFACE", "ENDCOMINTERFACE", "_VINVOKE", "_V", "CVIRTUAL", "ENDMETHODS"
 };
 
 /* MACRO definitions */
@@ -63,7 +63,7 @@ char *macDef64[] = {
 	"LOADSS MACRO reg, val",
 	"LOADSD MACRO reg, val",
 	"LOADPS MACRO reg, val",
-	"MEMALIGN MACRO reg, number",
+	"ALIGNADDR MACRO reg, number",
 	"RV MACRO FuncName:REQ, args:VARARG",
 	"REPARG MACRO arg",
 	"EXPAND_PREFIX MACRO txtitm",
@@ -106,7 +106,12 @@ char *macDef64[] = {
 	"ENDMETHODS MACRO",
 	"_DEREF MACRO itype:REQ, proc:REQ, argCount:REQ, argsAndRefs:VARARG",
 	"_DEREFI MACRO itype:REQ, proc:REQ, argCount:REQ, argsAndRefs:VARARG",
-	"_SINVOKE MACRO className:REQ, method:REQ, args:VARARG"
+	"_SINVOKE MACRO className:REQ, method:REQ, args:VARARG",
+	"RAWINTERFACE MACRO CName:REQ",
+	"ENDRAWINTERFACE MACRO",
+	"_DEREFR MACRO dref:REQ, itype:REQ, proc:REQ, argCount:REQ, argsAndRefs:VARARG",
+	"_DEREFRR MACRO dref:REQ, itype:REQ, proc:REQ, argCount:REQ, argsAndRefs:VARARG",
+	"STDFUNC MACRO method:REQ, retType:REQ, protoDef:VARARG",
 };
 char *macDef32[] = {
 	"NOTMASK128 MACRO reg:REQ, field:REQ",
@@ -127,7 +132,7 @@ char *macDef32[] = {
 	"FP10 macro value:REQ",
 	"LOADSS MACRO reg, val",
 	"LOADPS MACRO reg, val",
-	"MEMALIGN MACRO reg, number",
+	"ALIGNADDR MACRO reg, number",
 	"RV MACRO FuncName:REQ, args:VARARG",
 	"REPARG MACRO arg",
 	"EXPAND_PREFIX MACRO txtitm",
@@ -147,7 +152,7 @@ char *macDef32[] = {
 	"ENDMETHODS MACRO"
 };
 
-void CreateMacroLibCases(void)
+void CreateMacroLibCases64(void)
 {
 	/* Create case alternative names for macrolib functions */
 	if (ModuleInfo.case_sensitive && !ModuleInfo.convert_uppercase)
@@ -162,7 +167,37 @@ void CreateMacroLibCases(void)
 		AddLineQueue("CStr EQU CSTR");
 		AddLineQueue("wstr EQU WSTR");
 		AddLineQueue("WStr EQU WSTR");
-		AddLineQueue("memalign EQU MEMALIGN");
+		AddLineQueue("alignaddr EQU ALIGNADDR");
+		AddLineQueue("define EQU DEFINE");
+		AddLineQueue("Define EQU DEFINE");
+		AddLineQueue("mov64 EQU MOV64");
+		AddLineQueue("mov128 EQU MOV128");
+		AddLineQueue("movxmmr128 EQU MOVXMMR128");
+		AddLineQueue("slxmmr EQU SLXMMR");
+		AddLineQueue("shiftleft128 EQU SHIFTLEFT128");
+		AddLineQueue("srxmmr EQU SRXMMR");
+		AddLineQueue("shiftright128 EQU SHIFTRIGHT128");
+		AddLineQueue("notmask128 EQU NOTMASK128");
+		AddLineQueue("getmask128 EQU GETMASK128");
+	}
+}
+
+void CreateMacroLibCases32(void)
+{
+	/* Create case alternative names for macrolib functions */
+	if (ModuleInfo.case_sensitive && !ModuleInfo.convert_uppercase)
+	{
+		AddLineQueue("uinvoke EQU UINVOKE");
+		AddLineQueue("Uinvoke EQU UINVOKE");
+		AddLineQueue("asfloat EQU ASFLOAT");
+		AddLineQueue("asdouble EQU ASDOUBLE");
+		AddLineQueue("r4p EQU R4P");
+		AddLineQueue("r8p EQU R8P");
+		AddLineQueue("cstr EQU CSTR");
+		AddLineQueue("CStr EQU CSTR");
+		AddLineQueue("wstr EQU WSTR");
+		AddLineQueue("WStr EQU WSTR");
+		AddLineQueue("alignaddr EQU ALIGNADDR");
 		AddLineQueue("define EQU DEFINE");
 		AddLineQueue("Define EQU DEFINE");
 		AddLineQueue("mov64 EQU MOV64");
@@ -189,8 +224,8 @@ void InitAutoMacros64(void)
 	uint_32 start_pos = 0;
 	char  *srcLines[512]; // NB: 512 is the max number of lines of macro code per macro.  
 
-	//                    1   2   3   4  5  6  7   8   9   10  11 12 13  14 15 16 17 18 19 20  21 22 23  24  25  26 27 28  29  30  31  32 33  34  35  36  37  38 39 40  41  42 43 44  45  46  47  48  49  50 51  52  53  54 55 56 57 58   59  60 61 62   63   64
-	uint_32 macroLen[] = {17, 11, 29, 3, 3, 8, 37, 33, 37, 33, 7, 6, 10, 6, 7, 7, 7, 8, 8, 10, 3, 7, 11, 19, 10, 2, 10, 2, 18,  9, 14, 6, 39, 39, 39, 39, 12, 5, 2, 20, 21, 2, 2, 11, 38, 38, 11, 45, 91, 6, 10, 10, 37, 1, 1, 1, 1, 256, 10, 6, 6, 106, 137, 11 }; // Count of individual lines of macro-body code.
+	//                    1   2   3   4  5  6  7   8   9   10  11 12 13  14 15 16 17 18 19 20  21 22 23  24  25  26 27 28  29  30  31  32 33  34  35  36  37  38 39 40  41  42 43 44  45  46  47  48  49  50 51  52  53  54 55 56 57 58   59  60 61 62   63   64  65  66 67 68 69
+	uint_32 macroLen[] = {17, 11, 29, 3, 3, 8, 37, 33, 37, 33, 7, 6, 10, 6, 7, 7, 7, 8, 8, 10, 3, 7, 11, 19, 10, 2, 10, 2, 18,  9, 14, 6, 39, 39, 39, 39, 12, 5, 2, 20, 21, 2, 2, 11, 38, 38, 11, 45, 91, 6, 10, 10, 37, 1, 1, 1, 1, 256, 10, 6, 6, 106, 137, 11, 7 , 2, 9, 4, 18 }; // Count of individual lines of macro-body code.
 	char *macCode[] = {
 /*1 NOTMASK128*/		"IFNDEF GMASK",".data","GMASK OWORD 0","ENDIF","IFNDEF NOTMASK",".data","NOTMASK OWORD -1","ENDIF",".code","IF @Arch EQ 1","movups reg, MASK field","pxor reg, NOTMASK","ELSE","vmovups reg, MASK field","vpxor reg, reg, NOTMASK","ENDIF","ENDM",NULL,
 /*2 GETMASK128*/		"IFNDEF GMASK",".data","GMASK OWORD 0","ENDIF",".code","IF @Arch EQ 1","movups reg, MASK field","ELSE","vmovups reg, MASK field","ENDIF","ENDM",NULL,
@@ -202,7 +237,7 @@ void InitAutoMacros64(void)
 /*8 SHIFTLEFT128*/		"LOCAL saverax","LOCAL savercx","LOCAL saversi",".data?","saverax QWORD ?","savercx QWORD ?","saversi QWORD ?",".code","mov saverax,rax","mov savercx,rcx","mov saversi,rsi","mov  rsi,mmr","mov ecx, cnt","and ecx,7fh",".if (cl >=  0x40)","mov rax, qword ptr[rsi+8]","mov qword ptr[rsi],rax","sub ecx, 64","shr qword ptr[rsi], cl ","xor eax,eax","mov qword ptr[rsi+8],rax",".else ","mov rax,qword ptr[rsi+8]","shr qword ptr[rsi],cl","shr qword ptr[rsi+8],cl","neg cl","shl rax, cl","or qword ptr[rsi],rax",".endif ","mov rax,saverax","mov rcx,savercx","mov rcx,saversi","ENDM", NULL,
 /*9 SRXMMR*/			"LOCAL mmr","LOCAL saverax","LOCAL savercx","LOCAL saversi",".data?","saverax QWORD ?","savercx QWORD ?","saversi QWORD ?","mmr OWORD ?",".code","mov saverax,rax","mov savercx,rcx","mov saversi,rsi","mov ecx, cnt","and ecx,7fh","vmovups mmr, xmm128","lea  rsi,mmr",".if (cl >=  0x40)","mov rax, qword ptr[rsi]","mov qword ptr[rsi+8],rax","sub ecx, 64","shl qword ptr[rsi+8], cl","xor eax,eax","mov qword ptr[rsi],rax",".else ","mov rax,qword ptr[rsi]","shl qword ptr[rsi],cl","shl qword ptr[rsi+8],cl","neg cl","shr rax, cl","or qword ptr[rsi+8],rax",".endif ","mov rax,saverax","mov rcx,savercx","mov rsi,saversi","vmovups xmm128,mmr ","ENDM",NULL,
 /*10 SHIFTRIGHT128*/	"LOCAL saverax","LOCAL savercx","LOCAL saversi",".data?","saverax QWORD ?","savercx QWORD ?","saversi QWORD ?",".code","mov saverax,rax","mov savercx,rcx","mov saversi,rsi","mov  rsi,mmr","mov ecx, cnt","and ecx,7fh",".if (cl >=  0x40)","mov rax, qword ptr[rsi]","mov qword ptr[rsi+8],rax","sub ecx, 64","shl qword ptr[rsi+8], cl ","xor eax,eax","mov qword ptr[rsi],rax",".else ","mov rax,qword ptr[rsi]","shl qword ptr[rsi],cl","shl qword ptr[rsi+8],cl","neg cl","shr rax, cl","or qword ptr[rsi+8],rax",".endif ","mov rax,saverax","mov rcx,savercx","mov rsi,saversi","ENDM",NULL,
-/*11 MEMALLOC*/			"IF @Platform EQ 1", "INVOKE HeapAlloc,RV(GetProcessHeap),0,aSize", "ELSE", "INVOKE malloc,aSize", "ENDIF", "MEMALIGN rax, 16", "endm", NULL,
+/*11 MEMALLOC*/			"IF @Platform EQ 1", "INVOKE HeapAlloc,RV(GetProcessHeap),0,aSize", "ELSE", "INVOKE malloc,aSize", "ENDIF", "ALIGNADDR rax, 16", "endm", NULL,
 /*12 MEMFREE*/			"IF @Platform EQ 1", "INVOKE HeapFree,RV(GetProcessHeap),0,memPtr", "ELSE", "INVOKE free,memPtr", "ENDIF", "endm", NULL,
 /*13 CSTR*/				"local szText", ".data", "szText db Text,0", ".code", "IF @Platform EQ 1", "exitm <offset szText>", "ELSE", "exitm <addr szText>", "ENDIF", "endm", NULL,
 /*14 WSTR*/				"local szText", ".data", "szText dw Text,0", ".code", "exitm <addr szText>", "endm", NULL,
@@ -211,8 +246,8 @@ void InitAutoMacros64(void)
 /*17 FP10*/				"local vname", ".data", "align 8", "vname REAL10 value", ".code", "exitm <vname>", "endm", NULL,
 /*18 LOADSS*/			"IF @Arch EQ 0", "mov eax, val", "movd reg, eax", "ELSE", "mov eax, val", "vmovd reg, eax", "ENDIF", "ENDM", NULL,
 /*19 LOADSD*/			"IF @Arch EQ 0", "mov rax, real8 ptr val", "movq reg, rax", "ELSE", "mov rax, real8 ptr val", "vmovq reg, rax", "ENDIF", "ENDM", NULL,
-/*20 LOADPS*/			"IF @Arch EQ 0", "mov eax, val", "movd reg, eax", "pshufd reg, 0", "ELSE", "mov eax, val", "vmovd reg, eax", "vpshufd reg, reg, 0", "ENDIF", "ENDM", NULL,
-/*21 MEMALIGN*/			"add reg, number - 1", "and reg, -number", "ENDM", NULL,
+/*20 LOADPS*/			"IF @Arch EQ 0", "mov eax, val", "movd reg, eax", "pshufd reg, reg, 0", "ELSE", "mov eax, val", "vmovd reg, eax", "vpshufd reg, reg, 0", "ENDIF", "ENDM", NULL,
+/*21 ALIGNADDR*/		"add reg, number - 1", "and reg, -number", "ENDM", NULL,
 /*22 RV*/				"arg equ <invoke FuncName>", "FOR var, <args>", "arg CATSTR arg, <, EXPAND_PREFIX(var)>", "ENDM", "arg", "EXITM <rax>", "ENDM", NULL,
 /*23 REPARG*/			"LOCAL nustr", "quot SUBSTR <arg>, 1, 1", "IFIDN quot, <\">", ".data", "nustr db arg, 0", ".code", "EXITM <ADDR nustr>", "ELSE", "EXITM <ADDR arg>", "ENDIF", "ENDM", NULL,
 /*24 EXPAND_PREFIX*/	"LOCAL prefix1, wrd, nu, varname", "prefix1 SUBSTR <txtitm>, 1, 1", "IFIDN prefix1, <&>", "nu SUBSTR <txtitm>, 2", "wrd CATSTR <ADDR >, nu", "EXITM <wrd>", "ENDIF", "IFIDN prefix1, <*>", "nu SUBSTR <txtitm>, 2", ".data ?", "varname dq ?", ".code", "mov rax, nu", "mov rax,[rax]", "mov varname, rax", "EXITM <varname>", "ENDIF", "EXITM <txtitm>", "ENDM", NULL,
@@ -255,7 +290,12 @@ void InitAutoMacros64(void)
 /*61:ENDMETHODS*/		"LOCAL evtbl","% evtbl CATSTR <&curClass&>,<vtbl>,< ENDS>","evtbl", "@CatStr(curClass, < CSTRUCT >)","% pVtbl dq offset _stat&curClass&vtbl","ENDM",NULL,
 /*62:_DEREF*/		    "LOCAL i, ptrstr, typestr, argstr","argstr TEXTEQU < >","i = 0","FOR dref, <argsAndRefs>","IF i LT argCount+1","IF i GT 0", "argstr CATSTR argstr, <,>, <&dref&>","ENDIF", "ELSE","IF(i - argCount) MOD 2 EQ 1","ptrstr TEXTEQU <&dref&>","ELSE","typestr TEXTEQU <&dref&>","IF(i - argCount) EQ 1","% IF(OPATTR(ptrstr)) EQ 0x30","% mov rcx, &ptrstr&","ELSE","% mov rcx, @CatStr(<[>, <&ptrstr&>, <].>, <&typestr&>)","ENDIF","ELSE","% mov rcx, @CatStr(<[>, <&ptrstr&>, <].>, <&typestr&>)","ENDIF","ENDIF","ENDIF","i = i + 1","ENDM","% IF @SizeStr(<%&argstr&>) GT 3", "argstr SUBSTR argstr, 3", "ENDIF", "IF argCount EQ 0", "argstr TEXTEQU <>", "ENDIF", "IF argCount GT 0", "InterfacePtr TEXTEQU <_>","InterfacePtr CATSTR InterfacePtr, <&itype>, <_>, <&proc>, <Pto>","IF(OPATTR(rcx)) AND 00010000b","% IF argCount GT 0", "IF @Platform EQ 1","mov r15,[rcx]","% invoke(InterfacePtr PTR[r15].&itype&vtbl.&proc), rcx, &argstr","ELSE","mov rdi,rcx","mov r15,[rdi]","% invoke(InterfacePtr PTR[r15].&itype&vtbl.&proc), rdi, &argstr","ENDIF","ELSE","IF @Platform EQ 1","mov r15,[rcx]","% invoke(InterfacePtr PTR[r15].&itype&vtbl.&proc), rcx","ELSE","mov rdi,rcx","mov r15,[rdi]","% invoke(InterfacePtr PTR[r15].&itype&vtbl.&proc), rdi","ENDIF","ENDIF","ELSE","mov r15,[rcx]","IF argCount GT 0","FOR arg, <argstr>","IFIDNI <&arg>, <rcx>",".ERR <rcx is not allowed as a Method parameter with indirect object label>","ENDIF","ENDM","% invoke(InterfacePtr PTR[r15].&itype&vtbl.&proc), rcx, &argstr","ELSE","invoke(InterfacePtr PTR[r15].&itype&vtbl.&proc), rcx","ENDIF","ENDIF","ELSE","InterfacePtr TEXTEQU <_>","InterfacePtr CATSTR InterfacePtr, <&itype>, <_>, <&proc>, <Pto>","IF(OPATTR(rcx)) AND 00010000b","IF argCount GT 0","IF @Platform EQ 1","mov r15,[rcx]","% invoke(InterfacePtr PTR[r15].&itype&vtbl.&proc), rcx, &argstr","ELSE","mov rdi,rcx","mov r15,[rdi]","% invoke(InterfacePtr PTR[r15].&itype&vtbl.&proc), rdi, &argstr","ENDIF","ELSE","IF @Platform EQ 1","mov r15,[rcx]","invoke(InterfacePtr PTR[r15].&itype&vtbl.&proc), rcx","ELSE","mov rdi,rcx","mov r15,[rdi]","invoke(InterfacePtr PTR[r15].&itype&vtbl.&proc), rdi","ENDIF","ENDIF","ELSE","mov r15,[rcx]","IF argCount GT 0","FOR arg, <argstr>","IFIDNI <&arg>, <rcx>",".ERR <rcx is not allowed as a Method parameter with indirect object label>","ENDIF","ENDM","% invoke(InterfacePtr PTR[r15].&itype&vtbl.&proc), rcx, &argstr","ELSE","invoke(InterfacePtr PTR[r15].&itype&vtbl.&proc), rcx","ENDIF","ENDIF","ENDIF","ENDM",NULL,
 /*63:_DEREFI*/          "LOCAL i, ptrstr, typestr, argstr","argstr TEXTEQU < >","i = 0","FOR dref, <argsAndRefs>","IF i LT argCount+1","IF i GT 0", "argstr CATSTR argstr, <,>, <&dref&>","ENDIF", "ELSE","IF(i - argCount) MOD 2 EQ 1","ptrstr TEXTEQU <&dref&>","ELSE","typestr TEXTEQU <&dref&>","IF(i - argCount) EQ 1","% IF(OPATTR(ptrstr)) EQ 0x30","% mov rcx, &ptrstr&","ELSE","% mov rcx, @CatStr(<[>, <&ptrstr&>, <].>, <&typestr&>)","ENDIF","ELSE","% mov rcx, @CatStr(<[>, <&ptrstr&>, <].>, <&typestr&>)","ENDIF","ENDIF","ENDIF","i = i + 1","ENDM","% IF @SizeStr(<%&argstr&>) GT 3", "argstr SUBSTR argstr, 3", "ENDIF", "IF argCount EQ 0", "argstr TEXTEQU <>", "ENDIF", "IF argCount GT 0", "InterfacePtr TEXTEQU <_>","InterfacePtr CATSTR InterfacePtr, <&itype>, <_>, <&proc>, <Pto>","IF(OPATTR(rcx)) AND 00010000b","% IF argCount GT 0", "IF @Platform EQ 1","mov r15,[rcx]","% invoke(InterfacePtr PTR[r15].&itype&vtbl.&proc), rcx, &argstr","ELSE","mov rdi,rcx","mov r15,[rdi]","% invoke(InterfacePtr PTR[r15].&itype&vtbl.&proc), rdi, &argstr","ENDIF","ELSE","IF @Platform EQ 1","mov r15,[rcx]","% invoke(InterfacePtr PTR[r15].&itype&vtbl.&proc), rcx","ELSE","mov rdi,rcx","mov r15,[rdi]","% invoke(InterfacePtr PTR[r15].&itype&vtbl.&proc), rdi","ENDIF","ENDIF","ELSE","mov r15,[rcx]","IF argCount GT 0","FOR arg, <argstr>","IFIDNI <&arg>, <rcx>",".ERR <rcx is not allowed as a Method parameter with indirect object label>","ENDIF","ENDM","% invoke(InterfacePtr PTR[r15].&itype&vtbl.&proc), rcx, &argstr","ELSE","invoke(InterfacePtr PTR[r15].&itype&vtbl.&proc), rcx","ENDIF","ENDIF","ELSE","InterfacePtr TEXTEQU <_>","InterfacePtr CATSTR InterfacePtr, <&itype>, <_>, <&proc>, <Pto>","IF(OPATTR(rcx)) AND 00010000b","IF argCount GT 0","IF @Platform EQ 1","mov r15,[rcx]","% invoke(InterfacePtr PTR[r15].&itype&vtbl.&proc), rcx, &argstr","ELSE","mov rdi,rcx","mov r15,[rdi]","% invoke(InterfacePtr PTR[r15].&itype&vtbl.&proc), rdi, &argstr","ENDIF","ELSE","IF @Platform EQ 1","mov r15,[rcx]","invoke(InterfacePtr PTR[r15].&itype&vtbl.&proc), rcx","ELSE","mov rdi,rcx","mov r15,[rdi]","invoke(InterfacePtr PTR[r15].&itype&vtbl.&proc), rdi","ENDIF","ENDIF","ELSE","mov r15,[rcx]","IF argCount GT 0","FOR arg, <argstr>","IFIDNI <&arg>, <rcx>",".ERR <rcx is not allowed as a Method parameter with indirect object label>","ENDIF","ENDM","% invoke(InterfacePtr PTR[r15].&itype&vtbl.&proc), rcx, &argstr","ELSE","invoke(InterfacePtr PTR[r15].&itype&vtbl.&proc), rcx","ENDIF","ENDIF","ENDIF","IF @LastReturnType EQ 0","EXITM <al>","ELSEIF @LastReturnType EQ 0x40","EXITM <al>","ELSEIF @LastReturnType EQ 1","EXITM <ax>","ELSEIF @LastReturnType EQ 0x41","EXITM <ax>","ELSEIF @LastReturnType EQ 2","EXITM <eax>","ELSEIF @LastReturnType EQ 0x42","EXITM <eax>","ELSEIF @LastReturnType EQ 3","EXITM <rax>","ELSEIF @LastReturnType EQ 0x43","EXITM <rax>","ELSEIF @LastReturnType EQ 0xc3","EXITM <rax>","ELSEIF @LastReturnType EQ 6","EXITM <xmm0>","ELSEIF @LastReturnType EQ 7","EXITM <ymm0>","ELSEIF @LastReturnType EQ 8","EXITM <zmm0>","ELSEIF @LastReturnType EQ 0x22","EXITM <xmm0>","ELSEIF @LastReturnType EQ 0x23","EXITM <xmm0>","ELSE","EXITM <eax>","ENDIF","ENDM",NULL,
-/*64 _SINVOKE*/			"fnex TEXTEQU <_>", "fnex CATSTR fnex, <&className&>", "fnex CATSTR fnex, <_>", "fnex CATSTR fnex, <&method&>", "IFNB <args>", "fnex2 TEXTEQU <invoke fnex, &args&>", "ELSE", "fnex2 TEXTEQU <invoke fnex>", "ENDIF", "fnex2", "ENDM", NULL
+/*64 _SINVOKE*/			"fnex TEXTEQU <_>", "fnex CATSTR fnex, <&className&>", "fnex CATSTR fnex, <_>", "fnex CATSTR fnex, <&method&>", "IFNB <args>", "fnex2 TEXTEQU <invoke fnex, &args&>", "ELSE", "fnex2 TEXTEQU <invoke fnex>", "ENDIF", "fnex2", "ENDM", NULL,
+/*65 RAWINTERFACE*/		"curClass TEXTEQU <CName>", "% __&CName&_size = 0", "@CatStr(CName, < RAWSTRUCT >)", "ptrDefS TEXTEQU <psr>", "ptrDefS CATSTR ptrDefS, <&curClass&>, < TYPEDEF PTR >, <&curClass&>","% ptrDefS", "ENDM", NULL,
+/*66 ENDRAWINTERFACE*/	"curClass ENDS", "ENDM", NULL,
+/*67 _DEREFR */			"LOCAL argstr", "argstr TEXTEQU <>", "IFNB <&argsAndRegs&>", "mov rax,dref","% invoke [rax].&itype.&proc, &argsAndRefs", "ELSE", "% invoke [rax].&itype.&proc", "ENDIF","ENDM", NULL,
+/*68 _DEREFRR */		"LOCAL argstr", "argstr TEXTEQU <>", "% invoke &dref&.&itype.&proc, &argsAndRefs", "ENDM", NULL,
+/*69 STDFUNC */			"LOCAL sz1, sz2","pDef CATSTR <TYPEDEF PROTO >,<(&retType&) >","IFNB <protoDef>","pDef CATSTR pDef, <, >, <&protoDef>","ENDIF","sz2 CATSTR <_>, curClass, <_&method>, <Pto>","% &sz2 &pDef","% sz1 typedef PTR &sz2","% method sz1 0","% __&curClass&_size = __&curClass&_size + 8", "fnex TEXTEQU <_>","fnex CATSTR fnex, curClass, <_>, <&method&>, < PROTO >, <(&retType&) >","IFNB <&protoDef>","fnex CATSTR fnex, <, >, <&protoDef&>","ELSE","ENDIF","fnex", "ENDM", NULL,
     };	
 
 	/* Compile Macros */
@@ -282,7 +322,7 @@ void InitAutoMacros32(void)
 	uint_32 start_pos = 0;
 	char  *srcLines[128]; // NB: 128 is the max number of lines of macro code per macro.
 
-	uint_32 macroLen[] = {17, 11, 3, 3, 8, 54, 46, 54, 46, 7, 6, 6, 6, 7, 7, 7, 8, 10, 3, 7, 11, 19, 10, 10, 35, 1, 1, 1, 1, 37, 6, 2, 23, 54, 10, 6 }; // Count of individual lines of macro-body code.
+	uint_32 macroLen[] = {17, 11, 3, 3, 8, 54, 46, 54, 46, 7, 6, 6, 6, 7, 7, 7, 8, 10, 3, 7, 11, 19, 10, 10, 37, 1, 1, 1, 1, 37, 6, 2, 23, 54, 10, 6 }; // Count of individual lines of macro-body code.
 	char *macCode[] = {
 		"IFNDEF GMASK",".data","GMASK OWORD 0","ENDIF","IFNDEF NOTMASK",".data","NOTMASK OWORD -1","ENDIF",".code","IF @Arch EQ 1","movups reg, MASK field","pxor reg, NOTMASK","ELSE","vmovups reg, MASK field","vpxor reg, reg, NOTMASK","ENDIF","ENDM",NULL,
 		"IFNDEF GMASK",".data","GMASK OWORD 0","ENDIF",".code","IF @Arch EQ 1","movups reg, MASK field","ELSE","vmovups reg, MASK field","ENDIF","ENDM",NULL,
@@ -293,7 +333,7 @@ void InitAutoMacros32(void)
 		"LOCAL savedLo","LOCAL savedxmm1","LOCAL savedxmm0 ",".data?","savedLo QWORD ?","savedxmm1 OWORD ?","savedxmm0 OWORD ?",".code","push eax","push ecx","movups savedxmm1,xmm1","movups savedxmm0,xmm0","mov ecx,cnt","and ecx,7fh","mov eax,mmr","movq xmm0,[eax+8]",".if (ecx >=  0x40)","sub ecx,64","movd xmm1,ecx","psrlq xmm0,xmm1","movq [eax],xmm0","pxor xmm0,xmm0","movq [eax+8],xmm0",".else","movq savedLo,xmm0","movd xmm1,ecx","psrlq	xmm0, xmm1","movq [eax+8],xmm0","movq xmm0,[eax]","psrlq	xmm0, xmm1","movq [eax],xmm0","neg ecx","and ecx,7fh","sub ecx,64","movd xmm1,ecx","movq xmm0,savedLo","psllq xmm0,xmm1","movq xmm1,[eax]","por xmm0,xmm1","movq [eax],xmm0",".endif ","movups xmm1,savedxmm1","movups xmm0,savedxmm0","pop ecx","pop eax","ENDM",NULL,		
 		"LOCAL mmr","LOCAL savedLo","LOCAL savedxmm1","LOCAL savedxmm0",".data?","savedLo  QWORD ?","mmr OWORD ?","savedxmm1 OWORD ?","savedxmm0 OWORD ?",".code","push eax","push ecx","push esi","movups savedxmm1,xmm1","movups savedxmm0,xmm0","movups mmr,xmm0","mov ecx,cnt","and ecx,7fh","lea eax,mmr","movq xmm0,[eax]",".if (ecx >=  0x40)","sub ecx,64","movd xmm1,ecx","psllq xmm0,xmm1","movq [eax+8],xmm0","pxor xmm0,xmm0","movq [eax],xmm0",".else","movq savedLo,xmm0","movd xmm1,ecx","psllq	xmm0, xmm1","movq [eax],xmm0","movq xmm0,[eax+8]","psllq	xmm0, xmm1","movq [eax+8],xmm0","neg ecx","and ecx,7fh","sub ecx,64","movd xmm1,ecx","movq xmm0,savedLo","psrlq xmm0,xmm1","movq xmm1,[eax+8]","por xmm0,xmm1","movq [eax+8],xmm0",".endif ","movups xmm0,mmr","movups xmm1,savedxmm1","IFDIFI <xmm0>,<xmm128>","movups xmm0,savedxmm0","ENDIF","pop esi","pop ecx","pop eax","ENDM",NULL,        
 		"LOCAL savedHi","LOCAL savedxmm1","LOCAL savedxmm0 ",".data?","savedHi   QWORD ?","savedxmm1 OWORD ?","savedxmm0 OWORD ?",".code","push eax","push ecx","movups savedxmm1,xmm1","movups savedxmm0,xmm0","mov ecx,cnt","and ecx,7fh","mov eax,mmr","movq xmm0,[eax]",".if (ecx >=  0x40)","sub ecx,64","movd xmm1,ecx","psllq xmm0,xmm1","movq [eax+8],xmm0","pxor xmm0,xmm0","movq [eax],xmm0",".else","movq savedHi,xmm0","movd xmm1,ecx","psllq	xmm0, xmm1","movq [eax],xmm0","movq xmm0,[eax+8]","psllq	xmm0, xmm1","movq [eax+8],xmm0","neg ecx","and ecx,7fh","sub ecx,64","movd xmm1,ecx","movq xmm0,savedHi","psrlq xmm0,xmm1","movq xmm1,[eax+8]","por xmm0,xmm1","movq [eax+8],xmm0",".endif ","movups xmm1,savedxmm1","movups xmm0,savedxmm0","pop ecx","pop eax","ENDM",NULL,
-		"IF @Platform EQ 1", "INVOKE HeapAlloc,RV(GetProcessHeap),0,aSize", "ELSE", "INVOKE malloc,aSize", "ENDIF", "MEMALIGN eax, 16", "endm", NULL,
+		"IF @Platform EQ 1", "INVOKE HeapAlloc,RV(GetProcessHeap),0,aSize", "ELSE", "INVOKE malloc,aSize", "ENDIF", "ALIGNADDR eax, 16", "endm", NULL,
 		"IF @Platform EQ 1", "INVOKE HeapFree,RV(GetProcessHeap),0,memPtr", "ELSE", "INVOKE free,memPtr", "ENDIF", "endm", NULL,
 		"local szText", ".data", "szText db Text,0", ".code", "exitm <offset szText>", "endm", NULL,
 		"local szText", ".data", "szText dw Text,0", ".code", "exitm <offset szText>", "endm", NULL,
@@ -308,7 +348,7 @@ void InitAutoMacros32(void)
 		"LOCAL prefix1, wrd, nu, varname", "prefix1 SUBSTR <txtitm>, 1, 1", "IFIDN prefix1, <&>", "nu SUBSTR <txtitm>, 2", "wrd CATSTR <ADDR >, nu", "EXITM <wrd>", "ENDIF", "IFIDN prefix1, <*>", "nu SUBSTR <txtitm>, 2", ".data ?", "varname dq ?", ".code", "mov eax, nu", "mov eax,[eax]", "mov varname, eax", "EXITM <varname>", "ENDIF", "EXITM <txtitm>", "ENDM", NULL,
 		".data", "align 4", "vname dd value", ".code", "IF @Arch EQ 0", "movss reg, vname", "ELSE", "vmovss reg, vname", "ENDIF", "ENDM", NULL,
 		".data", "align 8", "bname dq value", ".code", "IF @Arch EQ 0", "movsd reg, bname", "ELSE", "vmovsd reg, bname", "ENDIF", "ENDM", NULL,
-		"IFB <args>", "invoke func", "ELSE", "invoke func, args", "ENDIF", "IF @LastReturnType EQ 0", "EXITM <al>", "ELSEIF @LastReturnType EQ 0x40", "EXITM <al>", "ELSEIF @LastReturnType EQ 1", "EXITM <ax>", "ELSEIF @LastReturnType EQ 0x41", "EXITM <ax>", "ELSEIF @LastReturnType EQ 2", "EXITM <eax>", "ELSEIF @LastReturnType EQ 0x42", "EXITM <eax>", "ELSEIF @LastReturnType EQ 3", "EXITM <rax>", "ELSEIF @LastReturnType EQ 0x43", "EXITM <rax>", "ELSEIF @LastReturnType EQ 0xc3", "EXITM <rax>", "ELSEIF @LastReturnType EQ 6", "EXITM <xmm0>", "ELSEIF @LastReturnType EQ 7", "EXITM <ymm0>", "ELSEIF @LastReturnType EQ 8", "EXITM <zmm0>", "ELSEIF @LastReturnType EQ 0x22", "EXITM <xmm0>", "ELSEIF @LastReturnType EQ 0x23", "EXITM <xmm0>", "ENDIF", "ENDM", NULL,
+		"IFB <args>", "invoke func", "ELSE", "invoke func, args", "ENDIF", "IF @LastReturnType EQ 0", "EXITM <al>", "ELSEIF @LastReturnType EQ 0x40", "EXITM <al>", "ELSEIF @LastReturnType EQ 1", "EXITM <ax>", "ELSEIF @LastReturnType EQ 0x41", "EXITM <ax>", "ELSEIF @LastReturnType EQ 2", "EXITM <eax>", "ELSEIF @LastReturnType EQ 0x42", "EXITM <eax>", "ELSEIF @LastReturnType EQ 3", "EXITM <rax>", "ELSEIF @LastReturnType EQ 0x43", "EXITM <rax>", "ELSEIF @LastReturnType EQ 0xc3", "EXITM <rax>", "ELSEIF @LastReturnType EQ 6", "EXITM <xmm0>", "ELSEIF @LastReturnType EQ 7", "EXITM <ymm0>", "ELSEIF @LastReturnType EQ 8", "EXITM <zmm0>", "ELSEIF @LastReturnType EQ 0x22", "EXITM <xmm0>", "ELSEIF @LastReturnType EQ 0x23", "EXITM <xmm0>", "ELSE", "EXITM <eax>", "ENDIF", "ENDM", NULL,
 		"EXITM <REAL4 PTR reg> ", NULL,
 		"EXITM <REAL8 PTR reg> ", NULL,
 		"EXITM <REAL4 PTR reg> ", NULL,
