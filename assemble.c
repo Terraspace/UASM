@@ -185,10 +185,7 @@ extern void RewindToWin64()
 		if (Options.output_format != OFORMAT_BIN)
 			Options.output_format = OFORMAT_COFF;
 		else
-		{
-			if (Options.langtype != LANG_FASTCALL && Options.langtype != LANG_SYSVCALL && Options.langtype != LANG_VECTORCALL && Options.langtype != LANG_REGCALL)
-				Options.langtype = LANG_FASTCALL;
-		}
+			Options.langtype = LANG_FASTCALL;
 		Options.sub_format = SFORMAT_64BIT;
 
 	}
@@ -545,7 +542,6 @@ static ret_code WriteModule( struct module_info *modinfo )
     return( NOT_ERROR );
 }
 
-#undef is_valid_first_char
 #define is_valid_first_char( ch )  ( isalpha(ch) || ch=='_' || ch=='@' || ch=='$' || ch=='?' || ch=='.' )
 
 /* check name of text macros defined via -D option */
@@ -799,21 +795,12 @@ static void ModulePassInit( void )
              * there's no other model than FLAT possible.
              */
             model = MODEL_FLAT;
-			if (ModuleInfo.langtype == LANG_NONE && Options.output_format == OFORMAT_COFF)
-			{
-				if (ModuleInfo.langtype != LANG_FASTCALL && ModuleInfo.langtype != LANG_VECTORCALL && ModuleInfo.langtype != LANG_REGCALL)
-					ModuleInfo.langtype = LANG_FASTCALL;
-			}
+            if (ModuleInfo.langtype == LANG_NONE && Options.output_format == OFORMAT_COFF)
+                ModuleInfo.langtype = LANG_FASTCALL;
 			if (ModuleInfo.langtype == LANG_NONE && Options.output_format == OFORMAT_ELF)
-			{
-				if (ModuleInfo.langtype != LANG_SYSVCALL && ModuleInfo.langtype != LANG_REGCALL)
-					ModuleInfo.langtype = LANG_SYSVCALL;
-			}
+				ModuleInfo.langtype = LANG_SYSVCALL;
 			if (ModuleInfo.langtype == LANG_NONE && Options.output_format == OFORMAT_MAC)
-			{
-				if (ModuleInfo.langtype != LANG_SYSVCALL && ModuleInfo.langtype != LANG_REGCALL)
-					ModuleInfo.langtype = LANG_SYSVCALL;
-			}
+				ModuleInfo.langtype = LANG_SYSVCALL;
 
         } else
 #endif
@@ -1181,18 +1168,9 @@ static int OnePass( void )
 		unsigned  alist = ModuleInfo.list;
 		ModuleInfo.list = 0;
 		if(platform->value == 0)
-    {
 			InitAutoMacros32();
-		}
 		else
-		{
 			InitAutoMacros64();
-#if !(NOX86MACROLIB)
-			Addx86defs();
-			Initx86AutoMacros64();
-#endif
-		}
-
 		ModuleInfo.list = alist;
 	}
 	if (Parse_Pass == PASS_1)
@@ -1220,7 +1198,7 @@ static int OnePass( void )
             set_curr_srcfile( LineStoreCurr->srcfile, LineStoreCurr->lineno );
             /* v2.06: list flags now initialized on the top level */
             ModuleInfo.line_flags = 0;
-            MacroLevel = LineStoreCurr->macro_level;
+            MacroLevel = ( LineStoreCurr->srcfile == 0xFFF ? 1 : 0 );
             DebugMsg1(("OnePass(%u) cur/nxt=%X/%X src=%X.%u mlvl=%u: >%s<\n", Parse_Pass+1, LineStoreCurr, LineStoreCurr->next, LineStoreCurr->srcfile, LineStoreCurr->lineno, MacroLevel, LineStoreCurr->line ));
             ModuleInfo.CurrComment = NULL; /* v2.08: added (var is never reset because GetTextLine() isn't called) */
 #if USELSLINE

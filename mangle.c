@@ -95,29 +95,6 @@ static int UScoreMangler( const struct asym *sym, char *buffer )
     return( sym->name_size + 1 );
 }
 
-/* RegCallMangler: add '__regcall4__' prefix to symbol name */
-
-static int RegcallMangler(const struct asym* sym, char* buffer)
-/**************************************************************/
-{
-    const struct dsym* dir = (struct dsym*)sym;
-    switch (Options.regcall_version)
-    {
-        case RGCV_1:
-            return(sprintf(buffer, "__regcall1__%s", sym->name, dir->e.procinfo->parasize));
-        case RGCV_2:
-            return(sprintf(buffer, "__regcall2__%s", sym->name, dir->e.procinfo->parasize));
-        case RGCV_3:
-            return(sprintf(buffer, "__regcall3__%s", sym->name, dir->e.procinfo->parasize));
-        case RGCV_4:
-            return(sprintf(buffer, "__regcall4__%s", sym->name, dir->e.procinfo->parasize));
-        case RGCV_5:
-            return(sprintf(buffer, "__regcall5__%s", sym->name, dir->e.procinfo->parasize));
-        default:
-            return(sprintf(buffer, "__regcall__%s", sym->name, dir->e.procinfo->parasize));
-    }
-}
-
 /* StdcallMangler: add '_' prefix and '@size' suffix to proc names */
 /*                 add '_' prefix to other symbols */
 
@@ -144,7 +121,7 @@ static int ms32_decorate( const struct asym *sym, char *buffer )
 		return(sprintf(buffer, "%s@@%d", sym->name, dir->e.procinfo->parasize));
 	}
 	else if (Options.fctype == FCT_MSC && sym->isproc) {
-		return (sprintf(buffer, "@%s@%u", sym->name, dir->e.procinfo->parasize));
+		return (sprintf(buffer, "@%s@%u", sym->name, ((struct dsym *)sym)->e.procinfo->parasize));
 	}
 	else {
 		memcpy(buffer, sym->name, sym->name_size + 1);
@@ -259,9 +236,7 @@ int Mangle( struct asym *sym, char *buffer )
         /* leading underscore for C? */
         mangler = Options.no_cdecl_decoration ? VoidMangler : UScoreMangler;
         break;
-	case LANG_SYSCALL:
-	case LANG_SYSVCALL:
-	case LANG_THISCALL:
+    case LANG_SYSCALL:
         mangler = VoidMangler;
         break;
     case LANG_STDCALL:
@@ -273,14 +248,9 @@ int Mangle( struct asym *sym, char *buffer )
         mangler = UCaseMangler;
         break;
 	case LANG_VECTORCALL:
-		mangler = (Options.vectorcall_decoration == VECTORCALL_NONE) ? VoidMangler : fcmanglers[ModuleInfo.fctype];
-		break;
     case LANG_FASTCALL:          /* registers passing parameters */
         mangler = fcmanglers[ModuleInfo.fctype];
-		break;
-	case LANG_REGCALL:
-		mangler = (Options.regcall_decoration == REGCALL_NONE) ? VoidMangler : RegcallMangler;
-		break;
+        break;
     default: /* LANG_NONE */
 #if MANGLERSUPP
         mangler = sym->mangler;

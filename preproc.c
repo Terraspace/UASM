@@ -175,10 +175,10 @@ static void ExpandObjCalls(char *line, struct asm_tok tokenarray[])
 	// Scan through tokens, looking for pointer operators.
 	while (didExpand)
 	{
-		memset(indirectAddr, 0, MAX_LINE_LEN);
-		memset(methodName, 0, MAX_LINE_LEN);
-		memset(newline, 0, MAX_LINE_LEN);
-		memset(refStr, 0, MAX_LINE_LEN);
+		memset(&indirectAddr, 0, MAX_LINE_LEN);
+		memset(&methodName, 0, MAX_LINE_LEN);
+		memset(&newline, 0, MAX_LINE_LEN);
+		memset(&refStr, 0, MAX_LINE_LEN);
 		pStr = newline;
 		pRefStr = refStr;
 		didExpand = FALSE;
@@ -193,7 +193,7 @@ static void ExpandObjCalls(char *line, struct asm_tok tokenarray[])
 				{
 					for (j = i - 1; j >= 0; j--)
 					{
-						tsym = (struct dsym*)SymCheck(tokenarray[j].string_ptr);
+						tsym = SymCheck(tokenarray[j].string_ptr);
 						if (tokenarray[j].token == T_DIRECTIVE && (tokenarray[j].dirtype == DRT_HLLSTART || tokenarray[j].dirtype == DRT_HLLEND))
 						{
 							inExpr = TRUE;
@@ -239,19 +239,19 @@ static void ExpandObjCalls(char *line, struct asm_tok tokenarray[])
 				{
 					if (derefCount == 0)
 					{
-						sym = (struct dsym*)SymCheck(tokenarray[i - 1].string_ptr);
-						if (sym && sym->sym.target_type && (int)sym->sym.target_type > 0x200000 && sym->sym.target_type->isClass)
+						sym = SymCheck(tokenarray[i - 1].string_ptr);
+						if (sym && sym->sym.target_type && sym->sym.target_type > 0x200000 && sym->sym.target_type->isClass)
 						{
 							foundType = TRUE;
 							pType = tokenarray[i - 1].string_ptr;
-							type = (struct dsym*)sym->sym.target_type;
+							type = sym->sym.target_type;
 							firstDeRefIdx = i - 2; /* pointer->item */
 						}
-						else if (sym && sym->sym.type && sym->sym.type->target_type && (int)sym->sym.type->target_type > 0x200000 && sym->sym.type->target_type->isClass)
+						else if (sym && sym->sym.type && sym->sym.type->target_type && sym->sym.type->target_type > 0x200000 && sym->sym.type->target_type->isClass)
 						{
 							foundType = TRUE;
 							pType = tokenarray[i - 1].string_ptr;
-							type = (struct dsym*)sym->sym.type->target_type;
+							type = sym->sym.type->target_type;
 							firstDeRefIdx = i - 2; /* pointer->item */
 						}
 						else if (sym && sym->sym.type && sym->sym.type->target_type && sym->sym.type->target_type > 0x200000 && sym->sym.type->target_type->isPtrTable)
@@ -315,10 +315,10 @@ static void ExpandObjCalls(char *line, struct asm_tok tokenarray[])
 						}
 						if (gotField)
 						{
-							type = (struct dsym*)field->sym.target_type;
-							if (!type || (int)type < 0x10)
-								type = (struct dsym*)field->sym.type->target_type;
-							if (!type || (int)type < 0x10)
+							type = field->sym.target_type;
+							if (!type || type < 0x10)
+								type = field->sym.type->target_type;
+							if (!type || type < 0x10)
 								EmitError(INVALID_POINTER);
 						}
 						else
@@ -335,12 +335,12 @@ static void ExpandObjCalls(char *line, struct asm_tok tokenarray[])
 				/* Direct register object reference */
 				else if (tokenarray[i - 1].token == T_REG)
 				{
-					sym = (struct dsym*)StdAssumeTable[GetRegNo(tokenarray[i - 1].tokval)].symbol;
+					sym = StdAssumeTable[GetRegNo(tokenarray[i - 1].tokval)].symbol;
 					if (sym && sym->sym.target_type)
 					{
 						foundType = TRUE;
 						pType = tokenarray[i - 1].string_ptr;
-						type = (struct dsym*)sym->sym.target_type;
+						type = sym->sym.target_type;
 						firstDeRefIdx = i - 2; /* pointer->item */
 					}
 					else
@@ -366,11 +366,11 @@ static void ExpandObjCalls(char *line, struct asm_tok tokenarray[])
 						EmitError(INVALID_POINTER);
 					// The tokens between opSqIdx and clSqIdx make up the indirect address.
 					// -> the first register(base) must be assumed to an object pointer.
-					sym = (struct dsym*)StdAssumeTable[GetRegNo(tokenarray[opSqIdx + 1].tokval)].symbol;
+					sym = StdAssumeTable[GetRegNo(tokenarray[opSqIdx + 1].tokval)].symbol;
 					if (sym && sym->sym.target_type)
 					{
 						foundType = TRUE;
-						pType = indirectAddr;
+						pType = &indirectAddr;
 						pType = strcpy(pType, "[") + 1;
 						for (j = opSqIdx + 1; j < clSqIdx; j++)
 						{
@@ -378,8 +378,8 @@ static void ExpandObjCalls(char *line, struct asm_tok tokenarray[])
 							pType += strlen(tokenarray[j].string_ptr);
 						}
 						pType = strcpy(pType, "]") + 1;
-						pType = indirectAddr;
-						type = (struct dsym*)sym->sym.target_type;
+						pType = &indirectAddr;
+						type = sym->sym.target_type;
 						firstDeRefIdx = opSqIdx-1; /* pointer->item */
 					}
 					else
@@ -391,16 +391,16 @@ static void ExpandObjCalls(char *line, struct asm_tok tokenarray[])
 					EmitError(INVALID_POINTER);
 				else
 				{
-					pMethodStr = methodName;
+					pMethodStr = &methodName;
 					pMethodStr = strcpy(pMethodStr, "_") + 1;
 					strcpy(pMethodStr, type->sym.name);
 					pMethodStr += strlen(type->sym.name);
 					pMethodStr = strcpy(pMethodStr, "_") + 1;
 					strcpy(pMethodStr, tokenarray[i + 1].string_ptr);
 					pMethodStr += strlen(tokenarray[i + 1].string_ptr);
-					pMethodStr = methodName;
+					pMethodStr = &methodName;
 
-					sym = (struct dsym*)SymCheck(pMethodStr);
+					sym = SymCheck(pMethodStr);
 					if (sym && sym->sym.isproc)
 					{
 						foundProc = TRUE;
@@ -582,7 +582,7 @@ static void ExpandObjCalls(char *line, struct asm_tok tokenarray[])
 		/* Transfer new source line back for token rescan */
 		if (didExpand)
 		{
-			strcpy(line, newline);
+			strcpy(line, &newline);
 			Token_Count = Tokenize(line, 0, tokenarray, TOK_RESCAN);
 		}
 	}
@@ -608,7 +608,7 @@ static void ExpandStaticObjCalls(char *line, struct asm_tok tokenarray[])
 	bool hasExprBracket = FALSE;
 	struct dsym *tsym = NULL;
 
-	memset(newline, 0, MAX_LINE_LEN);
+	memset(&newline, 0, MAX_LINE_LEN);
 	pStr = newline;
 
 	for (i = 0; i < Token_Count; i++)
@@ -626,7 +626,7 @@ static void ExpandStaticObjCalls(char *line, struct asm_tok tokenarray[])
 					{
 						for (j = i - 1; j >= 0; j--)
 						{
-							tsym = (struct dsym*)SymCheck(tokenarray[j].string_ptr);
+							tsym = SymCheck(tokenarray[j].string_ptr);
 							if (tokenarray[j].token == T_DIRECTIVE && (tokenarray[j].dirtype == DRT_HLLSTART || tokenarray[j].dirtype == DRT_HLLEND))
 							{
 								inExpr = TRUE;
@@ -777,7 +777,7 @@ static void ExpandHllCalls(char *line, struct asm_tok tokenarray[], bool inParam
 	int clIdx, opIdx;
 	int tokenCount;
 	struct asm_tok *tokenarray2;
-	char *p = newline;
+	char *p = &newline;
 	char idxStack[] = { 0, 0, 0, 0 };
 	int stackPt = -1;
 	char idxline[MAX_LINE_LEN];
@@ -786,16 +786,16 @@ static void ExpandHllCalls(char *line, struct asm_tok tokenarray[], bool inParam
 	bool expandedCall = FALSE;
 	char uCnt = 0;
 
-	strcpy(newline, line);
-	memset(idxline, 0, MAX_LINE_LEN);
+	strcpy(&newline, line);
+	memset(&idxline, 0, MAX_LINE_LEN);
 
 	for (i = 0;i < Token_Count;i++)
 	{
 		if (tokenarray[i].token == T_ID)
 		{
-			sym = (struct dsym*)SymCheck(tokenarray[i].string_ptr);
+			sym = SymCheck(tokenarray[i].string_ptr);
 
-			sym = (struct dsym*)TraverseEquate(sym); /* We may have an equate chain that points to a proc, as we expand here before macro substitution we need to consider this */
+			sym = TraverseEquate(sym); /* We may have an equate chain that points to a proc, as we expand here before macro substitution we need to consider this */
 
 			if(sym && (sym->sym.isproc || (sym->sym.isfunc && sym->sym.state == SYM_EXTERNAL)) && tokenarray[i+1].tokval != T_PROC && tokenarray[i+1].tokval != T_PROTO && 
 				tokenarray[i+1].tokval != T_ENDP && tokenarray[i+1].tokval != T_EQU && tokenarray[i+1].token == T_OP_BRACKET) 
@@ -964,7 +964,7 @@ static void ExpandHllCalls(char *line, struct asm_tok tokenarray[], bool inParam
 				}
 
 				/* Reset string pointer*/
-				p = newline;			
+				p = &newline;			
 			}
 		}
 	}
@@ -979,12 +979,12 @@ static void ExpandHllCalls(char *line, struct asm_tok tokenarray[], bool inParam
 	//finally replace place-holder with idxline value
 	if (expandedCall)
 	{
-		p = newline;
+		p = &newline;
 		p = strstr(p, "invoke"); // even if the line only contains uinvoke, such as in an HLL expression this will still find it.
 		if (p != NULL)
 		{
 			bool inBrackets = FALSE;
-			j = (int)(p - (char *)newline);
+			j = (int)(p - (char *)&newline);
 			stackPt++;
 			idxStack[stackPt] = 0;
 			while (*p)
@@ -999,9 +999,9 @@ static void ExpandHllCalls(char *line, struct asm_tok tokenarray[], bool inParam
 				p++;
 			}
 		}
-		p = newline;
+		p = &newline;
 		p = strstr(p, "arginvoke(");
-		j = (int)(p - (char *)newline);
+		j = (int)(p - (char *)&newline);
 		while (p)
 		{
 			if (idxline[j] == 0) idxline[j] = 1;
@@ -1011,15 +1011,15 @@ static void ExpandHllCalls(char *line, struct asm_tok tokenarray[], bool inParam
 			*(p + 14) = (char)(((invCnt & 0x0f)) + 48);
 			p = strstr(p + 1, "arginvoke(");
 			invCnt++;
-			j = (int)(p - (char *)newline);
+			j = (int)(p - (char *)&newline);
 		}
 
 		/* Ensure max nesting depth isn't exceeded */
-		VerifyNesting(newline, hasExprBracket);
+		VerifyNesting(&newline, hasExprBracket);
 	}
 
 	/* Transfer new source line back for token rescan */
-	strcpy(line, newline);
+	strcpy(line, &newline);
 }
 
 static bool PossibleCallExpansion(struct asm_tok tokenarray[])
@@ -1062,7 +1062,7 @@ void EvaluatePreprocessItems(char *line, struct asm_tok tokenarray[])
 	struct dsym *recsym;
 	struct expr opndx[1];
 
-	memset(opndx, 0, sizeof(opndx));
+	memset(&opndx, 0, sizeof(opndx));
 
 	/* pre parse inline records and c-style procedure calls UASM v2.46 */
 	for (i = 0;i < Token_Count; i++)
@@ -1070,7 +1070,7 @@ void EvaluatePreprocessItems(char *line, struct asm_tok tokenarray[])
 		/* only a token of type ID could possibly be an inline record */
 		if (tokenarray[i].token == T_ID)
 		{
-			recsym = (struct dsym*)SymCheck(tokenarray[i].string_ptr);
+			recsym = SymCheck(tokenarray[i].string_ptr);
 			if (recsym && recsym->sym.typekind == TYPE_RECORD && CurrProc)
 			{
 				if (CurrSeg && (strcmp(CurrSeg->sym.name, "_TEXT") == 0 || strcmp(CurrSeg->sym.name, "_flat") == 0))
@@ -1134,23 +1134,23 @@ int PreprocessLine( char *line, struct asm_tok tokenarray[] )
 		// Hll and Object style call expansion is only valid inside a code section, AND if the line contains ( ) or ->.
 		if (CurrSeg && (strcmp(CurrSeg->sym.name, "_TEXT") == 0 || strcmp(CurrSeg->sym.name, "_flat") == 0) && PossibleCallExpansion( tokenarray ))
 		{
-			strcpy(cline, line);
-			ExpandStaticObjCalls(cline, tokenarray);
-			if (strcmp(cline, line) != 0)
+			strcpy(&cline, line);
+			ExpandStaticObjCalls(&cline, tokenarray);
+			if (strcmp(&cline, line) != 0)
 			{
-				strcpy(line, cline);
+				strcpy(line, &cline);
 				Token_Count = Tokenize(line, 0, tokenarray, TOK_RESCAN);
 			}
-			ExpandObjCalls(cline, tokenarray);
-			if (strcmp(cline, line) != 0)
+			ExpandObjCalls(&cline, tokenarray);
+			if (strcmp(&cline, line) != 0)
 			{
-				strcpy(line, cline);
+				strcpy(line, &cline);
 				Token_Count = Tokenize(line, 0, tokenarray, TOK_RESCAN);
 			}
-			ExpandHllCalls(cline, tokenarray, FALSE, 0, FALSE);
-			if (strcmp(cline, line) != 0)
+			ExpandHllCalls(&cline, tokenarray, FALSE, 0, FALSE);
+			if (strcmp(&cline, line) != 0)
 			{
-				strcpy(line, cline);
+				strcpy(line, &cline);
 				Token_Count = Tokenize(line, 0, tokenarray, TOK_RESCAN);
 			}
 		}

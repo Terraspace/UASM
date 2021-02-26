@@ -1,7 +1,6 @@
 #pragma once
 
 #include "globals.h"
-#include "parser.h"
 #include "expreval.h"
 
 /* This order must remain as-is! */
@@ -178,10 +177,10 @@ enum op_type {
 #define VEX_WIG      (1<<1)		/* Instruction can use C5h(2byte) form (if no VEX.mmmmm) or VEX.W is ignored in C4H(3byte) form */
 #define VEX_W0       (1<<2)     /* VEX.W = 0, extended opcode bit, or promotion to 64bit of gp register or memory operand */
 #define VEX_W1       (1<<3)		/* "" */
-#define VEX_66		   (1<<4)
+#define VEX_66		 (1<<4)
 #define VEX_F2       (1<<5)
 #define VEX_F3       (1<<6)
-#define VEX_0F		   (1<<7)
+#define VEX_0F		 (1<<7)
 #define VEX_0F3A     (1<<8)
 #define VEX_0F38     (1<<9)
 #define VEX_LIG      (1<<10)
@@ -374,7 +373,7 @@ extern struct Instr_Def InstrTableV2[];
 
 /* Public functions */
 extern void     BuildInstructionTable(void);
-extern ret_code CodeGenV2(const char* instr, struct code_info* CodeInfo, uint_32 oldofs, uint_32 opCount, struct expr opExpr[4]);
+extern ret_code CodeGenV2(const char* instr, struct code_info *CodeInfo, uint_32 oldofs, uint_32 opCount, struct expr opExpr[4]);
 
 /* Private functions */
 enum op_type      DemoteOperand(enum op_type op);
@@ -382,8 +381,8 @@ void              InsertInstruction(struct Instr_Def* pInstruction, uint_32 hash
 struct Instr_Def* AllocInstruction();
 uint_32           GenerateInstrHash(struct Instr_Def* pInstruction);
 struct Instr_Def* LookupInstruction(struct Instr_Def* instr, bool memReg, unsigned char encodeMode, 
-	                                int srcRegNo, int dstRegNo, struct code_info* CodeInfo);
-enum op_type      MatchOperand(struct code_info* CodeInfo, struct opnd_item op, struct expr opExpr);
+	                                int srcRegNo, int dstRegNo, struct code_info *CodeInfo);
+enum op_type      MatchOperand(struct code_info *CodeInfo, struct opnd_item op, struct expr opExpr);
 
 bool Require_OPND_Size_Override(struct Instr_Def* instr, struct code_info* CodeInfo);
 bool Require_ADDR_Size_Override(struct Instr_Def* instr, struct code_info* CodeInfo);

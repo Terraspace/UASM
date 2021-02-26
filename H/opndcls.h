@@ -236,10 +236,8 @@ OpCls(XMM, XMM_M128_M32, NONE ) //VGETEXPPS
 OpCls(XMM, XMM_M128_M64, NONE ) //VGETEXPPD
 OpCls(XMM, XMM,      XMM_M128 )
 OpCls( XMM,   R32_M32,   NONE )
-#if !INTELMOVQ
 OpCls( R32_M32,   XMM,   NONE )
 OpCls( R64_M64,   XMM,   NONE )
-#endif
 OpCls( XMM_M_ANY, XMM,   NONE )
 OpCls( R64,    XMM_M64,  NONE )
 OpCls( R32,    XMM_M64,  NONE )

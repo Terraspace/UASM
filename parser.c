@@ -218,8 +218,7 @@ ret_code GetLangType( int *i, struct asm_tok tokenarray[], enum lang_type *plang
         case T_FASTCALL:  *plang = LANG_FASTCALL;   break;
         case T_VECTORCALL:*plang = LANG_VECTORCALL; break;
         case T_SYSVCALL:  *plang = LANG_SYSVCALL;   break;
-        case T_REGCALL:   *plang = LANG_REGCALL;    break;
-        case T_BORLAND:   *plang = LANG_DELPHICALL; break;
+        case T_BORLAND    *plang = LANG_DELPHICALL; break;
         default:
             return( ERROR );
         }
@@ -3148,10 +3147,8 @@ ret_code ParseLine(struct asm_tok tokenarray[]) {
 		ModuleInfo.Ofssize = USE64;
 		ModuleInfo.wordsize = 8;
 		ModuleInfo.defOfssize = USE64;
-		if (ModuleInfo.langtype != LANG_FASTCALL && ModuleInfo.langtype != LANG_SYSVCALL && ModuleInfo.langtype != LANG_VECTORCALL && ModuleInfo.langtype != LANG_REGCALL)
-			ModuleInfo.langtype = LANG_FASTCALL;
-		if (ModuleInfo.sub_format != SFORMAT_64BIT)
-			ModuleInfo.sub_format = SFORMAT_NONE;
+		ModuleInfo.langtype = LANG_FASTCALL;
+		ModuleInfo.sub_format = SFORMAT_NONE;
 		ModuleInfo.basereg[ModuleInfo.Ofssize] = T_RSP;
 		if (ModuleInfo.currseg)
 		{
