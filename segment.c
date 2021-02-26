@@ -45,6 +45,7 @@
 #include "msgtext.h"
 #include "types.h"
 #include "fixup.h"
+#include "label.h"
 
 #include "myassert.h"
 
@@ -1078,7 +1079,7 @@ ret_code SegmentDir( int i, struct asm_tok tokenarray[] )
     temp = SetOfssize();
     if (Options.debug_symbols == 4 && newseg) {
         if (dir->e.seginfo->segtype == SEGTYPE_CODE && CV8Label == NULL) {
-            CV8Label = CreateLabel("$$000000", 0, 0, 0);
+            CV8Label = CreateLabel("$$000000", MT_NEAR, 0, 0);
         }
     }
 
