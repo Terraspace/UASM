@@ -28,7 +28,6 @@
 *
 ****************************************************************************/
 
-//#include <stdarg.h>
 #include <stddef.h>
 #include <ctype.h>
 
@@ -39,28 +38,20 @@
 #include "dbgcv.h"
 #include "cmdline.h"
 #include "myassert.h"
-#include "input.h" /* GetFNamePart() */
-
-//#ifdef __OSI__
-//  #include "ostype.h"
-//#endif
+#include "input.h"
 
 #if defined(__UNIX__) || defined(__CYGWIN__) || defined(__DJGPP__)
-
-#define HANDLECTRLZ 0
-#define SWITCHCHAR 0
-
+    #define HANDLECTRLZ 0
+    #define SWITCHCHAR 0
 #else
-
-#define HANDLECTRLZ 1
-#define SWITCHCHAR 1
-
+    #define HANDLECTRLZ 1
+    #define SWITCHCHAR 1
 #endif
 
 #ifdef __I86__
-#define OPTQUAL __near
+    #define OPTQUAL __near
 #else
-#define OPTQUAL
+    #define OPTQUAL
 #endif
 
 extern char     banner_printed;
@@ -133,7 +124,6 @@ struct global_options Options = {
     /* list_macro            */     LM_LISTMACRO,
     /* no_symbol_listing     */     FALSE,
     /* first_pass_listing    */     FALSE,
-
     /* all_symbols_public    */     FALSE,
     /* safeseh               */     FALSE,
     /* ignore_include        */     FALSE,
@@ -161,15 +151,14 @@ struct global_options Options = {
 };
 
 char *DefaultDir[NUM_FILE_TYPES] = { NULL, NULL, NULL, NULL };
-//static char *DefaultExt[NUM_FILE_TYPES] = { OBJ_EXT, LST_EXT, ERR_EXT };
 
 #define MAX_RSP_NESTING 15  /* nesting of response files */
 
-static unsigned         OptValue;  /* value of option's numeric argument  */
-static char             *OptName;  /* value of option's name argument     */
-static const char       *cmdsave[MAX_RSP_NESTING]; /* response files */
+static unsigned         OptValue;                     /* value of option's numeric argument  */
+static char             *OptName;                     /* value of option's name argument     */
+static const char       *cmdsave[MAX_RSP_NESTING];    /* response files */
 static const char       *cmdbuffers[MAX_RSP_NESTING]; /* response files */
-static int              rspidx = 0; /* response file level */
+static int              rspidx = 0;                   /* response file level */
 
 /* array for options -0 ... -10 */
 static const enum cpu_info cpuoption[] = {
@@ -407,12 +396,32 @@ static void OPTQUAL Set_Zd( void ) { Options.line_numbers = TRUE; }
 static void OPTQUAL Set_Zi( void )
 {
     Set_Zd();
-    Options.debug_symbols = CV_SIGNATURE;
-    /* v2.10: added optional numeric argument for -Zi */
-    if ( OptValue <= CVEX_MAX )
-        Options.debug_ext = OptValue;
-    else
-        EmitWarn( 1, INVALID_CMDLINE_VALUE, "Zi" );
+    Options.debug_symbols = 1;
+    Options.debug_ext = CVEX_NORMAL;
+    if (OptValue)
+    {
+        if (OptValue > CVEX_MAX)
+        {
+            Options.debug_ext = CVEX_MAX;          
+            if (OptValue == 5)
+            {
+                Options.debug_symbols = 2; /* C11 (vc5.x) 32-bit types */
+            }
+            else if (OptValue == 8)
+            {
+                Options.debug_symbols = 4; /* C13 (vc7.x) zero terminated names */
+                Options.no_file_entry = 1;
+            }
+            else
+            {
+                EmitWarn(1, INVALID_CMDLINE_VALUE, "Zi");
+            }
+        }
+        else
+        {
+            Options.debug_ext = OptValue;
+        }
+    }
 }
 
 static void OPTQUAL Set_Zp( void )

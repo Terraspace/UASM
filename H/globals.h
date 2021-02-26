@@ -65,8 +65,8 @@
 
 #endif
 
-#define MAX_LINE_LEN            1024 /* no restriction for this number */
-#define MAX_TOKEN  MAX_LINE_LEN - 32 /* max tokens in one line */
+#define MAX_LINE_LEN            2048 /* no restriction for this number */
+#define MAX_TOKEN               MAX_LINE_LEN / 4  /* max tokens in one line */
 #define MAX_STRING_LEN          MAX_LINE_LEN - 32 /* must be < MAX_LINE_LEN */
 #define MAX_ID_LEN              247  /* must be < MAX_LINE_LEN */
 #define MAX_STRUCT_ALIGN        64
@@ -202,13 +202,17 @@
 
 /* Uasm version info */
 #ifdef _WIN64
-#define _UASM_VERSION_STR_ "2.50"
+#define _UASM_VERSION_STR_ "2.51"
 #else
-#define _UASM_VERSION_STR_ "2.50"
+#define _UASM_VERSION_STR_ "2.51"
 #endif
-#define _UASM_VERSION_INT_ 250
+#define _UASM_VERSION_INT_ 251
 #define _UASM_VERSION_SUFFIX_ "pre"
 #define _UASM_VERSION_ _UASM_VERSION_STR_ //_UASM_VERSION_SUFFIX_
+
+#define UASM_MAJOR_VER 2
+#define UASM_MINOR_VER 51
+#define UASM_SUBMINOR_VER 1
 
 #if defined(_WIN32) || defined(_WIN64) 
 #define snprintf _snprintf 
@@ -221,9 +225,6 @@
 
 #define NULLC  '\0'
 
-//#define fast_is_valid_id_char( ch )  ( isalnum(ch) || ch=='_' || ch=='@' || ch=='$' || ch=='?' )
-//#define is_valid_id_char( ch )  ( isalnum(ch) || ch=='_' || ch=='@' || ch=='$' || ch=='?' || ((unsigned char)ch > 127 && (unsigned char)ch <= 255)  )
-//#define is_valid_id_first_char( ch )  ( isalpha(ch) || ch=='_' || ch=='@' || ch=='$' || ch=='?' || (ch == '.' && ModuleInfo.dotname == TRUE ))
 #define _LUPPER		0x01	/* upper case letter */
 #define _LLOWER		0x02	/* lower case letter */
 #define _LDIGIT		0x04	/* digit[0-9] */
@@ -469,9 +470,7 @@ enum segofssize {
     USE_EMPTY = 0xFE,
     USE16 = 0, /* don't change values of USE16,USE32,USE64! */
     USE32 = 1,
-#if AMD64_SUPPORT
     USE64 = 2
-#endif
 };
 
 /* fastcall types. if order is to be changed or entries
@@ -521,9 +520,7 @@ enum opt_names {
     OPTN_LST_FN,              /* -Fl option */
     OPTN_ERR_FN,              /* -Fr option */
 	OPTN_SYM_FN,              /* -Fs option */
-#if DLLIMPORT
     OPTN_LNKDEF_FN,           /* -Fd option */
-#endif
     OPTN_MODULE_NAME,         /* -nm option */
     OPTN_TEXT_SEG,            /* -nt option */
     OPTN_DATA_SEG,            /* -nd option */
@@ -572,10 +569,7 @@ enum offset_type {
 
 enum line_output_flags {
     LOF_LISTED = 1, /* line written to .LST file */
-#if FASTPASS
     LOF_SKIPPOS  = 2, /* suppress setting list_pos */
-    //LOF_STORED = 2  /* line stored in line buffer for FASTPASS */
-#endif
 };
 
 /* flags for win64_flags */
@@ -608,13 +602,11 @@ enum seg_type {
     SEGTYPE_BSS,
     SEGTYPE_STACK,
     SEGTYPE_ABS,
-#if PE_SUPPORT
     SEGTYPE_HDR,   /* only used in bin.c for better sorting */
     SEGTYPE_CDATA, /* only used in bin.c for better sorting */
     SEGTYPE_RELOC, /* only used in bin.c for better sorting */
     SEGTYPE_RSRC,  /* only used in bin.c for better sorting */
     SEGTYPE_ERROR, /* must be last - an "impossible" segment type */
-#endif
 };
 
 struct global_options {
@@ -727,8 +719,6 @@ struct context;
 
 struct fname_item {
     char    *fname;
-    //char    *fullname; /* v2.11: removed */
-    //time_t  mtime; /* v2.11: removed */
 #ifdef DEBUG_OUT
     unsigned included;
     uint_32  lines;
@@ -743,19 +733,14 @@ struct module_vars {
     unsigned            num_segs;        /* number of segments in module */
     struct qdesc        PubQueue;        /* PUBLIC items */
     struct qdesc        LnameQueue;      /* LNAME items (segments, groups and classes) */
-#if COFF_SUPPORT
     struct qdesc        SafeSEHQueue;    /* list of safeseh handlers */
-#endif
     struct qdesc        LibQueue;        /* includelibs */
-#if DLLIMPORT
+    struct qdesc	    LinkQueue;	     /* .pragma comment(linker,"/..") */
     struct dll_desc     *DllQueue;       /* dlls of OPTION DLLIMPORT */
-#endif
-#if PE_SUPPORT || DLLIMPORT
     char                *imp_prefix;
-#endif
     FILE                *curr_file[NUM_FILE_TYPES];  /* ASM, ERR, OBJ and LST */
     char                *curr_fname[NUM_FILE_TYPES];
-    struct fname_item   *FNames;         /* array of input files */
+    char *              *FNames;         /* array of input files */
     unsigned            cnt_fnames;      /* items in FNames array */
     char                *IncludePath;
     struct qdesc        line_queue;      /* line queue */
@@ -769,22 +754,16 @@ struct module_vars {
     struct hll_item     *HllFree;        /* v2.06: stack of free <struct hll>-items */
     struct context      *ContextStack;
     struct context      *ContextFree;    /* v2.10: "free items" heap implemented. */
-#if FASTPASS
     struct context      *SavedContexts;
     int                 cntSavedContexts;
-#endif
     /* v2.10: moved here from module_info due to problems if @@: occured on the very first line */
     unsigned            anonymous_label; /* "anonymous label" counter */
-#if STACKBASESUPP
     struct asym         *StackBase;
     struct asym         *ProcStatus;
-#endif
     ret_code (* WriteModule)( struct module_info * );
     ret_code (* EndDirHook)( struct module_info * );
     ret_code (* Pass1Checks)( struct module_info * );
-#if PE_SUPPORT
     uint_8              pe_flags;        /* for PE */
-#endif
 };
 
 struct format_options;

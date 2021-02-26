@@ -55,11 +55,11 @@
 #if HASH_MAGNITUDE==12
 #define GHASH_TABLE_SIZE 2003
 #else
-#define GHASH_TABLE_SIZE 8009 //8009
+#define GHASH_TABLE_SIZE 8192
 #endif
 
 /* size of local hash table */
-#define LHASH_TABLE_SIZE 127
+#define LHASH_TABLE_SIZE 128
 
 /* use memcpy()/memcmpi() directly?
  * this may speed-up things, but not with OW.
@@ -117,7 +117,7 @@ static const struct tmitem tmtab[] = {
     /* @Version contains the Masm compatible version */
     /* v2.06: value of @Version changed to 800 */
     //{"@Version",  "615", NULL },
-    {"@Version",  "800", NULL },
+    {"@Version",  "1000", NULL },
     {"@Date",     szDate, NULL },
     {"@Time",     szTime, NULL },
     {"@FileName", ModuleInfo.name, NULL },

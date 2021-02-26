@@ -2022,8 +2022,6 @@ ret_code ProcDir(int i, struct asm_tok tokenarray[])
 
 	}
 	else {
-		/**/
-		myassert(sym != NULL);
 
 		procidx++;
 		sym->isdefined = TRUE;
@@ -2036,22 +2034,17 @@ ret_code ProcDir(int i, struct asm_tok tokenarray[])
 		ofs = GetCurrOffset();
 
 		if (ofs != sym->offset) {
-			DebugMsg(("ProcDir(%s): %spass %u, old ofs=%" I32_SPEC "X, new ofs=%" I32_SPEC "X\n",
-				sym->name,
-				ModuleInfo.PhaseError ? "" : "phase error ",
-				Parse_Pass + 1, sym->offset, ofs));
 			sym->offset = ofs;
 			ModuleInfo.PhaseError = TRUE;
 		}
 		CurrProc = (struct dsym *)sym;
-#if AMD64_SUPPORT
+
 		/* check if the exception handler set by FRAME is defined */
 		if (CurrProc->e.procinfo->isframe &&
 			CurrProc->e.procinfo->exc_handler &&
 			CurrProc->e.procinfo->exc_handler->state == SYM_UNDEFINED) {
 			EmitErr(SYMBOL_NOT_DEFINED, CurrProc->e.procinfo->exc_handler->name);
 		}
-#endif
 	}
 
 	/* v2.11: init @ProcStatus - prologue not written yet, optionally set FPO flag */
@@ -2078,11 +2071,10 @@ ret_code ProcDir(int i, struct asm_tok tokenarray[])
 		LstWrite(LSTTYPE_LABEL, 0, NULL);
 
 	if (Options.line_numbers) {
-#if COFF_SUPPORT
-		AddLinnumDataRef(get_curr_srcfile(), Options.output_format == OFORMAT_COFF ? 0 : GetLineNumber());
-#else
-		AddLinnumDataRef(get_curr_srcfile(), GetLineNumber());
-#endif
+		if (Options.debug_symbols == 4)
+			AddLinnumDataRef(get_curr_srcfile(), GetLineNumber());
+		else
+			AddLinnumDataRef(get_curr_srcfile(), Options.output_format == OFORMAT_COFF ? 0 : GetLineNumber());
 	}
 
 	BackPatch(sym);
@@ -3366,15 +3358,16 @@ static void write_win64_default_prologue_RSP(struct proc_info *info)
 			AddLineQueueX(*(ppfmt + 1), T_DOT_ALLOCSTACK, NUMQUAL stackSize, sym_ReservedStack->name);
 
 			/* Handle ZEROLOCALS option */
-			if (ZEROLOCALS && info->localsize)
+			// Removing this for v2.51 .. it's half baked
+			/*if (ZEROLOCALS && info->localsize)
 			{
 				if (info->localsize <= 128)
 				{
 					AddLineQueueX("mov %r, %u", T_EAX, info->localsize);
-					AddLineQueueX("dw 02ebh");       /* jmp L2 */
-					AddLineQueueX("dec %r", T_EAX);  /* L1: */
-					AddLineQueueX("mov byte ptr [%r + %r], 0", T_RSP, T_RAX); /* L2: */
-					AddLineQueueX("dw 0F875h"); /* jne L1: */
+					AddLineQueueX("dw 02ebh");       // jmp L2 
+					AddLineQueueX("dec %r", T_EAX);  // L1: 
+					AddLineQueueX("mov byte ptr [%r + %r], 0", T_RSP, T_RAX); // L2: 
+					AddLineQueueX("dw 0F875h"); // jne L1: 
 				}
 				else
 				{
@@ -3388,7 +3381,7 @@ static void write_win64_default_prologue_RSP(struct proc_info *info)
 					AddLineQueueX("pop %r", T_RCX);
 					AddLineQueueX("pop %r", T_RDI);
 				}
-			}
+			}*/
 
 			/* save xmm registers */
 			if (cntxmm) {

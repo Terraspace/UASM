@@ -134,15 +134,11 @@ typedef struct _IMAGE_RELOCATION {
 #pragma pack(push,2)
 typedef struct _IMAGE_SYMBOL {
     union {
-        /* v2.08 */
-        //char ShortName[8];
         uint_8 ShortName[8];
         struct {
             uint_32 Short;
             uint_32 Long;
         } Name;
-        /* v2.07: don't use pointers in COFF structures! */
-        //unsigned char *LongName[2];
         uint_32 LongName[2];
     } N;
     uint_32 Value;
@@ -151,6 +147,25 @@ typedef struct _IMAGE_SYMBOL {
     uint_8  StorageClass;
     uint_8  NumberOfAuxSymbols;
 } IMAGE_SYMBOL;
+
+#define IMAGE_SIZEOF_SYMBOL_EX  20
+#define IMAGE_SIZEOF_AUX_SYMBOL_EX 20
+
+typedef struct _IMAGE_SYMBOL_EX {
+    union {
+        uint_8 ShortName[8];
+        struct {
+            uint_32 Short;
+            uint_32 Long;
+        } Name;
+        uint_32 LongName[2];
+    } N;
+    uint_32 Value;
+    long    SectionNumber;
+    uint_16 Type;
+    uint_8  StorageClass;
+    uint_8  NumberOfAuxSymbols;
+} IMAGE_SYMBOL_EX;
 
 /* special section numbers */
 
@@ -226,44 +241,93 @@ typedef struct _IMAGE_SYMBOL {
 #define IMAGE_WEAK_EXTERN_SEARCH_LIBRARY    2
 #define IMAGE_WEAK_EXTERN_SEARCH_ALIAS      3
 
-typedef union _IMAGE_AUX_SYMBOL {
-    /* AUX format 2: .bf and .ef entries */
-    struct {
-        uint_32 TagIndex;
-        union {
-            struct {
-                uint_16 Linenumber;
-                uint_16 Size;
-            } LnSz;
-            uint_32 TotalSize;
-        } Misc;
-        union {
-            struct {
-                uint_32 PointerToLinenumber;
-                uint_32 PointerToNextFunction;
-            } Function;
-            struct {
-                uint_16 Dimension[4];
-            } Array;
-        } FcnAry;
-        uint_16 TvIndex;
-    } Sym;
-    /* AUX format 4: file entries */
-    struct {
-        /* v2.08 */
-        //char Name[IMAGE_SIZEOF_SYMBOL];
-        uint_8 Name[IMAGE_SIZEOF_SYMBOL];
-    } File;
-    /* AUX format 5: section entries */
-    struct {
-        uint_32 Length;
-        uint_16 NumberOfRelocations;
-        uint_16 NumberOfLinenumbers;
-        uint_32 CheckSum;
-        uint_16 Number;
-        uint_8  Selection;
-    } Section;
+/* AUX format 5: section entries */
+
+typedef struct {
+    uint_32 TagIndex;
+    union {
+        struct {
+            uint_16 Linenumber;
+            uint_16 Size;
+        } LnSz;
+        uint_32 TotalSize;
+    } Misc;
+    union {
+        struct {
+            uint_32 PointerToLinenumber;
+            uint_32 PointerToNextFunction;
+        } Function;
+        struct {
+            uint_16 Dimension[4];
+        } Array;
+    } FcnAry;
+    uint_16 TvIndex;
+} IMAGE_AUX_SYMBOL_SYM;
+
+typedef struct {
+    uint_32 Length;
+    uint_16 NumberOfRelocations;
+    uint_16 NumberOfLinenumbers;
+    uint_32 CheckSum;
+    uint_16 Number;
+    uint_8  Selection;
+} IMAGE_AUX_SYMBOL_SECTION;
+
+typedef struct {
+    uint_8 Name[IMAGE_SIZEOF_SYMBOL];
+} IMAGE_AUX_SYMBOL_NAME;
+
+
+typedef union {
+    IMAGE_AUX_SYMBOL_SYM Sym;
+    IMAGE_AUX_SYMBOL_NAME File;
+    IMAGE_AUX_SYMBOL_SECTION Section;
 } IMAGE_AUX_SYMBOL;
+
+
+typedef struct {
+    uint_32 WeakDefaultSymIndex;
+    uint_32 WeakSearchType;
+    uint_8  rgbReserved[12];
+} IMAGE_AUX_SYMBOL_SYM_EX;
+
+typedef struct {
+    uint_32 Length;
+    uint_16 NumberOfRelocations;
+    uint_16 NumberOfLinenumbers;
+    uint_32 CheckSum;
+    uint_16 Number;
+    uint_8  Selection;
+    uint_8  bReserved;
+    int_16  HighNumber;
+    uint_8  rgbReserved[2];
+} IMAGE_AUX_SYMBOL_SECTION_EX;
+
+typedef struct {
+    uint_8 Name[IMAGE_SIZEOF_SYMBOL_EX];
+} IMAGE_AUX_SYMBOL_NAME_EX;
+
+typedef struct {
+    uint_8  bAuxType;
+    uint_8  bReserved;
+    uint_32 SymbolTableIndex;
+    uint_8  rgbReserved[12];
+} IMAGE_AUX_SYMBOL_TOKEN_DEF;
+
+typedef union {
+    IMAGE_AUX_SYMBOL_SYM_EX Sym;
+    IMAGE_AUX_SYMBOL_NAME_EX File;
+    IMAGE_AUX_SYMBOL_SECTION_EX Section;
+    struct {
+        IMAGE_AUX_SYMBOL_TOKEN_DEF TokenDef;
+        uint_8  rgbReserved[2];
+    };
+    struct {
+        uint_32 crc;
+        uint_8  rgbReserved[16];
+    } CRC;
+} IMAGE_AUX_SYMBOL_EX;
+
 #pragma pack(pop)
 
 typedef struct _IMAGE_COFF_SYMBOLS_HEADER {

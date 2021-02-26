@@ -194,11 +194,7 @@ static unsigned AddFile( char const *fname )
 
     DebugMsg1(("AddFile(%s) enter, curr index=%u\n", fname, ModuleInfo.g.cnt_fnames ));
     for( index = 0; index < ModuleInfo.g.cnt_fnames; index++ ) {
-        if( filecmp( fname, ModuleInfo.g.FNames[index].fname ) == 0 ) {
-#ifdef DEBUG_OUT
-            if ( Parse_Pass == PASS_1 )
-                ModuleInfo.g.FNames[index].included++;
-#endif
+        if( filecmp( fname, ModuleInfo.g.FNames[index] ) == 0 ) {
             return( index );
         }
     }
@@ -214,15 +210,8 @@ static unsigned AddFile( char const *fname )
     }
     ModuleInfo.g.cnt_fnames++;
 
-    /* v2.11: use name directly - allows COFF .file entries with relative paths */
-    //_splitpath( fname, NULL, NULL, name, ext );
-
-    ModuleInfo.g.FNames[index].fname = (char *)LclAlloc( strlen( fname ) + 1 );
-    strcpy( ModuleInfo.g.FNames[index].fname, fname );
-    /* v2.11: field fullname removed */
-    //ModuleInfo.g.FNames[index].fullname = (char *)LclAlloc( strlen( fullname ) + 1 );
-    //strcpy( ModuleInfo.g.FNames[index].fullname, fullname );
-    DebugCmd( ModuleInfo.g.FNames[index].included = 1 );
+    ModuleInfo.g.FNames[index] = (char *)LclAlloc( strlen( fname ) + 1 );
+    strcpy( ModuleInfo.g.FNames[index], fname );
     return( index );
 }
 
@@ -707,8 +696,7 @@ char *GetTextLine( char *buffer )
 #endif
             return( buffer );
         }
-        DebugCmd( ModuleInfo.g.FNames[curr->srcfile].lines = curr->line_num );
-        DebugMsg1(("GetTextLine: ***** EOF file %s (idx=%u) *****\n", GetFName( curr->srcfile )->fname, curr->srcfile ));
+ 
         /* don't close and remove main source file */
         if ( curr->next ) {
             fclose( curr->file );
@@ -838,37 +826,16 @@ struct asm_tok *PushInputStatus( struct input_status *oldstat )
     } else
         oldstat->CurrComment = NULL;
     oldstat->line_flags = ModuleInfo.line_flags; /* v2.08 */
-#ifdef __I86__
-    oldstat->tokenarray = ModuleInfo.tokenarray;
-    oldstat->stringbufferend = StringBufferEnd;
-    CurrSource = MemAlloc( MAX_LINE_LEN + SIZE_TOKENARRAY + SIZE_STRINGBUFFER );
-    ModuleInfo.tokenarray = (struct asm_tok *)( CurrSource + MAX_LINE_LEN );
-    token_stringbuf = CurrSource + MAX_LINE_LEN + SIZE_TOKENARRAY;
-#else
     token_stringbuf = StringBufferEnd;
     ModuleInfo.tokenarray += Token_Count + 1;
     CurrSource = GetAlignedPointer( CurrSource, strlen( CurrSource ) );
-    /*myassert( ( CurrSource + MAX_LINE_LEN ) <= (char *)ModuleInfo.tokenarray );*/
-    /*myassert( ( ModuleInfo.tokenarray + sizeof( struct asm_tok ) * MAX_TOKEN ) <= end_tokenarray ); */
-    /*myassert( ( token_stringbuf + 2 * MAX_LINE_LEN ) <= end_stringbuf ); */
-#endif
-    DebugMsg1(("PushInputStatus() stringbuf-tokencnt-currsrc old=%X-%u-%X new=%X-%X-%X\n",
-               oldstat->token_stringbuf, oldstat->token_count, oldstat->currsource,
-               token_stringbuf, ModuleInfo.tokenarray, CurrSource ));
     return( ModuleInfo.tokenarray );
 }
 
 void PopInputStatus( struct input_status *newstat )
 /*************************************************/
 {
-    DebugMsg1(("PopInputStatus() old=%X-%u-%X new=%X-%u-%X\n",
-               token_stringbuf, Token_Count, CurrSource,
-               newstat->token_stringbuf, newstat->token_count, newstat->currsource ));
-#ifdef __I86__
-    MemFree( CurrSource );
-#else
     StringBufferEnd = token_stringbuf;
-#endif
     token_stringbuf = newstat->token_stringbuf;
     Token_Count = newstat->token_count;
     CurrSource = newstat->currsource;
@@ -878,12 +845,7 @@ void PopInputStatus( struct input_status *newstat )
         *newstat->CurrComment = NULLC;
     } else
         ModuleInfo.CurrComment = NULL;
-#ifdef __I86__
-    StringBufferEnd = newstat->stringbufferend;
-    ModuleInfo.tokenarray = newstat->tokenarray;
-#else
     ModuleInfo.tokenarray -= Token_Count + 1;
-#endif
     ModuleInfo.line_flags = newstat->line_flags; /* v2.08 */
     return;
 }
@@ -894,40 +856,11 @@ void InputInit( void )
 /********************/
 {
     struct src_item *fl;
-#if 0
-    char        path[FILENAME_MAX];
-    char        drive[_MAX_DRIVE];
-    char        dir[_MAX_DIR];
-#endif
 
-    DebugMsg(( "InputInit() enter\n" ));
-    //ModuleInfo.g.cnt_fnames = 0;
-    //ModuleInfo.g.FNames = NULL;
-    //IncludePath = NULL;
-    //src_stack = NULL;
     SrcFree = NULL; /* v2.11 */
 #if FILESEQ
     FileSeq.head = NULL;
 #endif
-#ifdef DEBUG_OUT
-    cntppl0 = 0;
-    cntppl1 = 0;
-    cntppl2 = 0;
-    cnttok0 = 0;
-    cnttok1 = 0;
-    cntflines = 0;
-    cntlines = 0;
-#endif
-
-    /* add path of main module to the include path.
-     * v2.12: unnecessary since v2.10, since the directory part of the
-     * current source is added if a file is to be included; see SearchFile().
-     */
-    //_splitpath( CurrFName[ASM], drive, dir, NULL, NULL );
-    //if ( drive[0] || dir[0] ) {
-    //    _makepath( path, drive, dir, NULL, NULL );
-    //    AddStringToIncludePath( path );
-    //}
 
     srclinebuffer = LclAlloc( SIZE_SRCLINES + SIZE_TOKENARRAY + SIZE_STRINGBUFFER );
     /* the comment buffer is at the end of the source line buffer */
@@ -935,19 +868,9 @@ void InputInit( void )
     /* behind the comment buffer is the token buffer */
     ModuleInfo.tokenarray = (struct asm_tok *)( srclinebuffer + SIZE_SRCLINES );
     token_stringbuf = srclinebuffer + SIZE_SRCLINES + SIZE_TOKENARRAY;
-#ifdef DEBUG_OUT
-    end_tokenarray = (struct asm_tok *)token_stringbuf;
-    end_stringbuf = token_stringbuf + SIZE_STRINGBUFFER;
-    DebugMsg(( "InputInit: srclinebuffer=%p, tokenarray=%p, token_stringbuf=%p end_stringbuf=%p\n", srclinebuffer, ModuleInfo.tokenarray, token_stringbuf, end_stringbuf ));
-#endif
-
     fl = PushSrcItem( SIT_FILE, CurrFile[ASM] );
     fl->srcfile = ModuleInfo.srcfile = AddFile( CurrFName[ASM] );
-    /* setting a function pointer won't work for text macros! */
-    //FileCur->sfunc_ptr = &GetFileCur;
     FileCur->string_ptr = GetFName( fl->srcfile )->fname;
-
-    DebugMsg(( "InputInit() exit\n" ));
 }
 
 /* init for each pass */
@@ -955,9 +878,7 @@ void InputInit( void )
 void InputPassInit( void )
 /************************/
 {
-    DebugMsg(( "InputPassInit() enter\n" ));
     src_stack->line_num = 0;
-    //inside_comment = NULLC;
     CurrSource = srclinebuffer;
     *CurrSource = NULLC;
     StringBufferEnd = token_stringbuf;
@@ -969,39 +890,11 @@ void InputPassInit( void )
 void InputFini( void )
 /********************/
 {
-#ifdef DEBUG_OUT
-    int   i;
-
-    /* for the main source file, lines usually isn't filled yet */
-    if ( ModuleInfo.g.FNames )
-        ModuleInfo.g.FNames[ModuleInfo.srcfile].lines = src_stack->line_num;
-    for( i = 0; i < ModuleInfo.g.cnt_fnames; i++ ) {
-        if ( Options.log_all_files ) {
-            if ( ModuleInfo.g.FNames[i].included > 1 )
-                printf("%2u: %5u *%2u %s\n", i+1, ModuleInfo.g.FNames[i].lines, ModuleInfo.g.FNames[i].included, ModuleInfo.g.FNames[i].fname );
-            else
-                printf("%2u: %5u     %s\n", i+1, ModuleInfo.g.FNames[i].lines, ModuleInfo.g.FNames[i].fname );
-        }
-        DebugMsg(( "InputFini: idx=%u name=%s\n", i, ModuleInfo.g.FNames[i].fname ));
-    }
-#endif
     if ( ModuleInfo.g.IncludePath )
         MemFree( ModuleInfo.g.IncludePath );
 
     /* free items in ModuleInfo.g.FNames ( and FreeFile, if FASTMEM==0 ) */
     FreeFiles();
-#ifdef DEBUG_OUT
-    if ( Options.quiet == FALSE ) {
-        printf("lines read(files)/processed in pass one: %" I32_SPEC "u / %" I32_SPEC "u\n", cntflines, cntlines );
-        printf("invokations: PreprocessLine=%" I32_SPEC "u/%" I32_SPEC "u/%" I32_SPEC "u, Tokenize=%" I32_SPEC "u/%" I32_SPEC "u\n", cntppl0, cntppl1, cntppl2, cnttok0, cnttok1 );
-    }
-#endif
     ModuleInfo.tokenarray = NULL;
-#ifdef DEBUG_OUT
-    token_stringbuf = NULL;
-    StringBufferEnd = NULL;
-    commentbuffer = NULL;
-    CurrSource = NULL;
-#endif
     LclFree( srclinebuffer );
 }

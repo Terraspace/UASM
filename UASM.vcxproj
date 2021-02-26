@@ -106,6 +106,7 @@
     <ClInclude Include="H\data.h" />
     <ClInclude Include="H\dbgcv.h" />
     <ClInclude Include="H\dbgdw.h" />
+    <ClInclude Include="H\defs.h" />
     <ClInclude Include="H\directve.h" />
     <ClInclude Include="H\dirtype.h" />
     <ClInclude Include="H\elf.h" />
@@ -136,6 +137,7 @@
     <ClInclude Include="H\macro.h" />
     <ClInclude Include="H\macrolib.h" />
     <ClInclude Include="H\mangle.h" />
+    <ClInclude Include="H\MD5.h" />
     <ClInclude Include="H\memalloc.h" />
     <ClInclude Include="H\MemTable32.h" />
     <ClInclude Include="H\MemTable64.h" />
@@ -150,6 +152,7 @@
     <ClInclude Include="H\orgfixup.h" />
     <ClInclude Include="H\parser.h" />
     <ClInclude Include="H\pespec.h" />
+    <ClInclude Include="H\picohash.h" />
     <ClInclude Include="H\posndir.h" />
     <ClInclude Include="H\preproc.h" />
     <ClInclude Include="H\proc.h" />
