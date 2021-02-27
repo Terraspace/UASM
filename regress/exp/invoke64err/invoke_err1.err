@@ -1,3 +1,4 @@
+..\src\invoke64err\invoke_err1.asm(5) : Warning A4305: Stackbase automatically changed to RSP to support WIN64 options
 ..\src\invoke64err\invoke_err1.asm(24) : Error A2166: Register value overwritten by INVOKE
 ..\src\invoke64err\invoke_err1.asm(25) : Error A2166: Register value overwritten by INVOKE
 ..\src\invoke64err\invoke_err1.asm(26) : Error A2166: Register value overwritten by INVOKE

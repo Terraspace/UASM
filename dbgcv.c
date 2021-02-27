@@ -20,7 +20,7 @@
 #include <direct.h>
 #include <picohash.h>
 
-#define SIZE_CV_SEGBUF ( MAX_LINE_LEN * 2 )
+#define SIZE_CV_SEGBUF ( MAX_LINE_LEN * 4 )
 
 #define EQUATESYMS 1 /* 1=generate info for EQUates ( -Zi3 ) */
 #define GENPTRTYPE 0 /* generate a generic pointer type */
@@ -1418,7 +1418,6 @@ void cv_write_debug_tables(struct dsym* symbols, struct dsym* types, void* pv)
 		}
 
 		/* line numbers for section */
-
 		for (seg = SymTables[TAB_SEG].head; seg; seg = seg->next) {
 
 			cv.section = NULL;
@@ -1506,6 +1505,7 @@ void cv_write_debug_tables(struct dsym* symbols, struct dsym* types, void* pv)
 				}
 			}
 		}
+
 		if (cv.section != NULL)
 			cv_align(&cv);
 

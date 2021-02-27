@@ -402,7 +402,7 @@ struct proc_info {
     struct asym         *exc_handler;   /* PROC: exc handler set by FRAME */
     int                 ReservedStack;  /* PROC: win64: additional reserved stack */
     int                 stored_reg;     /* number of stored general registers in home spaces */
-    int					        pushed_reg;		  /* number of pushed registers */
+    int					pushed_reg;		/* number of pushed registers */
     int                 home_taken;     /* number of taken spaces in a home space */
     int                 xmmsize;        /* size of saved xmm registers */
     char                home_used[6];   /* used shadows home space */
@@ -431,6 +431,7 @@ struct proc_info {
 #endif
 	uint_8              NoSub;
 	int                frameofs;		/* Optimise 1byte displace to access locals from RBP by using a frame offset */
+    bool               prologueDone;    /* UASM 2.51 check when prologue has been completed */
 };
 
 /* macro parameter */

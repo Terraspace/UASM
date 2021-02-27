@@ -1,0 +1,1 @@
+..\src\win64\win64_struct.asm(6) : Warning A4305: Stackbase automatically changed to RSP to support WIN64 options
