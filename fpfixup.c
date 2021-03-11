@@ -40,6 +40,8 @@
 #include "omf.h"
 #include "omfspec.h"
 
+uasm_PACK_PUSH_STACK
+
 enum fp_patches
 {
     FPP_WAIT,
@@ -133,3 +135,5 @@ void AddFloatingPointEmulationFixup(struct code_info* CodeInfo)
     }
     return;
 }
+
+uasm_PACK_POP

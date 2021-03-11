@@ -52,6 +52,8 @@
 #include "expreval.h"
 #endif
 
+uasm_PACK_PUSH_STACK
+
 void LabelInit(void)
 /********************/
 {
@@ -157,8 +159,17 @@ struct asym* CreateLabel(const char* name, enum memtype mem_type, struct qualifi
         CurrSeg->e.seginfo->label_list = sym;
 
         /* a possible language type set by EXTERNDEF must be kept! */
-        if (sym->langtype == LANG_NONE)
+        if (sym->langtype == LANG_NONE || sym->langtype != ModuleInfo.langtype)
             sym->langtype = ModuleInfo.langtype;
+
+        if (sym->output_format != ModuleInfo.output_format)
+            sym->output_format = ModuleInfo.output_format;
+
+        if (sym->sub_format != ModuleInfo.sub_format)
+            sym->sub_format = ModuleInfo.sub_format;
+
+        if (sym->fctype != ModuleInfo.fctype)
+            sym->fctype = ModuleInfo.fctype;
 
         /* v2.05: added to accept type prototypes */
         if (mem_type == MT_PROC)
@@ -320,3 +331,5 @@ ret_code LabelDirective(int i, struct asm_tok tokenarray[])
     }
     return(ERROR);
 }
+
+uasm_PACK_POP

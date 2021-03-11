@@ -38,6 +38,8 @@
 
 #define GNURELOCS 1
 
+uasm_PACK_PUSH_STACK
+
 extern struct asym* SegOverride;
 
 int_8   Frame_Type;   /* curr fixup frame type: SEG|GRP|EXT|ABS|NONE; see omfspec.h */
@@ -329,3 +331,5 @@ void store_fixup(struct fixup* fixup, struct dsym* seg, int_32* pdata)
     }
     return;
 }
+
+uasm_PACK_POP

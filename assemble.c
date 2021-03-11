@@ -85,16 +85,20 @@ jmp_buf jmpenv;
 #define ERR_EXT "err"
 #define BIN_EXT "BIN"
 #define EXE_EXT "EXE"
+
+#include "Colors.h"
+#ifdef _WIN32
+#include "winconsole.h"
+#endif
+
+uasm_PACK_PUSH_STACK
+
 extern int_32           LastCodeBufSize;
 extern char* DefaultDir[NUM_FILE_TYPES];
 extern const char* ModelToken[];
 extern void AddSimdTypes();
 #if FASTMEM==0
 extern void             FreeLibQueue();
-#endif
-#include "Colors.h"
-#ifdef _WIN32
-#include "winconsole.h"
 #endif
 
 /* parameters for output formats. order must match enum oformat */
@@ -185,27 +189,54 @@ static void CheckBOM(FILE *f)
 
 extern void RewindToWin64()
 {
-    if (!(Options.output_format == OFORMAT_BIN && Options.sub_format == SFORMAT_NONE))
+    if (!(ModuleInfo.output_format == OFORMAT_BIN && ModuleInfo.sub_format == SFORMAT_NONE))
     {
-        if (Options.output_format != OFORMAT_BIN)
-            Options.output_format = OFORMAT_COFF;
+        if (ModuleInfo.output_format != OFORMAT_BIN)
+        {
+            /*if (Options.output_format != OFORMAT_COFF)*/
+                Options.output_format = OFORMAT_COFF;
+            /*if (ModuleInfo.output_format != OFORMAT_COFF)*/
+                ModuleInfo.output_format = OFORMAT_COFF;
+        }
         else
-            Options.langtype = LANG_FASTCALL;
+        {
+            /*if (Options.langtype != LANG_FASTCALL)*/
+                Options.langtype = LANG_FASTCALL;
+            /*if (ModuleInfo.langtype != LANG_FASTCALL)*/
+                ModuleInfo.langtype = LANG_FASTCALL;
+        }
         Options.sub_format = SFORMAT_64BIT;
+        ModuleInfo.sub_format = SFORMAT_64BIT;
     }
 }
 
 extern void RewindToSYSV64()
 {
-    if (!(Options.output_format == OFORMAT_BIN && Options.sub_format == SFORMAT_NONE))
+    if (!(ModuleInfo.output_format == OFORMAT_BIN && ModuleInfo.sub_format == SFORMAT_NONE))
     {
-        if (Options.output_format != OFORMAT_BIN && Options.output_format != OFORMAT_MAC)
-            Options.output_format = OFORMAT_ELF;
-        else if (Options.output_format != OFORMAT_BIN && Options.output_format != OFORMAT_ELF)
-            Options.output_format = OFORMAT_MAC;
+        if (ModuleInfo.output_format != OFORMAT_BIN && ModuleInfo.output_format != OFORMAT_MAC)
+        {
+            /*if (Options.output_format != OFORMAT_ELF)*/
+                Options.output_format = OFORMAT_ELF;
+            /*if (ModuleInfo.output_format != OFORMAT_ELF)*/
+                ModuleInfo.output_format = OFORMAT_ELF;
+        }
+        else if (ModuleInfo.output_format != OFORMAT_BIN && ModuleInfo.output_format != OFORMAT_ELF)
+        {
+            /*if (Options.output_format != OFORMAT_MAC)*/
+                Options.output_format = OFORMAT_MAC;
+            /*if (ModuleInfo.output_format != OFORMAT_MAC)*/
+                ModuleInfo.output_format = OFORMAT_MAC;
+        }
         else
-            Options.langtype = LANG_SYSVCALL;
+        {
+            /*if (Options.langtype != LANG_SYSVCALL)*/
+                Options.langtype = LANG_SYSVCALL;
+            /*if (ModuleInfo.langtype != LANG_SYSVCALL)*/
+                ModuleInfo.langtype = LANG_SYSVCALL;
+        }
         Options.sub_format = SFORMAT_64BIT;
+        ModuleInfo.sub_format = SFORMAT_64BIT;
     }
 }
 
@@ -864,17 +895,27 @@ static void ModulePassInit(void)
 #endif
         ModuleInfo.langtype = Options.langtype;
         ModuleInfo.fctype = Options.fctype;
+        ModuleInfo.sub_format = Options.sub_format;
+        ModuleInfo.output_format = Options.output_format;
 
 #if AMD64_SUPPORT
-        if (Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC)
+        if (ModuleInfo.sub_format == SFORMAT_64BIT)
         {
-            ModuleInfo.fctype = FCT_SYSV64;
-            Options.fctype = FCT_SYSV64; /* SYSV proc/invoke tables use the same ordinal as FCT_WIN64 so set it now, instead of FCT_MSC */
-        }
-        else
-        {
-            ModuleInfo.fctype = FCT_WIN64;
-            Options.fctype = FCT_WIN64;
+            if (ModuleInfo.output_format == OFORMAT_ELF || ModuleInfo.output_format == OFORMAT_MAC)
+            {
+                /* SYSV proc/invoke tables use the same ordinal as FCT_WIN64 so set it now, instead of FCT_MSC */
+                if (ModuleInfo.fctype != FCT_SYSV64)
+                    ModuleInfo.fctype = FCT_SYSV64;
+                if (Options.fctype != FCT_SYSV64)
+                    Options.fctype = FCT_SYSV64;
+            }
+            else
+            {
+                if (ModuleInfo.fctype != FCT_WIN64)
+                    ModuleInfo.fctype = FCT_WIN64;
+                if (Options.fctype != FCT_WIN64)
+                    Options.fctype = FCT_WIN64;
+            }
         }
 #endif
 
@@ -888,12 +929,14 @@ static void ModulePassInit(void)
              * there's no other model than FLAT possible.
              */
             model = MODEL_FLAT;
-            if (ModuleInfo.langtype == LANG_NONE && Options.output_format == OFORMAT_COFF)
+            if (ModuleInfo.langtype != LANG_FASTCALL && ModuleInfo.output_format == OFORMAT_COFF)
+            {
                 ModuleInfo.langtype = LANG_FASTCALL;
-            if (ModuleInfo.langtype == LANG_NONE && Options.output_format == OFORMAT_ELF)
+            }
+            if (ModuleInfo.langtype != LANG_SYSVCALL && (ModuleInfo.output_format == OFORMAT_ELF || ModuleInfo.output_format == OFORMAT_MAC))
+            {
                 ModuleInfo.langtype = LANG_SYSVCALL;
-            if (ModuleInfo.langtype == LANG_NONE && Options.output_format == OFORMAT_MAC)
-                ModuleInfo.langtype = LANG_SYSVCALL;
+            }
         }
         else
 #endif
@@ -1079,7 +1122,7 @@ static void PassOneChecks(void)
 #endif
 
     /* scan ALIASes for COFF/ELF */
-    if (Options.output_format == OFORMAT_COFF || Options.output_format == OFORMAT_ELF)
+    if (ModuleInfo.output_format == OFORMAT_COFF || ModuleInfo.output_format == OFORMAT_ELF)
     {
         for (curr = SymTables[TAB_ALIAS].head; curr != NULL; curr = curr->next)
         {
@@ -1149,7 +1192,7 @@ static void PassOneChecks(void)
             if (curr->sym.altname->state == SYM_INTERNAL)
             {
                 /* for COFF/ELF, the altname must be public or external */
-                if (curr->sym.altname->ispublic == FALSE && (Options.output_format == OFORMAT_COFF || Options.output_format == OFORMAT_ELF))
+                if (curr->sym.altname->ispublic == FALSE && (ModuleInfo.output_format == OFORMAT_COFF || ModuleInfo.output_format == OFORMAT_ELF))
                 {
                     SkipSavedState();
                 }
@@ -1254,17 +1297,17 @@ static int OnePass(void)
 
     /* Set platform type */
     platform = SymFind("@Platform");
-    if (Options.output_format == OFORMAT_BIN && Options.sub_format == SFORMAT_NONE)
+    if (ModuleInfo.output_format == OFORMAT_BIN && ModuleInfo.sub_format == SFORMAT_NONE)
         platform->value = 1;
-    else if (Options.output_format == OFORMAT_COFF && Options.sub_format == SFORMAT_NONE)
+    else if (ModuleInfo.output_format == OFORMAT_COFF && ModuleInfo.sub_format == SFORMAT_NONE)
         platform->value = 0;
-    else if (Options.output_format == OFORMAT_COFF && Options.sub_format == SFORMAT_64BIT)
+    else if (ModuleInfo.output_format == OFORMAT_COFF && ModuleInfo.sub_format == SFORMAT_64BIT)
         platform->value = 1;
-    else if (Options.output_format == OFORMAT_ELF && Options.sub_format == SFORMAT_NONE)
+    else if (ModuleInfo.output_format == OFORMAT_ELF && ModuleInfo.sub_format == SFORMAT_NONE)
         platform->value = 2;
-    else if (Options.output_format == OFORMAT_ELF && Options.sub_format == SFORMAT_64BIT)
+    else if (ModuleInfo.output_format == OFORMAT_ELF && ModuleInfo.sub_format == SFORMAT_64BIT)
         platform->value = 3;
-    else if (Options.output_format == OFORMAT_MAC && Options.sub_format == SFORMAT_64BIT)
+    else if (ModuleInfo.output_format == OFORMAT_MAC && ModuleInfo.sub_format == SFORMAT_64BIT)
         platform->value = 4;
 
     if (Parse_Pass == PASS_1)
@@ -1421,6 +1464,7 @@ static void ModuleInit(void)
 /****************************/
 {
     ModuleInfo.sub_format = Options.sub_format;
+    ModuleInfo.output_format = Options.output_format;
     ModuleInfo.fmtopt = &formatoptions[Options.output_format];
     ModuleInfo.CommentDataInCode = (Options.output_format == OFORMAT_OMF && Options.no_comment_data_in_code_records == FALSE);
     ModuleInfo.g.error_count = 0;
@@ -1734,6 +1778,7 @@ int EXPQUAL AssembleModule(const char* source)
     tempInfo.fctype = ModuleInfo.fctype;
     tempInfo.langtype = ModuleInfo.langtype;
     tempInfo.sub_format = ModuleInfo.sub_format;
+    tempInfo.output_format = ModuleInfo.output_format;
     tempInfo.win64_flags = ModuleInfo.win64_flags;
     tempInfo.switch_style = ModuleInfo.switch_style;
 
@@ -1743,6 +1788,7 @@ int EXPQUAL AssembleModule(const char* source)
     ModuleInfo.fctype = tempInfo.fctype;
     ModuleInfo.langtype = tempInfo.langtype;
     ModuleInfo.sub_format = tempInfo.sub_format;
+    ModuleInfo.output_format = tempInfo.output_format;
     ModuleInfo.win64_flags = tempInfo.win64_flags;
     ModuleInfo.switch_style = tempInfo.switch_style;
 
@@ -1981,42 +2027,44 @@ done:
 }
 
 /* ARCH SSE/AVX specific instructions */
-const char* MOVE_ALIGNED_FLOAT(void)
+char const* const MOVE_ALIGNED_FLOAT(void)
 {
     return (extraflags.MODULEARCH == ARCH_AVX ? "vmovaps" : "movaps");
 }
 
-const char* MOVE_ALIGNED_INT(void)
+char const* const MOVE_ALIGNED_INT(void)
 {
     return (extraflags.MODULEARCH == ARCH_AVX ? (extraflags.evexflag == TRUE ? "vmovdqa32" : "vmovdqa") : "movdqa");
 }
 
-const char* MOVE_UNALIGNED_FLOAT(void)
+char const* const MOVE_UNALIGNED_FLOAT(void)
 {
     return (extraflags.MODULEARCH == ARCH_AVX ? "vmovups" : "movups");
 }
 
-const char* MOVE_UNALIGNED_INT(void)
+char const* const MOVE_UNALIGNED_INT(void)
 {
     return (extraflags.MODULEARCH == ARCH_AVX ? (extraflags.evexflag == TRUE ? "vmovdqu32" : "vmovdqu") : "movdqu");
 }
 
-const char* MOVE_SINGLE(void)
+char const* const MOVE_SINGLE(void)
 {
     return (extraflags.MODULEARCH == ARCH_AVX ? "vmovss" : "movss");
 }
 
-const char* MOVE_DOUBLE(void)
+char const* const MOVE_DOUBLE(void)
 {
     return (extraflags.MODULEARCH == ARCH_AVX ? "vmovsd" : "movsd");
 }
 
-const char* MOVE_SIMD_DWORD(void)
+char const* const MOVE_SIMD_DWORD(void)
 {
     return (extraflags.MODULEARCH == ARCH_AVX ? "vmovd" : "movd");
 }
 
-const char* MOVE_SIMD_QWORD(void)
+char const* const MOVE_SIMD_QWORD(void)
 {
     return (extraflags.MODULEARCH == ARCH_AVX ? "vmovq" : "movq");
 }
+
+uasm_PACK_POP

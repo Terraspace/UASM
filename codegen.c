@@ -41,6 +41,8 @@
 #include "listing.h"
 #include "reswords.h"
 
+uasm_PACK_PUSH_STACK
+
 extern const struct opnd_class opnd_clstab[];
 #if AVXSUPP
 extern struct ReservedWord  ResWordTable[];
@@ -3881,3 +3883,5 @@ ret_code codegen(struct code_info* CodeInfo, uint_32 oldofs)
     EmitError(INVALID_INSTRUCTION_OPERANDS);
     return(ERROR);
 }
+
+uasm_PACK_POP

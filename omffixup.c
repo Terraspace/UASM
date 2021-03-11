@@ -38,6 +38,8 @@
 #include "omfspec.h"
 #include "myassert.h"
 
+uasm_PACK_PUSH_STACK
+
 extern const char szNull[];
 extern unsigned omf_GetGrpIdx(struct asym* sym);
 
@@ -472,3 +474,5 @@ unsigned OmfFixGenFix(const struct fixup* fixup, uint_32 start_loc, uint_8* buf,
     *(buf + 1) = (uint_8)data_rec_offset;
     return(2 + TranslateLogref(&lr, buf + 2, type));
 }
+
+uasm_PACK_POP

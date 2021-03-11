@@ -35,6 +35,10 @@
 
 #include <stddef.h>
 
+#include "basedefs.h"
+
+uasm_PACK_PUSH_STACK
+
 typedef struct _trmem_internal* _trmem_hdl;
 
 typedef void (*_trmem_who)(void);  /* generic pointer to code */
@@ -148,5 +152,7 @@ _trmem_who  _trmem_guess_who(void*);
     value               [eax] \
     modify exact        [eax];
 #endif
+
+uasm_PACK_POP
 
 #endif

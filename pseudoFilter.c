@@ -8,6 +8,8 @@
 #include "globals.h"
 #include "parser.h"
 
+uasm_PACK_PUSH_STACK
+
 #ifdef _WIN32
 #else
 
@@ -348,3 +350,5 @@ int get_pseudoVPCLMULXX(char* dst, char* p1, int index)
     *p1 = 0;
     return index;
 }
+
+uasm_PACK_POP

@@ -32,6 +32,10 @@
 #ifndef _SEGMENT_H_
 #define _SEGMENT_H_
 
+#include "basedefs.h"
+
+uasm_PACK_PUSH_STACK
+
 #define GetSegm( x )     (struct dsym *)x->segment
 
 extern void             SetSymSegOfs(struct asym*);
@@ -76,5 +80,7 @@ extern void             ModelSimSegmExit(void);
 extern void             SetModelDefaultSegNames(void);
 
 extern void             UpdateCurrSegVars(void);
+
+uasm_PACK_POP
 
 #endif

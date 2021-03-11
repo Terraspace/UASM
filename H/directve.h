@@ -199,7 +199,7 @@ res(ENDM,      endm,           0,                     DRT_MACINT,  0, P_86, 0)
 res(GOTO,      goto,           0,                     DRT_MACINT,  0, P_86, 0)
 res(PURGE,     purge,          0,                     DRT_PURGE,   0, P_86, 0)
 res(UNDEF,     undef,          DF_NOEXPAND|DF_NOCONCAT, DRT_UNDEF, 0, P_86, 0)
-res(PDEFINE,    pdefine,         DF_NOEXPAND|DF_NOCONCAT, DRT_PDEFINE,0, P_86, 0)
+res(PDEFINE,    pdefine,         DF_NOEXPAND|DF_NOCONCAT, DRT_PDEFINE,0, P_86, 0) /*KRAD- Why not implement define - value or text in C!!!*/
 res(INCLUDE,   include,        DF_NOEXPAND|DF_NOCONCAT,DRT_INCLUDE,0, P_86, 0)
 res(TEXTEQU,   textequ,        DF_STRPARM | DF_LABEL, DRT_CATSTR,  0, P_86, 0)
 res(CATSTR,    catstr,         DF_STRPARM | DF_LABEL, DRT_CATSTR,  0, P_86, 0)

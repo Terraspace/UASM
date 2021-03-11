@@ -24,9 +24,10 @@
 #include "proc.h"
 #include "expreval.h"
 #include "assume.h"
-#include "symbols.h"
 
 #define REMOVECOMENT 0 /* 1=remove comments from source       */
+
+uasm_PACK_PUSH_STACK
 
 extern ret_code(* const directive_tab[])(int, struct asm_tok[]);
 
@@ -585,6 +586,8 @@ static void ExpandObjCalls(char* line, struct asm_tok tokenarray[])
             Token_Count = Tokenize(line, 0, tokenarray, TOK_RESCAN);
         }
     }
+
+
 }
 
 /* Expand static object type method invocations */
@@ -617,6 +620,7 @@ static void ExpandStaticObjCalls(char* line, struct asm_tok tokenarray[])
             {
                 if (tokenarray[i + 1].token == T_DOT && tokenarray[i + 2].token == T_ID && tokenarray[i + 3].token == T_OP_BRACKET)
                 {
+					
                     /* Scan backwards to check if we're in an HLL expression or call parameter */
                     if (i > 0)
                     {
@@ -796,6 +800,7 @@ static void ExpandHllCalls(char* line, struct asm_tok tokenarray[], bool inParam
             if (sym && (sym->sym.isproc || (sym->sym.isfunc && sym->sym.state == SYM_EXTERNAL)) && tokenarray[i + 1].tokval != T_PROC && tokenarray[i + 1].tokval != T_PROTO &&
                 tokenarray[i + 1].tokval != T_ENDP && tokenarray[i + 1].tokval != T_EQU && tokenarray[i + 1].token == T_OP_BRACKET)
             {
+		
                 /* Scan backwards to check if we're in an HLL expression or call parameter */
                 if (i > 0)
                 {
@@ -1075,6 +1080,7 @@ void EvaluatePreprocessItems(char* line, struct asm_tok tokenarray[])
                     recsym->sym.used = FALSE;
                 }
             }
+
         }
     }
 }
@@ -1235,3 +1241,5 @@ int PreprocessLine(char* line, struct asm_tok tokenarray[])
     DebugCmd(cntppl2++);
     return(Token_Count);
 }
+
+uasm_PACK_POP

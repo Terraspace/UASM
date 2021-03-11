@@ -49,6 +49,10 @@
 #define OBJ_BUFFER_SIZE 0x0FF0
 #endif
 
+#include "basedefs.h"
+
+uasm_PACK_PUSH_STACK
+
  /*-----------------------------------------------------*/
 
  /*  A COMENT record needs additional data to be attached. */
@@ -178,5 +182,7 @@ enum fixgen_types {
 
 extern unsigned OmfFixGenFix(const struct fixup* fix, uint_32 start_loc, uint_8* buf, enum fixgen_types type);
 extern unsigned OmfFixGenFixModend(const struct fixup*, uint_8* buf, uint_32, enum fixgen_types type);
+
+uasm_PACK_POP
 
 #endif

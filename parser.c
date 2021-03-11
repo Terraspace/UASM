@@ -69,6 +69,8 @@
 
 #define InWordRange( val ) ( (val > 65535 || val < -65535) ? FALSE : TRUE )
 
+uasm_PACK_PUSH_STACK
+
 extern ret_code(* const directive_tab[])(int, struct asm_tok[]);
 
 /* parsing of branch instructions with imm operand is found in branch.c */
@@ -3378,6 +3380,7 @@ ret_code ParseLine(struct asm_tok tokenarray[])
     char*               opcodePtr = NULL;
     int                opndCount = 0;
     char*               instr = NULL;
+    bool               doDataInProc = FALSE;
 
     memset(&opndx, 0, sizeof(opndx));
     memset(&CodeInfo, 0, sizeof(CodeInfo));
@@ -3552,8 +3555,15 @@ ret_code ParseLine(struct asm_tok tokenarray[])
 
                 if (tokenarray[i].dirtype == DRT_DATADIR)
                 {
+                    /* UASM 2.51 - Don't write anonymous data items in Procs before the prologue is done */
+                    if (!(ProcStatus & PRST_PROLOGUE_NOT_DONE) || !ProcStatus)
                     return(data_dir(i, tokenarray, NULL));
+                    else {
+                       doDataInProc = TRUE;
+                        goto dataInProc;
+                    }
                 }
+
                 dirflags = GetValueSp(tokenarray[i].tokval);
                 if (CurrStruct && (dirflags & DF_NOSTRUC))
                 {
@@ -3635,13 +3645,22 @@ ret_code ParseLine(struct asm_tok tokenarray[])
         if (i && tokenarray[i - 1].token == T_ID)
             i--;
         return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].string_ptr));
+
     } /* end of != T_INSTRUCTION */
+
+dataInProc:
 
     if (CurrStruct)
         return(EmitError(STATEMENT_NOT_ALLOWED_INSIDE_STRUCTURE_DEFINITION));
 
     if (ProcStatus & PRST_PROLOGUE_NOT_DONE)
         write_prologue(tokenarray);
+
+    if (doDataInProc)
+    {
+        doDataInProc = FALSE;
+        return(data_dir(i, tokenarray, NULL));
+    }
 
     /* v2.07: moved because special handling is needed for RET/IRET */
     if (CurrFile[LST]) oldofs = GetCurrOffset();
@@ -3860,7 +3879,6 @@ ret_code ParseLine(struct asm_tok tokenarray[])
                     i--;  /* v2.08: if there was a terminating comma, display it */
 
             case EXPR_ERROR:
-                DebugMsg(("ParseLine(%s): unexpected operand kind=%d, error, exit\n", instr, opndx[j].kind));
                 return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].string_ptr));
         }
 
@@ -3870,7 +3888,6 @@ ret_code ParseLine(struct asm_tok tokenarray[])
 
     if (tokenarray[i].token != T_FINAL)
     {
-        DebugMsg(("ParseLine(%s): too many operands (%s) \n", instr, tokenarray[i].tokpos));
         return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].tokpos));
     }
 
@@ -3880,6 +3897,7 @@ ret_code ParseLine(struct asm_tok tokenarray[])
     if (opndx[0].kind == EXPR_REG && (GetValueSp(opndx[0].base_reg->tokval) == OP_XMM ||
         GetValueSp(opndx[0].base_reg->tokval) == OP_YMM || GetValueSp(opndx[0].base_reg->tokval) == OP_ZMM))
     {
+
         if (GetValueSp(opndx[0].base_reg->tokval) == OP_XMM)
             alignCheck = 16;
         else if (GetValueSp(opndx[0].base_reg->tokval) == OP_YMM)
@@ -3923,6 +3941,7 @@ ret_code ParseLine(struct asm_tok tokenarray[])
                     opndx[2].mem_type = MT_ZMMWORD;
             }
         }
+
     }
     else if (opndx[0].kind == EXPR_ADDR && opndx[0].sym)
     {
@@ -3959,13 +3978,6 @@ ret_code ParseLine(struct asm_tok tokenarray[])
         }
     }
 
-    /* This is a fix for use of memory size after [], v2.50 */
-    /*if (opndx[0].mem_type != MT_EMPTY)
-        CodeInfo.mem_type = opndx[0].mem_type;
-    else if (opndx[1].mem_type != MT_EMPTY)
-        CodeInfo.mem_type = opndx[1].mem_type;
-        */
-
         /* ********************************************************* */
         /* Make copy of Code Generation structures for V2 CodeGen.   */
         /* ********************************************************* */
@@ -3986,6 +3998,7 @@ ret_code ParseLine(struct asm_tok tokenarray[])
         if (CodeInfo.token >= VEX_START && CurrOpnd == OPND2 &&
             (CodeInfo.opnd[OPND1].type & (OP_XMM | OP_YMM | OP_M | OP_M256 | OP_R32 | OP_R64 | OP_K | OP_ZMM | OP_M64 | OP_M512)))
         {
+            
             CodeInfo.r1type = 10000000;
             CodeInfo.r2type = 10000000;
             if (CodeInfo.token == T_VMOVSD || CodeInfo.token == T_VMOVSS)
@@ -4301,6 +4314,7 @@ ret_code ParseLine(struct asm_tok tokenarray[])
             /* v2.06: moved here from process_const() */
             if (CodeInfo.token == T_IMUL)
             {
+
                 /* the 2-operand form with an immediate as second op
                  * is actually a 3-operand form. That's why the rm byte
                  * has to be adjusted. */
@@ -4316,10 +4330,12 @@ ret_code ParseLine(struct asm_tok tokenarray[])
 
             if (check_size(&CodeInfo, opndx) == ERROR)
                 return(ERROR);
+
         }
 
         if (CodeInfo.Ofssize == USE64)
         {
+
             if (CodeInfo.x86hi_used && CodeInfo.prefix.rex)
                 EmitError(INVALID_USAGE_OF_AHBHCHDH);
 
@@ -4359,7 +4375,6 @@ ret_code ParseLine(struct asm_tok tokenarray[])
     /* *********************************************************** */
     /* Use the V2 CodeGen, else fallback to the standard CodeGen   */
     /* *********************************************************** */
-    //if (!extraflags.evexflag && CodeInfo.evex_flag == 0 && (ModuleInfo.Ofssize == USE32 || ModuleInfo.Ofssize == USE64))
     if (ModuleInfo.Ofssize == USE32 || ModuleInfo.Ofssize == USE64)
     {
         temp = CodeGenV2(opcodePtr, &CodeInfoV2, oldofs, opndCount, opndxV2);
@@ -4445,3 +4460,5 @@ void ProcessFile(struct asm_tok tokenarray[])
     }
     return;
 }
+
+uasm_PACK_POP

@@ -49,6 +49,8 @@
 #define NUM_STDREGS 8
 #endif
 
+uasm_PACK_PUSH_STACK
+
 /* prototypes */
 
 /* todo: move static variables to ModuleInfo */
@@ -620,3 +622,5 @@ enum assume_segreg GetAssume(const struct asym* override, const struct asym* sym
     *passume = NULL;
     return(ASSUME_NOTHING);
 }
+
+uasm_PACK_POP

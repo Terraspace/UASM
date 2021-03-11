@@ -32,9 +32,13 @@
 #ifndef PARSER_H
 #define PARSER_H
 
+#include "basedefs.h"
+
 #include "operands.h"
 #include "symbols.h"
 #include "token.h"
+
+uasm_PACK_PUSH_STACK
 
 /* define tokens for SpecialTable (registers, operators, ... ) */
 enum special_token {
@@ -311,7 +315,7 @@ struct code_info {
         unsigned char   adrsiz:1;      /* address size prefix 0x67 is to be emitted */
         unsigned char   opsiz:1;       /* operand size prefix 0x66 is to be emitted */
     } prefix;
-    /*const*/ struct instr_item *pinstr;   /* current pointer into InstrTable */
+    struct instr_item *pinstr;   /* current pointer into InstrTable */
     enum instr_token token;
     enum memtype    mem_type;          /* byte / word / etc. NOT near/far */
     struct opnd_item opnd[MAX_OPND];
@@ -403,5 +407,7 @@ extern ret_code   ParseLine( struct asm_tok[] );
 extern void       ProcessFile( struct asm_tok[] );
 
 extern void       WritePreprocessedLine( const char * );
+
+uasm_PACK_POP
 
 #endif

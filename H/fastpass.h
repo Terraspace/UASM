@@ -8,6 +8,13 @@
  then scanned in pass one only.
  */
 
+#ifndef FASTPASS_H
+#define FASTPASS_H
+
+#include "basedefs.h"
+
+uasm_PACK_PUSH_STACK
+
 #if FASTPASS
 
  /* equ_item: used for a linked list of assembly time variables. Any variable
@@ -81,11 +88,15 @@ struct line_item* RestoreState(void);
 void SaveVariableState(struct asym* sym);
 void FreeLineStore(void);
 
-#define FStoreLine( flags ) if ( Parse_Pass == PASS_1 ) {StoreLine( CurrSource, flags, 0 );} else {}
+#define FStoreLine( flags ) if ( Parse_Pass == PASS_1 ) {StoreLine( CurrSource, flags, 0 );} else 
 
 #else
 
 #define FStoreLine( flags )
 
 #endif
+
+uasm_PACK_POP
+
+#endif // FASTPASS_H
 

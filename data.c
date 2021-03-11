@@ -39,6 +39,8 @@
 #include "input.h"
 #include "fixup.h"
 #include "listing.h"
+#include "lqueue.h"
+#include "proc.h"
 #include "segment.h"
 #include "types.h"
 #include "fastpass.h"
@@ -79,6 +81,8 @@ typedef uint64_t ULONG_PTR, * PULONG_PTR;
 typedef int64_t __int64;
 #endif
 #endif
+
+uasm_PACK_PUSH_STACK
 
 extern ret_code segm_override(const struct expr*, struct code_info*);
 extern struct asym* SegOverride;
@@ -1440,13 +1444,13 @@ ret_code data_dir(int i, struct asm_tok tokenarray[], struct asym* type_sym)
 /****************************************************************************/
 {
     uint_32             no_of_bytes;
-    struct asym*        sym = NULL;
+    struct asym* sym = NULL;
     uint_32             old_offset;
     uint_32             currofs; /* for LST output */
     enum memtype        mem_type;
     bool                is_float = FALSE;
     int                 idx;
-    char*               name;
+    char* name;
 
     struct dsym* symtype = ((struct dsym*)type_sym);
     struct sfield* f;
@@ -1457,8 +1461,6 @@ ret_code data_dir(int i, struct asm_tok tokenarray[], struct asym* type_sym)
     uint_32 subcnt = 0;
     uint_32 k = 0;
 
-    DebugMsg1(("data_dir( i=%u, type=%s ) enter\n", i, type_sym ? type_sym->name : "NULL"));
-
     /* v2.05: the previous test in parser.c wasn't fool-proofed */
     if (i > 1 && ModuleInfo.m510 == FALSE)
     {
@@ -1466,16 +1468,12 @@ ret_code data_dir(int i, struct asm_tok tokenarray[], struct asym* type_sym)
     }
     if (tokenarray[i + 1].token == T_FINAL)
     {
-        DebugMsg(("data_dir: missing initializer\n"));
         return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].tokpos));
     }
 
     /* set values for mem_type and no_of_bytes */
     if (type_sym)
     {
-        /* if the parser found a TYPE id, type_sym is != NULL */
-        //DebugMsg1(("data_dir: arbitrary type %s, calling SymSearch\n", type_sym->name ));
-        //type_sym = SymSearch( tokenarray[i].string_ptr );
         mem_type = MT_TYPE;
         if (type_sym->typekind != TYPE_TYPEDEF &&
             (type_sym->total_size == 0 || ((struct dsym*)type_sym)->e.structinfo->OrgInside == TRUE))
@@ -1494,7 +1492,6 @@ ret_code data_dir(int i, struct asm_tok tokenarray[], struct asym* type_sym)
         no_of_bytes = type_sym->total_size;
         if (no_of_bytes == 0)
         {
-            DebugMsg(("data_dir: size of arbitrary type is 0!\n"));
             /* a void type is not valid */
             if (type_sym->typekind == TYPE_TYPEDEF)
             {
@@ -1512,7 +1509,6 @@ ret_code data_dir(int i, struct asm_tok tokenarray[], struct asym* type_sym)
 
         if (tokenarray[i].token == T_STYPE)
         {
-            //idx = tokenarray[i].bytval;
             idx = tokenarray[i].tokval;
         }
         else if (tokenarray[i].token == T_DIRECTIVE &&
@@ -1526,7 +1522,6 @@ ret_code data_dir(int i, struct asm_tok tokenarray[], struct asym* type_sym)
         }
         mem_type = GetMemtypeSp(idx);
         /* types NEAR[16|32], FAR[16|32] and PROC are invalid here */
-        //if ( ( SimpleType[idx].mem_type & MT_SPECIAL_MASK ) == MT_ADDRESS ) {
         if ((mem_type & MT_SPECIAL_MASK) == MT_ADDRESS)
         {
             return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].string_ptr));
@@ -1762,3 +1757,5 @@ ret_code data_dir(int i, struct asm_tok tokenarray[], struct asym* type_sym)
               CurrStruct ? CurrStruct->sym.offset : CurrSeg->sym.offset));
     return(NOT_ERROR);
 }
+
+uasm_PACK_POP

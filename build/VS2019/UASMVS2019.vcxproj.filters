@@ -447,6 +447,15 @@
     <ClInclude Include="..\..\H\parser.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\H\basedefs.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\H\picohash.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\H\defs.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\.gitignore" />

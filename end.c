@@ -32,6 +32,8 @@
 #include "bin.h"
 #endif
 
+uasm_PACK_PUSH_STACK
+
 /* prototypes */
 extern ret_code idata_fixup(struct code_info*, unsigned, struct expr*);
 
@@ -329,3 +331,5 @@ ret_code EndDirective(int i, struct asm_tok tokenarray[])
 
     return(NOT_ERROR);
 }
+
+uasm_PACK_POP

@@ -84,6 +84,10 @@
 #define IS_MEM_TYPE( op, typ ) ( (op) == MT_##typ || (op) == MT_S##typ )
 #define IS_MEMTYPE_SIZ( op, siz ) ( ( ( (op) & MT_SPECIAL_MASK ) < MT_SPECIAL ) && ( ( (op) & MT_SIZE_MASK ) == ( siz - 1 ) ) )
 
+#include "basedefs.h"
+
+uasm_PACK_PUSH_STACK
+
  /*
   * values for <byte1_info>
   * 000  : the first byte is opcode, follow by rm_byte
@@ -137,4 +141,6 @@ enum vex_info {
 #endif
 extern ret_code         codegen(struct code_info*, uint_32);
 
-#endif
+uasm_PACK_POP
+
+#endif // _CODEGEN_H_INCLUDED

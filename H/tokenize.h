@@ -32,6 +32,10 @@
 #ifndef _TOKENIZE_H_INCLUDED
 #define _TOKENIZE_H_INCLUDED
 
+#include "basedefs.h"
+
+uasm_PACK_PUSH_STACK
+
 struct line_status {
     char* input;
     char* output;   /* free space in token string buffer */
@@ -57,5 +61,7 @@ enum tok_flags3 {
 
 extern ret_code GetToken(struct asm_tok[], struct line_status*);
 extern int      Tokenize(char*, unsigned int, struct asm_tok[], unsigned int);
+
+uasm_PACK_POP
 
 #endif

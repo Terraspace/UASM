@@ -32,6 +32,10 @@
 #ifndef _INPUT_H_INCLUDED
 #define _INPUT_H_INCLUDED
 
+#include "basedefs.h"
+
+uasm_PACK_PUSH_STACK
+
 struct macro_instance {
     struct srcline* currline;
     struct srcline* startline;
@@ -96,5 +100,7 @@ extern char* GetTopSrcName(void);
 #endif
 
 #define GetAlignedPointer( x, size ) ( x + ( ( size + 1 + sizeof(void *) - 1 ) & ~( sizeof(void *) - 1 ) ) )
+
+uasm_PACK_POP
 
 #endif

@@ -32,6 +32,10 @@
 #ifndef _CONDASM_H_
 #define _CONDASM_H_
 
+#include "basedefs.h"
+
+uasm_PACK_PUSH_STACK
+
 enum if_state {
     BLOCK_ACTIVE,    /* current cond is true */
     BLOCK_INACTIVE,  /* current IF cond is false, looking for elseif */
@@ -56,5 +60,7 @@ extern int  GetIfNestLevel(void);
 extern void SetIfNestLevel(int);
 extern void CondCheckOpen(void);
 extern void CondInit(void);
+
+uasm_PACK_POP
 
 #endif

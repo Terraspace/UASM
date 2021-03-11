@@ -28,8 +28,9 @@
 #include "cpumodel.h"
 #include "lqueue.h"
 #include "orgfixup.h"
-#include "symbols.h"
 #include "macrolib.h"
+
+uasm_PACK_PUSH_STACK
 
 extern void     AddLineQueue(const char* line);
 extern void     AddLineQueueX(const char* fmt, ...);
@@ -67,3 +68,5 @@ void CreateMacroLibCases(void)
 }
 
 #endif //BUILD_MACROLIB
+
+uasm_PACK_POP

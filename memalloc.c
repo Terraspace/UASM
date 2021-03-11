@@ -72,6 +72,8 @@
 #endif
 #endif
 
+uasm_PACK_PUSH_STACK
+
 struct linked_list
 {
     struct linked_list* next;
@@ -286,3 +288,5 @@ void* MemRealloc(void* ptr, size_t size)
     return(new);
 }
 #endif
+
+uasm_PACK_POP

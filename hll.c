@@ -65,6 +65,8 @@ typedef int64_t __int64;
 #endif
 #endif
 
+uasm_PACK_PUSH_STACK
+
 int Tokenize(char*, unsigned int, struct asm_tok[], unsigned int);
 void myatoi128(const char* src, uint_64 dst[], int base, int size);
 #define LABELSIZE 8
@@ -3527,3 +3529,5 @@ void HllInit(int pass)
 #endif
     return;
 }
+
+uasm_PACK_POP

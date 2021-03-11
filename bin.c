@@ -53,6 +53,8 @@
 
 #include "orgfixup.h"
 
+uasm_PACK_PUSH_STACK
+
 extern void SortSegments(int);
 
 #if MZ_SUPPORT
@@ -2051,3 +2053,5 @@ void bin_init(struct module_info* modinfo)
     }
     return;
 }
+
+uasm_PACK_POP

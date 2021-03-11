@@ -33,6 +33,10 @@
 #ifndef _ERRMSG_H_INCLUDED
 #define _ERRMSG_H_INCLUDED
 
+#include "basedefs.h"
+
+uasm_PACK_PUSH_STACK
+
 /* error IDs */
 #undef pick
 #define pick( code, text )  code,
@@ -70,5 +74,7 @@ extern int  write_logo(void);
 extern void PrintUsage(void);
 //extern void SeekError( void );
 extern void WriteError(void);
+
+uasm_PACK_POP
 
 #endif

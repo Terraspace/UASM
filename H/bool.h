@@ -30,6 +30,9 @@
 ****************************************************************************/
 #pragma once
 
+#ifndef _BOOL_H_INCLUDED_
+#define _BOOL_H_INCLUDED_
+
 #if !defined( BOOL_DEFINED )  &&  !defined( bool ) && !(__WATCOMC__ >= 1070 && defined(__cplusplus))
 #define BOOL_DEFINED
 typedef unsigned char bool;
@@ -40,3 +43,5 @@ typedef unsigned char bool;
 #ifndef FALSE
 #define FALSE 0
 #endif
+
+#endif // _BOOL_H_INCLUDED_

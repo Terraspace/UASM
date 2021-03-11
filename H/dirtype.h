@@ -66,6 +66,6 @@ res( INCLIB,    IncludeLibDirective )
 res( NAME,      NameDirective )
 res( OPTION,    OptionDirective )
 res( CONTEXT,   ContextDirective )
-res( PDEFINE,    DefineDirective )  /* DEFINE directive */
+res( PDEFINE,    DefineDirective )  /* DEFINE directive */ /*KRAD-implemented in UASM macro lib*/
 res( UNDEF,     UndefDirective )   /* UNDEF directive */
 

@@ -30,6 +30,8 @@ extern struct asym* sym_Interface;
 #define OPTQUAL
 #endif
 
+uasm_PACK_PUSH_STACK
+
 #define OPTFUNC( name ) extern ret_code OPTQUAL name( int *pi, struct asm_tok tokenarray[] )
 extern void UpdateStackBase(struct asym*, void*);
 extern void UpdateProcStatus(struct asym*, void*);
@@ -88,30 +90,6 @@ OPTFUNC(SetEvex)
 //  *pi = i;
 //  return(NOT_ERROR);
 //}
-
-/* Set ZEROLOCALS  */
-OPTFUNC(SetZeroLocals)
-{
-    int i = *pi;
-    struct expr opndx;
-
-    if (EvalOperand(&i, tokenarray, Token_Count, &opndx, 0) == ERROR)
-        return(ERROR);
-    if (opndx.kind == EXPR_CONST)
-    {
-        if (opndx.llvalue > 1)
-        {
-            return(EmitConstError(&opndx));
-        }
-        extraflags.ZEROLOCALS = opndx.llvalue;
-    }
-    else
-    {
-        return(EmitError(CONSTANT_EXPECTED));
-    }
-    *pi = i;
-    return(NOT_ERROR);
-}
 
 /*
     OPTION BND:ON/OFF
@@ -1014,17 +992,19 @@ OPTFUNC(SetFrame)
     if (0 == _stricmp(tokenarray[i].string_ptr, "AUTO"))
     {
         ModuleInfo.frame_auto = 1;
+        ModuleInfo.noframe = 0;
         i++;
     }
     else if (0 == _stricmp(tokenarray[i].string_ptr, "NOAUTO"))
     {
         ModuleInfo.frame_auto = 0;
+        ModuleInfo.noframe = 0;
         i++;
     }
     else if (0 == _stricmp(tokenarray[i].string_ptr, "NONE"))
     {
         ModuleInfo.frame_auto = 0;
-        ModuleInfo.noframe = 0;
+        ModuleInfo.noframe = 1;
         i++;
     }
     *pi = i;
@@ -1170,7 +1150,10 @@ OPTFUNC(SetWin64)
     }
 
     if (EvalOperand(&i, tokenarray, Token_Count, &opndx, 0) == ERROR)
+    {
         return(ERROR);
+    }
+
     if (opndx.kind == EXPR_CONST)
     {
         if (opndx.llvalue & (~W64F_ALL))
@@ -1193,6 +1176,8 @@ OPTFUNC(SetWin64)
             /* ensure that basereg is RSP */
             if (ModuleInfo.basereg[ModuleInfo.Ofssize] != T_RSP)
             {
+            EmitWarn(2, STACKBASE_CHANGED);
+
                 ModuleInfo.basereg[ModuleInfo.Ofssize] = T_RSP;
                 if (!ModuleInfo.g.StackBase)
                 {
@@ -1219,8 +1204,19 @@ OPTFUNC(SetWin64)
 
     ModuleInfo.win64_flags = opndx.llvalue;
 
+    Options.langtype = LANG_FASTCALL;
+    Options.fctype = FCT_WIN64;
+    ModuleInfo.langtype = LANG_FASTCALL;
+    ModuleInfo.fctype = FCT_WIN64;
+    if (Options.sub_format != SFORMAT_64BIT)
+        Options.sub_format = SFORMAT_64BIT;
+    if (ModuleInfo.sub_format != SFORMAT_64BIT)
+        ModuleInfo.sub_format = SFORMAT_64BIT;
+
     if (sym_ReservedStack == NULL && ModuleInfo.defOfssize == USE64)
+    {
         sym_ReservedStack = AddPredefinedConstant("@ReservedStack", 0);
+    }
 
     /*else
     {
@@ -1232,14 +1228,15 @@ OPTFUNC(SetWin64)
     if (ModuleInfo.model == MODEL_NONE)
     {
         ModuleInfo.model = MODEL_FLAT;
-        Options.langtype = LANG_FASTCALL;
+        /*Options.langtype = LANG_FASTCALL;
         ModuleInfo.langtype = LANG_FASTCALL;
-        ModuleInfo.fctype = FCT_WIN64;
+        ModuleInfo.fctype = FCT_WIN64;*/
     }
 
     *pi = i;
     return(NOT_ERROR);
 }
+
 OPTFUNC(SetSYSV64)
 /*****************/
 {
@@ -1255,23 +1252,52 @@ OPTFUNC(SetSYSV64)
     }
 
     if (EvalOperand(&i, tokenarray, Token_Count, &opndx, 0) == ERROR)
+    {
         return(ERROR);
+    }
+
     if (opndx.kind == EXPR_CONST)
     {
-        if (opndx.llvalue & (~W64F_ALL))
+
+        if (opndx.llvalue & (~7))
         {
             return(EmitConstError(&opndx));
         }
 
-        /* OPTION sysv64 can work only with OPTION STACKBASE:RBP max 7 */
-        if (opndx.llvalue & W64F_SMART || opndx.llvalue > 7)
-        {
-            ModuleInfo.frame_auto = 1; /* frame auto must also be implied for all stackbase rbp options */
+        /* OPTION sysv64:7 can work only with OPTION STACKBASE:RBP */
+        if (opndx.llvalue != 7)
             opndx.llvalue = 7;
-        }
-        else
+
+        if (opndx.llvalue == 7)
         {
-            ModuleInfo.frame_auto = 1; /* frame auto must also be implied for all stackbase rbp options */
+            /* In this case STACKBASESUPP must be set */
+#ifndef STACKBASESUPP
+#define STACKBASESUPP 1       /* support OPTION STACKBASE              */
+#endif
+/* ensure that W64F_SAVEREGPARAMS and W64F_AUTOSTACKSP options are also set */
+            /*if (opndx.llvalue != 7)*/
+            /*opndx.llvalue = 7;*/        /* All values will be forced to 7 and implies stackbase RBP */
+            if (ModuleInfo.frame_auto != 1)
+                ModuleInfo.frame_auto = 1; /* frame auto must also be implied for all stackbase rbp options */
+
+            /* ensure that basereg is RBP */
+            if (ModuleInfo.basereg[ModuleInfo.Ofssize] != T_RBP)
+            {
+                ModuleInfo.basereg[ModuleInfo.Ofssize] = T_RBP;
+            }
+            /*if (!ModuleInfo.g.StackBase)
+            {
+                ModuleInfo.g.StackBase = CreateVariable("@StackBase", 0);
+                ModuleInfo.g.StackBase->predefined = TRUE;
+                ModuleInfo.g.StackBase->sfunc_ptr = UpdateStackBase;
+                ModuleInfo.g.ProcStatus = CreateVariable("@ProcStatus", 0);
+                ModuleInfo.g.ProcStatus->predefined = TRUE;
+                ModuleInfo.g.ProcStatus->sfunc_ptr = UpdateProcStatus;
+            }*/
+        }
+        else // unreachable code
+        {
+            ModuleInfo.frame_auto = 1; /* frame auto must also be implied for all stackbase rsp options */
             ModuleInfo.win64_flags = opndx.llvalue;
             ModuleInfo.win64_flags |= W64F_AUTOSTACKSP;
         }
@@ -1283,15 +1309,25 @@ OPTFUNC(SetSYSV64)
 
     ModuleInfo.win64_flags = opndx.llvalue;
 
+    Options.langtype = LANG_SYSVCALL;
+    Options.fctype = FCT_SYSV64;
+    ModuleInfo.langtype = LANG_SYSVCALL;
+    ModuleInfo.fctype = FCT_SYSV64;
+    if (Options.sub_format != SFORMAT_64BIT)
+        Options.sub_format = SFORMAT_64BIT;
+    if (ModuleInfo.sub_format != SFORMAT_64BIT)
+        ModuleInfo.sub_format = SFORMAT_64BIT;
+
     if (sym_ReservedStack == NULL && ModuleInfo.defOfssize == USE64)
+    {
         sym_ReservedStack = AddPredefinedConstant("@ReservedStack", 0);
+    }
 
     if (ModuleInfo.model == MODEL_NONE)
     {
         ModuleInfo.model = MODEL_FLAT;
-        Options.langtype = LANG_SYSVCALL;
-        ModuleInfo.langtype = LANG_SYSVCALL;
-        ModuleInfo.fctype = FCT_SYSV64;
+        /*ModuleInfo.langtype = LANG_SYSVCALL;
+        ModuleInfo.fctype = FCT_SYSV64;*/
     }
 
     *pi = i;
@@ -1388,7 +1424,7 @@ OPTFUNC(SetStackBase)
 {
     int i = *pi;
 
-    if (tokenarray[i].token != T_REG && (tokenarray[i].tokval != T_RSP || tokenarray[i].tokval != T_ESP || tokenarray[i].tokval != T_RBP))
+    if (tokenarray[i].token != T_REG && tokenarray[i].tokval != T_RSP && tokenarray[i].tokval != T_ESP && tokenarray[i].tokval != T_RBP)
     {
         return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].string_ptr));
     }
@@ -1454,21 +1490,15 @@ OPTFUNC(SetFlat)
     ModuleInfo.curr_cpu = P_64p | P_AVX | P_CPU_MASK;
     SetCPU(P_64p);
     ModuleInfo.model = MODEL_FLAT;
-    ModuleInfo.fctype = (Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC) ? FCT_SYSV64 : FCT_WIN64;
+    ModuleInfo.fctype = FCT_WIN64;
     ModuleInfo.defOfssize = USE16;
     ModuleInfo.flat = TRUE;
-    if (Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC)
-        ModuleInfo.win64_flags = 7;
-    else
-        ModuleInfo.win64_flags = 11;
+    ModuleInfo.win64_flags = 11;
 #ifndef STACKBASESUPP
 #define STACKBASESUPP 1       /* support OPTION STACKBASE              */
 #endif
     ModuleInfo.frame_auto = 1;
-    if (Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC)
-        ModuleInfo.basereg[ModuleInfo.Ofssize] = T_RBP;
-    else
-        ModuleInfo.basereg[ModuleInfo.Ofssize] = T_RSP;
+    ModuleInfo.basereg[ModuleInfo.Ofssize] = T_RSP;
     if (!ModuleInfo.g.StackBase)
     {
         ModuleInfo.g.StackBase = CreateVariable("@StackBase", 0);
@@ -1559,7 +1589,6 @@ static const struct asm_option optiontab[] = {
 #endif
 #if AVXSUPP
     { "EVEX",         SetEvex        }, /* EVEX: <value> 1 or 0 */
-    { "ZEROLOCALS",   SetZeroLocals  }, /* ZEROLOCALS: <value> 1 or 0 */
 #endif
   { "SWITCHSTYLE",      SetSwitchStile },/* SWITCH_STYLE: <CSWITCH> or <ASMSWITCH> */
   { "SWITCHSIZE",       SetSwitchSize }, /* SWITCH_STYLE: <CSWITCH> or <ASMSWITCH> */
@@ -1633,3 +1662,5 @@ ret_code OptionDirective(int i, struct asm_tok tokenarray[])
 
     return(NOT_ERROR);
 }
+
+uasm_PACK_POP

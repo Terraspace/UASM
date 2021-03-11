@@ -33,6 +33,10 @@
 #ifndef QUEUE_H
 #define QUEUE_H 1
 
+#include "basedefs.h"
+
+uasm_PACK_PUSH_STACK
+
 struct qnode {
     void* next;
     union {
@@ -52,6 +56,6 @@ extern void QAddItem(struct qdesc*, const void*);
 //extern void *QDequeue( struct qdesc * );
 //extern void QJoinQueue( struct qdesc *dest, struct qdesc *src );
 
+uasm_PACK_POP
+
 #endif
-
-

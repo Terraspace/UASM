@@ -19,8 +19,6 @@
 const char        szNullStr[] = { "<NULL>" };
 struct Mem_Def* MemTable = NULL;
 struct Instr_Def* InstrHash[16384];
-extern unsigned get_curr_srcfile(void);
-extern uint_32 GetLineNumber(void);
 
 #ifdef _WIN32
 #else
@@ -41,6 +39,11 @@ extern uint_32 GetLineNumber(void);
 #include "MemTable32.h"
 #include "MemTable64.h"
 #include "InstrTableV2.h"
+
+uasm_PACK_PUSH_STACK
+
+extern unsigned get_curr_srcfile(void);
+extern uint_32 GetLineNumber(void);
 
 static unsigned int hash(const uint_8* data, int size)
 /******************************************/
@@ -158,7 +161,7 @@ enum op_type DemoteOperand(enum op_type op)
 
 enum op_type MatchOperand(struct code_info* CodeInfo, struct opnd_item op, struct expr opExpr)
 {
-    enum op_type result = op.type;
+    enum op_type result;
     switch (op.type)
     {
     case OP_M:
@@ -2001,3 +2004,5 @@ ret_code CodeGenV2(const char* instr, struct code_info* CodeInfo, uint_32 oldofs
 
     return retcode;
 }
+
+uasm_PACK_POP

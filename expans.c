@@ -37,6 +37,8 @@
 #define TEVALUE_UNSIGNED 1
 #define MAX_TEXTMACRO_NESTING 20
 
+uasm_PACK_PUSH_STACK
+
 extern char* GetMacroLine(struct macro_instance*, char*);
 
 int           MacroLocals;     /* counter for LOCAL names */
@@ -1783,3 +1785,5 @@ ret_code ExpandLine(char* string, struct asm_tok tokenarray[])
     DebugMsg1(("ExpandLine(>%s<) exit, rc=%u, token_count=%u\n", string, rc, Token_Count));
     return(rc);
 }
+
+uasm_PACK_POP

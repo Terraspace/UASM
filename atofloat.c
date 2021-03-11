@@ -17,6 +17,8 @@
 
 #define USESTRTOF 0 /* 0=use strtod() and convert "manually", 1=use strtof() */
 
+uasm_PACK_PUSH_STACK
+
 extern void myatoi128(const char*, uint_64[], int, int);
 
 /* it's ensured that 'out' points to a buffer with a size of at least 16 */
@@ -105,3 +107,5 @@ void atofloat(void* out, const char* inp, unsigned size, bool negative, uint_8 f
     }
     return;
 }
+
+uasm_PACK_POP

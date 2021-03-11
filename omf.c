@@ -67,6 +67,8 @@
 #endif
 #endif
 
+uasm_PACK_PUSH_STACK
+
 #if defined(__UNIX__) || defined(__CYGWIN__)
 #define _stat stat
 #endif
@@ -1782,3 +1784,5 @@ void omf_init(struct module_info* modinfo)
     ln_size = 0;
     return;
 }
+
+uasm_PACK_POP

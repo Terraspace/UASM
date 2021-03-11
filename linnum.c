@@ -27,6 +27,8 @@
 #include "linnum.h"
 #include "omf.h"
 
+uasm_PACK_PUSH_STACK
+
 extern struct qdesc   LinnumQueue;    /* queue of line_num_info items ( OMF only ) */
 extern int            procidx;
 
@@ -39,8 +41,7 @@ static void AddLinnumData(struct line_num_info* data)
 /*****************************************************/
 {
     struct qdesc* q = NULL;
-#if COFF_SUPPORT
-    if (Options.output_format == OFORMAT_COFF)
+    if (ModuleInfo.output_format == OFORMAT_COFF)
     {
         q = (struct qdesc*)CurrSeg->e.seginfo->LinnumQueue;
         if (q == NULL)
@@ -51,7 +52,6 @@ static void AddLinnumData(struct line_num_info* data)
         }
     }
     else
-#endif
         q = &LinnumQueue;
 
     data->next = NULL;
@@ -78,7 +78,6 @@ void AddLinnumDataRef(unsigned srcfile, uint_32 line_num)
 {
     struct line_num_info* curr;
 
-#if COFF_SUPPORT
     /* COFF line number info is related to functions/procedures. Since
      * assembly allows code lines outside of procs, "dummy" procs must
      * be generated. A dummy proc lasts until
@@ -86,7 +85,7 @@ void AddLinnumDataRef(unsigned srcfile, uint_32 line_num)
      * - the source file changes or
      * - the segment/section changes ( added in v2.11 )
      */
-    if (Options.output_format == OFORMAT_COFF &&
+    if (ModuleInfo.output_format == OFORMAT_COFF &&
         CurrProc == NULL &&
         (dmyproc == NULL ||
         dmyproc->debuginfo->file != srcfile ||
@@ -95,20 +94,17 @@ void AddLinnumDataRef(unsigned srcfile, uint_32 line_num)
         char procname[12];
         if (dmyproc)
         {
-            /**/myassert(dmyproc->segment);
             dmyproc->total_size =
                 ((struct dsym*)dmyproc->segment)->e.seginfo->current_loc -
                 dmyproc->offset;
         }
         sprintf(procname, "$$$%05u", procidx);
-        DebugMsg1(("AddLinnumDataRef(src=%u.%u): CurrProc==NULL, dmyproc=%s searching proc=%s\n", srcfile, line_num, dmyproc ? dmyproc->name : "NULL", procname));
         dmyproc = SymSearch(procname);
 
         /* in pass 1, create the proc */
         if (dmyproc == NULL)
         {
             dmyproc = CreateProc(NULL, procname, SYM_INTERNAL);
-            DebugMsg1(("AddLinnumDataRef: new proc %s created\n", procname));
             dmyproc->isproc = TRUE; /* flag is usually set inside ParseProc() */
             dmyproc->included = TRUE;
             AddPublicData(dmyproc);
@@ -123,6 +119,9 @@ void AddLinnumDataRef(unsigned srcfile, uint_32 line_num)
             SetSymSegOfs(dmyproc);
             dmyproc->Ofssize = ModuleInfo.Ofssize;
             dmyproc->langtype = ModuleInfo.langtype;
+            dmyproc->output_format = ModuleInfo.output_format;
+            dmyproc->sub_format = ModuleInfo.sub_format;
+            dmyproc->fctype = ModuleInfo.fctype;
             if (write_to_file == TRUE)
             {
                 curr = (struct line_num_info*)LclAlloc(sizeof(struct line_num_info));
@@ -130,35 +129,26 @@ void AddLinnumDataRef(unsigned srcfile, uint_32 line_num)
                 curr->line_number = GetLineNumber();
                 curr->file = srcfile;
                 curr->number = 0;
-                DebugMsg1(("AddLinnumDataRef: CURRPROC=NULL, sym=%s, calling AddLinnumData(src=%u.%u)\n", curr->sym->name, curr->file, curr->line_number));
                 AddLinnumData(curr);
             }
         }
     }
-#endif
 
     if (line_num && (write_to_file == FALSE || lastLineNumber == line_num))
     {
-#ifdef DEBUG_OUT
-        if (write_to_file == TRUE)
-            DebugMsg1(("AddLinnumDataRef(src=%u.%u) line skipped, lastline=%u\n", srcfile, line_num, lastLineNumber));
-#endif
         return;
     }
-    DebugMsg1(("AddLinnumDataRef(src=%u.%u): currofs=%Xh, CurrProc=%s, GeneratedCode=%u\n", srcfile, line_num, GetCurrOffset(), CurrProc ? CurrProc->sym.name : "NULL", ModuleInfo.GeneratedCode));
 
     curr = (struct line_num_info*)LclAlloc(sizeof(struct line_num_info));
     curr->number = line_num;
-#if COFF_SUPPORT
     if (line_num == 0)
     { /* happens for COFF only */
         if (Parse_Pass == PASS_1 &&
-            Options.output_format == OFORMAT_COFF && CurrProc && CurrProc->sym.ispublic == FALSE)
+            ModuleInfo.output_format == OFORMAT_COFF && CurrProc && CurrProc->sym.ispublic == FALSE)
         {
             CurrProc->sym.included = TRUE;
             AddPublicData((struct asym*)CurrProc);
         }
-        /* changed v2.03 */
         curr->sym = (CurrProc ? (struct asym*)CurrProc : dmyproc);
         curr->line_number = GetLineNumber();
 
@@ -170,14 +160,12 @@ void AddLinnumDataRef(unsigned srcfile, uint_32 line_num)
         /* set the function's size! */
         if (dmyproc)
         {
-            /**/myassert(dmyproc->segment);
             dmyproc->total_size = ((struct dsym*)dmyproc->segment)->e.seginfo->current_loc - dmyproc->offset;
             dmyproc = NULL;
         }
         /* v2.11: write a 0x7fff line item if prologue exists */
         if (CurrProc && CurrProc->e.procinfo->size_prolog)
         {
-            DebugMsg1(("AddLinnumDataRef: calling AddLinnumData(src=%u.%u) sym=%s\n", curr->file, curr->line_number, curr->sym->name));
             AddLinnumData(curr);
             curr = LclAlloc(sizeof(struct line_num_info));
             curr->number = GetLineNumber();
@@ -187,19 +175,17 @@ void AddLinnumDataRef(unsigned srcfile, uint_32 line_num)
     }
     else
     {
-#endif
         curr->offset = GetCurrOffset();
         curr->srcfile = srcfile;
-#if COFF_SUPPORT
     }
-#endif
+
     lastLineNumber = line_num;
 
     /* v2.11: added, improved multi source support for CV.
      * Also, the size of line number info could have become > 1024,
      * ( even > 4096, thus causing an "internal error in omfint.c" )
      */
-    if (Options.output_format == OFORMAT_OMF)
+    if (ModuleInfo.output_format == OFORMAT_OMF)
         omf_check_flush(curr);
 
     /* v2.10: warning if line-numbers for segments without class code! */
@@ -211,7 +197,7 @@ void AddLinnumDataRef(unsigned srcfile, uint_32 line_num)
             EmitWarn(2, LINNUM_INFO_FOR_SEGMENT_WITHOUT_CLASS_CODE, CurrSeg->sym.name);
         }
     }
-    DebugMsg1(("AddLinnumDataRef: calling AddLinnumData(src=%u.%u ofs=%X)\n", curr->number == 0 ? curr->file : curr->srcfile, curr->number, curr->offset));
+
     AddLinnumData(curr);
 
     return;
@@ -236,28 +222,26 @@ void QueueDeleteLinnum(struct qdesc* queue)
     }
     return;
 }
+
 /* if -Zd is set and there is trailing code not inside
  * a function, set the dummy function's length now.
  */
 void LinnumFini(void)
 /*********************/
 {
-#if COFF_SUPPORT
     if (dmyproc)
     {
         dmyproc->total_size =
             ((struct dsym*)dmyproc->segment)->e.seginfo->current_loc -
             dmyproc->offset;
-        DebugMsg(("LinnumFini: last dummy proc size=%Xh\n"));
     }
-#endif
 }
 
 void LinnumInit(void)
 /*********************/
 {
     lastLineNumber = 0;
-#if COFF_SUPPORT
     dmyproc = NULL;
-#endif
 }
+
+uasm_PACK_POP

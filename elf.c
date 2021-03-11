@@ -73,6 +73,8 @@
  //static char *srcname;          /* name of source module (name + extension) */
  //static bool extused;
 
+uasm_PACK_PUSH_STACK
+
 struct localname
 {
     void* next;
@@ -1489,3 +1491,5 @@ void elf_init(struct module_info* modinfo)
 }
 
 #endif
+
+uasm_PACK_POP

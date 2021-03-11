@@ -32,15 +32,19 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'" Label="Configuration">
     <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>Remote_Clang_1_0</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'" Label="Configuration">
     <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>Remote_Clang_1_0</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>Remote_Clang_1_0</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>Remote_Clang_1_0</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings" />
@@ -83,11 +87,28 @@
     <ClCompile>
       <PreprocessorDefinitions>MACROLIB=1;__UNIX__;__LINUX__;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>../../H;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <ShowIncludes>true</ShowIncludes>
-      <AdditionalOptions>-Wno-sign-conversion -Wno-implicit-int-conversion -Wno-comment -Wno-switch -Wno-implicit-function-declaration -Wno-enum-conversion -O2 -std=c11 -march=x86-64 -target x86_64-pc-linux-gnu -funsigned-char -fwritable-strings -mstack-alignment=16</AdditionalOptions>
-      <ExceptionHandling>Disabled</ExceptionHandling>
-      <Optimization>Full</Optimization>
-      <CppLanguageStandard>c++17</CppLanguageStandard>
+      <AdditionalOptions>-Wno-sign-conversion -Wno-implicit-int-conversion -Wno-comment -Wno-switch -Wno-implicit-function-declaration -Wno-enum-conversion -O3 -std=gnu17 -march=x86-64 -target x86_64-pc-linux-gnu -funsigned-char -fwritable-strings -fPIC -fPIE -pie -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -mstack-alignment=16</AdditionalOptions>
+      <Optimization>
+      </Optimization>
+      <CppLanguageStandard>
+      </CppLanguageStandard>
+      <CLanguageStandard>
+      </CLanguageStandard>
+      <ExceptionHandling>
+      </ExceptionHandling>
+      <CompileAs>CompileAsC</CompileAs>
+      <RuntimeTypeInfo />
+      <ThreadSafeStatics />
+      <PositionIndependentCode />
+      <RelaxIEEE />
+      <HideInlineMethods />
+      <SymbolsHiddenByDefault />
+      <StrictAliasing />
+      <UnrollLoops />
+      <LinkTimeOptimization />
+      <NoCommonBlocks />
+      <OmitFramePointers />
+      <DebugInformationFormat>None</DebugInformationFormat>
     </ClCompile>
     <Link />
     <RemotePostBuildEvent>
@@ -96,18 +117,40 @@
     </RemotePostBuildEvent>
     <Link />
     <Link>
-      <DebuggerSymbolInformation>OmitAllSymbolInformation</DebuggerSymbolInformation>
+      <AdditionalOptions>-Wl,-Bsymbolic-functions -fPIC -fPIE -pie -Wl,-z,relro -Wl,-z,now %(AdditionalOptions)</AdditionalOptions>
+      <NoExecStackRequired />
+      <Relocation />
+      <FunctionBinding />
+      <WholeArchiveBegin />
+      <DebuggerSymbolInformation>OmitDebuggerSymbolInformation</DebuggerSymbolInformation>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
     <ClCompile>
       <PreprocessorDefinitions>MACROLIB=1;__UNIX__;__LINUX__;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>../../H;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <ShowIncludes>true</ShowIncludes>
-      <AdditionalOptions>-Wno-sign-conversion -Wno-implicit-int-conversion -Wno-comment -Wno-switch -Wno-implicit-function-declaration -Wno-enum-conversion -O2 -std=c11 -march=x86-64 -target x86_64-pc-linux-gnu -funsigned-char -fwritable-strings -mstack-alignment=16</AdditionalOptions>
-      <ExceptionHandling>Disabled</ExceptionHandling>
-      <Optimization>Full</Optimization>
-      <CppLanguageStandard>c++17</CppLanguageStandard>
+      <AdditionalOptions>-Wno-sign-conversion -Wno-implicit-int-conversion -Wno-comment -Wno-switch -Wno-implicit-function-declaration -Wno-enum-conversion -O3 -std=gnu17 -march=x86-64 -target x86_64-pc-linux-gnu -funsigned-char -fwritable-strings -fPIC -fPIE -pie -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -mstack-alignment=16</AdditionalOptions>
+      <Optimization>
+      </Optimization>
+      <CppLanguageStandard>
+      </CppLanguageStandard>
+      <CLanguageStandard>
+      </CLanguageStandard>
+      <ExceptionHandling>
+      </ExceptionHandling>
+      <CompileAs>CompileAsC</CompileAs>
+      <RuntimeTypeInfo />
+      <ThreadSafeStatics />
+      <PositionIndependentCode />
+      <RelaxIEEE />
+      <HideInlineMethods />
+      <SymbolsHiddenByDefault />
+      <StrictAliasing />
+      <UnrollLoops />
+      <LinkTimeOptimization />
+      <NoCommonBlocks />
+      <OmitFramePointers />
+      <DebugInformationFormat>None</DebugInformationFormat>
     </ClCompile>
     <Link />
     <RemotePostBuildEvent>
@@ -115,17 +158,38 @@
       </Command>
     </RemotePostBuildEvent>
     <Link>
-      <DebuggerSymbolInformation>OmitAllSymbolInformation</DebuggerSymbolInformation>
+      <AdditionalOptions>-Wl,-Bsymbolic-functions -fPIC -fPIE -pie -Wl,-z,relro -Wl,-z,now %(AdditionalOptions)</AdditionalOptions>
+      <NoExecStackRequired />
+      <Relocation />
+      <FunctionBinding />
+      <WholeArchiveBegin />
+      <DebuggerSymbolInformation>OmitDebuggerSymbolInformation</DebuggerSymbolInformation>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <PreprocessorDefinitions>MACROLIB=1;__UNIX__;__LINUX__;_DEBUG;DEBUG_OUT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>../../H;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <ShowIncludes>true</ShowIncludes>
-      <AdditionalOptions>-Wno-sign-conversion -Wno-implicit-int-conversion -Wno-comment -Wno-switch -Wno-implicit-function-declaration -Wno-enum-conversion -g -O0 -std=c11 -march=x86-64 -target x86_64-pc-linux-gnu -funsigned-char -fwritable-strings -mstack-alignment=16</AdditionalOptions>
-      <ExceptionHandling>Disabled</ExceptionHandling>
-      <CppLanguageStandard>c++17</CppLanguageStandard>
+      <AdditionalOptions>-Wno-sign-conversion -Wno-implicit-int-conversion -Wno-comment -Wno-switch -Wno-implicit-function-declaration -Wno-enum-conversion -g -O0 -std=gnu17 -march=x86-64 -target x86_64-pc-linux-gnu -funsigned-char -fwritable-strings -fPIC -fPIE -pie -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -mstack-alignment=16</AdditionalOptions>
+      <CppLanguageStandard>
+      </CppLanguageStandard>
+      <CLanguageStandard>
+      </CLanguageStandard>
+      <ExceptionHandling>
+      </ExceptionHandling>
+      <CompileAs>CompileAsC</CompileAs>
+      <RuntimeTypeInfo />
+      <ThreadSafeStatics />
+      <PositionIndependentCode />
+      <RelaxIEEE />
+      <HideInlineMethods />
+      <SymbolsHiddenByDefault />
+      <StrictAliasing />
+      <UnrollLoops />
+      <LinkTimeOptimization />
+      <NoCommonBlocks />
+      <Optimization />
+      <OmitFramePointers />
     </ClCompile>
     <Link />
     <RemotePostBuildEvent>
@@ -134,15 +198,39 @@
     </RemotePostBuildEvent>
     <Link />
     <Link />
+    <Link />
+    <Link>
+      <AdditionalOptions>-Wl,-Bsymbolic-functions -fPIC -fPIE -pie -Wl,-z,relro -Wl,-z,now %(AdditionalOptions)</AdditionalOptions>
+      <NoExecStackRequired />
+      <Relocation />
+      <FunctionBinding />
+      <WholeArchiveBegin />
+    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
     <ClCompile>
       <PreprocessorDefinitions>MACROLIB=1;__UNIX__;__LINUX__;_DEBUG;DEBUG_OUT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>../../H;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <ShowIncludes>true</ShowIncludes>
-      <AdditionalOptions>-Wno-sign-conversion -Wno-implicit-int-conversion -Wno-comment -Wno-switch -Wno-implicit-function-declaration -Wno-enum-conversion -g -O0 -std=c11 -march=x86-64 -target x86_64-pc-linux-gnu -funsigned-char -fwritable-strings -mstack-alignment=16</AdditionalOptions>
-      <ExceptionHandling>Disabled</ExceptionHandling>
-      <CppLanguageStandard>c++17</CppLanguageStandard>
+      <AdditionalOptions>-Wno-sign-conversion -Wno-implicit-int-conversion -Wno-comment -Wno-switch -Wno-implicit-function-declaration -Wno-enum-conversion -g -O0 -std=gnu17 -march=x86-64 -target x86_64-pc-linux-gnu -funsigned-char -fwritable-strings -fPIC -fPIE -pie -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -mstack-alignment=16</AdditionalOptions>
+      <CppLanguageStandard>
+      </CppLanguageStandard>
+      <CLanguageStandard>
+      </CLanguageStandard>
+      <ExceptionHandling>
+      </ExceptionHandling>
+      <CompileAs>CompileAsC</CompileAs>
+      <RuntimeTypeInfo />
+      <ThreadSafeStatics />
+      <PositionIndependentCode />
+      <RelaxIEEE />
+      <HideInlineMethods />
+      <SymbolsHiddenByDefault />
+      <StrictAliasing />
+      <UnrollLoops />
+      <LinkTimeOptimization />
+      <NoCommonBlocks />
+      <Optimization />
+      <OmitFramePointers />
     </ClCompile>
     <Link />
     <RemotePostBuildEvent>
@@ -152,6 +240,13 @@
     <Link />
     <Link />
     <Link />
+    <Link>
+      <AdditionalOptions>-Wl,-Bsymbolic-functions -fPIC -fPIE -pie -Wl,-z,relro -Wl,-z,now %(AdditionalOptions)</AdditionalOptions>
+      <NoExecStackRequired />
+      <Relocation />
+      <FunctionBinding />
+      <WholeArchiveBegin />
+    </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\apiemu.c" />
@@ -267,6 +362,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\H\assume.h" />
     <ClInclude Include="..\..\H\atofloat.h" />
+    <ClInclude Include="..\..\H\basedefs.h" />
     <ClInclude Include="..\..\H\bin.h" />
     <ClInclude Include="..\..\H\bool.h" />
     <ClInclude Include="..\..\H\cmdline.h" />
@@ -281,6 +377,7 @@
     <ClInclude Include="..\..\H\data.h" />
     <ClInclude Include="..\..\H\dbgcv.h" />
     <ClInclude Include="..\..\H\dbgdw.h" />
+    <ClInclude Include="..\..\H\defs.h" />
     <ClInclude Include="..\..\H\directve.h" />
     <ClInclude Include="..\..\H\dirtype.h" />
     <ClInclude Include="..\..\H\elf.h" />
@@ -325,6 +422,7 @@
     <ClInclude Include="..\..\H\orgfixup.h" />
     <ClInclude Include="..\..\H\parser.h" />
     <ClInclude Include="..\..\H\pespec.h" />
+    <ClInclude Include="..\..\H\picohash.h" />
     <ClInclude Include="..\..\H\posndir.h" />
     <ClInclude Include="..\..\H\preproc.h" />
     <ClInclude Include="..\..\H\proc.h" />

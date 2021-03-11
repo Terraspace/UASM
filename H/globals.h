@@ -71,31 +71,7 @@
 #   define BUILD_MACROLIB   1
 #endif
 
-#if (defined(BUILD_MACROLIB) && (BUILD_MACROLIB >= 1))
-#ifndef INCREASEDMAXLINELENGHT
-#   define INCREASEDMAXLINELENGHT   1
-#endif
-#else
-#ifndef INCREASEDMAXLINELENGHT
-#   define INCREASEDMAXLINELENGHT   0
-#endif
-#endif
-
-#if (defined(INCREASEDMAXLINELENGHT) && (INCREASEDMAXLINELENGHT >= 1))
-#define MAX_LINE_LEN            25600  /* no restriction for this number*/ /*TODO-KRAD-High number can overflow the stack or get undesired effect. Rework code for stack/heap overflow hits.*/
-#define MAX_TOKEN               MAX_LINE_LEN - 800  /* max tokens in one line */
-#define MAX_STRING_LEN          MAX_LINE_LEN - 800 /* must be < MAX_LINE_LEN */
-#define MAX_ID_LEN              247 /*MAX_LINE_LEN - 6175*/ /* must be < MAX_LINE_LEN */ /*TODO-KRAD-Maintain low number here, we don't want to crash the offsets*/
-#define MAX_STRUCT_ALIGN        64
-#define MAX_SEGMENT_ALIGN       4096 /* maximum alignment/packing setting for segments */
-#define MAX_IF_NESTING          32 /* IFxx block nesting. Must be <=32, see condasm.c */
-#define MAX_SEG_NESTING         32 /* limit for segment nesting  */
-#define MAX_MACRO_NESTING       200 /* macro call nesting  */
-#define MAX_STRUCT_NESTING      32 /* limit for "anonymous structs" only */
-#define MAX_LNAME               255 /* OMF lnames - length must fit in 1 byte */
-#define LNAME_NULL              0   /* OMF first entry in lnames array */
-#else
-#define MAX_LINE_LEN            1024 /* no restriction for this number */
+#define MAX_LINE_LEN            2048 /* no restriction for this number */
 #define MAX_TOKEN               MAX_LINE_LEN - 32 /* max tokens in one line */
 #define MAX_STRING_LEN          MAX_LINE_LEN - 32 /* must be < MAX_LINE_LEN */
 #define MAX_ID_LEN              247  /* must be < MAX_LINE_LEN */
@@ -107,7 +83,6 @@
 #define MAX_STRUCT_NESTING      32   /* limit for "anonymous structs" only */
 #define MAX_LNAME               255  /* OMF lnames - length must fit in 1 byte */
 #define LNAME_NULL              0    /* OMF first entry in lnames array */
-#endif
 
 /* output format switches */
 #ifndef BIN_SUPPORT
@@ -181,7 +156,7 @@
 #define AVXSUPP      1 /* support AVX extensions                 */
 #endif
 #ifndef EVEXSUPP
-#define EVEXSUPP      1 /* support AVX extensions                 */
+#define EVEXSUPP      0 /* support AVX extensions                 */
 #endif
 #ifndef COMDATSUPP
 #define COMDATSUPP   1 /* support COMDAT segment attribute       */
@@ -230,6 +205,8 @@
 #define FASTMEM      1 /* fast memory allocation              */
 #endif
 
+#include "basedefs.h"
+
 #include "inttype.h"
 #include "bool.h"
 #include "errmsg.h"  /* must be located AFTER #defines lines */
@@ -237,13 +214,17 @@
 
 /* Uasm version info */
 #ifdef _WIN64
-#define _UASM_VERSION_STR_ "2.50"
+#define _UASM_VERSION_STR_ "2.51"
 #else
-#define _UASM_VERSION_STR_ "2.50"
+#define _UASM_VERSION_STR_ "2.51"
 #endif
-#define _UASM_VERSION_INT_ 250
+#define _UASM_VERSION_INT_ 251
 #define _UASM_VERSION_SUFFIX_ "pre"
 #define _UASM_VERSION_ _UASM_VERSION_STR_ //_UASM_VERSION_SUFFIX_
+
+#define UASM_MAJOR_VER 2
+#define UASM_MINOR_VER 51
+#define UASM_SUBMINOR_VER 1
 
 #if defined(_WIN32) || defined(_WIN64) 
 #define snprintf _snprintf 
@@ -256,9 +237,6 @@
 
 #define NULLC  '\0'
 
-//#define fast_is_valid_id_char( ch )  ( isalnum(ch) || ch=='_' || ch=='@' || ch=='$' || ch=='?' )
-//#define is_valid_id_char( ch )  ( isalnum(ch) || ch=='_' || ch=='@' || ch=='$' || ch=='?' || ((unsigned char)ch > 127 && (unsigned char)ch <= 255)  )
-//#define is_valid_id_first_char( ch )  ( isalpha(ch) || ch=='_' || ch=='@' || ch=='$' || ch=='?' || (ch == '.' && ModuleInfo.dotname == TRUE ))
 #define _LUPPER     0x01    /* upper case letter */
 #define _LLOWER     0x02    /* lower case letter */
 #define _LDIGIT     0x04    /* digit[0-9] */
@@ -268,6 +246,8 @@
 #define _LCONTROL   0x20    /* control character */
 #define _LABEL      0x40    /* UPPER + LOWER + '@' + '_' + '$' + '?' */
 #define _LHEX       0x80    /* hexadecimal digit */
+
+uasm_PACK_PUSH_STACK
 
 extern unsigned char _ltype[];  /* Label type array */
 
@@ -309,6 +289,7 @@ enum
 /* output formats. Order must match formatoptions[] in assemble.c */
 enum oformat
 {
+    OFORMAT_NONE = -1,
     OFORMAT_BIN, /* used by -bin, -mz and -pe */
     OFORMAT_OMF,
     OFORMAT_COFF,/* used by -coff, -djgpp and -win64 */
@@ -506,15 +487,15 @@ enum segofssize {
     USE_EMPTY = 0xFE,
     USE16 = 0, /* don't change values of USE16,USE32,USE64! */
     USE32 = 1,
-#if AMD64_SUPPORT
     USE64 = 2
-#endif
 };
 
 /* fastcall types. if order is to be changed or entries
  * added, also adjust tables in proc.c, mangle.c and probably invoke.c!
  */
-enum fastcall_type {
+enum fastcall_type
+{
+    FCT_NONE = -1,
     FCT_MSC,        /* MS 16-/32-bit fastcall (ax,dx,cx / ecx,edx) */
     FCT_WATCOMC,    /* OW register calling convention (eax, ebx, ecx, edx) */
     FCT_WIN64,      /* Win64 fastcall convention (rcx, rdx, r8, r9) */
@@ -580,9 +561,7 @@ enum opt_names {
     OPTN_LST_FN,              /* -Fl option */
     OPTN_ERR_FN,              /* -Fr option */
     OPTN_SYM_FN,              /* -Fs option */
-#if DLLIMPORT
     OPTN_LNKDEF_FN,           /* -Fd option */
-#endif
     OPTN_MODULE_NAME,         /* -nm option */
     OPTN_TEXT_SEG,            /* -nt option */
     OPTN_DATA_SEG,            /* -nd option */
@@ -631,10 +610,7 @@ enum offset_type {
 
 enum line_output_flags {
     LOF_LISTED = 1, /* line written to .LST file */
-#if FASTPASS
     LOF_SKIPPOS = 2, /* suppress setting list_pos */
-    //LOF_STORED = 2  /* line stored in line buffer for FASTPASS */
-#endif
 };
 
 /* flags for win64_flags */
@@ -667,13 +643,11 @@ enum seg_type {
     SEGTYPE_BSS,
     SEGTYPE_STACK,
     SEGTYPE_ABS,
-#if PE_SUPPORT
     SEGTYPE_HDR,   /* only used in bin.c for better sorting */
     SEGTYPE_CDATA, /* only used in bin.c for better sorting */
     SEGTYPE_RELOC, /* only used in bin.c for better sorting */
     SEGTYPE_RSRC,  /* only used in bin.c for better sorting */
     SEGTYPE_ERROR, /* must be last - an "impossible" segment type */
-#endif
 };
 
 struct global_options {
@@ -789,8 +763,6 @@ struct context;
 
 struct fname_item {
     char* fname;
-    //char    *fullname; /* v2.11: removed */
-    //time_t  mtime; /* v2.11: removed */
 #ifdef DEBUG_OUT
     unsigned included;
     uint_32  lines;
@@ -805,19 +777,14 @@ struct module_vars {
     unsigned            num_segs;        /* number of segments in module */
     struct qdesc        PubQueue;        /* PUBLIC items */
     struct qdesc        LnameQueue;      /* LNAME items (segments, groups and classes) */
-#if COFF_SUPPORT
     struct qdesc        SafeSEHQueue;    /* list of safeseh handlers */
-#endif
     struct qdesc        LibQueue;        /* includelibs */
-#if DLLIMPORT
+    struct qdesc	    LinkQueue;	     /* .pragma comment(linker,"/..") */
     struct dll_desc* DllQueue;       /* dlls of OPTION DLLIMPORT */
-#endif
-#if PE_SUPPORT || DLLIMPORT
     char* imp_prefix;
-#endif
     FILE* curr_file[NUM_FILE_TYPES];  /* ASM, ERR, OBJ and LST */
     char* curr_fname[NUM_FILE_TYPES];
-    struct fname_item* FNames;         /* array of input files */
+    char *              *FNames;         /* array of input files */
     unsigned            cnt_fnames;      /* items in FNames array */
     char* IncludePath;
     struct qdesc        line_queue;      /* line queue */
@@ -831,22 +798,16 @@ struct module_vars {
     struct hll_item* HllFree;        /* v2.06: stack of free <struct hll>-items */
     struct context* ContextStack;
     struct context* ContextFree;    /* v2.10: "free items" heap implemented. */
-#if FASTPASS
     struct context* SavedContexts;
     int                 cntSavedContexts;
-#endif
     /* v2.10: moved here from module_info due to problems if @@: occured on the very first line */
     unsigned            anonymous_label; /* "anonymous label" counter */
-#if STACKBASESUPP
     struct asym* StackBase;
     struct asym* ProcStatus;
-#endif
     ret_code(*WriteModule)(struct module_info*);
     ret_code(*EndDirHook)(struct module_info*);
     ret_code(*Pass1Checks)(struct module_info*);
-#if PE_SUPPORT
     uint_8              pe_flags;        /* for PE */
-#endif
 };
 
 struct format_options;
@@ -865,6 +826,7 @@ struct module_info {
     enum lang_type      langtype;        /* language */
     enum os_type        ostype;          /* operating system */
     enum sformat        sub_format;      /* sub-output format */
+    enum oformat        output_format;   /* output format */
     enum fastcall_type  fctype;          /* fastcall type */
     enum seg_order      segorder;        /* .alpha, .seq, .dosseg */
     enum offset_type    offsettype;      /* OFFSET:GROUP|FLAT|SEGMENT */
@@ -963,7 +925,6 @@ struct extra_flags {
     unsigned char       broadflags;         /* EVEX  sets up decorator flags in P2: b        */
     unsigned char       evex;               /* EVEX  encoding  */
     unsigned char       evexflag;           /* UASM 2.48 User specified EVEX promotion */
-    unsigned char       ZEROLOCALS;         /* zero local variables  */
 #endif
 
     unsigned char       MODULEARCH;         /* MODULE Architecture <avx or sse> */
@@ -990,14 +951,14 @@ struct format_options {
 /* global variables */
 
 /* global strings for arch:sse/avx instructions to use */
-extern const char* MOVE_ALIGNED_FLOAT(void);
-extern const char* MOVE_ALIGNED_INT(void);
-extern const char* MOVE_UNALIGNED_FLOAT(void);
-extern const char* MOVE_UNALIGNED_INT(void);
-extern const char* MOVE_SINGLE(void);
-extern const char* MOVE_DOUBLE(void);
-extern const char* MOVE_SIMD_DWORD(void);
-extern const char* MOVE_SIMD_QWORD(void);
+extern char const* const MOVE_ALIGNED_FLOAT(void);
+extern char const* const MOVE_ALIGNED_INT(void);
+extern char const* const MOVE_UNALIGNED_FLOAT(void);
+extern char const* const MOVE_UNALIGNED_INT(void);
+extern char const* const MOVE_SINGLE(void);
+extern char const* const MOVE_DOUBLE(void);
+extern char const* const MOVE_SIMD_DWORD(void);
+extern char const* const MOVE_SIMD_QWORD(void);
 
 /* global flag to indicate when inside macro body */
 extern bool inMacroBody;
@@ -1029,15 +990,17 @@ extern int              AssembleModule(const char*);
 extern void             AddLinnumDataRef(unsigned, uint_32);
 extern void             SetMasm510(bool);
 extern void             close_files(void);
-extern char* myltoa(uint_32 value, char* buffer, unsigned radix, bool sign, bool addzero);
-extern char* myqtoa(uint_64 value, char* buffer, unsigned radix, bool sign, bool addzero);
-extern char* num2hex64(uint_64 value, char* buffer);
-extern char* ConvertSectionName(const struct asym*, enum seg_type* pst, char* buffer);
+extern char*            myltoa(uint_32 value, char* buffer, unsigned radix, bool sign, bool addzero);
+extern char*            myqtoa(uint_64 value, char* buffer, unsigned radix, bool sign, bool addzero);
+extern char*            num2hex64(uint_64 value, char* buffer);
+extern char*            ConvertSectionName(const struct asym*, enum seg_type* pst, char* buffer);
 extern void             RewindToWin64(void);
 extern void             RewindToSYSV64(void);
 
 #ifndef _MSC_VER
 extern char* strupr(char* str);
 #endif
+
+uasm_PACK_POP
 
 #endif

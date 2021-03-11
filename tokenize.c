@@ -58,6 +58,8 @@
 #define DOTNAMEX 0
 #endif
 
+uasm_PACK_PUSH_STACK
+
 extern struct ReservedWord  ResWordTable[];
 
 #ifdef DEBUG_OUT
@@ -1645,3 +1647,5 @@ skipline:
     tokenarray[p.index].string_ptr = "";
     return(p.index);
 }
+
+uasm_PACK_POP

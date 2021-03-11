@@ -10,6 +10,8 @@ and their sub-types
 #include "globals.h"
 #include "symbols.h"
 
+uasm_PACK_PUSH_STACK
+
 extern void     AddLineQueue(const char* line);
 extern void     AddLineQueueX(const char* fmt, ...);
 extern void     RunLineQueue(void);
@@ -353,3 +355,5 @@ void AddSimdTypes()
 
     RunLineQueue();
 }
+
+uasm_PACK_POP

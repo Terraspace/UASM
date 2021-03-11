@@ -28,7 +28,6 @@
 *
 ****************************************************************************/
 
-//#include <stdarg.h>
 #include <stddef.h>
 #include <ctype.h>
 
@@ -39,11 +38,7 @@
 #include "dbgcv.h"
 #include "cmdline.h"
 #include "myassert.h"
-#include "input.h" /* GetFNamePart() */
-
-//#ifdef __OSI__
-//  #include "ostype.h"
-//#endif
+#include "input.h"
 
 #if defined(__UNIX__) || defined(__CYGWIN__) || defined(__DJGPP__)
 
@@ -66,6 +61,8 @@
 #else
 #define OPTQUAL
 #endif
+
+uasm_PACK_PUSH_STACK
 
 extern char     banner_printed;
 
@@ -140,7 +137,6 @@ struct global_options Options = {
     /* list_macro            */     LM_LISTMACRO,
     /* no_symbol_listing     */     FALSE,
     /* first_pass_listing    */     FALSE,
-
     /* all_symbols_public    */     FALSE,
     /* safeseh               */     FALSE,
     /* ignore_include        */     FALSE,
@@ -168,7 +164,6 @@ struct global_options Options = {
 };
 
 char* DefaultDir[NUM_FILE_TYPES] = { NULL, NULL, NULL, NULL };
-//static char *DefaultExt[NUM_FILE_TYPES] = { OBJ_EXT, LST_EXT, ERR_EXT };
 
 #define MAX_RSP_NESTING 15  /* nesting of response files */
 
@@ -453,15 +448,35 @@ static void OPTQUAL Set_Zd(void)
 {
     Options.line_numbers = TRUE;
 }
-static void OPTQUAL Set_Zi(void)
+static void OPTQUAL Set_Zi( void )
 {
     Set_Zd();
-    Options.debug_symbols = CV_SIGNATURE;
-    /* v2.10: added optional numeric argument for -Zi */
-    if (OptValue <= CVEX_MAX)
-        Options.debug_ext = OptValue;
-    else
-        EmitWarn(1, INVALID_CMDLINE_VALUE, "Zi");
+    Options.debug_symbols = 1;
+    Options.debug_ext = CVEX_NORMAL;
+    if (OptValue)
+    {
+        if (OptValue > CVEX_MAX)
+        {
+            Options.debug_ext = CVEX_MAX;          
+            if (OptValue == 5)
+            {
+                Options.debug_symbols = 2; /* C11 (vc5.x) 32-bit types */
+            }
+            else if (OptValue == 8)
+            {
+                Options.debug_symbols = 4; /* C13 (vc7.x) zero terminated names */
+                Options.no_file_entry = 1;
+            }
+            else
+            {
+                EmitWarn(1, INVALID_CMDLINE_VALUE, "Zi");
+            }
+        }
+        else
+        {
+            Options.debug_ext = OptValue;
+        }
+    }
 }
 
 static void OPTQUAL Set_Zp(void)
@@ -557,6 +572,7 @@ static void OPTQUAL Set_FPx(void)
 static void OPTQUAL Set_G(void)
 {
     Options.langtype = OptValue;
+    ModuleInfo.langtype = OptValue;
 }
 
 static void OPTQUAL Set_Sa(void)
@@ -619,7 +635,7 @@ static void OPTQUAL Set_ofmt(void)
     Options.sub_format = OptValue >> 8;
     if (Options.output_format == OFORMAT_COFF && Options.sub_format == SFORMAT_64BIT)
     {
-        ModuleInfo.langtype = LANG_FASTCALL;
+        Options.langtype = LANG_FASTCALL;
     }
     if (Options.output_format == OFORMAT_ELF && Options.sub_format == SFORMAT_64BIT)
     {
@@ -631,6 +647,8 @@ static void OPTQUAL Set_ofmt(void)
         Options.langtype = LANG_SYSVCALL;
         ModuleInfo.frame_auto = 1;
     }
+    ModuleInfo.output_format = Options.output_format;
+    ModuleInfo.sub_format = Options.sub_format;
 }
 
 static void OPTQUAL Set_zcm(void)
@@ -794,6 +812,7 @@ static struct cmdloption const cmdl_options[] = {
     { "Fw=^@",  0,        Set_Fw },
     { "Gc",     LANG_PASCAL,  Set_G },
     { "Gd",     LANG_C,       Set_G },
+    { "Gs",     LANG_SYSCALL, Set_G },
     { "Gr",     LANG_FASTCALL,Set_G },
     { "Gz",     LANG_STDCALL, Set_G },
     { "Gv",     LANG_VECTORCALL, Set_G },
@@ -1378,3 +1397,5 @@ void EXPQUAL CmdlineFini(void)
     DebugMsg(("CmdLineFini exit\n"));
     return;
 }
+
+uasm_PACK_POP

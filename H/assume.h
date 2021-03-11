@@ -32,6 +32,10 @@
 #ifndef _ASSUME_H_
 #define _ASSUME_H_
 
+#include "basedefs.h"
+
+uasm_PACK_PUSH_STACK
+
 /* flags for error field, used for GPR's ASSUME:ERROR|NOTHING */
 enum err_flags {
     RL_ERROR = 0x01,
@@ -81,5 +85,7 @@ extern void             SetSegAssumeTable(void*);
 extern void             GetSegAssumeTable(void*);
 extern void             SetStdAssumeTable(void*, struct stdassume_typeinfo*);
 extern void             GetStdAssumeTable(void*, struct stdassume_typeinfo*);
+
+uasm_PACK_POP
 
 #endif

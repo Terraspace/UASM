@@ -41,6 +41,10 @@
  * in SpecialTable[] have these bits stored in a uint field (JWASMR!).
  */
 
+#include "basedefs.h"
+
+uasm_PACK_PUSH_STACK
+
 enum operand_type {
     OP_NONE     = 0,
     OP_R8       = 0x00000001,
@@ -174,5 +178,7 @@ enum operand3_type {
     OP3_R            = OP3_XMM0,
 #endif
 };
+
+uasm_PACK_POP
 
 #endif

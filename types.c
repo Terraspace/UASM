@@ -35,6 +35,8 @@
 #define MAXRECBITS 128
 //#endif
 
+uasm_PACK_PUSH_STACK
+
 struct dsym* CurrStruct;
 static struct dsym* redef_struct;
 /* text constants for 'Non-benign <x> redefinition' error msg */
@@ -1910,11 +1912,12 @@ ret_code TypedefDirective(int i, struct asm_tok tokenarray[])
 
     // Force USE32 default offset size. Uasm 2.42
     // This can happen if the typedef occurs before any cpu mode/model is set.
-    if (ti.Ofssize == 0 && Options.output_format != OFORMAT_OMF)
+    if (ti.Ofssize == 0 && ModuleInfo.output_format != OFORMAT_OMF)
     {
-        if (Options.sub_format == SFORMAT_64BIT)
+        if (ModuleInfo.sub_format == SFORMAT_64BIT)
             ti.Ofssize = USE64;
-        else if (Options.output_format == OFORMAT_COFF)
+        /*else if (Options.output_format == OFORMAT_COFF)*/
+        else if (ModuleInfo.sub_format == SFORMAT_NONE || ModuleInfo.sub_format == SFORMAT_MZ || ModuleInfo.sub_format == SFORMAT_PE)
             ti.Ofssize = USE32;
     }
 
@@ -2266,3 +2269,5 @@ void DeleteType(struct dsym* dir)
     LclFree(dir->e.structinfo);
     return;
 }
+
+uasm_PACK_POP

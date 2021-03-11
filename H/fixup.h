@@ -32,6 +32,10 @@
 #ifndef FIXUP_H
 #define FIXUP_H
 
+#include "basedefs.h"
+
+uasm_PACK_PUSH_STACK
+
 /* RELOFF8 - RELOFF32 must be consecutive */
 
 enum fixup_types {
@@ -142,5 +146,7 @@ extern void          FreeFixup(struct fixup*);
 extern void          store_fixup(struct fixup*, struct dsym*, int_32*);
 
 extern ret_code      BackPatch(struct asym* sym);
+
+uasm_PACK_POP
 
 #endif

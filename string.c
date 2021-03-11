@@ -74,6 +74,8 @@ typedef uint64_t ULONG_PTR, * PULONG_PTR;
 
 #define MAXUINT_PTR  (~((UINT_PTR)0))
 
+uasm_PACK_PUSH_STACK
+
 /* generic parameter names. In case the parameter name is
  * displayed in an error message ("required parameter %s missing")
  * v2.05: obsolete
@@ -99,9 +101,9 @@ UINT_PTR UTF8toWideChar(const unsigned char* pSource, UINT_PTR nSourceLen, UINT_
 UINT_PTR UTF8toWideChar(const unsigned char* pSource, UINT_PTR nSourceLen, UINT_PTR* nSourceDone, unsigned short* szTarget, UINT_PTR nTargetMax)
 {
     static const unsigned int   lpOffsetsFromUTF8[6] = { 0x00000000, 0x00003080, 0x000E2080, 0x03C82080, 0xFA082080, 0x82082080 };
-    unsigned char*              pSrc = (unsigned char*)pSource;
-    unsigned char*              pSrcEnd = (unsigned char*)pSource + nSourceLen;
-    unsigned char*              pSrcDone = (unsigned char*)pSource;
+    unsigned char*              pSrc = pSource;
+    unsigned char*              pSrcEnd = pSource + nSourceLen;
+    unsigned char*              pSrcDone = pSource;
     unsigned short*             pDst;
     unsigned short*             pDstEnd;
     unsigned long               nChar;
@@ -1100,3 +1102,5 @@ void StringFini(void)
         printf("invokation CATSTR=%u SUBSTR=%u SIZESTR=%u INSTR=%u EQU(text)=%u\n", catstrcnt, substrcnt, sizstrcnt, instrcnt, equcnt);
 }
 #endif
+
+uasm_PACK_POP

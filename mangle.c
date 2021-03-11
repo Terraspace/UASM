@@ -41,6 +41,8 @@
 #endif
 #endif
 
+uasm_PACK_PUSH_STACK
+
 typedef int (*mangle_func)(const struct asym*, char*);
 
 static int ms32_decorate(const struct asym* sym, char* buffer);
@@ -147,7 +149,7 @@ static int ms32_decorate(const struct asym* sym, char* buffer)
     {
         return(sprintf(buffer, "%s@@%d", sym->name, dir->e.procinfo->parasize));
     }
-    else if ((sym->langtype == LANG_FASTCALL) && (Options.fastcall_decoration == FASTCALL_FULL) && (Options.fctype == FCT_MSC && sym->isproc))
+    else if ((sym->langtype == LANG_FASTCALL) && (Options.fastcall_decoration == FASTCALL_FULL) && (sym->fctype == FCT_MSC && sym->isproc))
     {
         return (sprintf(buffer, "@%s@%u", sym->name, dir->e.procinfo->parasize));
     }
@@ -277,7 +279,7 @@ int Mangle(struct asym* sym, char* buffer)
     {
         case LANG_C:
             /* leading underscore for C? */
-            mangler = (Options.sub_format == SFORMAT_64BIT) ? VoidMangler : Options.no_cdecl_decoration ? VoidMangler : UScoreMangler;
+            mangler = (sym->sub_format == SFORMAT_64BIT) ? VoidMangler : Options.no_cdecl_decoration ? VoidMangler : UScoreMangler;
             break;
         case LANG_SYSCALL:
         case LANG_SYSVCALL:
@@ -285,18 +287,18 @@ int Mangle(struct asym* sym, char* buffer)
             mangler = VoidMangler;
             break;
         case LANG_STDCALL:
-            mangler = (Options.sub_format == SFORMAT_64BIT) ? VoidMangler : (Options.stdcall_decoration == STDCALL_NONE) ? VoidMangler : StdcallMangler;
+            mangler = (sym->sub_format == SFORMAT_64BIT) ? VoidMangler : (Options.stdcall_decoration == STDCALL_NONE) ? VoidMangler : StdcallMangler;
             break;
         case LANG_PASCAL:
         case LANG_FORTRAN:
         case LANG_BASIC:
-            mangler = (Options.sub_format == SFORMAT_64BIT) ? VoidMangler : UCaseMangler;
+            mangler = (sym->sub_format == SFORMAT_64BIT) ? VoidMangler : UCaseMangler;
             break;
         case LANG_VECTORCALL:
             mangler = (Options.vectorcall_decoration == VECTORCALL_NONE) ? VoidMangler : fcmanglers[ModuleInfo.fctype];
             break;
         case LANG_FASTCALL:          /* registers passing parameters */
-            mangler = ((Options.fastcall_decoration == FASTCALL_NONE) || (Options.sub_format == SFORMAT_64BIT)) ? VoidMangler : fcmanglers[ModuleInfo.fctype];
+            mangler = ((Options.fastcall_decoration == FASTCALL_NONE) || (sym->sub_format == SFORMAT_64BIT)) ? VoidMangler : fcmanglers[ModuleInfo.fctype];
             break;
         case LANG_REGCALL:
             mangler = (Options.regcall_decoration == REGCALL_NONE) ? VoidMangler : RegcallMangler;
@@ -320,7 +322,7 @@ int Mangle(struct asym* sym, char* buffer)
 /* the "mangle_type" is an extension inherited from OW Wasm
  * accepted are "C" and "N". It's NULL if MANGLESUPP == 0 (standard)
  */
-void SetMangler(struct asym* sym, uint_16 langtype, const char* mangle_type)
+void SetMangler(struct asym* sym, enum lang_type langtype, enum oformat output_format, enum sformat sub_format, enum fastcall_type fctype, const char* mangle_type)
 /************************************************************************/
 {
 #if MANGLERSUPP
@@ -329,6 +331,15 @@ void SetMangler(struct asym* sym, uint_16 langtype, const char* mangle_type)
 
     if (langtype != LANG_NONE)
         sym->langtype = langtype;
+
+    if (output_format != OFORMAT_NONE)
+        sym->output_format = output_format;
+
+    if (sub_format != SFORMAT_NONE)
+        sym->sub_format = sub_format;
+
+    if (fctype != FCT_NONE)
+        sym->fctype = fctype;
 
 #if MANGLERSUPP
     mangler = GetMangler(mangle_type);
@@ -346,3 +357,5 @@ void SetMangler(struct asym* sym, uint_16 langtype, const char* mangle_type)
     }
 #endif
 }
+
+uasm_PACK_POP

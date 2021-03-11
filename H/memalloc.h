@@ -32,11 +32,17 @@
 #ifndef _MEMALLOC_H_
 #define _MEMALLOC_H_
 
+#include "basedefs.h"
+
+uasm_PACK_PUSH_STACK
+
 extern void MemInit(void);
 extern void MemFini(void);
 extern void* MemAlloc(size_t size);
 extern void* MemRealloc(void* ptr, size_t size);
 extern void MemFree(void* ptr);
+
+uasm_PACK_POP
 
 #if defined(__WATCOMC__) || defined(__BORLANDC__) || defined(__OCC__)
 
@@ -67,6 +73,8 @@ extern void MemFree(void* ptr);
 
 #endif
 
+uasm_PACK_PUSH_STACK
+
 /* LclAlloc() and LclFree() are fast variants, which
  * are to be used for all allocations which aren't "global"
  */
@@ -77,5 +85,7 @@ extern  void* LclAlloc(size_t);
 #else
 extern  void    LclFree(void*);
 #endif
+
+uasm_PACK_POP
 
 #endif

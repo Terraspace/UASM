@@ -63,6 +63,8 @@
   it was necessary because lines may have been tokenized multiple times.
 */
 
+uasm_PACK_PUSH_STACK
+
 enum if_state CurrIfState;
 static int blocknestlevel;
 static int falseblocknestlevel;
@@ -754,3 +756,5 @@ void CondInit(void)
     blocknestlevel = 0;
     falseblocknestlevel = 0;
 }
+
+uasm_PACK_POP

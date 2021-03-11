@@ -32,11 +32,17 @@
 #ifndef _TBYTE_H
 #define _TBYTE_H
 
+#include "basedefs.h"
+
+uasm_PACK_PUSH_STACK
+
 struct TB_LD {
     uint_64 m;
     unsigned short e;
 };
 
 struct TB_LD* strtotb(const char* bufptr, struct TB_LD* pld, char negative);
+
+uasm_PACK_POP
 
 #endif

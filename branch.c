@@ -60,6 +60,8 @@
 /* v2.03: OutputCodeByte no longer needed */
 #define OutputCodeByte( x ) OutputByte( x )
 
+uasm_PACK_PUSH_STACK
+
 extern ret_code segm_override(const struct expr* opndx, struct code_info* CodeInfo);
 extern struct asym* SegOverride;
 
@@ -728,3 +730,5 @@ ret_code process_branch(struct code_info* CodeInfo, unsigned CurrOpnd, const str
     CodeInfo->opnd[OPND1].InsFixup = CreateFixup(sym, fixup_type, fixup_option);
     return(NOT_ERROR);
 }
+
+uasm_PACK_POP

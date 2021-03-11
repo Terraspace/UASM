@@ -41,6 +41,8 @@
 #define FFQUAL
 #endif
 
+uasm_PACK_PUSH_STACK
+
 #pragma pack( push, 1 )
 /* fields cmd, reclen and buffer must be consecutive */
 struct outbuff
@@ -546,3 +548,5 @@ void omf_write_record(const struct omf_rec* objr)
     DebugMsg1(("omf_write_record( cmd=%X data=%p length=%u )\n", objr->command, objr->data, objr->length));
     myFuncs[func_index[JUMP_INDEX(objr->command)]](&out, objr);
 }
+
+uasm_PACK_POP

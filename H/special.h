@@ -389,5 +389,4 @@ res(REGCALL, regcall, RWT_RES_ID, 0, LANG_REGCALL, 0, P_86, 0)
 res(THISCALL, thiscall, RWT_RES_ID, 0, LANG_THISCALL, 0, P_86, 0)
 res(BORLAND, borland, RWT_RES_ID, 0, LANG_DELPHICALL, 0, P_86, 0)
 /* 2.46.9 support VOID return type */
-res(VOIDARG,   voidarg,    RWT_RES_ID, 0, 0, 0, P_86, 0)
-
+res(VOIDARG, voidarg, RWT_RES_ID, 0, 0, 0, P_86, 0)

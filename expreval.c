@@ -67,6 +67,8 @@
 #define ERRLOC( i )
 #endif
 
+uasm_PACK_PUSH_STACK
+
 #if STACKBASESUPP==0
 extern enum special_token basereg[];
 #else
@@ -4818,3 +4820,5 @@ void ExprEvalInit(void)
     nullstruct = NULL;
     nullmbr = NULL;
 }
+
+uasm_PACK_POP

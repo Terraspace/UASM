@@ -41,6 +41,8 @@
  */
 #define MASM_EXTCOND 1  /* 1 is Masm compatible */
 
+uasm_PACK_PUSH_STACK
+
 static const char szCOMM[] = "COMM";
 
 #if MANGLERSUPP
@@ -329,7 +331,7 @@ ret_code ExterndefDirective(int i, struct asm_tok tokenarray[])
                 sym->target_type = ti.symtype;
 
             /* v2.04: only set language if there was no previous definition */
-            SetMangler(sym, langtype, mangle_type);
+            SetMangler(sym, langtype, ModuleInfo.output_format, ModuleInfo.sub_format, ModuleInfo.fctype, mangle_type);
         }
         else if (Parse_Pass == PASS_1)
         {
@@ -730,7 +732,7 @@ ret_code ExternDirective(int i, struct asm_tok tokenarray[])
 
         HandleAltname(altname, sym);
 
-        SetMangler(sym, langtype, mangle_type);
+        SetMangler(sym, langtype, ModuleInfo.output_format, ModuleInfo.sub_format, ModuleInfo.fctype, mangle_type);
 
         if (tokenarray[i].token != T_FINAL)
         {
@@ -913,7 +915,7 @@ ret_code CommDirective(int i, struct asm_tok tokenarray[])
             }
         }
         sym->isdefined = TRUE;
-        SetMangler(sym, langtype, mangle_type);
+        SetMangler(sym, langtype, ModuleInfo.output_format, ModuleInfo.sub_format, ModuleInfo.fctype, mangle_type);
 
         if (tokenarray[i].token != T_FINAL && tokenarray[i].token != T_COMMA)
         {
@@ -1079,7 +1081,7 @@ ret_code PublicDirective(int i, struct asm_tok tokenarray[])
                     sym->ispublic = TRUE;
                     AddPublicData(sym); /* put it into the public table */
                 }
-                SetMangler(sym, langtype, mangle_type);
+                SetMangler(sym, langtype, ModuleInfo.output_format, ModuleInfo.sub_format, ModuleInfo.fctype, mangle_type);
             }
         }
 
@@ -1100,3 +1102,5 @@ ret_code PublicDirective(int i, struct asm_tok tokenarray[])
 
     return(NOT_ERROR);
 }
+
+uasm_PACK_POP

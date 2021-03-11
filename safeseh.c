@@ -18,6 +18,8 @@
 
 #if COFF_SUPPORT
 
+uasm_PACK_PUSH_STACK
+
 /* .SAFESEH works for coff format only.
  * syntax is: .SAFESEH handler
  * <handler> must be a PROC or PROTO
@@ -101,4 +103,7 @@ ret_code SafeSEHDirective(int i, struct asm_tok tokenarray[])
 
     return(NOT_ERROR);
 }
+
+uasm_PACK_POP
+
 #endif

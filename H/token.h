@@ -33,6 +33,10 @@
 #ifndef _TOKEN_H_
 #define _TOKEN_H_
 
+#include "basedefs.h"
+
+uasm_PACK_PUSH_4
+
 /* T_INSTRUCTION - T_RES_ID are reserved words.
  * T_REG - T_RES_ID match RWT_REG - RWT_RES_ID
  */
@@ -90,5 +94,7 @@ struct asm_tok {
     };
     char* tokpos;                 /* points to item in CurrSource */
 };
+
+uasm_PACK_POP
 
 #endif

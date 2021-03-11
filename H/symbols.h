@@ -34,6 +34,10 @@
 #ifndef _SYMBOLS_H_
 #define _SYMBOLS_H_
 
+#include "basedefs.h"
+
+uasm_PACK_PUSH_STACK
+
 /*
  * SYM_LIB  - library paths are no longer added to the symbol table
  * SYM_LNAME has been removed. It was used for the null-entry in the LNAME table only
@@ -67,6 +71,7 @@ enum memtype {
     MT_SBYTE = MT_BYTE | MT_SIGNED,
     MT_WORD = 2 - 1,
     MT_SWORD = MT_WORD | MT_SIGNED,
+    MT_REAL2 = MT_WORD | MT_FLOAT,
     MT_DWORD = 4 - 1,
     MT_SDWORD = MT_DWORD | MT_SIGNED,
     MT_REAL4 = MT_DWORD | MT_FLOAT,
@@ -77,15 +82,17 @@ enum memtype {
     MT_TBYTE = 10 - 1,
     MT_REAL10 = MT_TBYTE | MT_FLOAT,
     MT_OWORD = 16 - 1,
-#if AVXSUPP
+    MT_REAL16 = MT_OWORD | MT_FLOAT,
     MT_YMMWORD = 32 - 1,
     MT_ZMMWORD = 64 - 1,
-#endif
+    MT_YWORD = 32 - 1,
+    MT_ZWORD = 64 - 1,
     MT_PROC = 0x80,   /* symbol is a TYPEDEF PROTO, state=SYM_TYPE, typekind=TYPE_TYPEDEF, prototype is stored in target_type */
     MT_NEAR = 0x81,
     MT_FAR = 0x82,
     MT_EMPTY = 0xC0,
     MT_BITS = 0xC1,   /* record field */
+    MT_ABS   = 0xC2,   
     MT_PTR = 0xC3,   /* v2.05: changed, old value 0x83 */
     MT_TYPE = 0xC4,   /* symbol has user-defined type (struct, union, record) */
     MT_SPECIAL = 0x80, /* bit 7 */
@@ -260,7 +267,10 @@ struct asym {
 #else
     uint_16         name_size;
 #endif
-    uint_16  langtype; //enum lang_type
+    enum lang_type          langtype;          //enum lang_type
+    enum oformat            output_format;     //enum oformat     output_format;     /* -bin, -omf, -coff, -elf options */
+    enum sformat            sub_format;        //enum sformat sub_format;             /* -mz, -pe, -win64, -elf64 options */
+    enum fastcall_type      fctype;            //enum fastcall_type  fctype;          /* fastcall type */
     union {
         /* SYM_INTERNAL, SYM_UNDEFINED, SYM_EXTERNAL: backpatching fixup */
         struct fixup* bp_fixup;
@@ -443,6 +453,7 @@ struct proc_info {
 #endif
     uint_8              NoSub;
     int                frameofs;		/* Optimise 1byte displace to access locals from RBP by using a frame offset */
+    bool               prologueDone;    /* UASM 2.51 check when prologue has been completed */
 };
 
 /* macro parameter */
@@ -619,5 +630,7 @@ extern  void            SymSetCmpFunc(void);
 extern  void            SymClearLocal(void);
 extern  void            SymSetLocal(struct asym*);
 extern  void            SymGetLocal(struct asym*);
+
+uasm_PACK_POP
 
 #endif

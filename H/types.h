@@ -5,6 +5,10 @@
 #ifndef _TYPES_H_INCLUDED_
 #define _TYPES_H_INCLUDED_
 
+#include "basedefs.h"
+
+uasm_PACK_PUSH_STACK
+
 /* qualified_type us used for parsing a qualified type. */
 struct qualified_type {
     int             size;
@@ -28,4 +32,7 @@ extern ret_code    SetStructCurrentOffset(int_32);
 extern ret_code    AlignInStruct(int);
 extern void        TypesInit(void);
 extern void        DeleteType(struct dsym*);
+
+uasm_PACK_POP
+
 #endif

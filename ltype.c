@@ -1,5 +1,7 @@
 #include "globals.h"
 
+uasm_PACK_PUSH_STACK
+
 unsigned char _ltype[257] = {
     0,                          /* -1 EOF   */
     _LCONTROL,                  /* 00 (NUL) */
@@ -132,3 +134,5 @@ unsigned char _ltype[257] = {
     _LCONTROL,                  /* 7F (DEL) */
                                 /* and the rest are 0... */
 };
+
+uasm_PACK_POP

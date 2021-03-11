@@ -10,6 +10,10 @@
 #ifndef _LISTING_H_INCLUDED
 #define _LISTING_H_INCLUDED
 
+#include "basedefs.h"
+
+uasm_PACK_PUSH_STACK
+
 enum lsttype {
     LSTTYPE_DATA,
     LSTTYPE_CODE,
@@ -31,5 +35,7 @@ extern void LstNL(void);
 #if FASTPASS
 extern void LstSetPosition(void);
 #endif
+
+uasm_PACK_POP
 
 #endif

@@ -1,5 +1,12 @@
 #pragma once
 
+#ifndef _WIN64SEH_H_INCLUDED_
+#define _WIN64SEH_H_INCLUDED_
+
+#include "basedefs.h"
+
+uasm_PACK_PUSH_4
+
 /* some structures for Win64 SEH */
 
 /* .pdata items */
@@ -63,3 +70,6 @@ typedef struct _UNWIND_INFO {
 
 #define UNW_VERSION 1
 
+uasm_PACK_POP
+
+#endif // _WIN64SEH_H_INCLUDED_

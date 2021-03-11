@@ -1,6 +1,13 @@
 #pragma once
 
+#ifndef _MEMTABLE64_H_
+#define _MEMTABLE64_H_
+
+#include "basedefs.h"
+
 #include "codegenv2.h"
+
+uasm_PACK_PUSH_STACK
 
 struct Mem_Def MemTable64[] = {
     /* INDEX---> AX CX DX BX SP BP  SI DI R8 R9 R10 R11 R12  R13 R14 R15 RIP NONE																  */
@@ -350,3 +357,7 @@ struct Mem_Def MemTable64[] = {
     { SIB_ONLY,  (MEMF_MODRM | MEMF_DSP32 | MEMF_SIB), (SIB_BASE_BP | SIB_IDX_RIP) },
     { (MRM_ABS),  (MEMF_MODRM | MEMF_DSP32 | MEMF_SIB), (SIB_BASE_BP | SIB_IDX_SP) }, /* [none+none] == abs */
 };
+
+uasm_PACK_POP
+
+#endif // _MEMTABLE64_H_

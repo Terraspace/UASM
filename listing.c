@@ -38,6 +38,8 @@
 #define NLSTR "\r\n"
 #endif
 
+uasm_PACK_PUSH_STACK
+
 extern int_32  LastCodeBufSize;
 #if STACKBASESUPP==0
 extern enum special_token basereg[];
@@ -615,7 +617,7 @@ static const char* GetMemtypeString(const struct asym* sym, char* buffer)
 static const char* GetLanguage(const struct asym* sym)
 /******************************************************/
 {
-    if (sym->langtype <= 7)
+    if (sym->langtype <= 12)
         return(strings[sym->langtype + LS_VOID]);
     return("?");
 }
@@ -1406,3 +1408,5 @@ void LstInit(void)
         LstNL();
     }
 }
+
+uasm_PACK_POP

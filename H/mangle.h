@@ -32,7 +32,13 @@
 #ifndef _MANGLE_H_
 #define _MANGLE_H_
 
+#include "basedefs.h"
+
+uasm_PACK_PUSH_STACK
+
 extern int  Mangle(struct asym*, char*);
-extern void SetMangler(struct asym*, uint_16, const char*);
+extern void SetMangler(struct asym*, enum lang_type, enum oformat, enum sformat, enum fastcall_type, const char*);
+
+uasm_PACK_POP
 
 #endif

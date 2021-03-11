@@ -424,6 +424,10 @@ typedef int		vm_prot_t;
 *
  ------------------------------------------------------------------------------------------------------------------------- */
 
+#include "basedefs.h"
+
+uasm_PACK_PUSH_2
+
  /* The 32-bit mach header appears at the very beginning of the object file for
  * 32-bit architectures.
  */
@@ -2264,6 +2268,8 @@ enum reloc_type_x86_64
 };
 
 struct relocation_info { int32_t r_address; uint32_t r_symbolnum : 24, r_pcrel : 1, r_length : 2, r_extern : 1, r_type : 4; };
+
+uasm_PACK_POP
 
 #endif /* End of MACHO64SPEC_H */
 

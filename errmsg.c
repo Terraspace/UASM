@@ -49,6 +49,8 @@
 #include "winconsole.h"
 #endif
 
+uasm_PACK_PUSH_STACK
+
 extern void             print_source_nesting_structure(void);
 extern jmp_buf          jmpenv;
 
@@ -475,3 +477,5 @@ int InternalError(const char* file, unsigned line)
     return(0);
 }
 #endif
+
+uasm_PACK_POP

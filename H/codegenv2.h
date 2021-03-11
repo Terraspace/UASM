@@ -1,7 +1,14 @@
 #pragma once
 
+#ifndef _CODEGENV2_H_INCLUDED
+#define _CODEGENV2_H_INCLUDED
+
+#include "basedefs.h"
+
 #include "globals.h"
 #include "expreval.h"
+
+uasm_PACK_PUSH_STACK
 
 /* This order must remain as-is! */
 enum instr_group {
@@ -389,14 +396,18 @@ bool Require_ADDR_Size_Override(struct Instr_Def* instr, struct code_info* CodeI
 bool IsValidInCPUMode(struct Instr_Def* instr);
 
 unsigned char BuildModRM(unsigned char modRM, struct Instr_Def* instr, struct expr opnd[4], bool* needRM, bool* needSIB,
-    bool isVEX);																						/* Build instruction ModRM byte */
-unsigned char BuildREX(unsigned char RexByte, struct Instr_Def* instr, struct expr opnd[4]);								/* Build REX prefix byte        */
-void          BuildVEX(bool* needVex, unsigned char* vexSize, unsigned char* vexBytes,
-    struct Instr_Def* instr, struct expr opnd[4], bool needB, bool needX, uint_32 opCount);				/* Build VEX prefix bytes       */
+                         bool isVEX);																						/* Build instruction ModRM byte */
+unsigned char BuildREX(unsigned char RexByte, struct Instr_Def* instr, struct expr opnd[4]); /* Build REX prefix byte        */
+void          BuildVEX(bool* needVex, unsigned char* vexSize, unsigned char* vexBytes, 
+                       struct Instr_Def* instr, struct expr opnd[4], bool needB, bool needX, uint_32 opCount);				/* Build VEX prefix bytes       */
 void          BuildEVEX(bool* needEvex, unsigned char* evexBytes, struct Instr_Def* instr, struct expr opnd[4],
-    bool needB, bool needX, bool needRR, uint_32 opCount, struct code_info* CodeInfo);					/* Build EVEX prefix bytes      */
-int           BuildMemoryEncoding(unsigned char* pmodRM, unsigned char* pSIB, unsigned char* pREX, bool* needModRM, bool* needSIB,
-    unsigned int* dispSize, uint_64* pDisp, struct Instr_Def* instr,
-    struct expr opExpr[4], bool* needB, bool* needX,
-    bool* needRR, struct code_info* CodeInfo);											    /* Build Memory encoding ModRM/SIB bytes   */
-unsigned char GetRegisterNo(struct asm_tok* regTok);																		/* Get Register Encoding Number from Token */
+                        bool needB, bool needX, bool needRR, uint_32 opCount, struct code_info* CodeInfo);					/* Build EVEX prefix bytes      */
+int           BuildMemoryEncoding(unsigned char* pmodRM, unsigned char* pSIB, unsigned char* pREX, bool* needRM, bool* needSIB, 
+                                  unsigned int* dispSize, uint_64* pDisp, struct Instr_Def* instr,
+                                  struct expr opExpr[4], bool* needB, bool* needX, 
+                                  bool* needRR, struct code_info *CodeInfo);											    /* Build Memory encoding ModRM/SIB bytes   */
+unsigned char GetRegisterNo(struct asm_tok* regTok); /* Get Register Encoding Number from Token */
+
+uasm_PACK_POP
+
+#endif // _CODEGENV2_H_INCLUDED

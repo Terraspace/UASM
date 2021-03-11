@@ -33,6 +33,8 @@
 #include "omf.h"
 #include "macro.h"
 
+uasm_PACK_PUSH_STACK
+
 #define  res(token, function) extern ret_code function( int, struct asm_tok[] );
 #include "dirtype.h"
 #undef res
@@ -404,6 +406,9 @@ ret_code AliasDirective(int i, struct asm_tok tokenarray[])
         sym->substitute = sym2;
         /* v2.10: copy language type of alias */
         sym->langtype = sym2->langtype;
+        sym->output_format = sym2->output_format;
+        sym->sub_format = sym2->sub_format;
+        sym->fctype = sym2->langtype;
         sym_add_table(&SymTables[TAB_ALIAS], (struct dsym*)sym); /* add ALIAS */
         return(NOT_ERROR);
     }
@@ -417,9 +422,9 @@ ret_code AliasDirective(int i, struct asm_tok tokenarray[])
      * public INTERNAL). For OMF, there's no check at all. */
     if (Parse_Pass != PASS_1)
     {
-        if (Options.output_format == OFORMAT_COFF
+        if (sym->output_format == OFORMAT_COFF
 #if ELF_SUPPORT
-            || Options.output_format == OFORMAT_ELF
+            || sym->output_format == OFORMAT_ELF
 #endif
             )
         {
@@ -531,12 +536,12 @@ ret_code SegOrderDirective(int i, struct asm_tok tokenarray[])
         return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i + 1].tokpos));
     }
 #if COFF_SUPPORT || ELF_SUPPORT || PE_SUPPORT
-    if (Options.output_format == OFORMAT_COFF
+    if (ModuleInfo.output_format == OFORMAT_COFF
 #if ELF_SUPPORT
-        || Options.output_format == OFORMAT_ELF
+        || ModuleInfo.output_format == OFORMAT_ELF
 #endif
 #if PE_SUPPORT
-        || (Options.output_format == OFORMAT_BIN && ModuleInfo.sub_format == SFORMAT_PE)
+        || (ModuleInfo.output_format == OFORMAT_BIN && ModuleInfo.sub_format == SFORMAT_PE)
 #endif
         )
     {
@@ -549,3 +554,5 @@ ret_code SegOrderDirective(int i, struct asm_tok tokenarray[])
 
     return(NOT_ERROR);
 }
+
+uasm_PACK_POP

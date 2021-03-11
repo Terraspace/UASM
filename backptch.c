@@ -49,6 +49,9 @@
 #else
 #define SkipFixup()
 #endif
+
+uasm_PACK_PUSH_STACK
+
 static void DoPatch(struct asym* sym, struct fixup* fixup)
 /**********************************************************/
 {
@@ -288,3 +291,5 @@ ret_code BackPatch(struct asym* sym)
 #endif
     return(NOT_ERROR);
 }
+
+uasm_PACK_POP

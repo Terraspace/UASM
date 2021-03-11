@@ -58,6 +58,9 @@
     ENDIF
    ;/INT TEXTEQU <DWORD> cannot be used instruction type*/
     BOOL TEXTEQU <DWORD>
+    BOOL_T TEXTEQU <DWORD>
+    INTBOOL_T TEXTEQU <DWORD>
+    COUNT_T TEXTEQU <DWORD>
     LONG TEXTEQU <DWORD>
     INT32 TEXTEQU <DWORD>
     UINT32 TEXTEQU <DWORD>
@@ -410,6 +413,9 @@
     tchar TEXTEQU <TCHAR>
    ;/*int TEXTEQU <INT> cannot be used instruction type*/
     bool TEXTEQU <BOOL>
+    bool_t TEXTEQU <BOOL_T>
+    intbool_t TEXTEQU <INTBOOL_T>
+    count_t TEXTEQU <COUNT_T>
     long TEXTEQU <LONG>
     int32 TEXTEQU <INT32>
     uint32 TEXTEQU <UINT32>

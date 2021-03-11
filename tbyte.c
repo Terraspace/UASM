@@ -48,6 +48,8 @@
 #define MAXUI64    0xffffffffffffffffui64
 #endif
 
+uasm_PACK_PUSH_STACK
+
 union u192
 {
     uint_64 m64[3];
@@ -534,3 +536,5 @@ struct TB_LD* strtotb(const char* p, struct TB_LD* ld, char negative)
     SET_SIGN(ld, sign);
     return(ld);
 }
+
+uasm_PACK_POP

@@ -32,7 +32,13 @@
 #ifndef _EQUATE_H_INCLUDED
 #define _EQUATE_H_INCLUDED
 
+#include "basedefs.h"
+
+uasm_PACK_PUSH_STACK
+
 extern struct asym* CreateConstant(struct asm_tok[]);
 extern struct asym* CreateVariable(const char*, int);
+
+uasm_PACK_POP
 
 #endif

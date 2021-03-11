@@ -36,6 +36,8 @@
 
 #define DOT_XMMARG 0 /* 1=optional argument for .XMM directive */
 
+uasm_PACK_PUSH_STACK
+
 extern const char szDgroup[];
 
 /* prototypes */
@@ -155,12 +157,12 @@ void SetModel(void)
          */
         if ((ModuleInfo.curr_cpu & P_CPU_MASK) == P_64)
         {
-            if ((Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC) && (ModuleInfo.langtype == LANG_SYSVCALL || ModuleInfo.langtype == LANG_REGCALL || ModuleInfo.langtype == LANG_SYSCALL))
+            if ((ModuleInfo.langtype == LANG_SYSVCALL || ModuleInfo.langtype == LANG_REGCALL || ModuleInfo.langtype == LANG_SYSCALL) && (ModuleInfo.output_format == OFORMAT_ELF || ModuleInfo.output_format == OFORMAT_MAC))
             {
                 DebugMsg(("SetModel: FASTCALL type set to SYSV64\n"));
                 ModuleInfo.fctype = FCT_SYSV64;
             }
-            if ((Options.output_format == OFORMAT_COFF) && (ModuleInfo.langtype == LANG_FASTCALL || ModuleInfo.langtype == LANG_VECTORCALL || ModuleInfo.langtype == LANG_REGCALL))
+            else if ((ModuleInfo.langtype == LANG_FASTCALL || ModuleInfo.langtype == LANG_REGCALL || ModuleInfo.langtype == LANG_VECTORCALL) && ModuleInfo.output_format == OFORMAT_COFF)
             {
                 DebugMsg(("SetModel: FASTCALL type set to WIN64\n"));
                 ModuleInfo.fctype = FCT_WIN64;
@@ -236,7 +238,7 @@ void SetModel(void)
 
 #if PE_SUPPORT
     if (ModuleInfo.sub_format == SFORMAT_PE ||
-        (ModuleInfo.sub_format == SFORMAT_64BIT && Options.output_format == OFORMAT_BIN))
+        (ModuleInfo.sub_format == SFORMAT_64BIT && ModuleInfo.output_format == OFORMAT_BIN))
         pe_create_PE_header();
 #endif
 
@@ -360,7 +362,7 @@ ret_code ModelDirective(int i, struct asm_tok tokenarray[])
         }
 #if AMD64_SUPPORT
         if ((ModuleInfo.curr_cpu & P_CPU_MASK) >= P_64) /* cpu 64-bit? */
-            switch (Options.output_format)
+            switch (ModuleInfo.output_format)
             {
             case OFORMAT_COFF: ModuleInfo.fmtopt = &coff64_fmtopt; break;
             case OFORMAT_ELF:  ModuleInfo.fmtopt = &elf64_fmtopt;  break;
@@ -507,7 +509,7 @@ ret_code CpuDirective(int i, struct asm_tok tokenarray[])
 
     if (tokenarray[i].tokval == T_DOT_WIN64)
     {
-        if (!UseSavedState && Options.sub_format != SFORMAT_64BIT)
+        if (!UseSavedState && ModuleInfo.sub_format != SFORMAT_64BIT)
             RewindToWin64();
 
         if (tokenarray[i + 1].token == T_COLON)
@@ -520,7 +522,7 @@ ret_code CpuDirective(int i, struct asm_tok tokenarray[])
 
     if (tokenarray[i].tokval == T_DOT_SYSV64)
     {
-        if (!UseSavedState && Options.sub_format != SFORMAT_64BIT)
+        if (!UseSavedState && ModuleInfo.sub_format != SFORMAT_64BIT)
             RewindToSYSV64();
 
         if (tokenarray[i + 1].token == T_COLON)
@@ -541,10 +543,14 @@ ret_code CpuDirective(int i, struct asm_tok tokenarray[])
         if (tokenarray[i + 1].token == T_COLON)
         {
             x = i + 2;
-            if (Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC)
+            if (ModuleInfo.output_format == OFORMAT_ELF || ModuleInfo.output_format == OFORMAT_MAC)
+            {
                 SetSYSV64(&x, tokenarray);
+            }
             else
+            {
                 SetWin64(&x, tokenarray);
+            }
         }
     }
 
@@ -581,3 +587,5 @@ ret_code CpuDirective(int i, struct asm_tok tokenarray[])
 
     return(SetCPU(newcpu));
 }
+
+uasm_PACK_POP

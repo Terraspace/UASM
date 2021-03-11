@@ -53,6 +53,10 @@ enum segment_alignment_specifiers {
 };
 #endif
 
+#include "basedefs.h"
+
+uasm_PACK_PUSH_STACK
+
 enum segdef_align_values {
     SEGDEF_ALIGN_ABS = 0,/* absolute segment - no alignment          */
     SEGDEF_ALIGN_BYTE = 1,/* relocatable seg  - byte aligned          */
@@ -393,5 +397,7 @@ enum comdat_flags {
  COMDAT_ALIGN_4K = 0x04,
  COMDAT_ALIGN_DWORD = 0x05
 };
+
+uasm_PACK_POP
 
 #endif

@@ -35,7 +35,8 @@ for %%f in (..\src\avx512\*.asm) do call :cmpavx512 %%f
 for %%f in (..\src\vcall\*.asm) do call :vectorcall %%f
 for %%f in (..\src\CodeGenV2\*.asm) do call :cgv2 %%f
 for %%f in (..\src\CodeGenV2Error\*.asm) do call :cgv2err %%f
-
+for %%f in (..\src\codeview8_32\*.asm) do call :cv832 %%f
+for %%f in (..\src\codeview8_64\*.asm) do call :cv864 %%f
 cd ..
 echo .
 echo .
@@ -45,6 +46,30 @@ echo ****************************************************************
 echo .
 echo .
 goto :end
+
+:cv832
+echo ****************************************************************
+ECHO %1
+echo ****************************************************************
+echo .
+echo .
+%ASMX% -c -coff -Zi8 -Zd -Zf %1
+%FCMP% /O16 %~n1.obj ..\exp\codeview8_32\%~n1.obj
+if errorlevel 1 goto end
+del %~n1.obj
+goto end
+
+:cv864
+echo ****************************************************************
+ECHO %1
+echo ****************************************************************
+echo .
+echo .
+%ASMX% -c -win64 -Zi8 -Zd -Zf %1
+%FCMP% /O16 %~n1.obj ..\exp\codeview8_64\%~n1.obj
+if errorlevel 1 goto end
+del %~n1.obj
+goto end
 
 :cmpbin
 echo ****************************************************************
@@ -86,6 +111,9 @@ echo .
 %FCMP% /O16 %~n1.obj ..\exp\win64\%~n1.obj
 if errorlevel 1 goto end
 del %~n1.obj
+%FCMP% %~n1.err ..\exp\win64\%~n1.err
+if errorlevel 1 goto end
+del %~n1.err
 goto end
 
 :cmpflat
@@ -159,6 +187,9 @@ echo .
 %FCMP% /O16 %~n1.obj ..\exp\literals\%~n1.obj
 if errorlevel 1 goto end
 del %~n1.obj
+%FCMP% %~n1.err ..\exp\literals\%~n1.err
+if errorlevel 1 goto end
+del %~n1.err
 goto end
 
 :cmpliteralerr
@@ -283,6 +314,9 @@ echo .
 %FCMP% /O32 %~n1.obj ..\exp\vcall\%~n1.obj
 if errorlevel 1 goto end
 del %~n1.obj
+%FCMP% %~n1.err ..\exp\vcall\%~n1.err
+if errorlevel 1 goto end
+del %~n1.err
 goto end
 
 :cgv2

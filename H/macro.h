@@ -34,6 +34,10 @@
 
 #define PLACEHOLDER_CHAR '\n' /* "escape" char for macro placeholders */
 
+#include "basedefs.h"
+
+uasm_PACK_PUSH_STACK
+
 enum macro_flags {
 #if MACROLABEL
     MF_LABEL = 0x01,   /* a label exists at pos 0 */
@@ -77,5 +81,7 @@ extern void     StringInit(void);
 #ifdef DEBUG_OUT
 extern void     StringFini(void);
 #endif
+
+uasm_PACK_POP
 
 #endif

@@ -303,6 +303,7 @@ xcopy  ..\..\BuildCustomizations $(UASM_PATH)\BuildCustomizations /hisery</Comma
   <ItemGroup>
     <ClInclude Include="..\..\H\assume.h" />
     <ClInclude Include="..\..\H\atofloat.h" />
+    <ClInclude Include="..\..\H\basedefs.h" />
     <ClInclude Include="..\..\H\bin.h" />
     <ClInclude Include="..\..\H\bool.h" />
     <ClInclude Include="..\..\H\cmdline.h" />
@@ -317,6 +318,7 @@ xcopy  ..\..\BuildCustomizations $(UASM_PATH)\BuildCustomizations /hisery</Comma
     <ClInclude Include="..\..\H\data.h" />
     <ClInclude Include="..\..\H\dbgcv.h" />
     <ClInclude Include="..\..\H\dbgdw.h" />
+    <ClInclude Include="..\..\H\defs.h" />
     <ClInclude Include="..\..\H\directve.h" />
     <ClInclude Include="..\..\H\dirtype.h" />
     <ClInclude Include="..\..\H\elf.h" />
@@ -361,6 +363,7 @@ xcopy  ..\..\BuildCustomizations $(UASM_PATH)\BuildCustomizations /hisery</Comma
     <ClInclude Include="..\..\H\orgfixup.h" />
     <ClInclude Include="..\..\H\parser.h" />
     <ClInclude Include="..\..\H\pespec.h" />
+    <ClInclude Include="..\..\H\picohash.h" />
     <ClInclude Include="..\..\H\posndir.h" />
     <ClInclude Include="..\..\H\preproc.h" />
     <ClInclude Include="..\..\H\proc.h" />

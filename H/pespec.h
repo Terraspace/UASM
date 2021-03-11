@@ -7,6 +7,10 @@
 #ifndef PE_H
 #define PE_H
 
+#include "basedefs.h"
+
+uasm_PACK_PUSH_2
+
 struct IMAGE_DOS_HEADER {
     uint_16 e_magic;          // Magic number
     uint_16 e_cblp;           // Bytes on last page of file
@@ -212,5 +216,7 @@ struct IMAGE_RESOURCE_DATA_ENTRY {
 };
 
 #endif
+
+uasm_PACK_POP
 
 #endif

@@ -1,5 +1,12 @@
 #pragma once
 
+#ifndef _LINNUM_H_
+#define _LINNUM_H_
+
+#include "basedefs.h"
+
+uasm_PACK_PUSH_STACK
+
 /* internal line number information used if -Zd or -Zi is set */
 
 struct line_num_info {
@@ -23,3 +30,6 @@ void LinnumInit(void);
 void LinnumFini(void);
 void QueueDeleteLinnum(struct qdesc*);
 
+uasm_PACK_POP
+
+#endif // _LINNUM_H_

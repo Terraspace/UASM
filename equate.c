@@ -23,6 +23,8 @@
 #include "fixup.h"
 #include "myassert.h"
 
+uasm_PACK_PUSH_STACK
+
 extern void myatoi128(const char*, uint_64[], int, int);
 
 #if defined(LLONG_MAX) || defined(__GNUC__) || defined(__TINYC__)
@@ -283,6 +285,9 @@ static struct asym* CreateAssemblyTimeVariable(struct asm_tok tokenarray[])
     if (opnd.kind == EXPR_ADDR && opnd.sym != NULL && opnd.sym->isproc)
     {
         sym->langtype = opnd.sym->langtype;
+        sym->output_format = opnd.sym->output_format;
+        sym->sub_format = opnd.sym->sub_format;
+        sym->fctype = opnd.sym->fctype;
         sym->isproc = opnd.sym->isproc;
         sym->procptr = opnd.sym;
     }
@@ -624,3 +629,5 @@ ret_code EquDirective(int i, struct asm_tok tokenarray[])
     }
     return(ERROR);
 }
+
+uasm_PACK_POP

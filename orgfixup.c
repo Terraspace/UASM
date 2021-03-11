@@ -6,6 +6,8 @@
 
 #include "orgfixup.h"
 
+uasm_PACK_PUSH_STACK
+
 struct orgFixup* pOrgTable = NULL;
 
 void AddOrgFixup(int curPos, int orgValue)
@@ -66,3 +68,5 @@ bool InOrgRange(int position)
     }
     return(retval);
 }
+
+uasm_PACK_POP

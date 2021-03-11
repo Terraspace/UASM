@@ -32,10 +32,16 @@
 #ifndef _LABEL_H_
 #define _LABEL_H_
 
+#include "basedefs.h"
+
+uasm_PACK_PUSH_STACK
+
 struct qualified_type;
 
 extern void         LabelInit(void);
 extern char* GetAnonymousLabel(char*, int);
 extern struct asym* CreateLabel(const char*, enum memtype, struct qualified_type*, bool);
+
+uasm_PACK_POP
 
 #endif

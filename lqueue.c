@@ -19,6 +19,8 @@
 #include "preproc.h"
 #include "myassert.h"
 
+uasm_PACK_PUSH_STACK
+
 extern struct ReservedWord  ResWordTable[];
 
 /* item of a line queue */
@@ -73,8 +75,6 @@ void AddLineQueue(const char* line)
     unsigned i = strlen(line);
     struct lq_line* new;
 
-    DebugMsg1(("AddLineQueue(%p): #=%u >%s<\n", line, ++lqlines_written, line));
-
     /* v2.11: line queue has become static. */
     //if ( line_queue == NULL ) {
     //    line_queue = MemAlloc( sizeof( struct input_queue ) );
@@ -112,7 +112,6 @@ void AddLineQueueX(const char* fmt, ...)
     const char* p;
     char buffer[MAX_LINE_LEN];
 
-    //DebugMsg(("AddlineQueueX(%s) enter\n", fmt ));
     va_start(args, fmt);
     for (s = fmt, d = buffer; *s; s++)
     {
@@ -176,7 +175,6 @@ void AddLineQueueX(const char* fmt, ...)
     }
     *d = NULLC;
     va_end(args);
-    //DebugMsg(("AddlineQueueX() done\n" ));
     AddLineQueue(buffer);
     return;
 }
@@ -191,9 +189,7 @@ void BuildCodeLine(char* buffer, const char* fmt, ...)
     int_64 q;
     const char* s;
     const char* p;
-    //char buffer[MAX_LINE_LEN];
 
-    //DebugMsg(("AddlineQueueX(%s) enter\n", fmt ));
     va_start(args, fmt);
     for (s = fmt, d = buffer; *s; s++)
     {
@@ -257,8 +253,6 @@ void BuildCodeLine(char* buffer, const char* fmt, ...)
     }
     *d = NULLC;
     va_end(args);
-    //DebugMsg(("AddlineQueueX() done\n" ));
-    //AddLineQueue(buffer);
     return;
 }
 
@@ -275,8 +269,6 @@ void RunLineQueue(void)
     struct input_status         oldstat;
     struct asm_tok*             tokenarray;
     struct lq_line*             currline = line_queue.head;
-
-    DebugMsg1(("RunLineQueue() enter\n"));
 
     /* v2.03: ensure the current source buffer is still aligned */
     tokenarray = PushInputStatus(&oldstat);
@@ -300,15 +292,10 @@ void RunLineQueue(void)
         currline = nextline;
     }
 
-#ifdef DEBUG_OUT
-    if (ModuleInfo.EndDirFound == TRUE)
-    {
-        DebugMsg(("!!!!! Warning: End directive found in generated-code parser loop!\n"));
-    }
-#endif
     ModuleInfo.GeneratedCode--;
     PopInputStatus(&oldstat);
 
-    DebugMsg1(("RunLineQueue() exit\n"));
     return;
 }
+
+uasm_PACK_POP

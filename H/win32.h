@@ -1,5 +1,8 @@
 #pragma once
 
+#ifndef _WIN32_H_INCLUDED_
+#define _WIN32_H_INCLUDED_
+
 /*
  * this file contains prototypes of the Win32 functions which are
  * called directly by Uasm (in memalloc.c if FASTMEM=1).
@@ -26,6 +29,10 @@
 #define MEM_RELEASE    0x8000
 #define PAGE_READWRITE 0x0004
 
+#include "basedefs.h"
+
+uasm_PACK_PUSH_STACK
+
 /*
  * v2.10: second parameter of VirtualAlloc/Free changed to size_t ( from uint_32 ).
  * The old declaration did work for Win64, due to the AMD64 peculiarity that writing
@@ -34,3 +41,7 @@
 
 WINBASEAPI void* WINAPI VirtualAlloc(void*, size_t, uint_32, uint_32);
 WINBASEAPI int   WINAPI VirtualFree(void*, size_t, uint_32);
+
+uasm_PACK_POP
+
+#endif // _WIN32_H_INCLUDED_

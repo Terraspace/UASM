@@ -27,6 +27,8 @@
 
 #define DEFAULT_STACK_SIZE      1024
 
+uasm_PACK_PUSH_STACK
+
 extern const char szDgroup[];
 
 static char* SegmNames[SIM_LAST];
@@ -68,8 +70,8 @@ static void AddToDgroup(enum sim_seg segm, char* name)
 {
     /* no DGROUP for FLAT or COFF/ELF */
     if (ModuleInfo.model == MODEL_FLAT
-        || Options.output_format == OFORMAT_COFF
-        || Options.output_format == OFORMAT_ELF)
+        || ModuleInfo.output_format == OFORMAT_COFF
+        || ModuleInfo.output_format == OFORMAT_ELF)
         return;
 
     if (name == NULL)
@@ -225,10 +227,14 @@ ret_code SimplifiedSegDir(int i, struct asm_tok tokenarray[])
 
     if (ModuleInfo.model == MODEL_NONE)
     {
-        if (Options.output_format == OFORMAT_MAC || Options.output_format == OFORMAT_ELF)
+        if (ModuleInfo.output_format == OFORMAT_MAC || ModuleInfo.output_format == OFORMAT_ELF)
+        {
             RewindToSYSV64();
+        }
         else
+        {
             RewindToWin64();
+        }
         return(ERROR);
     }
 
@@ -340,7 +346,7 @@ ret_code SimplifiedSegDir(int i, struct asm_tok tokenarray[])
         case SIM_DATA_UN: /* .data? */
 
             /* UASM 2.49 Warn about BSS data in BIN, as the space won't be allocated */
-            if (Options.output_format == OFORMAT_BIN && Options.sub_format != SFORMAT_PE && ModuleInfo.flat)
+            if (ModuleInfo.output_format == OFORMAT_BIN && ModuleInfo.sub_format != SFORMAT_PE && ModuleInfo.flat)
             {
                 EmitWarn(2, UNINIT_DATA_IN_BIN);
             }
@@ -426,8 +432,8 @@ ret_code ModelSimSegmInit(int model)
 
     /* create DGROUP for BIN/OMF if model isn't FLAT */
     if (model != MODEL_FLAT &&
-        (Options.output_format == OFORMAT_OMF
-        || Options.output_format == OFORMAT_BIN))
+        (ModuleInfo.output_format == OFORMAT_OMF
+        || ModuleInfo.output_format == OFORMAT_BIN))
     {
         strcpy(buffer, "%s %r %s");
         if (model == MODEL_TINY)
@@ -453,3 +459,5 @@ void ModelSimSegmExit(void)
         RunLineQueue();
     }
 }
+
+uasm_PACK_POP

@@ -34,6 +34,8 @@
 #include "queue.h"
 #include "myassert.h"
 
+uasm_PACK_PUSH_STACK
+
 #if 0 /* v2.04: not needed */
 void QInit(struct qdesc* q)
 /***************************/
@@ -113,3 +115,5 @@ void* QDequeue(struct qdesc* q)
     return(item);
 }
 #endif
+
+uasm_PACK_POP

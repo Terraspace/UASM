@@ -49,6 +49,8 @@ typedef unsigned        uint;
 
 #define MEMSET(p,c,l)   memset(p,c,l)
 
+uasm_PACK_PUSH_STACK
+
 /*
     _PtrCmp( a, op, b ) compares two pointer as in ( a ) op ( b )
 */
@@ -145,6 +147,7 @@ static size_t getSize(entry_ptr p)
 #pragma warning 579 4;  // reenable pointer truncated warning.
 #endif
 
+#ifndef __unix__
 static char* stpcpy(char* dest, const char* src)
 {
     *dest = *src;
@@ -156,6 +159,7 @@ static char* stpcpy(char* dest, const char* src)
     }
     return(dest);
 }
+#endif
 
 static char* formHex(char* ptr, uint_32 data, uint size)
 {
@@ -872,3 +876,5 @@ void tm_Fini(void)
     _trmem_close(hTrmem);
     fclose(FileTrmem);
 }
+
+uasm_PACK_POP

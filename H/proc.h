@@ -32,6 +32,10 @@
 #ifndef _PROC_H_
 #define _PROC_H_
 
+#include "basedefs.h"
+
+uasm_PACK_PUSH_STACK
+
 extern struct dsym* CurrProc;      /* current procedure */
 
 #if AMD64_SUPPORT
@@ -58,5 +62,7 @@ extern void             write_prologue(struct asm_tok[]);
 extern void             ProcInit(void);
 
 extern void             ProcCheckOpen(void);
+
+uasm_PACK_POP
 
 #endif

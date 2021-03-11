@@ -18,8 +18,12 @@
 
 #if defined(__UNIX__) || defined(__CYGWIN__) || defined(__DJGPP__)
 
+#ifndef WILDCARDS
 #define WILDCARDS 0
+#endif
+#ifndef CATCHBREAK
 #define CATCHBREAK 0
+#endif
 
 #else
 
@@ -51,6 +55,8 @@ void tm_Fini(void);
 #define SIGBREAK SIGINT
 #endif
 #endif
+
+uasm_PACK_PUSH_STACK
 
 static void genfailure(int signo)
 /*********************************/
@@ -122,7 +128,7 @@ int main(int argc, char** argv)
 #endif
 
     /* ParseCmdLine() returns NULL if no source file name has been found (anymore) */
-    while (ParseCmdline((char**)argv, &numArgs))
+    while (ParseCmdline(argv, &numArgs))
     {
         numFiles++;
         write_logo();
@@ -165,3 +171,5 @@ int main(int argc, char** argv)
     DebugMsg(("main: exit, return code=%u\n", 1 - rc));
     return(1 - rc); /* zero if no errors */
 }
+
+uasm_PACK_POP

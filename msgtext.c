@@ -15,6 +15,8 @@
 
 #define USERESOURCES 0 /* 1=use Win string resources, won't work for Linux! */
 
+uasm_PACK_PUSH_STACK
+
 #if USERESOURCES
 
 /*
@@ -116,3 +118,5 @@ const char* MsgGetEx(int msgid)
 {
     return(MsgGet(msgid, NULL));
 }
+
+uasm_PACK_POP

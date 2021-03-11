@@ -36,6 +36,8 @@
 #define GetPtr( x, y ) x->y
 #endif
 
+uasm_PACK_PUSH_STACK
+
 /* reserved words hash table */
 static uint_16 resw_table[HASH_TABITEMS];
 
@@ -1439,3 +1441,5 @@ void DumpInstrStats(void)
     }
 }
 #endif
+
+uasm_PACK_POP

@@ -1,2 +1,3 @@
+..\src\literalerr\literr0.asm(3) : Warning A4305: Stackbase automatically changed to RSP to support WIN64 options
 ..\src\literalerr\literr0.asm(23) : Error A2145: INVOKE argument type mismatch: argument 1
 ..\src\literalerr\literr0.asm(23) : Error A2275: Constant value too large: 5468697320697320612074657374h

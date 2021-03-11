@@ -32,6 +32,10 @@
 #ifndef _RESWORDS_H_INCLUDED
 #define _RESWORDS_H_INCLUDED
 
+#include "basedefs.h"
+
+uasm_PACK_PUSH_STACK
+
 enum reservedword_flags {
     //RWF_SPECIAL  = 1, /* keyword is NO instruction; v2.11: obsolete */
     RWF_DISABLED = 1, /* keyword disabled */
@@ -73,5 +77,7 @@ extern void     ResWordsFini(void);
 #ifdef DEBUG_OUT
 extern void     DumpResWords(void);
 #endif
+
+uasm_PACK_POP
 
 #endif

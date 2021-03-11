@@ -30,6 +30,8 @@
 
 #define ROUND_UP( i, r ) (((i)+((r)-1)) & ~((r)-1))
 
+uasm_PACK_PUSH_STACK
+
 /* String table entry */
 struct strentry
 {
@@ -743,3 +745,5 @@ void macho_init(struct module_info* modinfo)
     modinfo->g.WriteModule = macho_write_module;
     return;
 }
+
+uasm_PACK_POP

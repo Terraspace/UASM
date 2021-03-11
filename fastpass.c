@@ -28,6 +28,8 @@
 
 #if FASTPASS
 
+uasm_PACK_PUSH_STACK
+
 extern uint_32 list_pos;  /* current LST file position */
 
 static struct mod_state modstate; /* struct to store assembly status */
@@ -240,5 +242,7 @@ void FastpassInit(void)
     LineStore.tail = NULL;
     UseSavedState = FALSE;
 }
+
+uasm_PACK_POP
 
 #endif

@@ -32,7 +32,11 @@
 #ifndef EXPREVAL_H
 #define EXPREVAL_H
 
+#include "basedefs.h"
+
 #include "parser.h"
+
+uasm_PACK_PUSH_STACK
 
 /* v2.11: EXPR_UNDEF changed to EXPR_ERROR, value -1 */
 
@@ -142,5 +146,7 @@ enum expr_flags {
 extern ret_code     EvalOperand(int*, struct asm_tok[], int, struct expr*, uint_8);
 extern void         ExprEvalInit(void);
 extern ret_code     EmitConstError(const struct expr*);
+
+uasm_PACK_POP
 
 #endif

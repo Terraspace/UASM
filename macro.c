@@ -46,6 +46,8 @@
    */
 #define TRUEPERGE 0
 
+uasm_PACK_PUSH_STACK
+
 extern int  MacroLocals;
 
 bool inMacroBody = FALSE;
@@ -1383,3 +1385,5 @@ void MacroFini(void)
     StringFini();
 }
 #endif
+
+uasm_PACK_POP

@@ -21,6 +21,8 @@
 #include "listing.h"
 #include "reswords.h"
 
+uasm_PACK_PUSH_STACK
+
 ret_code LoopDirective(int i, struct asm_tok tokenarray[])
 /**********************************************************/
 {
@@ -326,3 +328,5 @@ ret_code LoopDirective(int i, struct asm_tok tokenarray[])
     DebugMsg1(("LoopDirective(%s) exit\n", GetResWName(directive, NULL)));
     return(NOT_ERROR);
 }
+
+uasm_PACK_POP

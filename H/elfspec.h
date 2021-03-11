@@ -36,6 +36,10 @@
 
 #define EI_NIDENT       16
 
+#include "basedefs.h"
+
+uasm_PACK_PUSH_2
+
 typedef struct {
     uint_8   e_ident[EI_NIDENT];     // +0 signature & ID info
     uint_16  e_type;                 // +16 file type (i.e. obj file, exe file)
@@ -150,7 +154,7 @@ typedef struct {
 //EM_M32
 #define EF_M32_MAU      0x1
 
-// special section indicies
+// special section indices
 
 #define SHN_UNDEF       0
 #define SHN_LORESERVE   0xff00
@@ -706,5 +710,7 @@ typedef struct {
 typedef struct {
     uint_32  lib_name;
 } Elf32_Library;
+
+uasm_PACK_POP
 
 #endif // _ELFSPEC_H_INCLUDED_

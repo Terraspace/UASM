@@ -26,6 +26,8 @@
 #define SavedContexts ModuleInfo.g.SavedContexts
 #endif
 
+uasm_PACK_PUSH_STACK
+
 enum context_type
 {
     CONT_ASSUMES = 0x01,
@@ -352,3 +354,5 @@ void ContextFini(void)
     }
 }
 #endif
+
+uasm_PACK_POP

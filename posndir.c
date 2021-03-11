@@ -42,6 +42,8 @@
 
 #include "myassert.h"
 
+uasm_PACK_PUSH_STACK
+
 static const uint_8 NopList16[] = {
     3,                  /* objlen of first NOP pattern */
     0x2E, 0x8b, 0xc0,   /* MOV AX,AX */
@@ -303,3 +305,5 @@ ret_code AlignDirective(int i, struct asm_tok tokenarray[])
     DebugMsg1(("AlignDirective exit\n"));
     return(NOT_ERROR);
 }
+
+uasm_PACK_POP
