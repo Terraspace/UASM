@@ -1081,7 +1081,7 @@ static void coff_create_drectve(struct module_info* modinfo, struct coffmod* cm)
      */
     if ( modinfo->g.start_label != NULL || modinfo->g.LibQueue.head != NULL ||
         imp != NULL || exp != NULL ) {
-        if ( cm->directives = (struct dsym *)CreateIntSegment( szdrectve, "", MAX_SEGALIGNMENT, modinfo->Ofssize, FALSE ) ) {
+        if ( (cm->directives = (struct dsym *)CreateIntSegment( szdrectve, "", MAX_SEGALIGNMENT, modinfo->Ofssize, FALSE )) ) {
             struct dsym* tmp;
             int size = 0;
             struct qitem* q;
@@ -1239,7 +1239,7 @@ static ret_code coff_write_module(struct module_info* modinfo)
     if ( modinfo->g.SafeSEHQueue.head ) {
         struct qnode* sehp;
         unsigned cnt = 0;
-        if ( cm.sxdata = (struct dsym *)CreateIntSegment( ".sxdata", "", MAX_SEGALIGNMENT, modinfo->Ofssize, FALSE ) ) {
+        if ( (cm.sxdata = (struct dsym *)CreateIntSegment( ".sxdata", "", MAX_SEGALIGNMENT, modinfo->Ofssize, FALSE )) ) {
             cm.sxdata->e.seginfo->info = TRUE;
             /* calc the size for this segment */
             for (sehp = modinfo->g.SafeSEHQueue.head; sehp; sehp = sehp->next, cnt++);

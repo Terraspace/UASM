@@ -9,6 +9,7 @@
 ****************************************************************************/
 
 #include <stddef.h>
+
 #include "globals.h"
 #include "memalloc.h"
 #include "parser.h"
@@ -17,7 +18,6 @@
 #include "fixup.h"
 #include "dbgcv.h"
 #include "linnum.h"
-#include <direct.h>
 #include "picohash.h"
 
 #define SIZE_CV_SEGBUF ( MAX_LINE_LEN * 4 )
