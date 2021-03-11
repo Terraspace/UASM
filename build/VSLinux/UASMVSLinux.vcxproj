@@ -92,8 +92,6 @@
       </Optimization>
       <CppLanguageStandard>
       </CppLanguageStandard>
-      <CLanguageStandard>
-      </CLanguageStandard>
       <ExceptionHandling>
       </ExceptionHandling>
       <CompileAs>CompileAsC</CompileAs>
@@ -109,6 +107,7 @@
       <NoCommonBlocks />
       <OmitFramePointers />
       <DebugInformationFormat>None</DebugInformationFormat>
+      <CLanguageStandard />
     </ClCompile>
     <Link />
     <RemotePostBuildEvent>
@@ -134,8 +133,6 @@
       </Optimization>
       <CppLanguageStandard>
       </CppLanguageStandard>
-      <CLanguageStandard>
-      </CLanguageStandard>
       <ExceptionHandling>
       </ExceptionHandling>
       <CompileAs>CompileAsC</CompileAs>
@@ -151,6 +148,7 @@
       <NoCommonBlocks />
       <OmitFramePointers />
       <DebugInformationFormat>None</DebugInformationFormat>
+      <CLanguageStandard />
     </ClCompile>
     <Link />
     <RemotePostBuildEvent>
@@ -173,8 +171,6 @@
       <AdditionalOptions>-Wno-sign-conversion -Wno-implicit-int-conversion -Wno-comment -Wno-switch -Wno-implicit-function-declaration -Wno-enum-conversion -g -O0 -std=gnu17 -march=x86-64 -target x86_64-pc-linux-gnu -funsigned-char -fwritable-strings -fPIC -fPIE -pie -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -mstack-alignment=16</AdditionalOptions>
       <CppLanguageStandard>
       </CppLanguageStandard>
-      <CLanguageStandard>
-      </CLanguageStandard>
       <ExceptionHandling>
       </ExceptionHandling>
       <CompileAs>CompileAsC</CompileAs>
@@ -190,6 +186,7 @@
       <NoCommonBlocks />
       <Optimization />
       <OmitFramePointers />
+      <CLanguageStandard />
     </ClCompile>
     <Link />
     <RemotePostBuildEvent>
@@ -214,8 +211,6 @@
       <AdditionalOptions>-Wno-sign-conversion -Wno-implicit-int-conversion -Wno-comment -Wno-switch -Wno-implicit-function-declaration -Wno-enum-conversion -g -O0 -std=gnu17 -march=x86-64 -target x86_64-pc-linux-gnu -funsigned-char -fwritable-strings -fPIC -fPIE -pie -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -mstack-alignment=16</AdditionalOptions>
       <CppLanguageStandard>
       </CppLanguageStandard>
-      <CLanguageStandard>
-      </CLanguageStandard>
       <ExceptionHandling>
       </ExceptionHandling>
       <CompileAs>CompileAsC</CompileAs>
@@ -231,6 +226,7 @@
       <NoCommonBlocks />
       <Optimization />
       <OmitFramePointers />
+      <CLanguageStandard />
     </ClCompile>
     <Link />
     <RemotePostBuildEvent>

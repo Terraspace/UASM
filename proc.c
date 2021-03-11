@@ -2861,9 +2861,9 @@ ret_code ProcDir(int i, struct asm_tok tokenarray[])
 
     if (Options.line_numbers)
     {
-		if (Options.debug_symbols == 4)
+        if (Options.debug_symbols == 4)
         AddLinnumDataRef(get_curr_srcfile(), GetLineNumber());    
-		else
+        else
         AddLinnumDataRef(get_curr_srcfile(), CurrProc->sym.output_format == OFORMAT_COFF ? 0 : GetLineNumber());
     }
 

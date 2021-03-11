@@ -620,7 +620,7 @@ static void ExpandStaticObjCalls(char* line, struct asm_tok tokenarray[])
             {
                 if (tokenarray[i + 1].token == T_DOT && tokenarray[i + 2].token == T_ID && tokenarray[i + 3].token == T_OP_BRACKET)
                 {
-					
+                    
                     /* Scan backwards to check if we're in an HLL expression or call parameter */
                     if (i > 0)
                     {
@@ -800,7 +800,7 @@ static void ExpandHllCalls(char* line, struct asm_tok tokenarray[], bool inParam
             if (sym && (sym->sym.isproc || (sym->sym.isfunc && sym->sym.state == SYM_EXTERNAL)) && tokenarray[i + 1].tokval != T_PROC && tokenarray[i + 1].tokval != T_PROTO &&
                 tokenarray[i + 1].tokval != T_ENDP && tokenarray[i + 1].tokval != T_EQU && tokenarray[i + 1].token == T_OP_BRACKET)
             {
-		
+        
                 /* Scan backwards to check if we're in an HLL expression or call parameter */
                 if (i > 0)
                 {

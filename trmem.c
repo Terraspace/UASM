@@ -44,6 +44,8 @@
 
 #include "trmem.h"
 
+#include "basedefs.h"
+
 typedef unsigned long   uint_32;
 typedef unsigned        uint;
 
