@@ -246,6 +246,7 @@ xcopy  ..\..\BuildCustomizations $(UASM_PATH)\BuildCustomizations /hisery</Comma
     <ClCompile Include="..\..\fastpass.c" />
     <ClCompile Include="..\..\fixup.c" />
     <ClCompile Include="..\..\fpfixup.c" />
+    <ClCompile Include="..\..\getexec.c" />
     <ClCompile Include="..\..\hll.c" />
     <ClCompile Include="..\..\input.c" />
     <ClCompile Include="..\..\invoke.c" />

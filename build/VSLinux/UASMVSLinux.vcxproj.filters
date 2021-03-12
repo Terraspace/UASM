@@ -196,6 +196,9 @@
     <ClCompile Include="..\..\pseudoFilter.c">
       <Filter>Sources</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\getexec.c">
+      <Filter>Sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\H\assume.h">

@@ -9,6 +9,18 @@
 ****************************************************************************/
 
 #include <stddef.h>
+#include <stdio.h>
+
+#if defined(_WIN32)
+#include <direct.h>
+#define mygetcwd _getcwd
+#define MYMAX_PATH _MAX_PATH*4
+#else
+#include <linux/limits.h>
+#include <unistd.h>
+#define MYMAX_PATH PATH_MAX
+#define mygetcwd getcwd
+#endif
 
 #include "globals.h"
 #include "memalloc.h"
@@ -115,6 +127,8 @@ struct leaf32 {
 uasm_PACK_POP
 
 uasm_PACK_PUSH_STACK
+
+extern int getExecutablePath(char* out, int capacity, int* dirname_length);
 
 uint_8* SetPrefixName(uint_8* p, uint_8* name, int len)
 {
@@ -1307,6 +1321,7 @@ void cv_write_debug_tables(struct dsym* symbols, struct dsym* types, void* pv)
     struct dbgcv    cv;
     struct fixup* fixup; /* the $$000000 symbol */
     int_32 lineTable;
+    char* cCurrentPath;
 
     cv.ps = symbols->e.seginfo->CodeBuffer;
     cv.pt = types->e.seginfo->CodeBuffer;
@@ -1344,8 +1359,8 @@ void cv_write_debug_tables(struct dsym* symbols, struct dsym* types, void* pv)
             cv.files[i].offset = 0;
         }
 
-        cv.currdir = LclAlloc(_MAX_PATH * 4);
-        _getcwd(cv.currdir, _MAX_PATH * 4);
+        cv.currdir = LclAlloc(MYMAX_PATH /** 4*/);
+        mygetcwd(cv.currdir, MYMAX_PATH /** 4*/);
         objname = cv.currdir + strlen(cv.currdir);
 
         /* source filename string table */
@@ -1572,8 +1587,11 @@ void cv_write_debug_tables(struct dsym* symbols, struct dsym* types, void* pv)
         s = strcpy(s, "cwd") + 4;
         s = strcpy(s, cv.currdir) + q + 1;
         s = strcpy(s, "exe") + 4;
-        len = strlen(_pgmptr) + 1;
-        s = strcpy(s, _pgmptr) + len;
+        len = getExecutablePath(NULL, 0, NULL);
+        cCurrentPath = LclAlloc(len + 1);
+        len = getExecutablePath(cCurrentPath, len, NULL);
+        len = strlen(cCurrentPath + 1);
+        s = strcpy(s, cCurrentPath) + len;
         s = strcpy(s, "src") + 4;
         p = cv.files[0].name;
         if (_memicmp(p, cv.currdir, q) == 0)

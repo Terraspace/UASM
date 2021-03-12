@@ -1,6 +1,5 @@
 proj_obj = \
 $(OUTD)/apiemu.o   \
-$(OUTD)/orgfixup.o \
 $(OUTD)/assemble.o \
 $(OUTD)/assume.o   \
 $(OUTD)/atofloat.o \
@@ -27,6 +26,7 @@ $(OUTD)/extern.o   \
 $(OUTD)/fastpass.o \
 $(OUTD)/fixup.o    \
 $(OUTD)/fpfixup.o  \
+$(OUTD)/getexec.o  \
 $(OUTD)/hll.o      \
 $(OUTD)/input.o    \
 $(OUTD)/invoke.o   \
@@ -46,10 +46,12 @@ $(OUTD)/omf.o      \
 $(OUTD)/omffixup.o \
 $(OUTD)/omfint.o   \
 $(OUTD)/option.o   \
+$(OUTD)/orgfixup.o \
 $(OUTD)/parser.o   \
 $(OUTD)/posndir.o  \
 $(OUTD)/preproc.o  \
 $(OUTD)/proc.o     \
+$(OUTD)/pseudoFilter.o \
 $(OUTD)/queue.o    \
 $(OUTD)/reswords.o \
 $(OUTD)/safeseh.o  \
@@ -59,6 +61,6 @@ $(OUTD)/simsegm.o  \
 $(OUTD)/string.o   \
 $(OUTD)/symbols.o  \
 $(OUTD)/tbyte.o    \
-$(OUTD)/pseudoFilter.o \
 $(OUTD)/tokenize.o \
+$(OUTD)/trmem.o    \
 $(OUTD)/types.o

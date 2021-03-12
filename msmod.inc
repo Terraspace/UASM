@@ -7,6 +7,7 @@ $(OUTD)/bin.obj      \
 $(OUTD)/branch.obj   \
 $(OUTD)/cmdline.obj  \
 $(OUTD)/codegen.obj  \
+$(OUTD)/codegenv2.obj  \
 $(OUTD)/coff.obj     \
 $(OUTD)/condasm.obj  \
 $(OUTD)/context.obj  \
@@ -24,6 +25,7 @@ $(OUTD)/extern.obj   \
 $(OUTD)/fastpass.obj \
 $(OUTD)/fixup.obj    \
 $(OUTD)/fpfixup.obj  \
+$(OUTD)/getexec.obj  \
 $(OUTD)/hll.obj      \
 $(OUTD)/input.obj    \
 $(OUTD)/invoke.obj   \
@@ -32,7 +34,10 @@ $(OUTD)/linnum.obj   \
 $(OUTD)/listing.obj  \
 $(OUTD)/loop.obj     \
 $(OUTD)/lqueue.obj   \
+$(OUTD)/ltype.obj    \
+$(OUTD)/macho64.obj  \
 $(OUTD)/macro.obj    \
+$(OUTD)/macrolib.obj \
 $(OUTD)/mangle.obj   \
 $(OUTD)/memalloc.obj \
 $(OUTD)/msgtext.obj  \
@@ -40,17 +45,21 @@ $(OUTD)/omf.obj      \
 $(OUTD)/omffixup.obj \
 $(OUTD)/omfint.obj   \
 $(OUTD)/option.obj   \
+$(OUTD)/orgfixup.obj \
 $(OUTD)/parser.obj   \
 $(OUTD)/posndir.obj  \
 $(OUTD)/preproc.obj  \
 $(OUTD)/proc.obj     \
+$(OUTD)/pseudoFilter.obj \
 $(OUTD)/queue.obj    \
 $(OUTD)/reswords.obj \
 $(OUTD)/safeseh.obj  \
 $(OUTD)/segment.obj  \
+$(OUTD)/simd.obj     \
 $(OUTD)/simsegm.obj  \
 $(OUTD)/string.obj   \
 $(OUTD)/symbols.obj  \
 $(OUTD)/tbyte.obj    \
 $(OUTD)/tokenize.obj \
+$(OUTD)/trmem.obj    \
 $(OUTD)/types.obj

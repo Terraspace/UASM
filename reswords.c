@@ -677,12 +677,12 @@ const uint_8 vex_flags[] = {
   VX_LL | VX_L | VX_DST | VX_HALF,/* VPSRLVD  */
   VX_LL | VX_L | VX_DST | VX_HALF,/* VPSRLVQ  */
   VX_LL | VX_L | VX_DST | VX_HALF,/* VPSRLVW  */
-  VX_LL | VX_L | VX_NND,      /* VPTESTMB    */
-  VX_LL | VX_L | VX_NND,      /* VPTESTMW    */
+  VX_LL | VX_L | VX_HALF,      /* VPTESTMB    */
+  VX_LL | VX_L | VX_HALF,      /* VPTESTMW    */
   VX_LL | VX_L | VX_HALF,      /* VPTESTMD    */
   VX_LL | VX_L | VX_HALF,      /* VPTESTMQ    */
-  VX_LL | VX_L | VX_NND,      /* VPTESTNMB   */
-  VX_LL | VX_L | VX_NND,      /* VPTESTNMW   */
+  VX_LL | VX_L | VX_HALF,      /* VPTESTNMB   */
+  VX_LL | VX_L | VX_HALF,      /* VPTESTNMW   */
   VX_LL | VX_L | VX_HALF,      /* VPTESTNMD   */
   VX_LL | VX_L | VX_HALF,      /* VPTESTNMQ   */
   VX_LL | VX_L | VX_NND,      /* VREDUCEPD   */
