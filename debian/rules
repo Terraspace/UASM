@@ -18,19 +18,9 @@ SRC_DIR_C = ./
 # This has to be exported to make some magic below work.
 export DH_OPTIONS
 
-uasm_build_release:
-	TARGET1=uasm
-	DEBUG=0
-	$(NJOBS) -C $(SRC_DIR_C) -f ClangLinux64.mak
-
-uasm_build_debug:
-	TARGET1=uasmd
-	DEBUG=1
-	$(NJOBS) -C $(SRC_DIR_C) -f ClangLinux64.mak
-
 override_dh_auto_build:
-	dh_auto_build -- uasm_build_release
-	dh_auto_build -- uasm_build_debug
+	dh_auto_build -- $(NJOBS) -C $(SRC_DIR_C) $(TARGET1=uasm) $(DEBUG=0) -f ClangLinux64.mak
+	dh_auto_build -- $(NJOBS) -C $(SRC_DIR_C) $(TARGET1=uasmd) $(DEBUG=1) -f ClangLinux64.mak
 
 # empty override, fills example directory with lots of files
 override_dh_auto_test:

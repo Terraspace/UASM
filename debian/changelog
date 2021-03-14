@@ -1,3 +1,9 @@
+uasm (2.51.1-1ubuntu2) focal; urgency=medium
+
+  * New upstream release
+
+ -- Navegos QA <navegos@outlook.com>  Sat, 14 Mar 2021 17:15:43 +0000
+
 uasm (2.51.0-1ubuntu2) focal; urgency=medium
 
   * New upstream release
