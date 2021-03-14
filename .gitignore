@@ -51,6 +51,10 @@ TestResult.xml
 [Rr]eleasePS/
 dlldata.c
 
+# Build Setups
+UASM Setup-SetupFiles/
+UASM Setup-cache/
+
 # DNX
 project.lock.json
 project.fragment.lock.json

@@ -552,7 +552,7 @@ static int ms32_pcheck(struct dsym* proc, struct dsym* paranode, int* used, int*
     char regname[32];
     int size = SizeFromMemtype(paranode->sym.mem_type, paranode->sym.Ofssize, paranode->sym.type);
 
-    //paranode->sym.string_ptr = NULL; // Ensure it's null first.
+    paranode->sym.string_ptr = NULL; // Ensure it's null first.
 
     /* v2.07: 16-bit has 3 register params (AX,DX,BX) */
     //if ( size > CurrWordSize || *used >= 2 )
@@ -809,7 +809,7 @@ static int ms32_pcheck(struct dsym* proc, struct dsym* paranode, int* used, int*
     //===============================================================================================================
     // HANDLE Integer -> GPR Parameter Types
     //===============================================================================================================
-    if (CurrProc->sym.langtype == LANG_REGCALL && (proc->sym.output_format == OFORMAT_ELF || proc->sym.output_format == OFORMAT_COFF))
+    if (proc->sym.langtype == LANG_REGCALL && (proc->sym.output_format == OFORMAT_ELF || proc->sym.output_format == OFORMAT_COFF))
     {
         if (size > CurrWordSize || (proc->sym.output_format == OFORMAT_ELF && *used >= 5) || (proc->sym.output_format == OFORMAT_COFF && *used >= 4) || paranode->sym.is_vararg)
         {
@@ -865,7 +865,7 @@ static int ms32_pcheck(struct dsym* proc, struct dsym* paranode, int* used, int*
             }
         }
     }
-    else if ((CurrProc->sym.langtype == LANG_VECTORCALL || CurrProc->sym.langtype == LANG_FASTCALL) && proc->sym.output_format == OFORMAT_COFF)
+    else if ((proc->sym.langtype == LANG_VECTORCALL || proc->sym.langtype == LANG_FASTCALL) && proc->sym.output_format == OFORMAT_COFF)
     {
         if (size > CurrWordSize || (proc->sym.output_format == OFORMAT_COFF && *used >= 2) || paranode->sym.is_vararg)
         {
@@ -893,7 +893,7 @@ static int ms32_pcheck(struct dsym* proc, struct dsym* paranode, int* used, int*
                 break;
         }
     }
-    else if (CurrProc->sym.langtype == LANG_THISCALL && proc->sym.output_format == OFORMAT_COFF)
+    else if (proc->sym.langtype == LANG_THISCALL && proc->sym.output_format == OFORMAT_COFF)
     {
         if (size > CurrWordSize || (proc->sym.output_format == OFORMAT_COFF && *used >= 1) || paranode->sym.is_vararg)
         {
@@ -923,7 +923,7 @@ static int ms32_pcheck(struct dsym* proc, struct dsym* paranode, int* used, int*
     }
     else
     {
-        if (CurrProc->sym.langtype == LANG_SYSVCALL && proc->sym.output_format == OFORMAT_ELF)
+        if (proc->sym.langtype == LANG_SYSVCALL && proc->sym.output_format == OFORMAT_ELF)
         {
             paranode->sym.string_ptr = NULL;
             return(NOT_ERROR);
@@ -1008,7 +1008,7 @@ static void ms32_return(struct dsym* proc, char* buffer)
         if (proc->e.procinfo->parasize > (thiscall_maxreg[ModuleInfo.Ofssize] * CurrWordSize))
             sprintf(buffer + strlen(buffer), "%d%c", proc->e.procinfo->parasize - (thiscall_maxreg[ModuleInfo.Ofssize] * CurrWordSize), ModuleInfo.radix != 10 ? 't' : NULLC);
     }
-    else if (CurrProc->sym.langtype == LANG_SYSVCALL && proc->sym.output_format == OFORMAT_ELF)
+    else if (proc->sym.langtype == LANG_SYSVCALL && proc->sym.output_format == OFORMAT_ELF)
     {
         return;
     }
@@ -6317,7 +6317,7 @@ static int sysv_pcheck(struct dsym* proc, struct dsym* paranode, int* used, int*
     // Parameter is either XMM, float, double or __M128
     if ((paranode->sym.mem_type == MT_REAL4) || (paranode->sym.mem_type == MT_REAL8) || (paranode->sym.mem_type == MT_TYPE && _stricmp(paranode->sym.type->name, "__m128") == 0) || paranode->sym.mem_type == MT_OWORD)
     {
-        if (CurrProc->sym.langtype == LANG_REGCALL)
+        if (proc->sym.langtype == LANG_REGCALL)
         {
             if (*vecused >= 16)
             {
@@ -6325,7 +6325,7 @@ static int sysv_pcheck(struct dsym* proc, struct dsym* paranode, int* used, int*
                 return(0);
             }
         }
-        else if (CurrProc->sym.langtype == LANG_SYSCALL)
+        else if (proc->sym.langtype == LANG_SYSCALL)
         {
             if (*vecused >= 1)
             {
@@ -6342,12 +6342,12 @@ static int sysv_pcheck(struct dsym* proc, struct dsym* paranode, int* used, int*
             }
         }
         paranode->sym.state = SYM_TMACRO;
-        if (CurrProc->sym.langtype == LANG_REGCALL)
+        if (proc->sym.langtype == LANG_REGCALL)
         {
             GetResWName(regcall64_regsXMM[*vecused], regname);
             paranode->sym.tokval = regcall64_regsXMM[*vecused]; /* Store register tokval so invoke can use it */
         }
-        else if (CurrProc->sym.langtype != LANG_SYSCALL)
+        else if (proc->sym.langtype != LANG_SYSCALL)
         {
             GetResWName(sysV64_regsXMM[*vecused], regname);
             paranode->sym.tokval = sysV64_regsXMM[*vecused]; /* Store register tokval so invoke can use it */
@@ -6362,7 +6362,7 @@ static int sysv_pcheck(struct dsym* proc, struct dsym* paranode, int* used, int*
     // Parameter is either YMM or __m256
     if ((paranode->sym.mem_type == MT_TYPE && _stricmp(paranode->sym.type->name, "__m256") == 0) || paranode->sym.mem_type == MT_YMMWORD)
     {
-        if (CurrProc->sym.langtype == LANG_REGCALL)
+        if (proc->sym.langtype == LANG_REGCALL)
         {
             if (*vecused >= 16)
             {
@@ -6370,7 +6370,7 @@ static int sysv_pcheck(struct dsym* proc, struct dsym* paranode, int* used, int*
                 return(0);
             }
         }
-        else if (CurrProc->sym.langtype == LANG_SYSCALL)
+        else if (proc->sym.langtype == LANG_SYSCALL)
         {
             if (*vecused >= 1)
             {
@@ -6387,12 +6387,12 @@ static int sysv_pcheck(struct dsym* proc, struct dsym* paranode, int* used, int*
             }
         }
         paranode->sym.state = SYM_TMACRO;
-        if (CurrProc->sym.langtype == LANG_REGCALL)
+        if (proc->sym.langtype == LANG_REGCALL)
         {
             GetResWName(regcall64_regsYMM[*vecused], regname);
             paranode->sym.tokval = regcall64_regsYMM[*vecused]; /* Store register tokval so invoke can use it */
         }
-        else if (CurrProc->sym.langtype != LANG_SYSCALL)
+        else if (proc->sym.langtype != LANG_SYSCALL)
         {
             GetResWName(sysV64_regsYMM[*vecused], regname);
             paranode->sym.tokval = sysV64_regsYMM[*vecused]; /* Store register tokval so invoke can use it */
@@ -6407,7 +6407,7 @@ static int sysv_pcheck(struct dsym* proc, struct dsym* paranode, int* used, int*
     // Parameter is either ZMM or __m512
     if ((paranode->sym.mem_type == MT_TYPE && _stricmp(paranode->sym.type->name, "__m512") == 0) || paranode->sym.mem_type == MT_ZMMWORD)
     {
-        if (CurrProc->sym.langtype == LANG_REGCALL)
+        if (proc->sym.langtype == LANG_REGCALL)
         {
             if (*vecused >= 16)
             {
@@ -6415,7 +6415,7 @@ static int sysv_pcheck(struct dsym* proc, struct dsym* paranode, int* used, int*
                 return(0);
             }
         }
-        else if (CurrProc->sym.langtype == LANG_SYSCALL)
+        else if (proc->sym.langtype == LANG_SYSCALL)
         {
             if (*vecused >= 1)
             {
@@ -6432,12 +6432,12 @@ static int sysv_pcheck(struct dsym* proc, struct dsym* paranode, int* used, int*
             }
         }
         paranode->sym.state = SYM_TMACRO;
-        if (CurrProc->sym.langtype == LANG_REGCALL)
+        if (proc->sym.langtype == LANG_REGCALL)
         {
             GetResWName(regcall64_regsZMM[*vecused], regname);
             paranode->sym.tokval = regcall64_regsZMM[*vecused]; /* Store register tokval so invoke can use it */
         }
-        else if (CurrProc->sym.langtype != LANG_SYSCALL)
+        else if (proc->sym.langtype != LANG_SYSCALL)
         {
             GetResWName(sysV64_regsZMM[*vecused], regname);
             paranode->sym.tokval = sysV64_regsZMM[*vecused]; /* Store register tokval so invoke can use it */
@@ -6459,7 +6459,7 @@ static int sysv_pcheck(struct dsym* proc, struct dsym* paranode, int* used, int*
     //===============================================================================================================
     // HANDLE Integer -> GPR Parameter Types
     //===============================================================================================================
-    if (CurrProc->sym.langtype == LANG_REGCALL)
+    if (proc->sym.langtype == LANG_REGCALL)
     {
         if (size > CurrWordSize || *used >= 12 || paranode->sym.is_vararg)
         {
@@ -6493,7 +6493,7 @@ static int sysv_pcheck(struct dsym* proc, struct dsym* paranode, int* used, int*
                 break;
         }
     }
-    else if (CurrProc->sym.langtype == LANG_SYSCALL)
+    else if (proc->sym.langtype == LANG_SYSCALL)
     {
         if (size > CurrWordSize || *used >= 6 || paranode->sym.is_vararg)
         {
@@ -7296,9 +7296,6 @@ static void SetLocalOffsets(struct proc_info* info)
 void write_prologue(struct asm_tok tokenarray[])
 /************************************************/
 {
-    /*struct dsym* curr;*/
-    /*int		align = CurrWordSize;*/
-
     /* reset @ProcStatus flag */
     ProcStatus &= ~PRST_PROLOGUE_NOT_DONE;
     CurrProc->e.procinfo->prologueDone = FALSE;
@@ -7313,7 +7310,7 @@ void write_prologue(struct asm_tok tokenarray[])
         if (CurrProc->sym.langtype == LANG_REGCALL && CurrProc->sym.output_format == OFORMAT_COFF)
         {
             /* in pass one init reserved stack with 11*8 to force stack frame creation */
-            sym_ReservedStack->value = (Parse_Pass == PASS_1 ? 11 * sizeof(uint_64) : CurrProc->e.procinfo->ReservedStack);
+            sym_ReservedStack->value = (Parse_Pass == PASS_1 ? 12 * sizeof(uint_64) : CurrProc->e.procinfo->ReservedStack);
         }
         else if (CurrProc->sym.langtype == LANG_REGCALL && (CurrProc->sym.output_format == OFORMAT_ELF || CurrProc->sym.output_format == OFORMAT_MAC))
         {
@@ -7332,8 +7329,8 @@ void write_prologue(struct asm_tok tokenarray[])
         }
         else
         {
-            /* in pass one init reserved stack with 4*8 to force stack frame creation */
-            sym_ReservedStack->value = (Parse_Pass == PASS_1 ? 4 * sizeof(uint_64) : CurrProc->e.procinfo->ReservedStack);
+        /* in pass one init reserved stack with 4*8 to force stack frame creation */
+        sym_ReservedStack->value = (Parse_Pass == PASS_1 ? 4 * sizeof(uint_64) : CurrProc->e.procinfo->ReservedStack);
         }
         if (Parse_Pass == PASS_1)
         {

@@ -1268,7 +1268,7 @@ static CV_SECTION* cv_FlushSection(dbgcv* cv, uint_32 signature)
 #define USEMD5
 
 #ifdef USEMD5
-#define BUFSIZ 1024*4
+#define MYBUFSIZ 1024*4
 #define MD5_LENGTH ( sizeof( uint_32 ) + sizeof( uint_16 ) + 16 + sizeof( uint_16 ) )
 
 static int calc_md5(const char* filename, unsigned char* sum)
@@ -1280,10 +1280,10 @@ static int calc_md5(const char* filename, unsigned char* sum)
 
     if ((fp = fopen(filename, "rb")) == NULL)
         return 0;
-    file_buf = MemAlloc(BUFSIZ);
+    file_buf = MemAlloc(MYBUFSIZ);
     _picohash_md5_init(&ctx);
     while (!feof(fp)) {
-        i = fread(file_buf, 1, BUFSIZ, fp);
+        i = fread(file_buf, 1, MYBUFSIZ, fp);
         if (ferror(fp)) {
             fclose(fp);
             MemFree(file_buf);
@@ -1656,7 +1656,7 @@ void cv_write_debug_tables(struct dsym* symbols, struct dsym* types, void* pv)
     /* scan symbol table for types */
 
     sym = NULL;
-    while (sym = SymEnum(sym, &i)) {
+    while ((sym = SymEnum(sym, &i))) {
         if (sym->state == SYM_TYPE && sym->typekind != TYPE_TYPEDEF && sym->cvtyperef == 0)
             cv_write_type(&cv, sym);
         }
@@ -1664,7 +1664,7 @@ void cv_write_debug_tables(struct dsym* symbols, struct dsym* types, void* pv)
     /* scan symbol table for SYM_TYPE, SYM_INTERNAL */
 
     sym = NULL;
-    while (sym = SymEnum(sym, &i)) {
+    while ((sym = SymEnum(sym, &i))) {
         switch (sym->state) {
             case SYM_TYPE: /* may create an S_UDT entry in the symbols table */
                 if (Options.debug_ext < CVEX_NORMAL) /* v2.10: no UDTs for -Zi0 and -Zi1 */

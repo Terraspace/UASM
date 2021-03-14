@@ -75,9 +75,10 @@
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
     <LinkIncremental />
+    <TargetName>$(ProjectName)d</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <TargetName>$(ProjectName)</TargetName>
+    <TargetName>$(ProjectName)d</TargetName>
     <LinkIncremental />
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -110,6 +111,7 @@
     </Link>
     <PostBuildEvent>
       <Command>copy $(OutDir)$(TargetName)$(TargetExt) $(UASM_PATH)\v142\x86
+copy $(OutDir)$(TargetName).pdb $(UASM_PATH)\v142\x86
 xcopy  ..\..\include $(UASM_PATH)\include /hisery
 xcopy  ..\..\BuildCustomizations $(UASM_PATH)\BuildCustomizations /hisery</Command>
     </PostBuildEvent>
@@ -137,6 +139,7 @@ xcopy  ..\..\BuildCustomizations $(UASM_PATH)\BuildCustomizations /hisery</Comma
     </Link>
     <PostBuildEvent>
       <Command>copy $(OutDir)$(TargetName)$(TargetExt) $(UASM_PATH)\v142\x64
+copy $(OutDir)$(TargetName).pdb $(UASM_PATH)\v142\x64
 xcopy  ..\..\include $(UASM_PATH)\include /hisery
 xcopy  ..\..\BuildCustomizations $(UASM_PATH)\BuildCustomizations /hisery</Command>
     </PostBuildEvent>

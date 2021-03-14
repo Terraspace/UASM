@@ -118,7 +118,7 @@ struct global_options Options = {
     /* fastcall_decoration */       FASTCALL_FULL,
     /* vectorcall_decoration */     VECTORCALL_FULL,
     /* regcall_decoration */        REGCALL_FULL,
-    /* regcall_version */           RGCV_4,
+    /* regcall_version */           RGCV_3,
     /* no_export_decoration  */     FALSE,
     /* entry_decorated       */     FALSE,
     /* write_listing         */     FALSE,

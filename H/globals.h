@@ -214,9 +214,9 @@
 
 /* Uasm version info */
 #ifdef _WIN64
-#define _UASM_VERSION_STR_ "2.51"
+#define _UASM_VERSION_STR_ "2.51.1"
 #else
-#define _UASM_VERSION_STR_ "2.51"
+#define _UASM_VERSION_STR_ "2.51.1"
 #endif
 #define _UASM_VERSION_INT_ 251
 #define _UASM_VERSION_SUFFIX_ "pre"
@@ -499,7 +499,7 @@ enum fastcall_type
     FCT_MSC,        /* MS 16-/32-bit fastcall (ax,dx,cx / ecx,edx) */
     FCT_WATCOMC,    /* OW register calling convention (eax, ebx, ecx, edx) */
     FCT_WIN64,      /* Win64 fastcall convention (rcx, rdx, r8, r9) */
-    FCT_SYSV64      /* Linux64|MAC calling convention (rdi, rsi, rdx, rcx, r8, r9) */
+    FCT_SYSV64 = FCT_WIN64       /* Linux64|MAC calling convention (rdi, rsi, rdx, rcx, r8, r9) */
 };
 
 enum delphi_type {

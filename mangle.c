@@ -102,7 +102,6 @@ static int UScoreMangler(const struct asym* sym, char* buffer)
 static int RegcallMangler(const struct asym* sym, char* buffer)
 /**************************************************************/
 {
-    const struct dsym* dir = (struct dsym*)sym;
     switch (Options.regcall_version)
     {
         case RGCV_1:

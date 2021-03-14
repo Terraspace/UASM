@@ -678,7 +678,7 @@ int getModulePath(char* out, int capacity, int* dirname_length)
 
 #endif
 
-uasm_PACK_PUSH_STACK
+uasm_PACK_POP
 
 #ifdef __cplusplus
 }

@@ -1204,14 +1204,14 @@ OPTFUNC(SetWin64)
 
     ModuleInfo.win64_flags = opndx.llvalue;
 
-    Options.langtype = LANG_FASTCALL;
+    if (Options.langtype != LANG_REGCALL && Options.langtype != LANG_VECTORCALL)
+        Options.langtype = LANG_FASTCALL;
+    if (ModuleInfo.langtype != LANG_REGCALL && ModuleInfo.langtype != LANG_VECTORCALL)
+        ModuleInfo.langtype = LANG_FASTCALL;
     Options.fctype = FCT_WIN64;
-    ModuleInfo.langtype = LANG_FASTCALL;
     ModuleInfo.fctype = FCT_WIN64;
-    if (Options.sub_format != SFORMAT_64BIT)
-        Options.sub_format = SFORMAT_64BIT;
-    if (ModuleInfo.sub_format != SFORMAT_64BIT)
-        ModuleInfo.sub_format = SFORMAT_64BIT;
+    Options.sub_format = SFORMAT_64BIT;
+    ModuleInfo.sub_format = SFORMAT_64BIT;
 
     if (sym_ReservedStack == NULL && ModuleInfo.defOfssize == USE64)
     {
@@ -1309,14 +1309,14 @@ OPTFUNC(SetSYSV64)
 
     ModuleInfo.win64_flags = opndx.llvalue;
 
-    Options.langtype = LANG_SYSVCALL;
+    if (Options.langtype != LANG_REGCALL && Options.langtype != LANG_SYSCALL)
+        Options.langtype = LANG_SYSVCALL;
+    if (ModuleInfo.langtype != LANG_REGCALL && ModuleInfo.langtype != LANG_SYSCALL)
+        ModuleInfo.langtype = LANG_SYSVCALL;
     Options.fctype = FCT_SYSV64;
-    ModuleInfo.langtype = LANG_SYSVCALL;
     ModuleInfo.fctype = FCT_SYSV64;
-    if (Options.sub_format != SFORMAT_64BIT)
-        Options.sub_format = SFORMAT_64BIT;
-    if (ModuleInfo.sub_format != SFORMAT_64BIT)
-        ModuleInfo.sub_format = SFORMAT_64BIT;
+    Options.sub_format = SFORMAT_64BIT;
+    ModuleInfo.sub_format = SFORMAT_64BIT;
 
     if (sym_ReservedStack == NULL && ModuleInfo.defOfssize == USE64)
     {

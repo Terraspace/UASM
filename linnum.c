@@ -32,9 +32,7 @@ uasm_PACK_PUSH_STACK
 extern struct qdesc   LinnumQueue;    /* queue of line_num_info items ( OMF only ) */
 extern int            procidx;
 
-#if COFF_SUPPORT
 static struct asym* dmyproc;
-#endif
 static uint_32        lastLineNumber;
 
 static void AddLinnumData(struct line_num_info* data)
@@ -85,7 +83,7 @@ void AddLinnumDataRef(unsigned srcfile, uint_32 line_num)
      * - the source file changes or
      * - the segment/section changes ( added in v2.11 )
      */
-    if (ModuleInfo.output_format == OFORMAT_COFF &&
+    if (ModuleInfo.output_format == OFORMAT_COFF && Options.debug_symbols != 4 &&
         CurrProc == NULL &&
         (dmyproc == NULL ||
         dmyproc->debuginfo->file != srcfile ||

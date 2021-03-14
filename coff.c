@@ -418,7 +418,6 @@ static uint_32 coff_write_symbols(struct module_info* modinfo, struct coffmod* c
     int         type;
     int         storageclass;
     int         aux;
-    int         count;
 
 #if COMPID
     /* write "@comp.id" entry */
@@ -716,7 +715,6 @@ static uint_32 SetSymbolIndices(struct module_info* ModuleInfo, struct coffmod* 
     uint_32         i;
     struct asym*    lastfproc;
     unsigned        lastfile = 0;
-    int section;
 
     index = 0;
     cm->lastproc = NULL;

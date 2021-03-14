@@ -58,6 +58,7 @@
     <RemoteCCompileToolExe>clang</RemoteCCompileToolExe>
     <RemoteCppCompileToolExe>clang++</RemoteCppCompileToolExe>
     <RemoteLdToolExe>clang++</RemoteLdToolExe>
+    <TargetName>$(ProjectName)d</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <TargetExt />
@@ -74,6 +75,7 @@
     <RemoteCCompileToolExe>clang</RemoteCCompileToolExe>
     <RemoteCppCompileToolExe>clang++</RemoteCppCompileToolExe>
     <RemoteLdToolExe>clang++</RemoteLdToolExe>
+    <TargetName>$(ProjectName)d</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
     <TargetExt />
@@ -87,7 +89,7 @@
     <ClCompile>
       <PreprocessorDefinitions>MACROLIB=1;__UNIX__;__LINUX__;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>../../H;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <AdditionalOptions>-Wno-sign-conversion -Wno-implicit-int-conversion -Wno-comment -Wno-switch -Wno-implicit-function-declaration -Wno-enum-conversion -O3 -std=gnu17 -march=x86-64 -target x86_64-pc-linux-gnu -funsigned-char -fwritable-strings -fPIC -fPIE -pie -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -mstack-alignment=16</AdditionalOptions>
+      <AdditionalOptions>-Wno-sign-conversion -Wno-implicit-int-conversion -Wno-comment -Wno-switch -Wno-implicit-function-declaration -Wno-enum-conversion -Wformat -Werror=format-security -Wdate-time -O3 -std=gnu17 -march=x86-64 -target x86_64-pc-linux-gnu -funsigned-char -fwritable-strings -fPIC -fPIE -fstack-protector-strong -mstack-alignment=16 </AdditionalOptions>
       <Optimization>
       </Optimization>
       <CppLanguageStandard>
@@ -168,7 +170,7 @@
     <ClCompile>
       <PreprocessorDefinitions>MACROLIB=1;__UNIX__;__LINUX__;_DEBUG;DEBUG_OUT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>../../H;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <AdditionalOptions>-Wno-sign-conversion -Wno-implicit-int-conversion -Wno-comment -Wno-switch -Wno-implicit-function-declaration -Wno-enum-conversion -g -O0 -std=gnu17 -march=x86-64 -target x86_64-pc-linux-gnu -funsigned-char -fwritable-strings -fPIC -fPIE -pie -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -mstack-alignment=16</AdditionalOptions>
+      <AdditionalOptions>-Wno-sign-conversion -Wno-implicit-int-conversion -Wno-comment -Wno-switch -Wno-implicit-function-declaration -Wno-enum-conversion -Wformat -Werror=format-security -Wdate-time -g -O0 -std=gnu17 -march=x86-64 -target x86_64-pc-linux-gnu -funsigned-char -fwritable-strings -fPIC -fPIE -fstack-protector-strong -mstack-alignment=16</AdditionalOptions>
       <CppLanguageStandard>
       </CppLanguageStandard>
       <ExceptionHandling>

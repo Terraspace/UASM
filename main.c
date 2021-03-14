@@ -22,7 +22,7 @@
 #define WILDCARDS 0
 #endif
 #ifndef CATCHBREAK
-#define CATCHBREAK 0
+#define CATCHBREAK 1
 #endif
 
 #else
@@ -52,7 +52,7 @@ void tm_Fini(void);
 
 #if CATCHBREAK
 #ifndef SIGBREAK
-#define SIGBREAK SIGINT
+#define SIGBREAK SIGTTIN
 #endif
 #endif
 

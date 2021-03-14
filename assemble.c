@@ -193,16 +193,14 @@ extern void RewindToWin64()
     {
         if (ModuleInfo.output_format != OFORMAT_BIN)
         {
-            /*if (Options.output_format != OFORMAT_COFF)*/
                 Options.output_format = OFORMAT_COFF;
-            /*if (ModuleInfo.output_format != OFORMAT_COFF)*/
                 ModuleInfo.output_format = OFORMAT_COFF;
         }
         else
         {
-            /*if (Options.langtype != LANG_FASTCALL)*/
+            if (Options.langtype != LANG_REGCALL && Options.langtype != LANG_VECTORCALL)
                 Options.langtype = LANG_FASTCALL;
-            /*if (ModuleInfo.langtype != LANG_FASTCALL)*/
+            if (ModuleInfo.langtype != LANG_REGCALL && ModuleInfo.langtype != LANG_VECTORCALL)
                 ModuleInfo.langtype = LANG_FASTCALL;
         }
         Options.sub_format = SFORMAT_64BIT;
@@ -216,23 +214,19 @@ extern void RewindToSYSV64()
     {
         if (ModuleInfo.output_format != OFORMAT_BIN && ModuleInfo.output_format != OFORMAT_MAC)
         {
-            /*if (Options.output_format != OFORMAT_ELF)*/
                 Options.output_format = OFORMAT_ELF;
-            /*if (ModuleInfo.output_format != OFORMAT_ELF)*/
                 ModuleInfo.output_format = OFORMAT_ELF;
         }
         else if (ModuleInfo.output_format != OFORMAT_BIN && ModuleInfo.output_format != OFORMAT_ELF)
         {
-            /*if (Options.output_format != OFORMAT_MAC)*/
                 Options.output_format = OFORMAT_MAC;
-            /*if (ModuleInfo.output_format != OFORMAT_MAC)*/
                 ModuleInfo.output_format = OFORMAT_MAC;
         }
         else
         {
-            /*if (Options.langtype != LANG_SYSVCALL)*/
-                Options.langtype = LANG_SYSVCALL;
-            /*if (ModuleInfo.langtype != LANG_SYSVCALL)*/
+            if (Options.langtype != LANG_REGCALL && Options.langtype != LANG_SYSCALL)
+            Options.langtype = LANG_SYSVCALL;
+            if (ModuleInfo.langtype != LANG_REGCALL && ModuleInfo.langtype != LANG_SYSCALL)
                 ModuleInfo.langtype = LANG_SYSVCALL;
         }
         Options.sub_format = SFORMAT_64BIT;
@@ -904,16 +898,12 @@ static void ModulePassInit(void)
             if (ModuleInfo.output_format == OFORMAT_ELF || ModuleInfo.output_format == OFORMAT_MAC)
             {
                 /* SYSV proc/invoke tables use the same ordinal as FCT_WIN64 so set it now, instead of FCT_MSC */
-                if (ModuleInfo.fctype != FCT_SYSV64)
                     ModuleInfo.fctype = FCT_SYSV64;
-                if (Options.fctype != FCT_SYSV64)
                     Options.fctype = FCT_SYSV64;
             }
             else
             {
-                if (ModuleInfo.fctype != FCT_WIN64)
                     ModuleInfo.fctype = FCT_WIN64;
-                if (Options.fctype != FCT_WIN64)
                     Options.fctype = FCT_WIN64;
             }
         }
@@ -929,13 +919,15 @@ static void ModulePassInit(void)
              * there's no other model than FLAT possible.
              */
             model = MODEL_FLAT;
-            if (ModuleInfo.langtype != LANG_FASTCALL && ModuleInfo.output_format == OFORMAT_COFF)
+            if (ModuleInfo.langtype == LANG_NONE && ModuleInfo.output_format == OFORMAT_COFF)
             {
-                ModuleInfo.langtype = LANG_FASTCALL;
+                if (ModuleInfo.langtype != LANG_REGCALL && ModuleInfo.langtype != LANG_VECTORCALL)
+                    ModuleInfo.langtype = LANG_FASTCALL;
             }
-            if (ModuleInfo.langtype != LANG_SYSVCALL && (ModuleInfo.output_format == OFORMAT_ELF || ModuleInfo.output_format == OFORMAT_MAC))
+            if (ModuleInfo.langtype == LANG_NONE && (ModuleInfo.output_format == OFORMAT_ELF || ModuleInfo.output_format == OFORMAT_MAC))
             {
-                ModuleInfo.langtype = LANG_SYSVCALL;
+                if (ModuleInfo.langtype != LANG_REGCALL && ModuleInfo.langtype != LANG_SYSCALL)
+                    ModuleInfo.langtype = LANG_SYSVCALL;
             }
         }
         else
@@ -1192,7 +1184,7 @@ static void PassOneChecks(void)
             if (curr->sym.altname->state == SYM_INTERNAL)
             {
                 /* for COFF/ELF, the altname must be public or external */
-                if (curr->sym.altname->ispublic == FALSE && (ModuleInfo.output_format == OFORMAT_COFF || ModuleInfo.output_format == OFORMAT_ELF))
+                if (curr->sym.altname->ispublic == FALSE && (curr->sym.output_format == OFORMAT_COFF || curr->sym.output_format == OFORMAT_ELF))
                 {
                     SkipSavedState();
                 }
