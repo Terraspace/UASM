@@ -1,7 +1,9 @@
 
 # This makefile creates the UASM Elf binary for Linux/FreeBSD.
 
+ifndef TARGET1
 TARGET1=uasm
+endif
 
 ifndef DEBUG
 DEBUG=0

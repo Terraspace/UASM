@@ -2,6 +2,10 @@
 include /usr/share/dpkg/architecture.mk
 include /usr/share/dpkg/pkg-info.mk
 
+ifneq (,$(filter parallel=%,$(subst $(COMMA), ,$(DEB_BUILD_OPTIONS))))
+  NJOBS := -j $(subst parallel=,,$(filter parallel=%,$(subst $(COMMA), ,$(DEB_BUILD_OPTIONS))))
+endif
+
 # Uncomment this to turn on verbose mode.
 export DH_VERBOSE=1
 
@@ -14,8 +18,18 @@ SRC_DIR_C = ./
 # This has to be exported to make some magic below work.
 export DH_OPTIONS
 
+uasm_build_release:
+	TARGET1=uasm
+	DEBUG=0
+	-- $(NJOBS) -C $(SRC_DIR_C) -f ClangLinux64.mak
+
+uasm_build_debug:
+	TARGET1=uasmd
+	DEBUG=1
+	-- $(NJOBS) -C $(SRC_DIR_C) -f ClangLinux64.mak
+
 override_dh_auto_build:
-	dh_auto_build -- -C $(SRC_DIR_C) -f ClangLinux64.mak
+	dh_auto_build uasm_build_release uasm_build_debug
 
 # empty override, fills example directory with lots of files
 override_dh_auto_test:
