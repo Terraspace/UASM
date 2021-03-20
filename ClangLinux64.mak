@@ -40,7 +40,7 @@ include debianmod.inc
 release: $(RELDIR)/$(TARGET1)
 
 $(RELDIR)/$(TARGET1): $(RELDIR)/main.o $(relproj_obj)
-	$(CC) -D __UNIX__ $(RELDIR)/main.o $(relproj_obj) -Wl,-Bsymbolic-functions -fPIC -fPIE -pie -Wl,-z,relro -Wl,-z,now -s -o $@ -Wl,-Map,$(RELDIR)/$(TARGET1).map $^
+	$(CC) -D __UNIX__ $(CFLAGS) $(RELEASECFLAGS) $(RELDIR)/main.o $(relproj_obj) -Wl,-Bsymbolic-functions -fPIC -fPIE -pie -Wl,-z,relro -Wl,-z,now -s -o $@ -Wl,-Map,$(RELDIR)/$(TARGET1).map $^
 
 $(RELDIR)/%.o: %.c
 	$(CC) -D __UNIX__ -c $(inc_dirs) $(CFLAGS) $(RELEASECFLAGS) -o $(RELDIR)/$*.o $<
@@ -57,7 +57,7 @@ $(RELDIR)/reswords.o: reswords.c H/instruct.h H/special.h H/directve.h H/opndcls
 debug: $(DBGDIR)/$(TARGET2)
 
 $(DBGDIR)/$(TARGET2): $(DBGDIR)/main.o $(dbgproj_obj)
-	$(CC) -D __UNIX__ $(DBGDIR)/main.o $(dbgproj_obj) -Wl,-Bsymbolic-functions -fPIC -fPIE -pie -Wl,-z,relro -Wl,-z,now -o $@ -Wl,-Map,$(DBGDIR)/$(TARGET2).map $^
+	$(CC) -D __UNIX__ $(CFLAGS) $(DEBUGCFLAGS) $(DBGDIR)/main.o $(dbgproj_obj) -Wl,-Bsymbolic-functions -fPIC -fPIE -pie -Wl,-z,relro -Wl,-z,now -o $@ -Wl,-Map,$(DBGDIR)/$(TARGET2).map $^
 
 $(DBGDIR)/%.o: %.c
 	$(CC) -D __UNIX__ -c $(inc_dirs) $(CFLAGS) $(DEBUGCFLAGS) -o $(DBGDIR)/$*.o $<
