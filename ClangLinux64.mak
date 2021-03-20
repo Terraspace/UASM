@@ -81,6 +81,6 @@ prep:
 remake: clean all
 
 clean:
-	rm $(OUTD)/$(TARGET1)
-	rm $(OUTD)/*.o
-	rm $(OUTD)/*.map
+	rm -f $(OUTD)/$(TARGET1)
+	rm -f $(OUTD)/*.o
+	rm -f $(OUTD)/*.map
