@@ -41,16 +41,16 @@ OUTD = DBGDIR
 include gccmod.inc
 
 $(OUTD)/%.o: %.c
-    $(CC) -D __UNIX__ -c $(inc_dirs) $(CFLAGS) $(DEBUGCFLAGS) -o $(OUTD)/$*.o $<
+	$(CC) -D __UNIX__ -c $(inc_dirs) $(CFLAGS) $(DEBUGCFLAGS) -o $(OUTD)/$*.o $<
 
 $(OUTD)/$(TARGET2) : $(OUTD)/main.o $(proj_obj)
-    $(CC) -D __UNIX__ $(OUTD)/main.o $(proj_obj) -Wl,-Bsymbolic-functions -fPIC -fPIE -pie -Wl,-z,relro -Wl,-z,now -o $@ -Wl,-Map,$(OUTD)/$(TARGET2).map
+	$(CC) -D __UNIX__ $(OUTD)/main.o $(proj_obj) -Wl,-Bsymbolic-functions -fPIC -fPIE -pie -Wl,-z,relro -Wl,-z,now -o $@ -Wl,-Map,$(OUTD)/$(TARGET2).map
 
 $(OUTD)/msgtext.o: msgtext.c H/msgdef.h
-    $(CC) -D __UNIX__ -c $(inc_dirs) $(CFLAGS) $(DEBUGCFLAGS) -o $*.o msgtext.c
+	$(CC) -D __UNIX__ -c $(inc_dirs) $(CFLAGS) $(DEBUGCFLAGS) -o $*.o msgtext.c
 
 $(OUTD)/reswords.o: reswords.c H/instruct.h H/special.h H/directve.h H/opndcls.h H/instravx.h
-    $(CC) -D __UNIX__ -c $(inc_dirs) $(CFLAGS) $(DEBUGCFLAGS) -o $*.o reswords.c
+	$(CC) -D __UNIX__ -c $(inc_dirs) $(CFLAGS) $(DEBUGCFLAGS) -o $*.o reswords.c
 
 #
 # Release rules
@@ -61,26 +61,26 @@ OUTD = RELDIR
 include gccmod.inc
 
 $(OUTD)/%.o: %.c
-    $(CC) -D __UNIX__ -c $(inc_dirs) $(CFLAGS) $(RELEASECFLAGS) -o $(OUTD)/$*.o $<
+	$(CC) -D __UNIX__ -c $(inc_dirs) $(CFLAGS) $(RELEASECFLAGS) -o $(OUTD)/$*.o $<
 
 $(OUTD)/$(TARGET1) : $(OUTD)/main.o $(proj_obj)
-    $(CC) -D __UNIX__ $(OUTD)/main.o $(proj_obj) -Wl,-Bsymbolic-functions -fPIC -fPIE -pie -Wl,-z,relro -Wl,-z,now -s -o $@ -Wl,-Map,$(OUTD)/$(TARGET1).map
+	$(CC) -D __UNIX__ $(OUTD)/main.o $(proj_obj) -Wl,-Bsymbolic-functions -fPIC -fPIE -pie -Wl,-z,relro -Wl,-z,now -s -o $@ -Wl,-Map,$(OUTD)/$(TARGET1).map
 
 $(OUTD)/msgtext.o: msgtext.c H/msgdef.h
-    $(CC) -D __UNIX__ -c $(inc_dirs) $(CFLAGS) $(RELEASECFLAGS) -o $*.o msgtext.c
+	$(CC) -D __UNIX__ -c $(inc_dirs) $(CFLAGS) $(RELEASECFLAGS) -o $*.o msgtext.c
 
 $(OUTD)/reswords.o: reswords.c H/instruct.h H/special.h H/directve.h H/opndcls.h H/instravx.h
-    $(CC) -D __UNIX__ -c $(inc_dirs) $(CFLAGS) $(RELEASECFLAGS) -o $*.o reswords.c
+	$(CC) -D __UNIX__ -c $(inc_dirs) $(CFLAGS) $(RELEASECFLAGS) -o $*.o reswords.c
 
 #
 # Other rules
 #
 prep:
-    mkdir -p $(DBGDIR) $(RELDIR)
+	mkdir -p $(DBGDIR) $(RELDIR)
 
 remake: clean all
 
 clean:
-    rm $(OUTD)/$(TARGET1)
-    rm $(OUTD)/*.o
-    rm $(OUTD)/*.map
+	rm $(OUTD)/$(TARGET1)
+	rm $(OUTD)/*.o
+	rm $(OUTD)/*.map
