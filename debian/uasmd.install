@@ -1,4 +1,4 @@
-GccUnixR/uasm usr/bin
+GccUnixD/uasmd usr/bin
 include/uasm/cpubits.inc usr/include/uasm
 include/uasm/defines.inc usr/include/uasm
 include/uasm/limits.inc usr/include/uasm

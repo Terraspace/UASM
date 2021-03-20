@@ -24,3 +24,18 @@ Description: UASM is a free MASM-compatible assembler
  .
  UASM is released under the Sybase Open Watcom Public License version 1.0
  and under the Apache License, Version 2.0.
+
+Package: uasmd
+Architecture: any
+Depends:
+ dpkg (>= 1.15.4) | install-info,
+ ${misc:Depends},
+ ${shlibs:Depends},
+ libc6-dev,
+Description: UASM is a free MASM-compatible assembler
+ based on JWasm with more and enhanced features.
+ .
+ Please visit http://www.terraspace.co.uk/uasm.html for more info.
+ .
+ UASM is released under the Sybase Open Watcom Public License version 1.0
+ and under the Apache License, Version 2.0.

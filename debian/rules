@@ -19,7 +19,7 @@ SRC_DIR_C = ./
 export DH_OPTIONS
 
 override_dh_auto_build:
-	dh_auto_build -- $(NJOBS) -C $(SRC_DIR_C) -f ClangLinux64.mak release
+	make $(NJOBS) -C $(SRC_DIR_C) -f ClangLinux64.mak releasebuild && make $(NJOBS) -C $(SRC_DIR_C) -f ClangLinux64.mak debugbuild
 
 # empty override, fills example directory with lots of files
 override_dh_auto_test:

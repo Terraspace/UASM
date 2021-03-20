@@ -27,7 +27,10 @@ DEBUGCFLAGS = -Wno-sign-conversion -Wno-implicit-int-conversion -Wno-comment -Wn
 .PHONY: all clean prep release debug remake
 
 # Default build
-all: prep release debug
+all: prep release
+
+releasebuild: prep release
+debugbuild: prep debug
 
 .SUFFIXES:
 .SUFFIXES: .c .o
@@ -42,14 +45,14 @@ release: $(RELDIR)/$(TARGET1)
 $(RELDIR)/$(TARGET1): $(RELDIR)/main.o $(relproj_obj)
 	$(CC) -D __UNIX__ $(CFLAGS) $(RELEASECFLAGS) $(RELDIR)/main.o $(relproj_obj) -Wl,-Bsymbolic-functions -fPIC -fPIE -pie -Wl,-z,relro -Wl,-z,now -s -o $@ -Wl,-Map,$(RELDIR)/$(TARGET1).map $^
 
-$(RELDIR)/%.o: %.c
-	$(CC) -D __UNIX__ -c $(inc_dirs) $(CFLAGS) $(RELEASECFLAGS) -o $(RELDIR)/$*.o $<
-
 $(RELDIR)/msgtext.o: msgtext.c H/msgdef.h
 	$(CC) -D __UNIX__ -c $(inc_dirs) $(CFLAGS) $(RELEASECFLAGS) -o $*.o msgtext.c
 
 $(RELDIR)/reswords.o: reswords.c H/instruct.h H/special.h H/directve.h H/opndcls.h H/instravx.h
 	$(CC) -D __UNIX__ -c $(inc_dirs) $(CFLAGS) $(RELEASECFLAGS) -o $*.o reswords.c
+
+$(RELDIR)/%.o: %.c
+	$(CC) -D __UNIX__ -c $(inc_dirs) $(CFLAGS) $(RELEASECFLAGS) -o $(RELDIR)/$*.o $<
 
 #
 # Debug rules
@@ -59,14 +62,14 @@ debug: $(DBGDIR)/$(TARGET2)
 $(DBGDIR)/$(TARGET2): $(DBGDIR)/main.o $(dbgproj_obj)
 	$(CC) -D __UNIX__ $(CFLAGS) $(DEBUGCFLAGS) $(DBGDIR)/main.o $(dbgproj_obj) -Wl,-Bsymbolic-functions -fPIC -fPIE -pie -Wl,-z,relro -Wl,-z,now -o $@ -Wl,-Map,$(DBGDIR)/$(TARGET2).map $^
 
-$(DBGDIR)/%.o: %.c
-	$(CC) -D __UNIX__ -c $(inc_dirs) $(CFLAGS) $(DEBUGCFLAGS) -o $(DBGDIR)/$*.o $<
-
 $(DBGDIR)/msgtext.o: msgtext.c H/msgdef.h
 	$(CC) -D __UNIX__ -c $(inc_dirs) $(CFLAGS) $(DEBUGCFLAGS) -o $*.o msgtext.c
 
 $(DBGDIR)/reswords.o: reswords.c H/instruct.h H/special.h H/directve.h H/opndcls.h H/instravx.h
 	$(CC) -D __UNIX__ -c $(inc_dirs) $(CFLAGS) $(DEBUGCFLAGS) -o $*.o reswords.c
+
+$(DBGDIR)/%.o: %.c
+	$(CC) -D __UNIX__ -c $(inc_dirs) $(CFLAGS) $(DEBUGCFLAGS) -o $(DBGDIR)/$*.o $<
 
 #
 # Other rules
