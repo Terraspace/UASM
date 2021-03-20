@@ -36,47 +36,47 @@ all: prep debug release
 # Debug rules
 #
 debug:
-OUTD = DBGDIR
+	OUTD = DBGDIR
 
-include gccmod.inc
+	include gccmod.inc
 
-$(OUTD)/%.o: %.c
-	$(CC) -D __UNIX__ -c $(inc_dirs) $(CFLAGS) $(DEBUGCFLAGS) -o $(OUTD)/$*.o $<
+	$(OUTD)/%.o: %.c
+		$(CC) -D __UNIX__ -c $(inc_dirs) $(CFLAGS) $(DEBUGCFLAGS) -o $(OUTD)/$*.o $<
 
-$(OUTD)/$(TARGET2) : $(OUTD)/main.o $(proj_obj)
-	$(CC) -D __UNIX__ $(OUTD)/main.o $(proj_obj) -Wl,-Bsymbolic-functions -fPIC -fPIE -pie -Wl,-z,relro -Wl,-z,now -o $@ -Wl,-Map,$(OUTD)/$(TARGET2).map
+	$(OUTD)/$(TARGET2) : $(OUTD)/main.o $(proj_obj)
+		$(CC) -D __UNIX__ $(OUTD)/main.o $(proj_obj) -Wl,-Bsymbolic-functions -fPIC -fPIE -pie -Wl,-z,relro -Wl,-z,now -o $@ -Wl,-Map,$(OUTD)/$(TARGET2).map
 
-$(OUTD)/msgtext.o: msgtext.c H/msgdef.h
-	$(CC) -D __UNIX__ -c $(inc_dirs) $(CFLAGS) $(DEBUGCFLAGS) -o $*.o msgtext.c
+	$(OUTD)/msgtext.o: msgtext.c H/msgdef.h
+		$(CC) -D __UNIX__ -c $(inc_dirs) $(CFLAGS) $(DEBUGCFLAGS) -o $*.o msgtext.c
 
-$(OUTD)/reswords.o: reswords.c H/instruct.h H/special.h H/directve.h H/opndcls.h H/instravx.h
-	$(CC) -D __UNIX__ -c $(inc_dirs) $(CFLAGS) $(DEBUGCFLAGS) -o $*.o reswords.c
+	$(OUTD)/reswords.o: reswords.c H/instruct.h H/special.h H/directve.h H/opndcls.h H/instravx.h
+		$(CC) -D __UNIX__ -c $(inc_dirs) $(CFLAGS) $(DEBUGCFLAGS) -o $*.o reswords.c
 
 #
 # Release rules
 #
 release:
-OUTD = RELDIR
+	OUTD = RELDIR
 
-include gccmod.inc
+	include gccmod.inc
 
-$(OUTD)/%.o: %.c
-	$(CC) -D __UNIX__ -c $(inc_dirs) $(CFLAGS) $(RELEASECFLAGS) -o $(OUTD)/$*.o $<
+	$(OUTD)/%.o: %.c
+		$(CC) -D __UNIX__ -c $(inc_dirs) $(CFLAGS) $(RELEASECFLAGS) -o $(OUTD)/$*.o $<
 
-$(OUTD)/$(TARGET1) : $(OUTD)/main.o $(proj_obj)
-	$(CC) -D __UNIX__ $(OUTD)/main.o $(proj_obj) -Wl,-Bsymbolic-functions -fPIC -fPIE -pie -Wl,-z,relro -Wl,-z,now -s -o $@ -Wl,-Map,$(OUTD)/$(TARGET1).map
+	$(OUTD)/$(TARGET1) : $(OUTD)/main.o $(proj_obj)
+		$(CC) -D __UNIX__ $(OUTD)/main.o $(proj_obj) -Wl,-Bsymbolic-functions -fPIC -fPIE -pie -Wl,-z,relro -Wl,-z,now -s -o $@ -Wl,-Map,$(OUTD)/$(TARGET1).map
 
-$(OUTD)/msgtext.o: msgtext.c H/msgdef.h
-	$(CC) -D __UNIX__ -c $(inc_dirs) $(CFLAGS) $(RELEASECFLAGS) -o $*.o msgtext.c
+	$(OUTD)/msgtext.o: msgtext.c H/msgdef.h
+		$(CC) -D __UNIX__ -c $(inc_dirs) $(CFLAGS) $(RELEASECFLAGS) -o $*.o msgtext.c
 
-$(OUTD)/reswords.o: reswords.c H/instruct.h H/special.h H/directve.h H/opndcls.h H/instravx.h
-	$(CC) -D __UNIX__ -c $(inc_dirs) $(CFLAGS) $(RELEASECFLAGS) -o $*.o reswords.c
+	$(OUTD)/reswords.o: reswords.c H/instruct.h H/special.h H/directve.h H/opndcls.h H/instravx.h
+		$(CC) -D __UNIX__ -c $(inc_dirs) $(CFLAGS) $(RELEASECFLAGS) -o $*.o reswords.c
 
 #
 # Other rules
 #
 prep:
-	mkdir -p $(DBGDIR) $(RELDIR)
+	@mkdir -p $(DBGDIR) $(RELDIR)
 
 remake: clean all
 
