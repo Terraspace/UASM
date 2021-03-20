@@ -9,10 +9,10 @@
     <ROW Property="ARPURLINFOABOUT" Value="http://www.terraspace.co.uk/uasm.html"/>
     <ROW Property="ARPURLUPDATEINFO" Value="http://www.terraspace.co.uk/uasm.html"/>
     <ROW Property="Manufacturer" Value="Terraspace"/>
-    <ROW Property="ProductCode" Value="1033:{59A890D4-D1DE-4561-B6CC-9B95B935B582} " Type="16"/>
+    <ROW Property="ProductCode" Value="1033:{FBD15FFD-25FF-42B7-AD61-EE7B382A00F1} " Type="16"/>
     <ROW Property="ProductLanguage" Value="1033"/>
     <ROW Property="ProductName" Value="UASM"/>
-    <ROW Property="ProductVersion" Value="2.50.1" Type="32"/>
+    <ROW Property="ProductVersion" Value="2.51.2" Type="32"/>
     <ROW Property="REBOOT" MultiBuildValue="DefaultBuild:ReallySuppress"/>
     <ROW Property="SecureCustomProperties" Value="OLDPRODUCTS;AI_NEWERPRODUCTFOUND"/>
     <ROW Property="UpgradeCode" Value="{A55C659C-D9F6-45FC-8D94-0714898E9662}"/>
