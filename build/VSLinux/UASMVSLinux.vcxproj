@@ -328,6 +328,8 @@
     <None Include="..\..\debian\source\format" />
     <None Include="..\..\debian\uasm.dirs" />
     <None Include="..\..\debian\uasm.install" />
+    <None Include="..\..\debian\uasmd.dirs" />
+    <None Include="..\..\debian\uasmd.install" />
     <None Include="..\..\debian\watch" />
     <None Include="..\..\GccDos.mak" />
     <None Include="..\..\gccLinux64.mak" />

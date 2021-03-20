@@ -615,6 +615,12 @@
     <None Include="..\..\include_WIP\uasm\windows\vc\vcruntime.inc">
       <Filter>include_WIP\windows\vc</Filter>
     </None>
+    <None Include="..\..\debian\uasmd.install">
+      <Filter>debian</Filter>
+    </None>
+    <None Include="..\..\debian\uasmd.dirs">
+      <Filter>debian</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Headers">
