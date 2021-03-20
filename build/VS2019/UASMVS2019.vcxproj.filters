@@ -498,6 +498,48 @@
     <None Include="..\..\BuildCustomizations\uasm.xml">
       <Filter>BuildCustomizations</Filter>
     </None>
+    <None Include="..\..\include_WIP\uasm\windows\basetsd.inc">
+      <Filter>include_WIP\windows</Filter>
+    </None>
+    <None Include="..\..\include_WIP\uasm\windows\vadefs.inc">
+      <Filter>include_WIP\windows</Filter>
+    </None>
+    <None Include="..\..\include_WIP\uasm\windows\vcruntime.inc">
+      <Filter>include_WIP\windows</Filter>
+    </None>
+    <None Include="..\..\include_WIP\uasm\windows\vc\vadefs.inc">
+      <Filter>include_WIP\windows\vc</Filter>
+    </None>
+    <None Include="..\..\include_WIP\uasm\windows\vc\vcruntime.inc">
+      <Filter>include_WIP\windows\vc</Filter>
+    </None>
+    <None Include="..\..\include_WIP\uasm\cpubits.inc">
+      <Filter>include_WIP</Filter>
+    </None>
+    <None Include="..\..\include_WIP\uasm\defines.inc">
+      <Filter>include_WIP</Filter>
+    </None>
+    <None Include="..\..\include_WIP\uasm\limits.inc">
+      <Filter>include_WIP</Filter>
+    </None>
+    <None Include="..\..\include_WIP\uasm\macrolib.inc">
+      <Filter>include_WIP</Filter>
+    </None>
+    <None Include="..\..\include_WIP\uasm\macros.inc">
+      <Filter>include_WIP</Filter>
+    </None>
+    <None Include="..\..\include_WIP\uasm\params.inc">
+      <Filter>include_WIP</Filter>
+    </None>
+    <None Include="..\..\include_WIP\uasm\real4limits.inc">
+      <Filter>include_WIP</Filter>
+    </None>
+    <None Include="..\..\include_WIP\uasm\real8limits.inc">
+      <Filter>include_WIP</Filter>
+    </None>
+    <None Include="..\..\include_WIP\uasm\types.inc">
+      <Filter>include_WIP</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Headers">
@@ -514,6 +556,15 @@
     </Filter>
     <Filter Include="include">
       <UniqueIdentifier>{7a53866a-29be-4e3d-ab7c-b7f452330cbd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include_WIP">
+      <UniqueIdentifier>{fb4d5874-fde5-4a97-a767-8bcca9b87222}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include_WIP\windows">
+      <UniqueIdentifier>{2215fb17-283f-4dc5-b779-32c3df6fef88}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include_WIP\windows\vc">
+      <UniqueIdentifier>{8949af0a-d6ba-436b-9e25-447487e1cfbc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -582,6 +582,39 @@
     <None Include="..\..\OWWin.mak">
       <Filter>Makefiles</Filter>
     </None>
+    <None Include="..\..\include_WIP\uasm\types.inc">
+      <Filter>include_WIP\windows</Filter>
+    </None>
+    <None Include="..\..\include_WIP\uasm\cpubits.inc">
+      <Filter>include_WIP\windows</Filter>
+    </None>
+    <None Include="..\..\include_WIP\uasm\defines.inc">
+      <Filter>include_WIP\windows</Filter>
+    </None>
+    <None Include="..\..\include_WIP\uasm\limits.inc">
+      <Filter>include_WIP\windows</Filter>
+    </None>
+    <None Include="..\..\include_WIP\uasm\macrolib.inc">
+      <Filter>include_WIP\windows</Filter>
+    </None>
+    <None Include="..\..\include_WIP\uasm\macros.inc">
+      <Filter>include_WIP\windows</Filter>
+    </None>
+    <None Include="..\..\include_WIP\uasm\params.inc">
+      <Filter>include_WIP\windows</Filter>
+    </None>
+    <None Include="..\..\include_WIP\uasm\real4limits.inc">
+      <Filter>include_WIP\windows</Filter>
+    </None>
+    <None Include="..\..\include_WIP\uasm\real8limits.inc">
+      <Filter>include_WIP\windows</Filter>
+    </None>
+    <None Include="..\..\include_WIP\uasm\windows\vc\vadefs.inc">
+      <Filter>include_WIP\windows\vc</Filter>
+    </None>
+    <None Include="..\..\include_WIP\uasm\windows\vc\vcruntime.inc">
+      <Filter>include_WIP\windows\vc</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Headers">
@@ -601,6 +634,15 @@
     </Filter>
     <Filter Include="Makefiles">
       <UniqueIdentifier>{85ec10ab-9674-48c0-bcaa-e51dbce1c36e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include_WIP">
+      <UniqueIdentifier>{fb655770-3d16-499b-8c8c-1f61dd3bf815}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include_WIP\windows">
+      <UniqueIdentifier>{cb1d9ab6-cab8-41de-856b-5d06848fb5a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include_WIP\windows\vc">
+      <UniqueIdentifier>{39fc5b10-0d1f-4b98-b85a-44e790f56c4a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

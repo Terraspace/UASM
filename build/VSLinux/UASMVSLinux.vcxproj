@@ -343,6 +343,17 @@
     <None Include="..\..\include\uasm\real4limits.inc" />
     <None Include="..\..\include\uasm\real8limits.inc" />
     <None Include="..\..\include\uasm\types.inc" />
+    <None Include="..\..\include_WIP\uasm\cpubits.inc" />
+    <None Include="..\..\include_WIP\uasm\defines.inc" />
+    <None Include="..\..\include_WIP\uasm\limits.inc" />
+    <None Include="..\..\include_WIP\uasm\macrolib.inc" />
+    <None Include="..\..\include_WIP\uasm\macros.inc" />
+    <None Include="..\..\include_WIP\uasm\params.inc" />
+    <None Include="..\..\include_WIP\uasm\real4limits.inc" />
+    <None Include="..\..\include_WIP\uasm\real8limits.inc" />
+    <None Include="..\..\include_WIP\uasm\types.inc" />
+    <None Include="..\..\include_WIP\uasm\windows\vc\vadefs.inc" />
+    <None Include="..\..\include_WIP\uasm\windows\vc\vcruntime.inc" />
     <None Include="..\..\IntelC32.mak" />
     <None Include="..\..\IntelC64.mak" />
     <None Include="..\..\msmod.inc" />

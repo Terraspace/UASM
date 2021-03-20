@@ -544,9 +544,9 @@ ret_code StoreMacro(struct dsym* macro, int i, struct asm_tok tokenarray[], bool
         {
             if (!store_data)
                 continue;
+            const int size = strlen(StringBufferEnd);
             for (;; )
             {
-                int size;
                 while (isspace(*ls.input)) ls.input++;
                 if (*ls.input == NULLC || *ls.input == ';') /* 0 locals are ok */
                     break;
@@ -565,7 +565,6 @@ ret_code StoreMacro(struct dsym* macro, int i, struct asm_tok tokenarray[], bool
                     EmitError(TOO_MANY_MACRO_PLACEHOLDERS);
                     break;
                 }
-                size = strlen(StringBufferEnd);
                 mnames[mindex].label = myalloca(size);
                 memcpy(mnames[mindex].label, StringBufferEnd, size);
                 mnames[mindex].len = size;
@@ -925,9 +924,9 @@ ret_code StoreAutoMacro(struct dsym* macro, int i, struct asm_tok tokenarray[], 
         {
             if (!store_data)
                 continue;
+            const int size = strlen(StringBufferEnd);
             for (;; )
             {
-                int size;
                 while (isspace(*ls.input)) ls.input++;
                 if (*ls.input == NULLC || *ls.input == ';') /* 0 locals are ok */
                     break;
@@ -946,7 +945,6 @@ ret_code StoreAutoMacro(struct dsym* macro, int i, struct asm_tok tokenarray[], 
                     EmitError(TOO_MANY_MACRO_PLACEHOLDERS);
                     break;
                 }
-                size = strlen(StringBufferEnd);
                 mnames[mindex].label = myalloca(size);
                 memcpy(mnames[mindex].label, StringBufferEnd, size);
                 mnames[mindex].len = size;

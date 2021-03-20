@@ -2462,7 +2462,7 @@
             IFNB <args>
                 FOR arg, <args>
                     IFIDNI <&arg>, <RTHIS()>
-                        .ERR <RTHIS()" is not allowed as a Method parameter with indirect object label">
+                        .ERR <RTHIS()" is not allowed as a method parameter with indirect object label">
                     ENDIF
                 ENDM
                 INVOKE(InterfacePtr PTR[RP1()].&Interface&vtbl.&Function), RTHIS(), &args
@@ -2505,7 +2505,7 @@
             IFNB <args>
                 FOR arg, <args>
                     IFIDNI <&arg>, <RTHIS()>
-                    .ERR <RTHIS()" is not allowed as a Method parameter with indirect object label">
+                    .ERR <RTHIS()" is not allowed as a method parameter with indirect object label">
                     ENDIF
                 ENDM
                 INVOKE(InterfacePtr PTR[RP1()].&Interface&vtbl.&Function), RTHIS(), &args
@@ -3069,7 +3069,7 @@
                 IF argCount GT 0
                     FOR arg, <argstr>
                         IFIDNI <&arg>, <RTHIS()>
-                           .ERR <RTHIS()" is not allowed as a Method parameter with indirect object label">
+                           .ERR <RTHIS()" is not allowed as a method parameter with indirect object label">
                         ENDIF
                     ENDM
                         % INVOKE(InterfacePtr PTR[RP1()].&itype&vtbl.&iproc), RTHIS(), &argstr
@@ -3093,7 +3093,7 @@
                 IF argCount GT 0
                     FOR arg, <argstr>
                         IFIDNI <&arg>, <RTHIS()>
-                            .ERR <RTHIS()" is not allowed as a Method parameter with indirect object label">
+                            .ERR <RTHIS()" is not allowed as a method parameter with indirect object label">
                         ENDIF
                     ENDM
                     % INVOKE(InterfacePtr PTR[RP1()].&itype&vtbl.&iproc), RTHIS(), &argstr
@@ -3160,7 +3160,7 @@
                 IF argCount GT 0
                     FOR arg, <argstr>
                         IFIDNI <&arg>, <RTHIS()>
-                            .ERR <RTHIS()" is not allowed as a Method parameter with indirect object label">
+                            .ERR <RTHIS()" is not allowed as a method parameter with indirect object label">
                         ENDIF
                     ENDM
                     % INVOKE(InterfacePtr PTR[RP1()].&itype&vtbl.&iproc), RTHIS(), &argstr
@@ -3184,7 +3184,7 @@
                 IF argCount GT 0
                     FOR arg, <argstr>
                         IFIDNI <&arg>, <RTHIS()>
-                            .ERR <RTHIS()" is not allowed as a Method parameter with indirect object label">
+                            .ERR <RTHIS()" is not allowed as a method parameter with indirect object label">
                         ENDIF
                     ENDM
                     % INVOKE(InterfacePtr PTR[RP1()].&itype&vtbl.&iproc), RTHIS(), &argstr
@@ -3310,8 +3310,8 @@
     ENDIF ;ADDRESSOF
 
     IFNDEF ALIGNOF
-    ALIGNOF MACRO argaddress
-        EXITM <SIZEOF argaddress>
+    ALIGNOF MACRO argsizeof
+        EXITM <SIZEOF argsizeof>
     ENDM
     ENDIF ;ADDRESSOF
 

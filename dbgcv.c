@@ -1382,9 +1382,9 @@ void cv_write_debug_tables(struct dsym* symbols, struct dsym* types, void* pv)
                 name = cv.currdir;
             }
             len = strlen(name) + 1;
-            memcpy(cv.ps, name, len);
             p = cv.ps;
             cv.ps = checkflush(cv.symbols, cv.ps, len, cv.param);
+            memcpy(cv.ps, name, len);
             if (p == cv.ps)
                 cv.ps += len;
             cv.section->length += len;

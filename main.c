@@ -70,6 +70,7 @@ static void genfailure(int signo)
     close_files();
     exit(EXIT_FAILURE);
 }
+
 int main(int argc, char** argv)
 /*******************************/
 {

@@ -193,8 +193,8 @@ extern void RewindToWin64()
     {
         if (ModuleInfo.output_format != OFORMAT_BIN)
         {
-                Options.output_format = OFORMAT_COFF;
-                ModuleInfo.output_format = OFORMAT_COFF;
+            Options.output_format = OFORMAT_COFF;
+            ModuleInfo.output_format = OFORMAT_COFF;
         }
         else
         {
@@ -214,18 +214,18 @@ extern void RewindToSYSV64()
     {
         if (ModuleInfo.output_format != OFORMAT_BIN && ModuleInfo.output_format != OFORMAT_MAC)
         {
-                Options.output_format = OFORMAT_ELF;
-                ModuleInfo.output_format = OFORMAT_ELF;
+            Options.output_format = OFORMAT_ELF;
+            ModuleInfo.output_format = OFORMAT_ELF;
         }
         else if (ModuleInfo.output_format != OFORMAT_BIN && ModuleInfo.output_format != OFORMAT_ELF)
         {
-                Options.output_format = OFORMAT_MAC;
-                ModuleInfo.output_format = OFORMAT_MAC;
+            Options.output_format = OFORMAT_MAC;
+            ModuleInfo.output_format = OFORMAT_MAC;
         }
         else
         {
             if (Options.langtype != LANG_REGCALL && Options.langtype != LANG_SYSCALL)
-            Options.langtype = LANG_SYSVCALL;
+                Options.langtype = LANG_SYSVCALL;
             if (ModuleInfo.langtype != LANG_REGCALL && ModuleInfo.langtype != LANG_SYSCALL)
                 ModuleInfo.langtype = LANG_SYSVCALL;
         }

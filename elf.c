@@ -1328,7 +1328,7 @@ static ret_code elf_write_data(struct module_info* modinfo, struct elfmod* em)
         if (curr->e.seginfo->segtype != SEGTYPE_BSS && size != 0)
         {
             fseek(CurrFile[OBJ], curr->e.seginfo->fileoffset + curr->e.seginfo->start_loc, SEEK_SET);
-            /**/myassert(curr->e.seginfo->CodeBuffer);
+            /**/myassert(curr->e.seginfo->CodeBuffer != NULL);  /*TODO-Issues-#132-KRAD-(add null comparison... Clearly, the CodeBuffer gets cleared somewhere. typedef struct string outside uninitialized segment!)*/
             if (fwrite(curr->e.seginfo->CodeBuffer, 1, size, CurrFile[OBJ]) != size)
                 WriteError();
         }
