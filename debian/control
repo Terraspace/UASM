@@ -17,6 +17,7 @@ Depends:
  ${misc:Depends},
  ${shlibs:Depends},
  libc6-dev,
+ uasm-dev,
 Description: UASM is a free MASM-compatible assembler
  based on JWasm with more and enhanced features.
  .
@@ -27,15 +28,34 @@ Description: UASM is a free MASM-compatible assembler
 
 Package: uasmd
 Architecture: any
+Section: debug
 Depends:
  dpkg (>= 1.15.4) | install-info,
  ${misc:Depends},
  ${shlibs:Depends},
  libc6-dev,
-Description: UASM is a free MASM-compatible assembler
+ uasm-dev,
+Description: UASM (debug version) is a free MASM-compatible assembler
  based on JWasm with more and enhanced features.
  .
  Please visit http://www.terraspace.co.uk/uasm.html for more info.
  .
  UASM is released under the Sybase Open Watcom Public License version 1.0
  and under the Apache License, Version 2.0.
+ 
+Package: uasm-dev
+Architecture: any
+Section: libdevel
+Depends:
+ dpkg (>= 1.15.4) | install-info,
+ ${misc:Depends},
+ ${shlibs:Depends},
+ libc6-dev,
+Description: UASM (include files) is a free MASM-compatible assembler
+ based on JWasm with more and enhanced features.
+ .
+ Please visit http://www.terraspace.co.uk/uasm.html for more info.
+ .
+ UASM is released under the Sybase Open Watcom Public License version 1.0
+ and under the Apache License, Version 2.0.
+ 

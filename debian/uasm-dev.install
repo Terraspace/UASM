@@ -1,0 +1,9 @@
+include/uasm/cpubits.inc usr/include/uasm
+include/uasm/defines.inc usr/include/uasm
+include/uasm/limits.inc usr/include/uasm
+include/uasm/macrolib.inc usr/include/uasm
+include/uasm/macros.inc usr/include/uasm
+include/uasm/params.inc usr/include/uasm
+include/uasm/real4limits.inc usr/include/uasm
+include/uasm/real8limits.inc usr/include/uasm
+include/uasm/types.inc usr/include/uasm
