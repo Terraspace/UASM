@@ -27,7 +27,7 @@ RELEASECFLAGS = -Wno-sign-conversion -Wno-implicit-int-conversion -Wno-comment -
 .PHONY: all clean prep debug release remake
 
 # Default build
-all: clean prep debug release
+all: prep debug release
 
 .SUFFIXES:
 .SUFFIXES: .c .o
