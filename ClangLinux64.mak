@@ -39,34 +39,34 @@ include debianmod.inc
 #
 debug:
 
-	$(DBGDIR)/%.o: %.c
-		$(CC) -D __UNIX__ -c $(inc_dirs) $(CFLAGS) $(DEBUGCFLAGS) -o $(DBGDIR)/$*.o $<
+$(DBGDIR)/%.o: %.c
+	$(CC) -D __UNIX__ -c $(inc_dirs) $(CFLAGS) $(DEBUGCFLAGS) -o $(DBGDIR)/$*.o $<
 
-	$(DBGDIR)/$(TARGET2) : $(DBGDIR)/main.o $(dbgproj_obj)
-		$(CC) -D __UNIX__ $(DBGDIR)/main.o $(dbgproj_obj) -Wl,-Bsymbolic-functions -fPIC -fPIE -pie -Wl,-z,relro -Wl,-z,now -o $@ -Wl,-Map,$(DBGDIR)/$(TARGET2).map
+$(DBGDIR)/$(TARGET2) : $(DBGDIR)/main.o $(dbgproj_obj)
+	$(CC) -D __UNIX__ $(DBGDIR)/main.o $(dbgproj_obj) -Wl,-Bsymbolic-functions -fPIC -fPIE -pie -Wl,-z,relro -Wl,-z,now -o $@ -Wl,-Map,$(DBGDIR)/$(TARGET2).map
 
-	$(DBGDIR)/msgtext.o: msgtext.c H/msgdef.h
-		$(CC) -D __UNIX__ -c $(inc_dirs) $(CFLAGS) $(DEBUGCFLAGS) -o $*.o msgtext.c
+$(DBGDIR)/msgtext.o: msgtext.c H/msgdef.h
+	$(CC) -D __UNIX__ -c $(inc_dirs) $(CFLAGS) $(DEBUGCFLAGS) -o $*.o msgtext.c
 
-	$(DBGDIR)/reswords.o: reswords.c H/instruct.h H/special.h H/directve.h H/opndcls.h H/instravx.h
-		$(CC) -D __UNIX__ -c $(inc_dirs) $(CFLAGS) $(DEBUGCFLAGS) -o $*.o reswords.c
+$(DBGDIR)/reswords.o: reswords.c H/instruct.h H/special.h H/directve.h H/opndcls.h H/instravx.h
+	$(CC) -D __UNIX__ -c $(inc_dirs) $(CFLAGS) $(DEBUGCFLAGS) -o $*.o reswords.c
 
 #
 # Release rules
 #
 release:
 
-	$(RELDIR)/%.o: %.c
-		$(CC) -D __UNIX__ -c $(inc_dirs) $(CFLAGS) $(RELEASECFLAGS) -o $(RELDIR)/$*.o $<
+$(RELDIR)/%.o: %.c
+	$(CC) -D __UNIX__ -c $(inc_dirs) $(CFLAGS) $(RELEASECFLAGS) -o $(RELDIR)/$*.o $<
 
-	$(RELDIR)/$(TARGET1) : $(RELDIR)/main.o $(relproj_obj)
-		$(CC) -D __UNIX__ $(RELDIR)/main.o $(relproj_obj) -Wl,-Bsymbolic-functions -fPIC -fPIE -pie -Wl,-z,relro -Wl,-z,now -s -o $@ -Wl,-Map,$(RELDIR)/$(TARGET1).map
+$(RELDIR)/$(TARGET1) : $(RELDIR)/main.o $(relproj_obj)
+	$(CC) -D __UNIX__ $(RELDIR)/main.o $(relproj_obj) -Wl,-Bsymbolic-functions -fPIC -fPIE -pie -Wl,-z,relro -Wl,-z,now -s -o $@ -Wl,-Map,$(RELDIR)/$(TARGET1).map
 
-	$(RELDIR)/msgtext.o: msgtext.c H/msgdef.h
-		$(CC) -D __UNIX__ -c $(inc_dirs) $(CFLAGS) $(RELEASECFLAGS) -o $*.o msgtext.c
+$(RELDIR)/msgtext.o: msgtext.c H/msgdef.h
+	$(CC) -D __UNIX__ -c $(inc_dirs) $(CFLAGS) $(RELEASECFLAGS) -o $*.o msgtext.c
 
-	$(RELDIR)/reswords.o: reswords.c H/instruct.h H/special.h H/directve.h H/opndcls.h H/instravx.h
-		$(CC) -D __UNIX__ -c $(inc_dirs) $(CFLAGS) $(RELEASECFLAGS) -o $*.o reswords.c
+$(RELDIR)/reswords.o: reswords.c H/instruct.h H/special.h H/directve.h H/opndcls.h H/instravx.h
+	$(CC) -D __UNIX__ -c $(inc_dirs) $(CFLAGS) $(RELEASECFLAGS) -o $*.o reswords.c
 
 #
 # Other rules
