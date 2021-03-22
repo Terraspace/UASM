@@ -326,6 +326,7 @@
     <None Include="..\..\debian\gbp.conf" />
     <None Include="..\..\debian\rules" />
     <None Include="..\..\debian\source\format" />
+    <None Include="..\..\debian\uasm-dev.install" />
     <None Include="..\..\debian\uasm.dirs" />
     <None Include="..\..\debian\uasm.install" />
     <None Include="..\..\debian\uasmd.dirs" />

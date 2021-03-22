@@ -621,6 +621,9 @@
     <None Include="..\..\debian\uasmd.dirs">
       <Filter>debian</Filter>
     </None>
+    <None Include="..\..\debian\uasm-dev.install">
+      <Filter>debian</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Headers">
