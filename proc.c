@@ -2142,13 +2142,16 @@ static void ProcFini(struct dsym *proc)
 		DebugMsg1(("ProcFini(%s): localsize=%u ReservedStack=%u\n", proc->sym.name, proc->e.procinfo->localsize, proc->e.procinfo->ReservedStack));
 #if STACKBASESUPP
 		if (proc->e.procinfo->fpo) {
-			for (curr = proc->e.procinfo->locallist; curr; curr = curr->nextlocal) {
-				DebugMsg1(("ProcFini(%s): FPO, offset for %s %8d -> %8d\n", proc->sym.name, curr->sym.name, curr->sym.offset, curr->sym.offset + proc->e.procinfo->ReservedStack));
-				curr->sym.offset += proc->e.procinfo->ReservedStack;
-			}
-			for (curr = proc->e.procinfo->paralist; curr; curr = curr->nextparam) {
-				DebugMsg1(("ProcFini(%s): FPO, offset for %s %8d -> %8d\n", proc->sym.name, curr->sym.name, curr->sym.offset, curr->sym.offset + proc->e.procinfo->ReservedStack));
-				curr->sym.offset += proc->e.procinfo->ReservedStack;
+			if (proc->e.procinfo->ReservedStack > 0)
+			{
+				for (curr = proc->e.procinfo->locallist; curr; curr = curr->nextlocal) {
+					DebugMsg1(("ProcFini(%s): FPO, offset for %s %8d -> %8d\n", proc->sym.name, curr->sym.name, curr->sym.offset, curr->sym.offset + proc->e.procinfo->ReservedStack));
+					curr->sym.offset += proc->e.procinfo->ReservedStack;
+				}
+				for (curr = proc->e.procinfo->paralist; curr; curr = curr->nextparam) {
+					DebugMsg1(("ProcFini(%s): FPO, offset for %s %8d -> %8d\n", proc->sym.name, curr->sym.name, curr->sym.offset, curr->sym.offset + proc->e.procinfo->ReservedStack));
+					curr->sym.offset += proc->e.procinfo->ReservedStack;
+				}
 			}
 		}
 #endif
@@ -2710,7 +2713,6 @@ static void win64_SaveRegParams_RSP(struct proc_info *info)
 	int i;
 	struct dsym *param;
 	if (ModuleInfo.win64_flags & W64F_SMART) {
-		//int			   cnt;
 		uint_16        *regist;
 		info->home_taken = 0;
 		memset(info->home_used, 0, 6);
@@ -2720,7 +2722,7 @@ static void win64_SaveRegParams_RSP(struct proc_info *info)
 			for (i = 0, param = info->paralist; param && (i < 6); i++) {
 				/* v2.05: save XMMx if type is float/double */
 				if (param->sym.is_vararg == FALSE) {
-					if ((param->sym.mem_type & MT_FLOAT) && param->sym.used) {  // added  && param->sym.used
+					if ((param->sym.mem_type & MT_FLOAT) && param->sym.used) {
 						if (param->sym.mem_type == MT_REAL8)
 							AddLineQueueX("%s qword ptr[%r+%u], %r", MOVE_DOUBLE(), T_RSP, 8 + i * 8, T_XMM0 + i);
 						else if (param->sym.mem_type == MT_REAL4)
@@ -2730,15 +2732,13 @@ static void win64_SaveRegParams_RSP(struct proc_info *info)
 					}
 					else if ((param->sym.mem_type == MT_TYPE) && param->sym.used)
 					{
-						//						if(info->vecregs[i] == 0)
-						//						AddLineQueueX("mov [%r+%u], %r", T_RSP, 8 + i * 8, ms64_regs[i]);
 						info->home_used[i] = 1;
 						++info->home_taken;
 						info->vecused = TRUE;
 					}
 					else {
 						if (((param->sym.mem_type != MT_TYPE) && param->sym.used) &&
-							(param->sym.mem_type <= MT_QWORD) && param->sym.used) {   //here as well   
+							(param->sym.mem_type <= MT_QWORD) && param->sym.used) {
 							if (i < 4) {
 								AddLineQueueX("mov [%r+%u], %r", T_RSP, 8 + i * 8, ms64_regs[i]);
 								info->home_used[i] = 1;
@@ -2759,7 +2759,17 @@ static void win64_SaveRegParams_RSP(struct proc_info *info)
 			for (i = 0, param = info->paralist; param && (i < 4); i++) {
 				/* v2.05: save XMMx if type is float/double */
 				if (param->sym.is_vararg == FALSE) {
-					if ((param->sym.mem_type & MT_FLOAT) && param->sym.used) {  // added  && param->sym.used
+					if (param->sym.mem_type & MT_FLOAT && param->sym.total_size == 10) {
+						/* UASM 2.52 emit a warning for trying to pass an REAL10 by value - don't want to be caught out expecting a value instead of ref */
+						if (Parse_Pass == PASS_1) 
+							EmitWarn(2, REAL10_BY_VALUE);
+					}
+					if (param->sym.mem_type & MT_FLOAT && param->sym.total_size == 4 && param->sym.used) {
+						AddLineQueueX("%s [%r+%u], %r", MOVE_SIMD_DWORD(), T_RSP, 8 + i * 8, T_XMM0 + i);
+						info->home_used[i] = 1;
+						++info->home_taken;
+					}
+					else if (param->sym.mem_type & MT_FLOAT && param->sym.total_size == 8 && param->sym.used) {
 						AddLineQueueX("%s [%r+%u], %r", MOVE_SIMD_QWORD(), T_RSP, 8 + i * 8, T_XMM0 + i);
 						info->home_used[i] = 1;
 						++info->home_taken;
@@ -4184,6 +4194,7 @@ static void SetLocalOffsets_RSP(struct proc_info *info)
 	* Hence in this case the values calculated below are "preliminary".
 	*/
 	if (info->fpo) {
+
 		if (rspalign) {
 			localadj = info->localsize;
 			paramadj = info->localsize - CurrWordSize - start;
