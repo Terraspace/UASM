@@ -69,17 +69,16 @@ void InsertInstruction(struct Instr_Def* pInstruction, uint_32 hash)
 uint_32 GenerateInstrHash(struct Instr_Def* pInstruction)
 {
 	uint_8 hashBuffer[32];
-	int len = 0;
+	int len = strlen(pInstruction->mnemonic);
 	char* pDst = (char*)&hashBuffer;
 	strcpy(pDst, pInstruction->mnemonic);
 
 	/* String hash is case-insensitive. */
-	for (int i = 0; i < strlen(pInstruction->mnemonic); i++)
+	for (int i = 0; i < len; i++)
 	{
 		hashBuffer[i] = tolower(hashBuffer[i]);
 	}
 
-	len += strlen(pInstruction->mnemonic);
 	pDst += len;
 	*(pDst + 0) = pInstruction->operand_types[0];
 	*(pDst + 1) = pInstruction->operand_types[1];

@@ -183,6 +183,7 @@ static void ExpandObjCalls(char *line, struct asm_tok tokenarray[])
 		pRefStr = refStr;
 		didExpand = FALSE;
 		paramCount = 0;
+		const int size_refStr = strlen(refStr);
 		for (i = 0; i < Token_Count; i++)
 		{
 			if (tokenarray[i].token == T_POINTER)
@@ -543,7 +544,7 @@ static void ExpandObjCalls(char *line, struct asm_tok tokenarray[])
 					if (derefCount > 0)
 					{
 						strcpy(pStr, refStr);
-						pStr += strlen(refStr);
+						pStr += size_refStr;
 						pStr = strcpy(pStr, ",") + 1;
 					}
 					if (derefCount == 0 && !type->sym.isPtrTable)
