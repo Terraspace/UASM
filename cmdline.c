@@ -41,11 +41,19 @@
 #include "input.h"
 
 #if defined(__UNIX__) || defined(__CYGWIN__) || defined(__DJGPP__)
-    #define HANDLECTRLZ 0
-    #define SWITCHCHAR 0
+
+#define HANDLECTRLZ 0
+#ifndef SWITCHCHAR
+#define SWITCHCHAR 0
+#endif
+
 #else
-    #define HANDLECTRLZ 1
-    #define SWITCHCHAR 1
+
+#define HANDLECTRLZ 1
+#ifndef SWITCHCHAR
+#define SWITCHCHAR 1
+#endif
+
 #endif
 
 #ifdef __I86__
