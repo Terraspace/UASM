@@ -1,0 +1,110 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <PropertyPageSchema
+      Include="$(MSBuildThisFileDirectory)$(MSBuildThisFileName).xml" />
+      <AvailableItemName Include="UASM">
+        <Targets>_UASM</Targets>
+      </AvailableItemName>
+  </ItemGroup>
+  <PropertyGroup>
+    <ComputeLinkInputsTargets>
+      $(ComputeLinkInputsTargets);
+      ComputeUASMOutput;
+    </ComputeLinkInputsTargets>
+    <ComputeLibInputsTargets>
+      $(ComputeLibInputsTargets);
+      ComputeUASMOutput;
+    </ComputeLibInputsTargets>
+  </PropertyGroup>
+  <UsingTask
+    TaskName="UASM"
+    TaskFactory="XamlTaskFactory"
+    AssemblyName="Microsoft.Build.Tasks.v4.0, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <Task>$(MSBuildThisFileDirectory)$(MSBuildThisFileName).xml</Task>
+  </UsingTask>
+  <Target
+    Name="_UASM"
+    BeforeTargets="$(UASMBeforeTargets)"
+    AfterTargets="$(UASMAfterTargets)"
+    Condition="'@(UASM)' != ''"
+    Outputs="%(UASM.ObjectFileName)"
+    Inputs="%(UASM.Identity);%(UASM.AdditionalDependencies);$(MSBuildProjectFile)"
+    DependsOnTargets="_SelectedFiles">
+    <ItemGroup Condition="'@(SelectedFiles)' != ''">
+      <UASM Remove="@(UASM)" Condition="'%(Identity)' != '@(SelectedFiles)'" />
+    </ItemGroup>
+    <ItemGroup>
+      <UASM_tlog Include="%(UASM.ObjectFileName)" Condition="'%(UASM.ObjectFileName)' != '' and '%(UASM.ExcludedFromBuild)' != 'true'">
+        <Source>@(UASM, '|')</Source>
+      </UASM_tlog>
+    </ItemGroup>
+    <Message
+      Condition="'@(UASM)' != '' and '%(UASM.ExcludedFromBuild)' != 'true'"
+      Importance="High"
+      Text="%(UASM.ExecutionDescription)" />
+    <WriteLinesToFile
+      Condition="'@(UASM_tlog)' != '' and '%(UASM_tlog.ExcludedFromBuild)' != 'true'"
+      File="$(IntDir)$(ProjectName).write.1.tlog"
+      Lines="^%(UASM_tlog.Source);@(UASM_tlog-&gt;'%(Fullpath)')"/>
+    <UASM
+      Condition="'@(UASM)' != '' and '%(UASM.ExcludedFromBuild)' != 'true'"
+      NoLogo="%(UASM.NoLogo)"
+      GeneratePreprocessedSourceListing="%(UASM.GeneratePreprocessedSourceListing)"
+      ListAllAvailableInformation="%(UASM.ListAllAvailableInformation)"
+      UseSafeExceptionHandlers="%(UASM.UseSafeExceptionHandlers)"
+      AddFirstPassListing="%(UASM.AddFirstPassListing)"
+      EnableAssemblyGeneratedCodeListing="%(UASM.EnableAssemblyGeneratedCodeListing)"
+      DisableSymbolTable="%(UASM.DisableSymbolTable)"
+      EnableFalseConditionalsInListing="%(UASM.EnableFalseConditionalsInListing)"
+      TreatWarningsAsErrors="%(UASM.TreatWarningsAsErrors)"
+      GenerateDebugInformation="%(UASM.GenerateDebugInformation)"
+      EnableMASM51Compatibility="%(UASM.EnableMASM51Compatibility)"
+      StrictMASMCompatibility="%(UASM.StrictMASMCompatibility)"
+      MASMCodeGen="%(UASM.MASMCodeGen)"
+      MasmV8ProcVisivility="%(UASM.MasmV8ProcVisivility)"
+      PerformSyntaxCheckOnly="%(UASM.PerformSyntaxCheckOnly)"
+      SetCaseMap="%(UASM.SetCaseMap)"
+      SetArchModel="%(UASM.SetArchModel)"
+      SetMemoryModel="%(UASM.SetMemoryModel)"
+      ReduceConsoleInfo="%(UASM.ReduceConsoleInfo)"
+      NoOMFRecordsDataCode="%(UASM.NoOMFRecordsDataCode)"
+      NoOMFRecordsFarCallOptimization="%(UASM.NoOMFRecordsFarCallOptimization)"
+      ObjectFileName="%(UASM.ObjectFileName)"
+      SuppressItemCOFFTable="%(UASM.SuppressItemCOFFTable)"
+      AddSymbolicDebugInfo="%(UASM.AddSymbolicDebugInfo)"
+      STDCALLSymbolDecoration="%(UASM.STDCALLSymbolDecoration)"
+      VectorCALLSymbolDecoration="%(UASM.VectorCALLSymbolDecoration)"
+      RegCALLSymbolDecoration="%(UASM.RegCALLSymbolDecoration)"
+      RegCALLVersionNumber="%(UASM.RegCALLVersionNumber)"
+      NoDecoratedName="%(UASM.NoDecoratedName)"
+      AddLineNumberDebugInformation="%(UASM.AddLineNumberDebugInformation)"
+      MakeAllSymbolsPublic="%(UASM.MakeAllSymbolsPublic)"
+      StoreDecoratedNames="%(UASM.StoreDecoratedNames)"
+      CNamesDecoratedPrefix="%(UASM.CNamesDecoratedPrefix)"
+      NoNameDecorationCSymbol="%(UASM.NoNameDecorationCSymbol)"
+      PreprocessorDefinitions="%(UASM.PreprocessorDefinitions)"
+      WriteImportDefenitionFile="%(UASM.WriteImportDefenitionFile)"
+      ForceIncludeFile="%(UASM.ForceIncludeFile)"
+      DebugCodeListingFile="%(UASM.DebugCodeListingFile)"
+      AssembledCodeListingFile="%(UASM.AssembledCodeListingFile)"
+      IncludePaths="%(UASM.IncludePaths)"
+      OutputFormat="%(UASM.OutputFormat)"
+      SetFastCallType="%(UASM.SetFastCallType)"
+      WarningLevel="%(UASM.WarningLevel)"
+      SegmentAlignmentBoundary="%(UASM.SegmentAlignmentBoundary)"
+      PackAlignmentBoundary="%(UASM.PackAlignmentBoundary)"
+      CallingConvention="%(UASM.CallingConvention)"
+      CommandLineTemplate="%(UASM.CommandLineTemplate)"
+      AdditionalOptions="%(UASM.AdditionalOptions)"
+      Inputs="%(UASM.Identity)" />
+  </Target>
+  <Target
+    Name="ComputeUASMOutput"
+    Condition="'@(UASM)' != ''">
+    <ItemGroup>
+      <Link Include="@(UASM->Metadata('ObjectFileName')->Distinct()->ClearMetadata())" Condition="'%(UASM.ExcludedFromBuild)' != 'true'"/>
+      <Lib Include="@(UASM->Metadata('ObjectFileName')->Distinct()->ClearMetadata())" Condition="'%(UASM.ExcludedFromBuild)' != 'true'"/>
+    </ItemGroup>
+  </Target>
+</Project>

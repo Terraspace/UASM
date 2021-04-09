@@ -62,8 +62,8 @@
 "\0"				"2=Borland register convention\0"
 #endif
 "-Zg\0"             "Generated code is to exactly match Masm's one\0"
-"-Zi[0|1|2|3]\0"    "Add symbolic debug info (OMF & COFF): 0=globals\0"
-"\0"                "1= +locals, 2= +types (default), 3= +constants\0"
+"-Zi[0|1|2|3|5|8]\0"    "Add symbolic debug info (OMF & COFF): 0=globals\0"
+"\0"                "1= +locals, 2= +types (default), 3= +constants, 5=CodeView5, 8=CodeView8\0"
 "-zlc\0"            "No OMF records about data in code\0"
 "-zld\0"            "No OMF records about far call optimization\0"
 #if COFF_SUPPORT

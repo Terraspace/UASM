@@ -66,7 +66,8 @@ enum memtype {
     MT_BYTE  = 1 - 1,
     MT_SBYTE = MT_BYTE | MT_SIGNED,
     MT_WORD  = 2 - 1,
-    MT_SWORD = MT_WORD | MT_SIGNED,   
+    MT_SWORD = MT_WORD | MT_SIGNED, 
+    MT_REAL2 = MT_WORD | MT_FLOAT,
     MT_DWORD = 4 - 1,                 
     MT_SDWORD= MT_DWORD | MT_SIGNED,  
     MT_REAL4 = MT_DWORD | MT_FLOAT,   
@@ -77,15 +78,17 @@ enum memtype {
     MT_TBYTE = 10 - 1,
     MT_REAL10= MT_TBYTE | MT_FLOAT,
     MT_OWORD = 16 - 1,
-#if AVXSUPP    
+    MT_REAL16 = MT_OWORD | MT_FLOAT,
     MT_YMMWORD  = 32 - 1,
     MT_ZMMWORD  = 64 - 1,
-#endif
+    MT_YWORD = 32 - 1,
+    MT_ZWORD = 64 - 1,
     MT_PROC  = 0x80,   /* symbol is a TYPEDEF PROTO, state=SYM_TYPE, typekind=TYPE_TYPEDEF, prototype is stored in target_type */
     MT_NEAR  = 0x81,
     MT_FAR   = 0x82,
     MT_EMPTY = 0xC0,
     MT_BITS  = 0xC1,   /* record field */
+    MT_ABS   = 0xC2,   
     MT_PTR   = 0xC3,   /* v2.05: changed, old value 0x83 */
     MT_TYPE  = 0xC4,   /* symbol has user-defined type (struct, union, record) */
     MT_SPECIAL = 0x80, /* bit 7 */
@@ -399,7 +402,7 @@ struct proc_info {
     struct asym         *exc_handler;   /* PROC: exc handler set by FRAME */
     int                 ReservedStack;  /* PROC: win64: additional reserved stack */
     int                 stored_reg;     /* number of stored general registers in home spaces */
-    int					        pushed_reg;		  /* number of pushed registers */
+    int					pushed_reg;		/* number of pushed registers */
     int                 home_taken;     /* number of taken spaces in a home space */
     int                 xmmsize;        /* size of saved xmm registers */
     char                home_used[6];   /* used shadows home space */
@@ -428,6 +431,7 @@ struct proc_info {
 #endif
 	uint_8              NoSub;
 	int                frameofs;		/* Optimise 1byte displace to access locals from RBP by using a frame offset */
+    bool               prologueDone;    /* UASM 2.51 check when prologue has been completed */
 };
 
 /* macro parameter */

@@ -1,0 +1,1 @@
+..\src\literals\literals.asm(3) : Warning A4305: Stackbase automatically changed to RSP to support WIN64 options

@@ -39,6 +39,8 @@
 #include "input.h"
 #include "fixup.h"
 #include "listing.h"
+#include "lqueue.h"
+#include "proc.h"
 #include "segment.h"
 #include "types.h"
 #include "fastpass.h"
@@ -897,7 +899,9 @@ next_item:  /* <--- continue scan if a comma has been detected */
                         if ( opndx.negative && opndx.value64 < 0 && opndx.hlvalue == 0 )
                             opndx.hlvalue = -1;
                     }
+
                     OutputDataBytes( opndx.chararray, no_of_bytes );
+
                     /* check that there's no significant data left
                      * which hasn't been emitted.
                      */
@@ -1301,22 +1305,16 @@ ret_code data_dir( int i, struct asm_tok tokenarray[], struct asym *type_sym )
 	uint_32 subcnt = 0;
 	uint_32 k = 0;
 
-    DebugMsg1(("data_dir( i=%u, type=%s ) enter\n", i, type_sym ? type_sym->name : "NULL" ));
-
     /* v2.05: the previous test in parser.c wasn't fool-proofed */
     if ( i > 1 && ModuleInfo.m510 == FALSE ) {
         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].string_ptr ) );
     }
     if( tokenarray[i+1].token == T_FINAL ) {
-        DebugMsg(("data_dir: missing initializer\n"));
         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].tokpos ) );
     }
 
     /* set values for mem_type and no_of_bytes */
     if ( type_sym ) {
-        /* if the parser found a TYPE id, type_sym is != NULL */
-        //DebugMsg1(("data_dir: arbitrary type %s, calling SymSearch\n", type_sym->name ));
-        //type_sym = SymSearch( tokenarray[i].string_ptr );
         mem_type = MT_TYPE;
         if ( type_sym->typekind != TYPE_TYPEDEF &&
              ( type_sym->total_size == 0 || ((struct dsym *)type_sym)->e.structinfo->OrgInside == TRUE ) ) {
@@ -1333,7 +1331,6 @@ ret_code data_dir( int i, struct asm_tok tokenarray[], struct asym *type_sym )
 
         no_of_bytes = type_sym->total_size;
         if ( no_of_bytes == 0 ) {
-            DebugMsg(("data_dir: size of arbitrary type is 0!\n"));
             /* a void type is not valid */
             if ( type_sym->typekind == TYPE_TYPEDEF ) {
                 return( EmitErr( INVALID_TYPE_FOR_DATA_DECLARATION, type_sym->name ) );
@@ -1347,7 +1344,6 @@ ret_code data_dir( int i, struct asm_tok tokenarray[], struct asym *type_sym )
          */
 
         if ( tokenarray[i].token == T_STYPE ) {
-            //idx = tokenarray[i].bytval;
             idx = tokenarray[i].tokval;
         } else if ( tokenarray[i].token == T_DIRECTIVE &&
                    ( tokenarray[i].dirtype == DRT_DATADIR )) {
@@ -1357,7 +1353,6 @@ ret_code data_dir( int i, struct asm_tok tokenarray[], struct asym *type_sym )
         }
         mem_type = GetMemtypeSp( idx );
         /* types NEAR[16|32], FAR[16|32] and PROC are invalid here */
-        //if ( ( SimpleType[idx].mem_type & MT_SPECIAL_MASK ) == MT_ADDRESS ) {
         if ( ( mem_type & MT_SPECIAL_MASK ) == MT_ADDRESS ) {
             return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].string_ptr ) );
         }

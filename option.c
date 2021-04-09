@@ -65,6 +65,7 @@ OPTFUNC( SetEvex )
 	*pi = i;
 	return(NOT_ERROR);
 }
+
 ///* Set CSWITCH  */
 //OPTFUNC(SetNoBreakswitch)
 //{
@@ -85,27 +86,6 @@ OPTFUNC( SetEvex )
 //  *pi = i;
 //  return(NOT_ERROR);
 //}
-
-/* Set ZEROLOCALS  */
-OPTFUNC( SetZeroLocals )
-{
-	int i = *pi;
-	struct expr opndx;
-
-	if (EvalOperand(&i, tokenarray, Token_Count, &opndx, 0) == ERROR)
-		return(ERROR);
-	if (opndx.kind == EXPR_CONST) {
-		if (opndx.llvalue > 1) {
-			return(EmitConstError(&opndx));
-		}
-		ZEROLOCALS = opndx.llvalue;
-	}
-	else {
-		return(EmitError(CONSTANT_EXPECTED));
-	}
-	*pi = i;
-	return(NOT_ERROR);
-}
 
 /* 
 	OPTION BND:ON/OFF 
@@ -1060,6 +1040,8 @@ OPTFUNC(SetWin64)
 		/* ensure that basereg is RSP */
 		if (ModuleInfo.basereg[ModuleInfo.Ofssize] != T_RSP)
 		{
+            EmitWarn(2, STACKBASE_CHANGED);
+
 			ModuleInfo.basereg[ModuleInfo.Ofssize] = T_RSP;
 			if (!ModuleInfo.g.StackBase) 
 			{
@@ -1357,7 +1339,6 @@ static const struct asm_option optiontab[] = {
 #endif
 #if AVXSUPP
 	{ "EVEX",         SetEvex        }, /* EVEX: <value> 1 or 0 */
-	{ "ZEROLOCALS",   SetZeroLocals  }, /* ZEROLOCALS: <value> 1 or 0 */
 #endif
   { "SWITCHSTYLE",      SetSwitchStile },/* SWITCH_STYLE: <CSWITCH> or <ASMSWITCH> */
   { "SWITCHSIZE",       SetSwitchSize }, /* SWITCH_STYLE: <CSWITCH> or <ASMSWITCH> */
