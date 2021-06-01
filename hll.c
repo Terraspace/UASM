@@ -129,7 +129,6 @@ struct hll_item {
   char                *counterlines; /* pointer to allocated memory for counters */
   uint_32             cmcnt;         /* comma counter  */
   enum hll_cmd        cmd;           /* start cmd (IF, WHILE, REPEAT) */
-  bool                cond;          /* condition  */
   enum hll_flags      flags;         /* v2.08: added */
 /* All of bellow vars are related to the SWITCH block */
   int_32              casecnt;       /* case counter  */
@@ -1471,18 +1470,6 @@ ret_code HllStartDir(int i, struct asm_tok tokenarray[])
   int                  cmd = tokenarray[i].tokval;
   char buff[16];
   char buffer[MAX_LINE_LEN * 2];
-  char forbuff[MAX_LINE_LEN];
-  char forbuffinit[MAX_LINE_LEN];
-  char forbuffcond[MAX_LINE_LEN];
-  char forbuffcnt[MAX_LINE_LEN];
-  char transformed[MAX_LINE_LEN];
-  int j;
-  int b;
-  int size;
-  int eqcnt;
-  int cmcnt;
-  char *p;
-  char c;
   struct expr         opndx;
   struct asm_tok      *t;
   DebugMsg1(("HllStartDir(%s) enter\n", tokenarray[i].string_ptr));
@@ -1632,132 +1619,143 @@ ret_code HllStartDir(int i, struct asm_tok tokenarray[])
     AddLineQueueX(JMPPREFIX "jmp %s", GetLabelStr(hll->labels[LSTART], buff));
     break;
   case T_DOT_FOR:
-    /* create the label to loop start */
-    hll->labels[LSTART] = GetHllLabel();
-    hll->labels[LSKIP] = GetHllLabel();
-    hll->labels[LCONT] = 0;
-    hll->labels[LTEST] = 0;
-    hll->flags = 0;
-    hll->cmd = HLL_FOR;
-    /* check for 2 ':',if not throw an error */
-    p = tokenarray[i].tokpos;
-    for (b = 0; *p; p++)
     {
-        if (*p == ':') b++;
-        if (*p == 39) break;
-    }
-    if (b < 2) {
-        DebugMsg(("HllStartDir .for loop \n"));
-        return(EmitErr(SYNTAX_ERROR_EX, "Missing ':' before ')'"));
-    }
-    else if (b > 2) {
-        DebugMsg(("HllStartDir .for loop \n"));
-        return(EmitErr(SYNTAX_ERROR_EX, "Only 2 ':' allowed before ')'"));
-    }
-    //copy string to the buffer and get read of spaces
-    p = tokenarray[i].tokpos;
-    for (b = 0; *p; p++)
-    {
-      if ((*p == ' ') || (*p == '\t')) {
-        //if there is QWORD PTR, DWORD PTR, WORD PTR, BYTE PTR, OFFSET or ADDR leave a space between
-        c = tolower(*(p + 1));
-        if ((c >= 'a') && (c <= 'z')) {
-          forbuff[b] = *p;
-          b++;
-        }
-      }
-      else {
-        forbuff[b] = *p;
-        b++;
-      }
-    }
-    forbuff[b] = NULLC;
-    if (0 == _memicmp(forbuff, "(::)", 4)) {
-      hll->cmcnt = 0;
-    }
-    else {
-      //count initializers
-      eqcnt = 1;
-      forbuffinit[0] = NULLC;
-      for (j = 1, b = 0; forbuff[j];) {
-        c = forbuff[j];
-        if (c == ':') {
-          if (forbuff[j - 1] != 39 && forbuff[j + 1] != 39) break;
-        }
-        if (c == ',' && forbuff[j - 1] != 39 && forbuff[j + 1] != 39) eqcnt++;
-        forbuffinit[b] = c;
-        if (c == 39 && forbuffinit[b - 2] == 39) {
-          b++;
-          forbuffinit[b] = ' ';
-        }
-        j++;
-        b++;
-      }
-      forbuffinit[b] = NULLC;
-      j++;
-      //coppy the condition to the buffer
-      forbuffcond[0] = NULLC;
+      char forbuff[MAX_LINE_LEN];
+      char forbuffinit[MAX_LINE_LEN];
+      char forbuffcond[MAX_LINE_LEN];
+      char forbuffcnt[MAX_LINE_LEN];
+      char transformed[MAX_LINE_LEN];
+      int j;
+      int b;
+      int size;
+      int eqcnt;
+      int cmcnt;
+      char* p;
+      char c;
+
+      /* create the label to loop start */
+      hll->labels[LSTART] = GetHllLabel();
+      hll->labels[LCONT] = 0;
       hll->labels[LTEST] = 0;
-      for (b = 0; forbuff[j] && forbuff[j] != ':'; forbuffcond[b] = forbuff[j], j++, b++);
-      if (forbuffcond[b - 2] == '>' && forbuffcond[b - 1] == '0') forbuffcond[b - 2] = NULLC;
-      forbuffcond[b] = NULLC;
-      if (!b) hll->cond = FALSE;
-      else    hll->cond = TRUE;
-      j++;
-      //copy the counter to the buffer
-      cmcnt = 0;
-      forbuffcnt[0] = NULLC;
-      hll->condlines = "";
-      for (b = 0; forbuff[j] != ')'; b++, j++) {
-        forbuffcnt[b] = forbuff[j];
-        if (forbuffcnt[b] == ',' && forbuff[j - 1] != 39 && forbuff[j + 1] != 39) ++cmcnt;
-        if (forbuffcnt[b] == 39 && forbuffcnt[b - 2] == 39) {
-          b++;
-          forbuffcnt[b] = ' ';
-        }
-      }
-      if (forbuffcnt[b - 1] == ')') b--;
-      forbuffcnt[b] = NULLC;
-      //create valid command and add to LineQueue to initiate .for loop vars
-      //anything that is before the first ':'
-      if (forbuffinit[0]) ForInitAndNext(tokenarray, eqcnt, forbuffinit);
-      //note hll->counterlines is new var in the struct hll_item for store of forbuffcnt used in .ENDFOR
-      //hll->cmcnt is also new var in the struct hll_item for commas counter used in .ENDFOR
-      //copy forbuffcnt context to hll->counterlines
-      //forbuffcnt contains anything that is written after the second ':'
-      hll->cmcnt = 0;
-      if (forbuffcnt[0])
+      hll->flags = 0;
+      hll->cmd = HLL_FOR;
+      /* check for 2 ':',if not throw an error */
+      p = tokenarray[i].tokpos;
+      for (b = 0; *p; p++)
       {
-        //skip altering conditions the first time
-        AddLineQueueX(" jmp %s", GetLabelStr(hll->labels[LSKIP], buff));
-        size = (int)strlen(forbuffcnt) + 1;
-        hll->counterlines = LclAlloc(size);
-        memcpy(hll->counterlines, forbuffcnt, size);
-        hll->cmcnt = cmcnt + 1;
+          if (*p == ':') b++;
+          if (*p == '\'') break;
       }
-      else hll->counterlines = "";    //there is nothing after the second ':'
-      if (forbuffcond[0]) {
-        strcpy(transformed, ".for ");
-        strcat(transformed, forbuffcond);
-        strcat(transformed, "\0");
-        tokenarray[0].string_ptr = ".for\0";
-        tokenarray[0].tokpos = transformed;
-        Token_Count = Tokenize(tokenarray[0].tokpos, 0, tokenarray, 0);
-        if (tokenarray[i].token != T_FINAL) {
-          rc = EvaluateHllExpression(hll, &i, tokenarray, LSTART, TRUE, buffer);
-          if (rc == NOT_ERROR) {
-            size = (int)strlen(buffer) + 1;
-            hll->condlines = LclAlloc(size);
-            memcpy(hll->condlines, buffer, size);
-            DebugCmd(cntCond++); DebugCmd(cntCondBytes += size);
+      if (b < 2) {
+          DebugMsg(("HllStartDir .for loop \n"));
+          return(EmitErr(SYNTAX_ERROR_EX, "Missing ':' before ')'"));
+      }
+      else if (b > 2) {
+          DebugMsg(("HllStartDir .for loop \n"));
+          return(EmitErr(SYNTAX_ERROR_EX, "Only 2 ':' allowed before ')'"));
+      }
+      //copy string to the buffer and get read of spaces
+      p = tokenarray[i].tokpos;
+      for (b = 0; *p; p++)
+      {
+          if ((*p == ' ') || (*p == '\t')) {
+              //if there is QWORD PTR, DWORD PTR, WORD PTR, BYTE PTR, OFFSET or ADDR leave a space between
+              c = tolower(*(p + 1));
+              if ((c >= 'a') && (c <= 'z')) {
+                  forbuff[b] = *p;
+                  b++;
+              }
           }
-        }
-        else
-          hll->condlines = "";
+          else {
+              forbuff[b] = *p;
+              b++;
+          }
       }
+      forbuff[b] = NULLC;
+      //{
+          //count initializers
+          eqcnt = 1;
+          forbuffinit[0] = NULLC;
+          for (j = 1, b = 0; forbuff[j];) {
+              c = forbuff[j];
+              if (c == ':') {
+                  if (forbuff[j - 1] != 39 && forbuff[j + 1] != 39) break;
+              }
+              if (c == ',' && forbuff[j - 1] != 39 && forbuff[j + 1] != 39) eqcnt++;
+              forbuffinit[b] = c;
+              if (c == 39 && forbuffinit[b - 2] == 39) {
+                  b++;
+                  forbuffinit[b] = ' ';
+              }
+              j++;
+              b++;
+          }
+          forbuffinit[b] = NULLC;
+          j++;
+          //coppy the condition to the buffer
+          forbuffcond[0] = NULLC;
+          for (b = 0; forbuff[j] && forbuff[j] != ':'; forbuffcond[b] = forbuff[j], j++, b++);
+          if (forbuffcond[b - 2] == '>' && forbuffcond[b - 1] == '0') forbuffcond[b - 2] = NULLC;
+          forbuffcond[b] = NULLC;
+          j++;
+          //copy the counter to the buffer
+          cmcnt = 0;
+          forbuffcnt[0] = NULLC;
+          hll->condlines = "";
+          for (b = 0; forbuff[j] != ')'; b++, j++) {
+              forbuffcnt[b] = forbuff[j];
+              if (forbuffcnt[b] == ',' && forbuff[j - 1] != 39 && forbuff[j + 1] != 39) ++cmcnt;
+              if (forbuffcnt[b] == 39 && forbuffcnt[b - 2] == 39) {
+                  b++;
+                  forbuffcnt[b] = ' ';
+              }
+          }
+          if (forbuffcnt[b - 1] == ')') b--;
+          forbuffcnt[b] = NULLC;
+          //create valid command and add to LineQueue to initiate .for loop vars
+          //anything that is before the first ':'
+          if (forbuffinit[0]) ForInitAndNext(tokenarray, eqcnt, forbuffinit);
+          //note hll->counterlines is new var in the struct hll_item for store of forbuffcnt used in .ENDFOR
+          //hll->cmcnt is also new var in the struct hll_item for commas counter used in .ENDFOR
+          //copy forbuffcnt context to hll->counterlines
+          //forbuffcnt contains anything that is written after the second ':'
+          hll->cmcnt = 0;
+          if (forbuffcnt[0])
+          {
+              size = (int)strlen(forbuffcnt) + 1;
+              hll->counterlines = LclAlloc(size);
+              memcpy(hll->counterlines, forbuffcnt, size);
+              hll->cmcnt = cmcnt + 1;
+          }
+          else hll->counterlines = "";    //there is nothing after the second ':'
+          if (forbuffcond[0]) {
+              //jump to test the first time
+              hll->labels[LTEST] = GetHllLabel();
+              AddLineQueueX(" jmp %s", GetLabelStr(hll->labels[LTEST], buff));
+              strcpy(transformed, ".for ");
+              strcat(transformed, forbuffcond);
+              strcat(transformed, "\0");
+              tokenarray[0].string_ptr = ".for\0";
+              tokenarray[0].tokpos = transformed;
+              Token_Count = Tokenize(tokenarray[0].tokpos, 0, tokenarray, 0);
+              if (tokenarray[i].token != T_FINAL) {
+                  rc = EvaluateHllExpression(hll, &i, tokenarray, LSTART, TRUE, buffer);
+                  if (rc == NOT_ERROR) {
+                      size = (int)strlen(buffer) + 1;
+                      hll->condlines = LclAlloc(size);
+                      memcpy(hll->condlines, buffer, size);
+                      DebugCmd(cntCond++); DebugCmd(cntCondBytes += size);
+                  }
+              }
+              else
+                  hll->condlines = "";
+          }
+          if (forbuffcnt[0] == NULLC && forbuffcond[0] == NULLC)
+              hll->labels[LCONT] = hll->labels[LSTART];
+      //}
+      AddLineQueueX("%s" LABELQUAL, GetLabelStr(hll->labels[LSTART], buff));
+      tokenarray[i].token = T_FINAL;
     }
-    AddLineQueueX("%s" LABELQUAL, GetLabelStr(hll->labels[LSTART], buff));
-    tokenarray[i].token = T_FINAL;
     break;
     //end of .FOR
   case T_DOT_WHILE:
@@ -2748,31 +2746,20 @@ ret_code HllEndDir(int i, struct asm_tok tokenarray[])
     }
     i++;
     //Insert .CONTINUE label here if there is any
-    if (hll->labels[LCONT])
+    if (hll->labels[LCONT] && (hll->counterlines[0] || hll->condlines[0]))
       AddLineQueueX("%s" LABELQUAL, GetLabelStr(hll->labels[LCONT], buff));
-    //forever loop '.for (::)'
-    if (hll->cmcnt == 0) goto adlabel;
-    //If counters exist
-    else if (hll->counterlines[0]) {
-      //here we write counters
-      if (hll->counterlines) {      //if there is something after second ':' expand it here
-        ForInitAndNext(tokenarray, hll->cmcnt, hll->counterlines);
-        LclFree(hll->counterlines);
-      }
-      //first jump from the top happens here after the counters
-      AddLineQueueX("%s" LABELQUAL, GetLabelStr(hll->labels[LSKIP], buff));
+    if (hll->counterlines[0]) {
+      ForInitAndNext(tokenarray, hll->cmcnt, hll->counterlines);
+      LclFree(hll->counterlines);
+    }
+    if (hll->condlines[0]) {
       /* create test label */
-      if (hll->labels[LTEST]) {
-        AddLineQueueX("%s" LABELQUAL, GetLabelStr(hll->labels[LTEST], buff));
-      }
+      AddLineQueueX("%s" LABELQUAL, GetLabelStr(hll->labels[LTEST], buff));
       QueueTestLines(hll->condlines);
       LclFree(hll->condlines);
     }
     else
       AddLineQueueX(" jmp %s", GetLabelStr(hll->labels[LSTART], buff));
-    if (!hll->cond)
-      adlabel:
-    AddLineQueueX(" jmp %s", GetLabelStr(hll->labels[LSTART], buff));
     tokenarray[i].token = T_FINAL;
     break;
     //end of .ENDFOR

@@ -1755,6 +1755,17 @@ static ret_code memory_operand( struct code_info *CodeInfo, unsigned CurrOpnd, s
         CodeInfo->indexreg = GetRegNo(index);
     }
 
+
+    /* UASM 2.53 check for use of register assumed to ERROR in an EA */
+    if (base != EMPTY && StdAssumeTable[GetRegNo(base)].error)
+    {
+        return(EmitError(USE_OF_REGISTER_ASSUMED_TO_ERROR));
+    }
+    if (index != EMPTY && StdAssumeTable[GetRegNo(index)].error)
+    {
+        return(EmitError(USE_OF_REGISTER_ASSUMED_TO_ERROR));
+    }
+
     /* check for base registers */
     if ( base != EMPTY ) 
 	{
