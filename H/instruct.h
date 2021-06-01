@@ -2025,6 +2025,11 @@ insx(KSHIFTRW,  kshiftrw, OpCls(K,         K,     I8_U),    F_660F3A,     1,    
 insx(KSHIFTRD,  kshiftrd, OpCls(K,         K,     I8_U),    F_660F3A,     1,         0,     0x31,      0x00,      P_686|P_AVX, 1, RWF_VEX)
 insx(KSHIFTRQ,  kshiftrq, OpCls(K,         K,     I8_U),    F_660F3A,     1,         0,     0x31,      0x00,      P_686|P_AVX, 1, RWF_VEX)
 
+insx(KTESTB, ktestb, OpCls(K, K, NONE), F_660F, 1, no_WDS, 0x99, 0x00, P_686 | P_AVX, 1, RWF_VEX)
+insx(KTESTW, ktestw, OpCls(K, K, NONE), F_0F, 1, no_WDS, 0x99, 0x00, P_686 | P_AVX, 0, RWF_VEX)
+insx(KTESTD, ktestd, OpCls(K, K, NONE), F_660F, 1, 0, 0x99, 0x00, P_686 | P_AVX, 2, RWF_VEX)
+insx(KTESTQ, ktestq, OpCls(K, K, NONE), F_0F, 1, 0, 0x99, 0x00, P_686 | P_AVX, 2, RWF_VEX)
+
 insx(KMOVB,  kmovb,       OpCls(K,         K,     NONE),     F_660F,      1,    no_WDS,     0x90,      0x00,      P_686|P_AVX, 0, RWF_VEX)
 insn(KMOVB,      1,       OpCls(K,       M08,     NONE),     F_660F,      1,    no_WDS,     0x90,      0x00,      P_686|P_AVX, 0)
 insn(KMOVB,      2,       OpCls(M08,       K,     NONE),     F_660F,      0,    no_WDS,     0x91,      0x00,      P_686|P_AVX, 0)
