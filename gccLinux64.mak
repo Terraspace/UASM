@@ -21,8 +21,6 @@ endif
 
 c_flags =-D __UNIX__ $(extra_c_flags)
 
-CC = gcc
-
 .SUFFIXES:
 .SUFFIXES: .c .o
 
