@@ -17,7 +17,14 @@
 #include <fixup.h>
 #include <dbgcv.h>
 #include <linnum.h>
+#ifdef __UNIX__
+#include <unistd.h>
+#define _getcwd getcwd
+#define _pgmptr "uasm"
+#define _MAX_PATH 260
+#else
 #include <direct.h>
+#endif
 #include <picohash.h>
 
 #define SIZE_CV_SEGBUF ( MAX_LINE_LEN * 4 )
