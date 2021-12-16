@@ -136,7 +136,7 @@ static ret_code coff_write_section_table( struct module_info *modinfo, struct co
         if ( len <= IMAGE_SIZEOF_SHORT_NAME )
             strncpy( ish.Name, secname, IMAGE_SIZEOF_SHORT_NAME );
         else
-            sprintf( ish.Name, "/%u", Coff_AllocString( cm, secname, len ) );
+            sprintf( ish.Name, "/%" I32_SPEC "u", Coff_AllocString( cm, secname, len ) );
 
         ish.Misc.PhysicalAddress = 0;
         ish.VirtualAddress = 0;

@@ -68,7 +68,7 @@ typedef   signed __int64  int_64;
 #endif
 
 /* 32-bit integer format specifier */
-#ifdef __I86__
+#if defined(__I86__) || (defined(__GNUC__) && defined(__i386__))
 #define I32_SPEC "l"
 #else
 #define I32_SPEC ""

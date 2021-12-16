@@ -48,7 +48,7 @@
 
 extern int  MacroLocals;
 
-extern bool inMacroBody = FALSE;
+bool inMacroBody = FALSE;
 
 /* the list of macro param + local names is hold temporarily only.
  * once the names have been replaced by placeholders,
@@ -96,7 +96,7 @@ void fill_placeholders( char *dst, const char *src, unsigned argc, unsigned loca
                 *dst++ = '?';
                 i = localstart + parmno - argc;
                 if ( i > 0xFFFF ) {
-                    i = sprintf( dst, "%X", i );
+                    i = sprintf( dst, "%" I32_SPEC "X", i );
                     dst += i;
                 } else {
                     *dst++ = HexDigit( i >> 12 );

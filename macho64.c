@@ -724,7 +724,7 @@ static ret_code macho_write_module( struct module_info *modinfo )
 		mm.header.cputype = CPU_TYPE_X86_64;
 		mm.header.cpusubtype = CPU_SUBTYPE_LITTLE_ENDIAN | CPU_SUBTYPE_X86_64_ALL;
 		mm.header.filetype = MH_OBJECT;
-		mm.header.flags = NULL;
+		mm.header.flags = 0;
 		
 		macho_build_structures(modinfo, mm);	
 	}

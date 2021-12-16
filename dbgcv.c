@@ -17,7 +17,14 @@
 #include <fixup.h>
 #include <dbgcv.h>
 #include <linnum.h>
+#ifdef _WIN32
 #include <direct.h>
+#define getcwd _getcwd
+#else
+#include <unistd.h>
+#define _MAX_PATH 4096
+#define _pgmptr "uasm"
+#endif
 #include <picohash.h>
 
 #define SIZE_CV_SEGBUF ( MAX_LINE_LEN * 4 )
@@ -1252,7 +1259,7 @@ static uint_8* cv_FlushSection(dbgcv* cv, uint_32 signature, uint_32 ex)
 #define USEMD5
 
 #ifdef USEMD5
-#define BUFSIZ 1024*4
+#define BUFSIZE 1024*4
 #define MD5_LENGTH ( sizeof( uint_32 ) + sizeof( uint_16 ) + 16 + sizeof( uint_16 ) )
 
 static int calc_md5(const char* filename, unsigned char* sum)
@@ -1264,10 +1271,10 @@ static int calc_md5(const char* filename, unsigned char* sum)
 
 	if ((fp = fopen(filename, "rb")) == NULL)
 		return 0;
-	file_buf = MemAlloc(BUFSIZ);
+	file_buf = MemAlloc(BUFSIZE);
 	_picohash_md5_init(&ctx);
 	while (!feof(fp)) {
-		i = fread(file_buf, 1, BUFSIZ, fp);
+		i = fread(file_buf, 1, BUFSIZE, fp);
 		if (ferror(fp)) {
 			fclose(fp);
 			MemFree(file_buf);
@@ -1343,7 +1350,7 @@ void cv_write_debug_tables(struct dsym* symbols, struct dsym* types, void* pv)
 		}
 
 		cv.currdir = LclAlloc(_MAX_PATH * 4);
-		_getcwd(cv.currdir, _MAX_PATH * 4);
+		getcwd(cv.currdir, _MAX_PATH * 4);
 		objname = cv.currdir + strlen(cv.currdir);
 
 		/* source filename string table */
@@ -1575,12 +1582,12 @@ void cv_write_debug_tables(struct dsym* symbols, struct dsym* types, void* pv)
 		len = strlen(p) + 1;
 		s = strcpy(s, p) + len;
 		*s++ = '\0';
-		EnvBlock->reclen = (unsigned short)(s - cv.ps - 2);
+		EnvBlock->reclen = (unsigned short)(s - (char *)cv.ps - 2);
 		cv.ps = s;
 
 		/* length needs to be added for each symbol */
 
-		cv.section->length += (s - start);
+		cv.section->length += (s - (char *)start);
 
 	}
 	else {

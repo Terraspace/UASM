@@ -123,7 +123,7 @@ static const struct print_item cr[] = {
 
 struct lstleft {
     struct lstleft *next;
-    char buffer[4*8];
+    char buffer[4*8 + 1];
     char last;
 };
 
@@ -969,7 +969,7 @@ static void log_symbol( const struct asym *sym )
         LstPrintf( "%s %s        ", sym->name, pdots );
 
         if ( sym->isarray ) {
-            i = sprintf( StringBufferEnd, "%s[%u]", GetMemtypeString( sym, NULL ), sym->total_length );
+            i = sprintf( StringBufferEnd, "%s[%" I32_SPEC "u]", GetMemtypeString( sym, NULL ), sym->total_length );
             LstPrintf( "%-10s ", StringBufferEnd );
         } else if ( sym->state == SYM_EXTERNAL && sym->iscomm == TRUE ) {
             LstPrintf( "%-10s ", strings[LS_COMM] );

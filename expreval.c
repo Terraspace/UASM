@@ -884,7 +884,7 @@ static ret_code get_operand( struct expr *opnd, int *idx, struct asm_tok tokenar
 			{
 				(*idx)++;
 				strcpy(clabel, tokenarray[(*idx)].string_ptr);
-				sprintf(tokenarray[(*idx)].string_ptr, "%s%s", ".", &clabel);
+				sprintf(tokenarray[(*idx)].string_ptr, "%s%s", ".", clabel);
 			}
 			else if (labelsym == NULL && labelsym2 == NULL)
 			{
@@ -4067,7 +4067,7 @@ static ret_code evaluate( struct expr *opnd1, int *i, struct asm_tok tokenarray[
 		{
 			(*i)++;
 			strcpy(clabel, tokenarray[(*i)].string_ptr);
-			sprintf(tokenarray[(*i)].string_ptr, "%s%s", ".", &clabel);
+			sprintf(tokenarray[(*i)].string_ptr, "%s%s", ".", clabel);
 		}
 		else if (labelsym == NULL && labelsym2 == NULL)
 		{
@@ -4091,7 +4091,7 @@ static ret_code evaluate( struct expr *opnd1, int *i, struct asm_tok tokenarray[
 		{
 			//(*i)++;
 			strcpy(clabel, tokenarray[(*i)+2].string_ptr);
-			sprintf(tokenarray[(*i)+2].string_ptr, "%s%s", ".", &clabel);
+			sprintf(tokenarray[(*i)+2].string_ptr, "%s%s", ".", clabel);
 			tokenarray[(*i) + 1].string_ptr = tokenarray[(*i) + 2].string_ptr;
 			tokenarray[(*i) + 1].token = T_ID;
 			tokenarray[(*i) + 2].token = T_FINAL;

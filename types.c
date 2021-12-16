@@ -23,6 +23,7 @@
 #include "listing.h"
 #include "fastpass.h"
 #include "myassert.h"
+#include "symbols.h"
 
 /* v2.04: changed to 0 */
 //#define ANYNAME 1 /* fixme: this probably should be changed to 0 */

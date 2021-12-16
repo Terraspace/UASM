@@ -70,7 +70,7 @@ void myatoi128(const char *src, uint_64 dst[], int base, int size);
 #define LABELSIZE 8
 #define LABELSGLOBAL 0 /* make the generated labels global */
 #define JMPPREFIX      /* define spaces before "jmp" or "loop" */
-#define LABELFMT "@C%04X"
+#define LABELFMT "@C%04" I32_SPEC "X"
 /* v2.10: static variables moved to ModuleInfo */
 #define HllStack ModuleInfo.g.HllStack
 #define HllFree  ModuleInfo.g.HllFree
@@ -2097,9 +2097,9 @@ ret_code HllEndDir(int i, struct asm_tok tokenarray[])
                   dcnt = 0;                          /* reset data caunter */
                   }
                   if (dcnt)
-                    sprintf(unum, ",%d", hll->pcases64[j]);
+                    sprintf(unum, ",%" I32_SPEC "ld", hll->pcases64[j]);
                   else
-                    sprintf(unum, "%d", hll->pcases64[j]);
+                    sprintf(unum, "%" I32_SPEC "ld", hll->pcases64[j]);
                   strcat(buffer, unum);
                   dcnt++;
                   j++;

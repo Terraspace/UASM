@@ -86,6 +86,7 @@ extern ret_code segm_override( const struct expr *, struct code_info * );
 extern struct asym *SegOverride;
 extern const char szNull[];
 extern UINT_PTR UTF8toWideChar(const unsigned char *pSource, UINT_PTR nSourceLen, UINT_PTR *nSourceDone, unsigned short *szTarget, UINT_PTR nTargetMax);
+extern void OutputInterleavedBytes(const unsigned char *pbytes, int len, struct fixup *fixup);
 static ret_code data_item( int *, struct asm_tok[], struct asym *, uint_32, const struct asym *, uint_32, bool inside_struct, bool, bool, int );
 
 #define OutputDataBytes( x, y ) OutputBytes( x, y, NULL )

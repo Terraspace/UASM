@@ -46,6 +46,7 @@
 #define _stricmp strcasecmp
 #ifndef __WATCOMC__
 #define _memicmp strncasecmp
+char *strupr( char *str ); // apiemu.c
 #endif
 #define _ltoa   ltoa
 #define _strupr strupr

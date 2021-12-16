@@ -12,16 +12,17 @@ inc_dirs  = -IH
 #cflags stuff
 
 ifeq ($(DEBUG),0)
-extra_c_flags = -DNDEBUG -O2 -ansi -funsigned-char -fwritable-strings
+extra_c_flags = -DNDEBUG -O2 -funsigned-char -Wwrite-strings
+extra_c_flags += -Wno-discarded-qualifiers -Wno-incompatible-pointer-types -Wno-unused-result
 OUTD=GccUnixR
 else
 extra_c_flags = -DDEBUG_OUT -g
 OUTD=GccUnixD
 endif
 
-c_flags =-D __UNIX__ $(extra_c_flags)
+c_flags = $(CFLAGS) $(extra_c_flags)
 
-CC = clang-3.8
+CC = gcc
 
 .SUFFIXES:
 .SUFFIXES: .c .o
@@ -40,9 +41,9 @@ $(OUTD):
 
 $(OUTD)/$(TARGET1) : $(OUTD)/main.o $(proj_obj)
 ifeq ($(DEBUG),0)
-	$(CC) -D __UNIX__ $(OUTD)/main.o $(proj_obj) -s -o $@ -Wl,-Map,$(OUTD)/$(TARGET1).map
+	$(CC) -D __UNIX__ $(OUTD)/main.o $(proj_obj) $(LDFLAGS) -s -o $@ -Wl,-Map,$(OUTD)/$(TARGET1).map
 else
-	$(CC) -D __UNIX__ $(OUTD)/main.o $(proj_obj) -o $@ -Wl,-Map,$(OUTD)/$(TARGET1).map
+	$(CC) -D __UNIX__ $(OUTD)/main.o $(proj_obj) $(LDFLAGS) -o $@ -Wl,-Map,$(OUTD)/$(TARGET1).map
 endif
 
 $(OUTD)/msgtext.o: msgtext.c H/msgdef.h
@@ -54,7 +55,6 @@ $(OUTD)/reswords.o: reswords.c H/instruct.h H/special.h H/directve.h H/opndcls.h
 ######
 
 clean:
-	rm $(OUTD)/$(TARGET1)
-	rm $(OUTD)/*.o
-	rm $(OUTD)/*.map
-
+	rm -f $(OUTD)/$(TARGET1)
+	rm -f $(OUTD)/*.o
+	rm -f $(OUTD)/*.map
