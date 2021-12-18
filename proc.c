@@ -1232,7 +1232,8 @@ static ret_code ParseParams(struct dsym *proc, int i, struct asm_tok tokenarray[
 #endif
 			for (; cntParam; cntParam--)
 			{
-				for (curr = 1, paranode = proc->e.procinfo->paralist; curr < cntParam; paranode = paranode->nextparam, curr++);
+				for (curr = 1, paranode = proc->e.procinfo->paralist; curr < cntParam; paranode = paranode->nextparam, curr++)
+					;
 				DebugMsg1(("ParseParams: parm=%s, ofs=%u, size=%d\n", paranode->sym.name, offset, paranode->sym.total_size));
 				if (paranode->sym.state == SYM_TMACRO) /* register param? */
 					;
@@ -3408,7 +3409,8 @@ static void write_win64_default_prologue_RSP(struct proc_info *info)
 			if (CurrProc->sym.langtype == LANG_VECTORCALL) {
 				vectstart = info->localsize + info->xmmsize & ~(16 - 1);
 				if (info->vecused) {
-					if (info->vecregs) {
+					//if (info->vecregs)  /* always true */
+					{
 						for (n = 0, m = 0, xsize = 0; n < 6; n++) {
 							xreg = info->vecregs[n];
 							if (xreg == 1 && info->vecregsize[n] < 16)
@@ -4711,7 +4713,7 @@ write prolog code
 */
 
 /* Write out generic prologue for 386, esp, watc, borland */
-static ret_code write_generic_prologue(struct proc_info *info)
+static void write_generic_prologue(struct proc_info *info)
 /********************************************/
 {
 	uint_16             *regist;
@@ -4749,7 +4751,7 @@ static ret_code write_generic_prologue(struct proc_info *info)
 	if (info->forceframe == FALSE && info->localsize == 0 &&
 		info->stackparam == FALSE && info->has_vararg == FALSE &&
 		resstack == 0 && info->regslist == NULL && !info->fpo)
-		return(NOT_ERROR);
+		return;
 
 	if (info->fpo && stackadj > 0 && CurrProc->sym.langtype == LANG_FASTCALL && !info->isleaf)
 	{

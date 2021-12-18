@@ -1559,12 +1559,17 @@ static int sysv_GetNextVEC(struct proc_info *info, int size)
 	//int base = 0;
 	if (info->firstVEC >= 8)
 		return(-1);
-	if(size == 16)
-		return(sysV64_regsXMM[info->firstVEC++]);
-	if (size == 32)
-		return(sysV64_regsYMM[info->firstVEC++]);
-	if (size == 64)
-		return(sysV64_regsZMM[info->firstVEC++]);
+
+	switch (size) {
+		case 16:
+			return(sysV64_regsXMM[info->firstVEC++]);
+		case 32:
+			return(sysV64_regsYMM[info->firstVEC++]);
+		case 64:
+			return(sysV64_regsZMM[info->firstVEC++]);
+	}
+
+	return(0);
 }
 
 /*

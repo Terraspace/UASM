@@ -11,13 +11,19 @@ inc_dirs  = -IH
 
 #cflags stuff
 
+OUT_RELEASE = Release
+OUT_DEBUG = Debug
+
 ifeq ($(DEBUG),0)
 extra_c_flags = -DNDEBUG -O2 -funsigned-char -Wwrite-strings
 OUTD=Release
 else
-extra_c_flags = -DDEBUG_OUT -g
+extra_c_flags = -DDEBUG_OUT -g -O0 -funsigned-char
 OUTD=Debug
 endif
+
+# for clang
+#extra_c_flags += -Wno-parentheses -Wno-switch -Wno-pointer-sign -Wno-enum-conversion
 
 c_flags = $(CFLAGS) $(extra_c_flags)
 
@@ -52,3 +58,7 @@ clean:
 	rm -f $(OUTD)/$(TARGET1)
 	rm -f $(OUTD)/*.o
 	rm -f $(OUTD)/*.map
+
+distclean:
+	rm -rf $(OUT_DEBUG)
+	rm -rf $(OUT_RELEASE)

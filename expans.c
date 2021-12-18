@@ -290,7 +290,7 @@ int RunMacro( struct dsym *macro, int idx, struct asm_tok tokenarray[], char *ou
             }
             if ( varargcnt == 0 ) {
                 mi.parm_array[parmidx] = info->parmlist[parmidx].deflt;
-                DebugMsg1(("RunMacro(%s.%u): curr (=def) parameter value=>%s<\n", macro->sym.name, parmidx, mi.parm_array[parmidx] ? parmidx, mi.parm_array[parmidx] : "NULL" ));
+                DebugMsg1(( "RunMacro(%s.%u): curr (=def) parameter value=>%s<\n", macro->sym.name, parmidx, mi.parm_array[parmidx] ? mi.parm_array[parmidx] : "NULL" ));
             }
 
         } else {

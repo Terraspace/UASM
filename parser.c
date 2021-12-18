@@ -3870,10 +3870,11 @@ dataInProc:
 	/* ******************************************************* */
 	if (CurrOpnd != j) 
 	{
-		for (; tokenarray[i].token != T_COMMA; i--);
-    if (CodeInfo.token < VEX_START) {
-      return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].tokpos));
-    }
+		for (; tokenarray[i].token != T_COMMA; i--)
+			;
+		if (CodeInfo.token < VEX_START) {
+			return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].tokpos));
+		}
 		else
 			if ((CodeInfo.token == T_VMASKMOVPS || CodeInfo.token == T_VMASKMOVPD) && (j < 3))
 				return(EmitErr(MISSING_OPERATOR_IN_EXPRESSION));

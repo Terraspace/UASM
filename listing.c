@@ -124,7 +124,7 @@ static const struct print_item cr[] = {
 struct lstleft {
     struct lstleft *next;
     char buffer[4*8 + 1];
-    char last;
+    //char last;
 };
 
 /* write a source line to the listing file
@@ -190,8 +190,7 @@ void LstWrite(enum lsttype type, uint_32 oldofs, void* value)
 #endif
 
     ll.next = NULL;
-	if(ll.buffer)
-		memset( ll.buffer, ' ', sizeof( ll.buffer ) );
+    memset( ll.buffer, ' ', sizeof( ll.buffer ) );
     srcfile = get_curr_srcfile();
 
     switch ( type ) {
@@ -326,9 +325,9 @@ void LstWrite(enum lsttype type, uint_32 oldofs, void* value)
         if ( srcfile != ModuleInfo.srcfile ) {
             ll.buffer[30] = 'C';
         }
-#ifdef DEBUG_OUT
-        ll.last = NULLC;
-#endif
+//#ifdef DEBUG_OUT
+//        ll.last = NULLC;
+//#endif
 #if FASTPASS
     } else {
         idx = OFSSIZE + 2 + 2 * CODEBYTES;
