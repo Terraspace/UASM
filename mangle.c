@@ -35,12 +35,6 @@
 #include "parser.h"
 #include "mangle.h"
 
-#if MANGLERSUPP
-#if !defined(__GNUC__) && !defined(__POCC__)
-#define tolower(c) ((c >= 'A' && c <= 'Z') ? c | 0x20 : c )
-#endif
-#endif
-
 typedef int (*mangle_func)( const struct asym *, char * );
 
 static int ms32_decorate( const struct asym *sym, char *buffer );

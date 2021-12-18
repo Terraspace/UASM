@@ -8,9 +8,9 @@
 *
 ****************************************************************************/
 
-#ifdef __GNUC__
-	#define _BITS_FLOATN_COMMON_H
-#endif
+//#ifdef __GNUC__
+//#define _BITS_FLOATN_COMMON_H
+//#endif
 
 #include <ctype.h>
 #include <time.h>

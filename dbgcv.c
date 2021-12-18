@@ -19,10 +19,11 @@
 #include <linnum.h>
 #ifdef _WIN32
 #include <direct.h>
+#define MAX_PATH_LEN  (_MAX_PATH * 4)
 #define getcwd _getcwd
 #else
 #include <unistd.h>
-#define _MAX_PATH 4096
+#define MAX_PATH_LEN  (1024 * 8)
 #define _pgmptr "uasm"
 #endif
 #include <picohash.h>
@@ -1349,8 +1350,8 @@ void cv_write_debug_tables(struct dsym* symbols, struct dsym* types, void* pv)
 			cv.files[i].offset = 0;
 		}
 
-		cv.currdir = LclAlloc(_MAX_PATH * 4);
-		getcwd(cv.currdir, _MAX_PATH * 4);
+		cv.currdir = LclAlloc(MAX_PATH_LEN);
+		UNUSED_RESULT( getcwd(cv.currdir, MAX_PATH_LEN) );
 		objname = cv.currdir + strlen(cv.currdir);
 
 		/* source filename string table */

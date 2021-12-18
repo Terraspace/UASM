@@ -44,10 +44,6 @@
  * - procedure prologue argument, debug info ( proc.c )
  */
 
-#ifndef alloca
-#define alloca(x)  __builtin_alloca(x)
-#endif
-
 #if FASTMEM
 
 /* FASTMEM is a simple memory alloc approach which allocates chunks of 512 kB
