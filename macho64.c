@@ -385,7 +385,6 @@ Create all the macho obj file structures and calculate offsets.
 ========================================================================================== */
 static void macho_build_structures( struct module_info *modinfo, struct macho_module mm )
 {
-	int cnt = 0;
 	struct dsym *curr;
 	struct dsym *seg = NULL;
 	struct macho_section_entry *currSec;
@@ -702,7 +701,6 @@ static void macho_build_structures( struct module_info *modinfo, struct macho_mo
 static ret_code macho_write_module( struct module_info *modinfo )
 {
 	struct macho_module mm;
-	int fileofs = 0;
 
 	DebugMsg(("macho_write_module: enter\n"));
 

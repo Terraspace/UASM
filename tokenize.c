@@ -947,11 +947,8 @@ static ret_code get_id( struct asm_tok *buf, struct line_status *p )
     //struct ReservedWord *resw;
     char *src = p->input;
     char *dst = p->output;
-    char *p1  = p->input;
     int  index;
     unsigned size;
-	int len = 0;
-	int i = 0;
 #if CONCATID || DOTNAMEX
 continue_scan:
 #endif

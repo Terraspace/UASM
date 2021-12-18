@@ -358,7 +358,6 @@ struct asym *CreateConstant( struct asm_tok tokenarray[] )
 	struct asm_tok      tokenarray2[32];
     const char          *name = tokenarray[0].string_ptr;
     int                 i = 2;
-	int                 j;
     ret_code            rc;
     char                *p;
     bool                cmpvalue = FALSE;

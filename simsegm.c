@@ -31,6 +31,9 @@ extern const char szDgroup[];
 
 static char *SegmNames[ SIM_LAST ];
 
+static struct asym *sym_CodeSize; /* numeric. requires model */
+static struct asym *sym_DataSize; /* numeric. requires model */
+
 static const char * const SegmNamesDef[ SIM_LAST ] = {
     "_TEXT", "STACK", "_DATA", "_BSS", "FAR_DATA", "FAR_BSS", "CONST"
 };

@@ -71,7 +71,6 @@ ret_code WriteCodeLabel( char *line, struct asm_tok tokenarray[] )
 */
 int VerifyBrackets(struct asm_tok tokenarray[], int openIdx, bool inParam)
 {
-	int len;
 	int i = openIdx;
 	int opCnt = 0;
 	if (tokenarray[i].token != T_OP_BRACKET)
@@ -159,9 +158,9 @@ static void ExpandObjCalls(char *line, struct asm_tok tokenarray[])
 	char *pStr = newline;
 	char *pType = NULL;
 	bool inExpr = FALSE;
-	bool hasExprBracket = FALSE;
+	//bool hasExprBracket = FALSE;
 	bool inParam = FALSE;
-	bool inProc = FALSE;
+	//bool inProc = FALSE;
 	int firstDeRefIdx = 0;
 	int paramCount = 0;
 	char pcs[16];
@@ -197,10 +196,12 @@ static void ExpandObjCalls(char *line, struct asm_tok tokenarray[])
 						if (tokenarray[j].token == T_DIRECTIVE && (tokenarray[j].dirtype == DRT_HLLSTART || tokenarray[j].dirtype == DRT_HLLEND))
 						{
 							inExpr = TRUE;
+/*
 							if (tokenarray[j + 1].token == T_OP_BRACKET || tokenarray[j + 1].tokval == '(')
 								hasExprBracket = TRUE;
 							else
 								hasExprBracket = FALSE;
+*/
 							break;
 						}
 						else if ((tokenarray[j].token == T_DIRECTIVE && tokenarray[j].dirtype == DRT_INVOKE) ||
@@ -220,7 +221,7 @@ static void ExpandObjCalls(char *line, struct asm_tok tokenarray[])
 						else if (tokenarray[j].token == T_ID && tsym && tsym->sym.isproc)
 						{
 							inParam = TRUE;
-							inProc = TRUE;
+							//inProc = TRUE;
 							break;
 						}
 					}
@@ -605,7 +606,7 @@ static void ExpandStaticObjCalls(char *line, struct asm_tok tokenarray[])
 	bool inParam = FALSE;
 	bool inExpr = FALSE;
 	bool inProc = FALSE;
-	bool hasExprBracket = FALSE;
+	//bool hasExprBracket = FALSE;
 	struct dsym *tsym = NULL;
 
 	memset(&newline, 0, MAX_LINE_LEN);
@@ -630,10 +631,12 @@ static void ExpandStaticObjCalls(char *line, struct asm_tok tokenarray[])
 							if (tokenarray[j].token == T_DIRECTIVE && (tokenarray[j].dirtype == DRT_HLLSTART || tokenarray[j].dirtype == DRT_HLLEND))
 							{
 								inExpr = TRUE;
+/*
 								if (tokenarray[j + 1].token == T_OP_BRACKET || tokenarray[j + 1].tokval == '(')
 									hasExprBracket = TRUE;
 								else
 									hasExprBracket = FALSE;
+*/
 								break;
 							}
 							else if ((tokenarray[j].token == T_DIRECTIVE && tokenarray[j].dirtype == DRT_INVOKE) ||
@@ -775,8 +778,6 @@ static void ExpandHllCalls(char *line, struct asm_tok tokenarray[], bool inParam
 	struct dsym *sym;
 	char newline[MAX_LINE_LEN];
 	int clIdx, opIdx;
-	int tokenCount;
-	struct asm_tok *tokenarray2;
 	char *p = newline;
 	char idxStack[] = { 0, 0, 0, 0 };
 	int stackPt = -1;

@@ -3047,14 +3047,10 @@ ret_code ParseLine(struct asm_tok tokenarray[]) {
 	struct asym        *sym;
 	uint_32            oldofs;
 	enum special_token regtok;
-	int                c0;
-	int                c1;
 	unsigned           flags;
-	char               *pnlbl;
 	int                alignCheck = 16;
 	int                infSize    = 0;
 	int                oldi       = 0;
-	struct dsym        *recsym    = 0;
 	struct code_info   CodeInfo;
 	struct expr        opndx[MAX_OPND + 1];
 	// We create copies of these structures for now as the old codegen has a very ugly way of working with additional vex 3 opnd forms, by
@@ -3064,7 +3060,9 @@ ret_code ParseLine(struct asm_tok tokenarray[]) {
 	struct expr        opndxV2[MAX_OPND + 1];
 	const char         *opcodePtr = NULL;
 	int                opndCount  = 0;
+#ifdef DEBUG_OUT
 	char               *instr     = NULL;
+#endif
     bool               doDataInProc = FALSE;
 
 	memset(&opndx, 0, sizeof(opndx));

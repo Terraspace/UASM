@@ -3183,7 +3183,7 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 
 	struct asym *lbl = NULL;
 	struct dsym *curseg;
-	struct dsym *prev;
+	//struct dsym *prev;
 	struct dsym *currs;
 	size_t slen;
 	char *pSrc;
@@ -3217,9 +3217,9 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 				// Preserve current Segment.
 				curseg = ModuleInfo.currseg;
 				// Find Data Segment.
-				prev = NULL;
+				//prev = NULL;
 				currs = NULL;
-				for (currs = SymTables[TAB_SEG].head; currs && currs->next; prev = currs, currs = currs->next)
+				for (currs = SymTables[TAB_SEG].head; currs && currs->next; /*prev = currs,*/ currs = currs->next)
 				{
 					if (strcmp(currs->sym.name, "_DATA") == 0)
 						break;
@@ -3293,9 +3293,9 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 				// Preserve current Segment.
 				curseg = ModuleInfo.currseg;
 				// Find Data Segment.
-				prev = NULL;
+				//prev = NULL;
 				currs = NULL;
-				for (currs = SymTables[TAB_SEG].head; currs && currs->next; prev = currs, currs = currs->next)
+				for (currs = SymTables[TAB_SEG].head; currs && currs->next; /*prev = currs,*/ currs = currs->next)
 				{
 					if (strcmp(currs->sym.name, "_DATA") == 0)
 						break;

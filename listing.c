@@ -1053,7 +1053,7 @@ void LstWriteCRef( void )
 {
     struct asym     **syms;
     struct dsym     *dir;
-    struct struct_info *si;
+    //struct struct_info *si;
     int             idx;
     uint_32         i;
     uint_32         SymCount;
@@ -1082,7 +1082,7 @@ void LstWriteCRef( void )
             continue;
         switch (syms[i]->state) {
         case SYM_TYPE:
-            si = ((struct dsym *)syms[i])->e.structinfo;
+            //si = ((struct dsym *)syms[i])->e.structinfo;
             switch ( syms[i]->typekind ) {
             case TYPE_RECORD:  idx = LQ_RECORDS; break;
             case TYPE_TYPEDEF: idx = LQ_TYPEDEFS;break;

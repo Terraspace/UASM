@@ -169,6 +169,7 @@ static const enum seg_type stt[] = {
     SEGTYPE_CODE, SEGTYPE_DATA, SEGTYPE_DATA, SEGTYPE_BSS
 };
 
+/*
 static void CheckBOM(FILE *f)
 {
 	unsigned long bom;
@@ -176,6 +177,7 @@ static void CheckBOM(FILE *f)
 	if ((bom & 0xFFFFFF) != 0xBFBBEF)
 		rewind(f);
 }
+*/
 
 extern void RewindToWin64() 
 {

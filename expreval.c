@@ -129,7 +129,7 @@ static ret_code  GetMask128(struct expr *opnd1, int index, struct asm_tok tokena
     char            buffer1[MAX_LINE_LEN];
     char            buff[18];
     char            *ptr;
-    int             i= Token_Count; /* i must remain the start index */
+  //int             i= Token_Count; /* i must remain the start index */
 
 
       strcpy( buffer,tokenarray->tokpos); 
@@ -241,12 +241,10 @@ static ret_code  GetMask128(struct expr *opnd1, int index, struct asm_tok tokena
 static ret_code  InitRecordVar( struct expr *opnd1, int index, struct asm_tok tokenarray[], const struct dsym *symtype )
 /****************************************************************************************************************************/
 {
-    char            *ptr, *ptr2, *ptr3;
+    char            *ptr;
     struct sfield   *f;
     int_32          nextofs;
     int             i;
-    int             nlabel;
-    struct asym    *sym = NULL;
     struct          asym *lbl = NULL;
 #if AMD64_SUPPORT
     uint_64         dst128Hi;
@@ -257,7 +255,7 @@ static ret_code  InitRecordVar( struct expr *opnd1, int index, struct asm_tok to
 #else
     uint_32         dwRecInit;
 #endif
-    bool            is_record_set;
+  //bool            is_record_set;
     struct expr     opndx;
     char            buffer[MAX_LINE_LEN];
     char            buffer1[MAX_LINE_LEN];
@@ -284,7 +282,7 @@ static ret_code  InitRecordVar( struct expr *opnd1, int index, struct asm_tok to
         dwRecInit = 0;
         dst128Hi = 0; /* clear Hi 64 bit for the 128 bit RECORD */
         dst128Lo = 0; /* clear Lo 64 bit for the 128 bit RECORD */
-        is_record_set = FALSE;
+        //is_record_set = FALSE;
     }
 
     /* scan the RECORD's members */
@@ -305,7 +303,7 @@ static ret_code  InitRecordVar( struct expr *opnd1, int index, struct asm_tok to
                     int j = Token_Count + 1;
                     int max_item = Tokenize( f->ivalue, j, tokenarray, TOK_RESCAN );
                     EvalOperand( &j, tokenarray, max_item, &opndx, 0 );
-                    is_record_set = TRUE;
+                    //is_record_set = TRUE;
                 } else {
                     opndx.value = 0;
                     opndx.kind = EXPR_CONST;
@@ -313,7 +311,7 @@ static ret_code  InitRecordVar( struct expr *opnd1, int index, struct asm_tok to
                 }
             } else {
                 EvalOperand( &i, tokenarray, Token_Count, &opndx, 0 );
-                is_record_set = TRUE;
+                //is_record_set = TRUE;
             }
             if ( opndx.kind != EXPR_CONST || opndx.quoted_string != NULL )
                 EmitError( CONSTANT_EXPECTED );
@@ -4029,7 +4027,6 @@ static ret_code evaluate( struct expr *opnd1, int *i, struct asm_tok tokenarray[
 /********************************************************************************************************************/
 {
     ret_code rc = NOT_ERROR;
-    char *p;
     char *p1;
 	char clabel[100];
 	struct asym *labelsym;
@@ -4115,7 +4112,6 @@ static ret_code evaluate( struct expr *opnd1, int *i, struct asm_tok tokenarray[
 
         int curr_operator;
         struct expr opnd2;
-        struct expr opnd3;
         curr_operator = *i;
         DebugMsg1(("%u evaluate loop, operator=>%s< opnd1->sym=%X, type=%s\n",
                    evallvl, tokenarray[curr_operator].string_ptr, opnd1->sym, (opnd1->type ? opnd1->type->name : "NULL") ));

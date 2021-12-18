@@ -1518,7 +1518,7 @@ static ret_code bin_write_module( struct module_info *modinfo )
     uint_8  *hdrbuf;
 #endif
     struct calc_param cp = { TRUE, 0 };
-	uint_32 origsize;
+    //uint_32 origsize;
 	uint_32 writesize;
 	uint_8 *codeptr;
 
@@ -1765,7 +1765,7 @@ static ret_code bin_write_module( struct module_info *modinfo )
 			if (ModuleInfo.flat)
 			{
 				/* For flat type we have to write out one byte at a time and verify it against the org fixup list */
-				origsize = size;
+				//origsize = size;
 				codeptr = curr->e.seginfo->CodeBuffer;
 				while (codeptr < (curr->e.seginfo->CodeBuffer+size))
 				{

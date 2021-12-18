@@ -1218,7 +1218,7 @@ int BuildMemoryEncoding(unsigned char* pmodRM, unsigned char* pSIB, unsigned cha
 	unsigned char   idxRegNo = 17;
 	int             baseRegSize = 0;
 	int             idxRegSize = 0;
-	int             symSize = 0;
+//int             symSize = 0;
 	bool			skipSIB = FALSE;
 
 	/* Absolute addressing modes can skip this */
@@ -1274,7 +1274,7 @@ int BuildMemoryEncoding(unsigned char* pmodRM, unsigned char* pSIB, unsigned cha
 	/* If the memory address refers to a symbol indirectly.. */
 	if (opExpr[instr->memOpnd].sym && opExpr[instr->memOpnd].kind == EXPR_ADDR)
 	{
-		symSize = SizeFromMemtype(opExpr[instr->memOpnd].mem_type, ModuleInfo.Ofssize, opExpr[instr->memOpnd].sym);
+//		symSize = SizeFromMemtype(opExpr[instr->memOpnd].mem_type, ModuleInfo.Ofssize, opExpr[instr->memOpnd].sym);
 
 		/* For 64bit mode, all symbol references are RIP relative, unless the symbol is on the stack.
 		   EXCEPT, if the memory address includes a register. */
@@ -1981,7 +1981,8 @@ ret_code CodeGenV2(const char* instr, struct code_info* CodeInfo, uint_32 oldofs
 		}
 
 	}
-skip:
+
+//skip:
 	/* Write out listing. */
 	if (retcode == NOT_ERROR)
 	{
