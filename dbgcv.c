@@ -1253,7 +1253,7 @@ static uint_8* cv_FlushSection(dbgcv* cv, uint_32 signature, uint_32 ex)
 	seg->e.seginfo->current_loc = seg->e.seginfo->start_loc + currsize + ex + sizeof(CV_SECTION);
 	seg->e.seginfo->start_loc = seg->e.seginfo->current_loc;
 
-	return(cv->section);
+	return((uint_8 *)cv->section);
 }
 
 

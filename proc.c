@@ -141,12 +141,12 @@ static const int sysv_maxreg[] = {
 
 
 struct fastcall_conv {
-	int(*paramcheck)(struct dsym *, struct dsym *, int *);
+	int(*paramcheck)(struct dsym *, struct dsym *, int *, int *);
 	void(*handlereturn)(struct dsym *, char *buffer);
 };
 
 struct vectorcall_conv {
-	int(*paramcheck)(struct dsym *, struct dsym *, int *);
+	int(*paramcheck)(struct dsym *, struct dsym *, int *, int *);
 	void(*handlereturn)(struct dsym *, char *buffer);
 };
 
@@ -156,21 +156,21 @@ struct sysvcall_conv {
 };
 
 struct delphicall_conv {
-	int(*paramcheck)(struct dsym *, struct dsym *, int *);
+	int(*paramcheck)(struct dsym *, struct dsym *, int *, int *);
 	void(*handlereturn)(struct dsym *, char *buffer);
 };
 
 
-static  int ms32_pcheck(struct dsym *, struct dsym *, int *);
+static  int ms32_pcheck(struct dsym *, struct dsym *, int *, int *);
 static void ms32_return(struct dsym *, char *);
 
 #if OWFC_SUPPORT
-static  int watc_pcheck(struct dsym *, struct dsym *, int *);
+static  int watc_pcheck(struct dsym *, struct dsym *, int *, int *);
 static void watc_return(struct dsym *, char *);
 #endif
 
 #if AMD64_SUPPORT
-static  int ms64_pcheck(struct dsym *, struct dsym *, int *);
+static  int ms64_pcheck(struct dsym *, struct dsym *, int *, int *);
 static void ms64_return(struct dsym *, char *);
 #endif
 
@@ -180,7 +180,7 @@ static void sysv_return(struct dsym *, char *);
 #endif
 
 #if DELPHI_SUPPORT
-static  int delphi_pcheck(struct dsym *, struct dsym *, int *);
+static  int delphi_pcheck(struct dsym *, struct dsym *, int *, int *);
 static void delphi_return(struct dsym *, char *);
 #endif
 
@@ -292,7 +292,7 @@ static void WriteSEHData(struct dsym *proc);
 * will do the cleanup, else the called proc does it.
 * in VARARG procs, all parameters are pushed onto the stack!
 */
-static int watc_pcheck(struct dsym *proc, struct dsym *paranode, int *used)
+static int watc_pcheck(struct dsym *proc, struct dsym *paranode, int *used, int *unused)
 /***************************************************************************/
 {
 	static char regname[64];
@@ -395,7 +395,7 @@ static void watc_return(struct dsym *proc, char *buffer)
 * The 16-bit ABI uses registers AX, DX and BX - additional registers
 * are pushed in PASCAL order (i.o.w.: left to right).
 */
-static int ms32_pcheck(struct dsym *proc, struct dsym *paranode, int *used)
+static int ms32_pcheck(struct dsym *proc, struct dsym *paranode, int *used, int *unused)
 /***************************************************************************/
 {
 	char regname[32];
@@ -443,7 +443,7 @@ static void ms32_return(struct dsym *proc, char *buffer)
 }
 
 /* v2.29: delphi uses 3 register params (EAX,EDX,ECX) */
-static int delphi_pcheck(struct dsym *proc, struct dsym *paranode, int *used)
+static int delphi_pcheck(struct dsym *proc, struct dsym *paranode, int *used, int *unused)
 /***************************************************************************/
 {
 	char regname[32];
@@ -514,7 +514,7 @@ static void delphi_return(struct dsym *proc, char *buffer)
 * [esp+16] for param 2,... The parameter names refer to those stack
 * locations, not to the register names.
 */
-static int ms64_pcheck(struct dsym *proc, struct dsym *paranode, int *used)
+static int ms64_pcheck(struct dsym *proc, struct dsym *paranode, int *used, int *unused)
 /***************************************************************************/
 {
 	/* since the parameter names refer the stack-backup locations,
@@ -1028,16 +1028,16 @@ static ret_code ParseParams(struct dsym *proc, int i, struct asm_tok tokenarray[
 			paranode->sym.is_ptr = ti.is_ptr;
 			paranode->sym.ptr_memtype = ti.ptr_memtype;
 			paranode->sym.is_vararg = is_vararg;
-			if (proc->sym.langtype == LANG_FASTCALL && fastcall_tab[ModuleInfo.fctype].paramcheck(proc, paranode, &fcint))
+			if (proc->sym.langtype == LANG_FASTCALL && fastcall_tab[ModuleInfo.fctype].paramcheck(proc, paranode, &fcint, NULL))
 			{
 			}
-			else if (proc->sym.langtype == LANG_VECTORCALL && vectorcall_tab[ModuleInfo.fctype].paramcheck(proc, paranode, &fcint))
+			else if (proc->sym.langtype == LANG_VECTORCALL && vectorcall_tab[ModuleInfo.fctype].paramcheck(proc, paranode, &fcint, NULL))
 			{
 			}
 			else if (proc->sym.langtype == LANG_SYSVCALL && sysvcall_tab[ModuleInfo.fctype].paramcheck(proc, paranode, &fcint, &vecint))
 			{
 			}
-			else if (proc->sym.langtype == LANG_DELPHICALL && delphicall_tab[ModuleInfo.fctype].paramcheck(proc, paranode, &fcint))
+			else if (proc->sym.langtype == LANG_DELPHICALL && delphicall_tab[ModuleInfo.fctype].paramcheck(proc, paranode, &fcint, NULL))
 			{
 			}
 			else

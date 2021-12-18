@@ -206,7 +206,7 @@ static unsigned AddFile( char const *fname )
             memcpy( newfn, ModuleInfo.g.FNames, index * sizeof( struct fname_item ) );
             MemFree( ModuleInfo.g.FNames );
         }
-        ModuleInfo.g.FNames = newfn;
+        ModuleInfo.g.FNames = (char **)newfn;
     }
     ModuleInfo.g.cnt_fnames++;
 
@@ -218,7 +218,7 @@ static unsigned AddFile( char const *fname )
 const struct fname_item *GetFName( unsigned index )
 /*************************************************/
 {
-    return( ModuleInfo.g.FNames+index );
+    return( (struct fname_item *)ModuleInfo.g.FNames+index );
 }
 
 /* free the file array.

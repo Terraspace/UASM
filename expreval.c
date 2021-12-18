@@ -4131,7 +4131,7 @@ static ret_code evaluate( struct expr *opnd1, int *i, struct asm_tok tokenarray[
 				{
 					if (opnd1->type != NULL)
 					{
-						recordsym = SymSearch(opnd1->type->name);
+						recordsym = (struct dsym *)SymSearch(opnd1->type->name);
 						/* if it is a RECORD don't throw an error but decorate it with an actual value v2.41*/
 						if (recordsym && recordsym->sym.typekind == TYPE_RECORD)
 						{

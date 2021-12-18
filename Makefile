@@ -13,7 +13,7 @@ inc_dirs  = -IH
 
 ifeq ($(DEBUG),0)
 extra_c_flags = -DNDEBUG -O2 -funsigned-char -Wwrite-strings
-extra_c_flags += -Wno-discarded-qualifiers -Wno-incompatible-pointer-types
+extra_c_flags += -Wno-discarded-qualifiers
 OUTD=Release
 else
 extra_c_flags = -DDEBUG_OUT -g

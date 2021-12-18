@@ -1284,7 +1284,7 @@ static ret_code omf_write_autodep( void )
     unsigned        idx;
 
     DebugMsg(("omf_write_autodep() enter\n"));
-    for( idx = 0, curr = ModuleInfo.g.FNames; idx < ModuleInfo.g.cnt_fnames; idx++, curr++ ) {
+    for( idx = 0, curr = (struct fname_item *)ModuleInfo.g.FNames; idx < ModuleInfo.g.cnt_fnames; idx++, curr++ ) {
         omf_InitRec( &obj, CMD_COMENT );
         obj.d.coment.attr = CMT_TNP;
         obj.d.coment.cmt_class = CMT_DEPENDENCY; /* 0xE9 */
