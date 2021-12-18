@@ -108,7 +108,7 @@ static struct asym *symPC; /* the $ symbol */
 
 struct tmitem {
     const char *name;
-    char *value;
+    const char *value;
     struct asym **store;
 };
 
@@ -247,7 +247,7 @@ struct asym *SymAlloc( const char *name )
         memcpy( sym->name, name, len );
         sym->name[len] = NULLC;
     } else
-        sym->name = "";
+        sym->name = (char *)"";
     return( sym );
 }
 
@@ -717,7 +717,7 @@ void SymInit( void )
         sym->state = SYM_TMACRO;
         sym->isdefined = TRUE;
         sym->predefined = TRUE;
-        sym->string_ptr = tmtab[i].value;
+        sym->string_ptr = (char *)tmtab[i].value;
         if ( tmtab[i].store )
             *tmtab[i].store = sym;
     }

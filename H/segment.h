@@ -69,7 +69,7 @@ enum sim_seg {
     SIM_LAST
 };
 
-extern char             *SimGetSegName( enum sim_seg );
+extern const char       *SimGetSegName( enum sim_seg );
 extern const char       *GetCodeClass( void );
 extern ret_code         ModelSimSegmInit( int type );
 extern void             ModelSimSegmExit( void );

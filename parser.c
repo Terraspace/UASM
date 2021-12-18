@@ -2943,7 +2943,7 @@ static ret_code check_size( struct code_info *CodeInfo, const struct expr opndx[
              */
             if( op1_size == 0 ) {
                 if( ( op1 & OP_M_ANY ) && ( op2 & OP_I ) ) {
-                    char *p = "WORD";
+                    const char *p = "WORD";
                     if( (uint_32)CodeInfo->opnd[OPND2].data32l > USHRT_MAX || op2_size == 4 ) {
                         CodeInfo->iswide = 1;
                         DebugMsg1(("check_size: op1=%X op1_size=0, op2=%X, op2_size=%u CodeInfo->data[2]=%X\n", op1, op2, op2_size, CodeInfo->opnd[OPND2].data32l ));
@@ -4074,7 +4074,7 @@ void ProcessFile( struct asm_tok tokenarray[] )
 	xmmOver0.bytval = 15;
 	xmmOver0.dirtype = 15;
 	xmmOver0.tokval = T_XMMWORD;
-	xmmOver0.string_ptr = "xmmword";
+	xmmOver0.string_ptr = (char *)"xmmword";
 	xmmOver0.stringlen = T_XMMWORD;
 	xmmOver0.idarg = T_XMMWORD;
 	xmmOver0.itemlen = T_XMMWORD;
@@ -4089,7 +4089,7 @@ void ProcessFile( struct asm_tok tokenarray[] )
 	xmmOver1.bytval = 4;
 	xmmOver1.dirtype = 4;
 	xmmOver1.tokval = T_PTR;
-	xmmOver1.string_ptr = "ptr";
+	xmmOver1.string_ptr = (char *)"ptr";
 	xmmOver1.stringlen = T_PTR;
 	xmmOver1.idarg = T_PTR;
 	xmmOver1.itemlen = T_PTR;
@@ -4103,7 +4103,7 @@ void ProcessFile( struct asm_tok tokenarray[] )
 	dsOver.floattype = 3;
 	dsOver.numbase = 3;
 	dsOver.specval = 3;
-	dsOver.string_ptr = "ds";
+	dsOver.string_ptr = (char *)"ds";
 	dsOver.tokval = 0x0000001c;
 	dsOver.stringlen = 0x0000001c;
 	dsOver.idarg = 0x0000001c;

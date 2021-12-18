@@ -592,10 +592,10 @@ static ret_code get_special_symbol( struct asm_tok *buf, struct line_status *p )
         if ( *p->input == ':' ) {
             p->input++;
             buf->token = T_DBL_COLON;
-            buf->string_ptr = "::";
+            buf->string_ptr = (char *)"::";
         } else {
             buf->token = T_COLON;
-            buf->string_ptr = ":";
+            buf->string_ptr = (char *)":";
         }
         break;
 	case '-': 
@@ -603,7 +603,7 @@ static ret_code get_special_symbol( struct asm_tok *buf, struct line_status *p )
 		if (*p->input == '>') {
 			p->input++;
 			buf->token = T_POINTER;
-			buf->string_ptr = "->";
+			buf->string_ptr = (char *)"->";
 		}
 		else {
 			p->input--;
@@ -630,7 +630,7 @@ static ret_code get_special_symbol( struct asm_tok *buf, struct line_status *p )
             return( EMPTY );
         }
         buf->token = T_PERCENT;
-        buf->string_ptr = "%";
+        buf->string_ptr = (char *)"%";
         break;
     case '(' : /* 0x28: T_OP_BRACKET operator - needs a matching ')' */
         /* v2.11: reset c-expression flag if a macro function call is detected */
@@ -692,7 +692,7 @@ static ret_code get_special_symbol( struct asm_tok *buf, struct line_status *p )
             buf->token = T_DIRECTIVE;
             buf->tokval = T_EQU;
             buf->dirtype = DRT_EQUALSGN; /* to make it differ from EQU directive */
-            buf->string_ptr = "=";
+            buf->string_ptr = (char *)"=";
             p->input++;
             break;
         }
@@ -730,7 +730,7 @@ static ret_code get_special_symbol( struct asm_tok *buf, struct line_status *p )
         if ( symbol == '&' ) {
             p->input++;
             buf->token = '&';
-            buf->string_ptr = "&";
+            buf->string_ptr = (char *)"&";
             break;
         }
         /* anything we don't recognise we will consider a string,
@@ -996,7 +996,7 @@ continue_scan:
     if( size == 1 && *p->output == '?' ) {
         p->input = src;
         buf->token = T_QUESTION_MARK;
-        buf->string_ptr = "?";
+        buf->string_ptr = (char *)"?";
         return( NOT_ERROR );
     }
     index = FindResWord( p->output, size );
@@ -1474,7 +1474,7 @@ int Tokenize( char *line, unsigned int start, struct asm_tok tokenarray[], unsig
 skipline:
     tokenarray[p.index].token  = T_FINAL;
     tokenarray[p.index].bytval = p.flags3;
-    tokenarray[p.index].string_ptr = "";
+    tokenarray[p.index].string_ptr = (char *)"";
     return( p.index );
 }
 

@@ -871,7 +871,7 @@ static void ExpandHllCalls(char *line, struct asm_tok tokenarray[], bool inParam
 					{
 						// token identifier begins with address of operator.
 						//strcpy(tokenarray[j].string_ptr, "ADDR ");
-						tokenarray[j].string_ptr = "ADDR ";
+						tokenarray[j].string_ptr = (char *)"ADDR ";
 					}
 				}
 
@@ -884,19 +884,19 @@ static void ExpandHllCalls(char *line, struct asm_tok tokenarray[], bool inParam
 					if (clIdx > opIdx + 1)
 					{
 						tokenarray[clIdx + 1].token = T_FINAL;
-						tokenarray[opIdx + 1].string_ptr = ",";
+						tokenarray[opIdx + 1].string_ptr = (char *)",";
 						tokenarray[opIdx + 1].token = T_COMMA;
 					}
 					/* Proc with no params */
 					else
 					{
-						tokenarray[opIdx + 1].string_ptr = "";
+						tokenarray[opIdx + 1].string_ptr = (char *)"";
 						tokenarray[opIdx + 1].token = T_FINAL;
 					}
 					tokenarray[i].token = T_DIRECTIVE;
 					tokenarray[i].tokval = T_INVOKE;
 					tokenarray[i].dirtype = DRT_INVOKE;
-					tokenarray[i].string_ptr = "invoke";
+					tokenarray[i].string_ptr = (char *)"invoke";
 				}
 				else
 				{
@@ -909,24 +909,24 @@ static void ExpandHllCalls(char *line, struct asm_tok tokenarray[], bool inParam
 						tokenarray[j] = tokenarray[j - 1];
 
 					Token_Count+=2;
-					tokenarray[Token_Count].string_ptr = "";
+					tokenarray[Token_Count].string_ptr = (char *)"";
 					tokenarray[Token_Count].token = T_FINAL;
 					if (clIdx > opIdx + 1)
 					{
-						tokenarray[opIdx + 2].string_ptr = ",";
+						tokenarray[opIdx + 2].string_ptr = (char *)",";
 						tokenarray[opIdx + 2].token = T_COMMA;
 					}
 					else
 					{
-						tokenarray[opIdx + 2].string_ptr = " ";
+						tokenarray[opIdx + 2].string_ptr = (char *)" ";
 					}
 					tokenarray[i].token = T_ID;
 					tokenarray[i].tokval = 0;
 					tokenarray[i].dirtype = 0;
 					if (inExpr && !inParam)
 					{
-						tokenarray[i].string_ptr = "uinvoke";
-						tokenarray[i + 1].string_ptr = "(";
+						tokenarray[i].string_ptr = (char *)"uinvoke";
+						tokenarray[i + 1].string_ptr = (char *)"(";
 						tokenarray[i + 1].token = '(';
 						uCnt++; // Increment count of uinvokes, as we only allow 1 per expression.
 						if (uCnt > 1)
@@ -936,9 +936,9 @@ static void ExpandHllCalls(char *line, struct asm_tok tokenarray[], bool inParam
 					}
 					else if (inParam)
 					{
-						tokenarray[i].string_ptr = "arginvoke(%%,%%,";
-						tokenarray[i + 1].string_ptr = ""; 
-						tokenarray[i + 1].token = 0; 
+						tokenarray[i].string_ptr = (char *)"arginvoke(%%,%%,";
+						tokenarray[i + 1].string_ptr = (char *)""; 
+						tokenarray[i + 1].token = 0;
 					}
 				}
 					

@@ -326,7 +326,7 @@ static uint_32 CRC32Comdat( uint_8 *lpBuffer, uint_32 dwBufLen, uint_32 dwCRC )
     return( dwCRC );
 }
 
-static void coff_write_symbol(char* name, int_32 strpos, int_32 value,
+static void coff_write_symbol(const char* name, int_32 strpos, int_32 value,
     int section, int type, int storageclass, int aux)
 {
     IMAGE_SYMBOL sym;
@@ -347,7 +347,7 @@ static void coff_write_symbol(char* name, int_32 strpos, int_32 value,
         WriteError();
 }
 
-static void coff_write_aux(void* sym, char* name)
+static void coff_write_aux(void* sym, const char* name)
 {
     uint_32 size = sizeof(IMAGE_AUX_SYMBOL);
 

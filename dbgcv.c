@@ -122,7 +122,7 @@ struct leaf32 {
 
 #pragma pack(pop)
 
-uint_8* SetPrefixName(uint_8* p, uint_8* name, int len)
+uint_8* SetPrefixName(uint_8* p, const uint_8* name, int len)
 {
 	if (Options.debug_symbols < CV_SIGNATURE_C13)
 		*p++ = len;

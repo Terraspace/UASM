@@ -749,7 +749,7 @@ struct module_vars {
     struct qdesc        LibQueue;        /* includelibs */
     struct qdesc	    LinkQueue;	     /* .pragma comment(linker,"/..") */
     struct dll_desc     *DllQueue;       /* dlls of OPTION DLLIMPORT */
-    char                *imp_prefix;
+    const char          *imp_prefix;
     FILE                *curr_file[NUM_FILE_TYPES];  /* ASM, ERR, OBJ and LST */
     char                *curr_fname[NUM_FILE_TYPES];
     char *              *FNames;         /* array of input files */

@@ -3183,7 +3183,7 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 	size_t slen;
 	char *pSrc;
 	char *pDest;
-	char *labelstr = "__ls";
+	const char *labelstr = "__ls";
 	char buf[32];
 	char c1;
 	char c2;
@@ -4164,8 +4164,8 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 					AddLineQueueX(" push %r", T_AX);
 				}
 				else { /* cpu >= 80186 */
-					char *instr = "";
-					char *suffix;
+					const char *instr = "";
+					const char *suffix;
 					int qual = EMPTY;
 					//if ( asize != psize ) {
 					if (psize != pushsize) {

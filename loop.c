@@ -164,7 +164,7 @@ ret_code LoopDirective( int i, struct asm_tok tokenarray[] )
     /* now make a temporary macro */
     macro = &tmpmacro;
     memset( &tmpmacro, 0, sizeof(tmpmacro) );
-    tmpmacro.sym.name = "";
+    tmpmacro.sym.name = (char *)"";
     tmpmacro.e.macroinfo = &macinfo;
     memset( &macinfo, 0, sizeof(macinfo) );
     macinfo.srcfile = get_curr_srcfile();

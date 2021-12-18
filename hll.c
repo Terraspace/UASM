@@ -1120,7 +1120,7 @@ static ret_code CheckCXZLines(char *p)
 	int lines = 0;
 	int i;
 	int addchars;
-	char *px;
+	const char *px;
 	bool NL = TRUE;
 
 	DebugMsg1(("CheckCXZLines enter, p=>%s<\n", p));
@@ -1677,7 +1677,7 @@ ret_code HllStartDir(int i, struct asm_tok tokenarray[])
       //copy the counter to the buffer
       cmcnt = 0;
       forbuffcnt[0] = NULLC;
-      hll->condlines = "";
+      hll->condlines = (char *)"";
       for (b = 0; forbuff[j] != ')'; b++, j++) {
         forbuffcnt[b] = forbuff[j];
         if (forbuffcnt[b] == ',' && forbuff[j - 1] != 39 && forbuff[j + 1] != 39) ++cmcnt;
@@ -1705,12 +1705,12 @@ ret_code HllStartDir(int i, struct asm_tok tokenarray[])
         memcpy(hll->counterlines, forbuffcnt, size);
         hll->cmcnt = cmcnt + 1;
       }
-      else hll->counterlines = "";    //there is nothing after the second ':'
+      else hll->counterlines = (char *)"";    //there is nothing after the second ':'
       if (forbuffcond[0]) {
         strcpy(transformed, ".for ");
         strcat(transformed, forbuffcond);
         strcat(transformed, "\0");
-        tokenarray[0].string_ptr = ".for\0";
+        tokenarray[0].string_ptr = (char *)".for\0";
         tokenarray[0].tokpos = transformed;
         Token_Count = Tokenize(tokenarray[0].tokpos, 0, tokenarray, 0);
         if (tokenarray[i].token != T_FINAL) {
@@ -1723,7 +1723,7 @@ ret_code HllStartDir(int i, struct asm_tok tokenarray[])
           }
         }
         else
-          hll->condlines = "";
+          hll->condlines = (char *)"";
       }
     }
     AddLineQueueX("%s" LABELQUAL, GetLabelStr(hll->labels[LSTART], buff));

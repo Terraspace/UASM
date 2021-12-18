@@ -986,10 +986,10 @@ static void pe_emit_import_data( void )
     int type = 0;
 #if AMD64_SUPPORT
     int ptrtype = ( ModuleInfo.defOfssize == USE64 ? T_QWORD : T_DWORD );
-    char *align = ( ModuleInfo.defOfssize == USE64 ? "ALIGN(8)" : "ALIGN(4)" );
+    const char *align = ( ModuleInfo.defOfssize == USE64 ? "ALIGN(8)" : "ALIGN(4)" );
 #else
     int ptrtype = T_DWORD;
-    char *align = "DWORD";
+    const char *align = "DWORD";
 #endif
 
     DebugMsg(("pe_emit_import_data enter\n" ));

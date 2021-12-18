@@ -1529,7 +1529,7 @@ static void omf_write_header_dbgcv( void )
     omf_InitRec( &obj, CMD_COMENT );
     obj.d.coment.attr = 0x00;
     obj.d.coment.cmt_class = CMT_MS_OMF; /* MS extensions present */
-    AttachData( &obj, "\001CV", 3 );
+    AttachData( &obj, (uint_8 *)"\001CV", 3 );
     omf_write_record( &obj );
     for ( i = 0; i < DBGS_MAX; i++ ) {
         if ( SymDebSeg[i] = (struct dsym *)CreateIntSegment( SymDebParm[i].name, SymDebParm[i].cname, 0, USE32, TRUE ) ) {

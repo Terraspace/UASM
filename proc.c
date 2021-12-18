@@ -778,7 +778,7 @@ void UpdateProcStatus(struct asym *sym, struct expr *opnd)
 static ret_code ParseParams(struct dsym *proc, int i, struct asm_tok tokenarray[], bool IsPROC)
 /***********************************************************************************************/
 {
-	char            *name;
+	const char      *name;
 	struct asym     *sym;
 	int             cntParam;
 	int             offset = 0;
@@ -2229,7 +2229,7 @@ static void WriteSEHData(struct dsym *proc)
 /*******************************************/
 {
 	struct dsym *xdata;
-	char *segname = ".xdata";
+	const char *segname = ".xdata";
 	int i;
 	int simplespec;
 	uint_8 olddotname;
@@ -2266,7 +2266,7 @@ static void WriteSEHData(struct dsym *proc)
 		UNW_VERSION, unw_info.Flags, unw_info.SizeOfProlog,
 		unw_info.CountOfCodes, unw_info.FrameRegister, unw_info.FrameOffset);
 	if (unw_info.CountOfCodes) {
-		char *pfx = "dw";
+		const char *pfx = "dw";
 		buffer[0] = NULLC;
 		/* write the codes from right to left */
 		for (i = unw_info.CountOfCodes; i; i--) {
@@ -2298,8 +2298,8 @@ static void WriteSEHData(struct dsym *proc)
 		unw_segs_defined = 3;
 	}
 	else {
+		sprintf(segnamebuff, ".pdata$%04u", GetSegIdx(proc->sym.segment));
 		segname = segnamebuff;
-		sprintf(segname, ".pdata$%04u", GetSegIdx(proc->sym.segment));
 		simplespec = 0;
 		unw_segs_defined |= 2;
 	}

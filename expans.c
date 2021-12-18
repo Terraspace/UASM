@@ -254,7 +254,7 @@ int RunMacro( struct dsym *macro, int idx, struct asm_tok tokenarray[], char *ou
             memcpy( currparm, tokenarray[0].string_ptr, i+1 );
             currparm = GetAlignedPointer( currparm, i );
         } else
-            mi.parm_array[parmidx] = "";
+            mi.parm_array[parmidx] = (char *)"";
         parmidx++;
     }
 #endif
@@ -579,7 +579,7 @@ int RunMacro( struct dsym *macro, int idx, struct asm_tok tokenarray[], char *ou
                 DebugMsg1(("RunMacro(%s.%u): curr parameter value=>%s<\n", macro->sym.name, parmidx, currparm ));
                 currparm = GetAlignedPointer( currparm, ptr - currparm );
             } else {
-                mi.parm_array[parmidx] = "";
+                mi.parm_array[parmidx] = (char *)"";
                 DebugMsg1(("RunMacro(%s.%u): curr parameter value=><\n", macro->sym.name, parmidx ));
             }
         } /*end if */

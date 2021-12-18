@@ -280,7 +280,7 @@ static int GetSymbolIndex(const char *pName, struct macho_module *mm)
 /* ==========================================================================================
 Build a macho_section_entry structure.
 ========================================================================================== */
-struct macho_section_entry * macho_build_section( const char *secName, const char *segName, uint32_t flags, const char *srcName )
+struct macho_section_entry * macho_build_section( const char *secName, const char *segName, uint32_t flags, char *srcName )
 {
 	struct macho_section_entry *pSec = NULL;
 	pSec = malloc(sizeof(struct macho_section_entry));
