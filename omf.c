@@ -1284,7 +1284,7 @@ static ret_code omf_write_autodep( void )
     unsigned        idx;
 
     DebugMsg(("omf_write_autodep() enter\n"));
-    for( idx = 0, curr = ModuleInfo.g.FNames; idx < ModuleInfo.g.cnt_fnames; idx++, curr++ ) {
+    for( idx = 0, curr = (struct fname_item *)ModuleInfo.g.FNames; idx < ModuleInfo.g.cnt_fnames; idx++, curr++ ) {
         omf_InitRec( &obj, CMD_COMENT );
         obj.d.coment.attr = CMT_TNP;
         obj.d.coment.cmt_class = CMT_DEPENDENCY; /* 0xE9 */
@@ -1529,7 +1529,7 @@ static void omf_write_header_dbgcv( void )
     omf_InitRec( &obj, CMD_COMENT );
     obj.d.coment.attr = 0x00;
     obj.d.coment.cmt_class = CMT_MS_OMF; /* MS extensions present */
-    AttachData( &obj, "\001CV", 3 );
+    AttachData( &obj, (uint_8 *)"\001CV", 3 );
     omf_write_record( &obj );
     for ( i = 0; i < DBGS_MAX; i++ ) {
         if ( SymDebSeg[i] = (struct dsym *)CreateIntSegment( SymDebParm[i].name, SymDebParm[i].cname, 0, USE32, TRUE ) ) {
@@ -1585,9 +1585,10 @@ static ret_code omf_write_module( struct module_info *modinfo )
      * won't become shorter anymore.
      */
     size = ftell( CurrFile[OBJ] );
+
 #if defined(__UNIX__) || defined(__CYGWIN__) || defined(__DJGPP__)
     fh = fileno( CurrFile[OBJ] );
-    if ( ftruncate( fh, size ) ); /* gcc warns if return value of ftruncate() is "ignored" */
+    UNUSED_RESULT( ftruncate( fh, size ) );
 #elif defined(__BORLANDC__)
     fh = _fileno( CurrFile[OBJ] );
     chsize( fh, size );

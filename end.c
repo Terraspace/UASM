@@ -209,7 +209,7 @@ ret_code EndDirective( int i, struct asm_tok tokenarray[] )
         tokenarray[i].token = T_ID;
         tokenarray[i].string_ptr = (char *)szStartAddr;
         tokenarray[i+1].token = T_FINAL;
-        tokenarray[i+1].string_ptr = "";
+        tokenarray[i+1].string_ptr = (char *)"";
         Token_Count = i+1;
     }
     /* v2.11: flag EXPF_NOUNDEF added - will return ERROR if start label isn't defined */

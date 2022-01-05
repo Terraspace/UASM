@@ -31,6 +31,9 @@ extern const char szDgroup[];
 
 static char *SegmNames[ SIM_LAST ];
 
+static struct asym *sym_CodeSize; /* numeric. requires model */
+static struct asym *sym_DataSize; /* numeric. requires model */
+
 static const char * const SegmNamesDef[ SIM_LAST ] = {
     "_TEXT", "STACK", "_DATA", "_BSS", "FAR_DATA", "FAR_BSS", "CONST"
 };
@@ -41,10 +44,10 @@ static const char * const SegmCombine[ SIM_LAST ] = {
     "PUBLIC", "STACK", "PUBLIC", "PUBLIC", "PRIVATE", "PRIVATE", "PUBLIC"
 };
 
-char *SimGetSegName( enum sim_seg segno )
+const char *SimGetSegName( enum sim_seg segno )
 /***************************************/
 {
-	char* segn;
+	const char* segn;
 	segn = SegmNames[segno];
 	if (segn == NULL && ModuleInfo.flat == TRUE)
 		segn = "_flat";
@@ -96,9 +99,9 @@ static void close_currseg( void )
 static void SetSimSeg( enum sim_seg segm, const char *name )
 /**********************************************************/
 {
-    char *pAlign = "WORD";
-    char *pAlignSt = "PARA";
-    char *pUse = "";
+    const char *pAlign = "WORD";
+    const char *pAlignSt = "PARA";
+    const char *pUse = "";
 	char align[16];
     struct asym *sym;
     const char *pFmt;

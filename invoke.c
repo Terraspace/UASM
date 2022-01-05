@@ -32,37 +32,6 @@
 #endif
 #include "proc.h"
 
-#if defined(WINDOWSDDK)
-	#if defined(_WIN32)
-	typedef _W64 int INT_PTR, *PINT_PTR;
-	typedef _W64 unsigned int UINT_PTR, *PUINT_PTR;
-	typedef _W64 long LONG_PTR, *PLONG_PTR;
-	typedef _W64 unsigned long ULONG_PTR, *PULONG_PTR;
-	#define __int3264   __int32
-	#else
-	typedef __int64 INT_PTR, *PINT_PTR;
-	typedef unsigned __int64 UINT_PTR, *PUINT_PTR;
-	typedef __int64 LONG_PTR, *PLONG_PTR;
-	typedef unsigned __int64 ULONG_PTR, *PULONG_PTR;
-	#define __int3264   __int64
-	#endif
-#else
-	#include <inttypes.h>
-	#if defined(_WIN32)
-	typedef _W64 int INT_PTR, *PINT_PTR;
-	typedef _W64 unsigned int UINT_PTR, *PUINT_PTR;
-	typedef _W64 long LONG_PTR, *PLONG_PTR;
-	typedef _W64 unsigned long ULONG_PTR, *PULONG_PTR;
-	#define __int3264   __int32
-	#else
-	typedef int64_t INT_PTR, *PINT_PTR;
-	typedef uint64_t UINT_PTR, *PUINT_PTR;
-	typedef int64_t LONG_PTR, *PLONG_PTR;
-	typedef uint64_t ULONG_PTR, *PULONG_PTR;
-	#define __int3264   int64_t
-	#endif
-#endif
-
 
 extern bool write_to_file;
 
@@ -71,6 +40,7 @@ extern int_64           minintvalues[];
 extern enum special_token stackreg[];
 extern struct dsym *CurrStruct;
 extern UINT_PTR UTF8toWideChar(const unsigned char *pSource, UINT_PTR nSourceLen, UINT_PTR *nSourceDone, unsigned short *szTarget, UINT_PTR nTargetMax);
+extern ret_code BackPatch( struct asym *sym );
 
 #ifdef __I86__
 #define NUMQUAL (long)
@@ -1589,12 +1559,17 @@ static int sysv_GetNextVEC(struct proc_info *info, int size)
 	//int base = 0;
 	if (info->firstVEC >= 8)
 		return(-1);
-	if(size == 16)
-		return(sysV64_regsXMM[info->firstVEC++]);
-	if (size == 32)
-		return(sysV64_regsYMM[info->firstVEC++]);
-	if (size == 64)
-		return(sysV64_regsZMM[info->firstVEC++]);
+
+	switch (size) {
+		case 16:
+			return(sysV64_regsXMM[info->firstVEC++]);
+		case 32:
+			return(sysV64_regsYMM[info->firstVEC++]);
+		case 64:
+			return(sysV64_regsZMM[info->firstVEC++]);
+	}
+
+	return(0);
 }
 
 /*
@@ -3119,7 +3094,7 @@ static int ParamIsString(char *pStr, int param, struct dsym* proc) {
 			if (p->sym.target_type)
 			{
 				type = p->sym.target_type;
-				while (type->target_type && (int)type->target_type > 0x2000)
+				while (type->target_type && (long)type->target_type > 0x2000)
 				{
 					type = type->target_type;
 					if (type->mem_type == MT_PTR)
@@ -3166,7 +3141,7 @@ static int ParamIsString(char *pStr, int param, struct dsym* proc) {
 static unsigned int hashpjw(const char *s)
 /******************************************/
 {
-	uint_64 fnv_basis = 14695981039346656037;
+	uint_64 fnv_basis = 1469598103934665603;
 	uint_64 register fnv_prime = 1099511628211;
 	uint_64 h;
 	for (h = fnv_basis; *s; ++s) {
@@ -3208,12 +3183,12 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 
 	struct asym *lbl = NULL;
 	struct dsym *curseg;
-	struct dsym *prev;
+	//struct dsym *prev;
 	struct dsym *currs;
 	size_t slen;
 	char *pSrc;
 	char *pDest;
-	char *labelstr = "__ls";
+	const char *labelstr = "__ls";
 	char buf[32];
 	char c1;
 	char c2;
@@ -3242,9 +3217,9 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 				// Preserve current Segment.
 				curseg = ModuleInfo.currseg;
 				// Find Data Segment.
-				prev = NULL;
+				//prev = NULL;
 				currs = NULL;
-				for (currs = SymTables[TAB_SEG].head; currs && currs->next; prev = currs, currs = currs->next)
+				for (currs = SymTables[TAB_SEG].head; currs && currs->next; /*prev = currs,*/ currs = currs->next)
 				{
 					if (strcmp(currs->sym.name, "_DATA") == 0)
 						break;
@@ -3261,7 +3236,7 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 				lbl = SymLookup(buf);
 				SetSymSegOfs(lbl);
 				memset(&buff, 0, 256);
-				pDest = buff;
+				pDest = (char *)buff;
 				finallen = slen;
 
 				while (*pSrc != '"')
@@ -3318,9 +3293,9 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 				// Preserve current Segment.
 				curseg = ModuleInfo.currseg;
 				// Find Data Segment.
-				prev = NULL;
+				//prev = NULL;
 				currs = NULL;
-				for (currs = SymTables[TAB_SEG].head; currs && currs->next; prev = currs, currs = currs->next)
+				for (currs = SymTables[TAB_SEG].head; currs && currs->next; /*prev = currs,*/ currs = currs->next)
 				{
 					if (strcmp(currs->sym.name, "_DATA") == 0)
 						break;
@@ -3365,7 +3340,7 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 				}
 				*pDest++ = 0;
 
-				j = UTF8toWideChar(&buff2, slen, NULL, (unsigned short *)&buff, slen);
+				j = UTF8toWideChar(buff2, slen, NULL, (unsigned short *)&buff, slen);
 				/* j contains a proper number of wide chars, it can be different than slen, v2.38 */
 				SetSymSegOfs(lbl);
 				OutputBytes((unsigned char *)&buff, (j * 2) + 2, NULL);
@@ -4194,8 +4169,8 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 					AddLineQueueX(" push %r", T_AX);
 				}
 				else { /* cpu >= 80186 */
-					char *instr = "";
-					char *suffix;
+					const char *instr = "";
+					const char *suffix;
 					int qual = EMPTY;
 					//if ( asize != psize ) {
 					if (psize != pushsize) {

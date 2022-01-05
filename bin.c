@@ -986,10 +986,10 @@ static void pe_emit_import_data( void )
     int type = 0;
 #if AMD64_SUPPORT
     int ptrtype = ( ModuleInfo.defOfssize == USE64 ? T_QWORD : T_DWORD );
-    char *align = ( ModuleInfo.defOfssize == USE64 ? "ALIGN(8)" : "ALIGN(4)" );
+    const char *align = ( ModuleInfo.defOfssize == USE64 ? "ALIGN(8)" : "ALIGN(4)" );
 #else
     int ptrtype = T_DWORD;
-    char *align = "DWORD";
+    const char *align = "DWORD";
 #endif
 
     DebugMsg(("pe_emit_import_data enter\n" ));
@@ -1518,7 +1518,7 @@ static ret_code bin_write_module( struct module_info *modinfo )
     uint_8  *hdrbuf;
 #endif
     struct calc_param cp = { TRUE, 0 };
-	uint_32 origsize;
+    //uint_32 origsize;
 	uint_32 writesize;
 	uint_8 *codeptr;
 
@@ -1765,7 +1765,7 @@ static ret_code bin_write_module( struct module_info *modinfo )
 			if (ModuleInfo.flat)
 			{
 				/* For flat type we have to write out one byte at a time and verify it against the org fixup list */
-				origsize = size;
+				//origsize = size;
 				codeptr = curr->e.seginfo->CodeBuffer;
 				while (codeptr < (curr->e.seginfo->CodeBuffer+size))
 				{

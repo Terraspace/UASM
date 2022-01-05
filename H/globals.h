@@ -37,6 +37,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 #include <errno.h> /* needed for errno declaration ( "sometimes" it's defined in stdlib.h ) */
 
 #if defined(__UNIX__) || defined(__CYGWIN__) || defined(__DJGPP__) /* avoid for MinGW! */
@@ -46,6 +47,7 @@
 #define _stricmp strcasecmp
 #ifndef __WATCOMC__
 #define _memicmp strncasecmp
+char *strupr( char *str ); // apiemu.c
 #endif
 #define _ltoa   ltoa
 #define _strupr strupr
@@ -256,6 +258,16 @@ extern unsigned char _ltype[];	/* Label type array */
 	((_ltype[(unsigned char)(c) + 1] & _LABEL) || ((c) == '.' && ModuleInfo.dotname))
 #define is_valid_id_start( c ) (_ltype[(unsigned char)(c) + 1] & _LABEL)
 #define is_valid_first_char( c ) ((_ltype[(unsigned char)(c) + 1] & _LABEL) || ((c) == '.' ))
+
+#ifdef __GNUC__
+#define UNUSED_RESULT( x )  if ( x ) {}
+#else
+#define UNUSED_RESULT( x )  x
+#endif
+
+#ifndef tolower
+#define tolower(c) ((c >= 'A' && c <= 'Z') ? (c | 0x20) : c )
+#endif
 
 /* function return values */
 typedef enum 
@@ -737,7 +749,7 @@ struct module_vars {
     struct qdesc        LibQueue;        /* includelibs */
     struct qdesc	    LinkQueue;	     /* .pragma comment(linker,"/..") */
     struct dll_desc     *DllQueue;       /* dlls of OPTION DLLIMPORT */
-    char                *imp_prefix;
+    const char          *imp_prefix;
     FILE                *curr_file[NUM_FILE_TYPES];  /* ASM, ERR, OBJ and LST */
     char                *curr_fname[NUM_FILE_TYPES];
     char *              *FNames;         /* array of input files */

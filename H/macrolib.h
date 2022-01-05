@@ -4,5 +4,7 @@
 
 void InitAutoMacros64();
 void InitAutoMacros32();
+void CreateMacroLibCases64();
+void CreateMacroLibCases32();
 
 #endif

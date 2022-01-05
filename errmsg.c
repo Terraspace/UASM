@@ -385,7 +385,7 @@ void EmitWarn( int level, int msgnum, ... )
     }
 }
 
-char *ErrnoStr( void )
+const char *ErrnoStr( void )
 /********************/
 {
     static char buffer[32];

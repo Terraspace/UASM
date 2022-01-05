@@ -280,7 +280,7 @@ static int GetSymbolIndex(const char *pName, struct macho_module *mm)
 /* ==========================================================================================
 Build a macho_section_entry structure.
 ========================================================================================== */
-struct section_64 * macho_build_section( const char *secName, const char *segName, uint32_t flags, const char *srcName )
+struct macho_section_entry * macho_build_section( const char *secName, const char *segName, uint32_t flags, char *srcName )
 {
 	struct macho_section_entry *pSec = NULL;
 	pSec = malloc(sizeof(struct macho_section_entry));
@@ -308,9 +308,9 @@ static void macho_add_section(struct macho_section_entry *pSec, struct macho_mod
 	{
 		while (pCurrSec->next != NULL)
 		{
-			pCurrSec = pCurrSec->next;
+			pCurrSec = (struct macho_section_entry *)pCurrSec->next;
 		}
-		pCurrSec->next = pSec;
+		pCurrSec->next = (struct section_64 *)pSec;
 	}
 	mm->header.sizeofcmds += sizeof(struct section_64);
 	return;
@@ -324,7 +324,7 @@ static int GetSectionIdx(struct asym *seg, struct macho_module *mm)
 	struct macho_section_entry *curr = NULL;
 	if (seg)
 	{
-		for (curr = mm->sections; curr; curr = curr->next)
+		for (curr = mm->sections; curr; curr = (struct macho_section_entry *)curr->next)
 		{
 			if (strcmp(seg->name, curr->srcName) == 0)
 			{
@@ -359,7 +359,7 @@ static int GetRelocationCount(struct macho_module *mm, int baseOfs)
 	int relocCnt = 0;
 	int relocOfs = 0;
 
-	for (curr = mm->sections; curr; curr = curr->next)
+	for (curr = mm->sections; curr; curr = (struct macho_section_entry *)curr->next)
 	{
 		for (seg = SymTables[TAB_SEG].head; seg; seg = seg->next)
 		{
@@ -385,7 +385,6 @@ Create all the macho obj file structures and calculate offsets.
 ========================================================================================== */
 static void macho_build_structures( struct module_info *modinfo, struct macho_module mm )
 {
-	int cnt = 0;
 	struct dsym *curr;
 	struct dsym *seg = NULL;
 	struct macho_section_entry *currSec;
@@ -516,7 +515,7 @@ static void macho_build_structures( struct module_info *modinfo, struct macho_mo
 
 	/* Set section file offsets */
 	sectionDataSize = 0;
-	for (currSec = mm.sections;currSec;currSec = currSec->next)
+	for (currSec = mm.sections;currSec;currSec = (struct macho_section_entry *)currSec->next)
 	{
 		currSec->section.offset = fileofs + sectionDataSize;
 		currSec->ofs = fileofs + sectionDataSize;
@@ -557,7 +556,7 @@ static void macho_build_structures( struct module_info *modinfo, struct macho_mo
 		WriteError();
 
 	/* Write out the section_64 list */
-	for (currSec = mm.sections;currSec;currSec = currSec->next)
+	for (currSec = mm.sections;currSec;currSec = (struct macho_section_entry *)currSec->next)
 	{
 		if (fwrite(&currSec->section, 1, sizeof(struct section_64), CurrFile[OBJ]) != sizeof(struct section_64))
 			WriteError();
@@ -574,7 +573,7 @@ static void macho_build_structures( struct module_info *modinfo, struct macho_mo
 		WriteError();
 
 	/* Write out the section data */
-	for (currSec = mm.sections;currSec;currSec = currSec->next)
+	for (currSec = mm.sections;currSec;currSec = (struct macho_section_entry *)currSec->next)
 	{
 		if (fwrite(currSec->data, 1, currSec->size-currSec->dif, CurrFile[OBJ]) != currSec->size-currSec->dif)
 			WriteError();
@@ -585,7 +584,7 @@ static void macho_build_structures( struct module_info *modinfo, struct macho_mo
 	}
 
 	/* Write out relocation entries */
-	for (currSec = mm.sections; currSec; currSec = currSec->next)
+	for (currSec = mm.sections; currSec; currSec = (struct macho_section_entry *)currSec->next)
 	{
 		for (seg = SymTables[TAB_SEG].head; seg; seg = seg->next)
 		{
@@ -671,7 +670,7 @@ static void macho_build_structures( struct module_info *modinfo, struct macho_mo
 			
 			/* The offset is relative to the start of the segment, so we must add any previous sections total sizes */
 			ofsAdj = 0;
-			for (currSec = mm.sections;currSec->idx < symEntry.n_sect;currSec = currSec->next)
+			for (currSec = mm.sections;currSec->idx < symEntry.n_sect; currSec = (struct macho_section_entry *)currSec->next)
 				ofsAdj += currSec->size;
 			symEntry.n_value += ofsAdj;
 
@@ -702,7 +701,6 @@ static void macho_build_structures( struct module_info *modinfo, struct macho_mo
 static ret_code macho_write_module( struct module_info *modinfo )
 {
 	struct macho_module mm;
-	int fileofs = 0;
 
 	DebugMsg(("macho_write_module: enter\n"));
 
@@ -724,7 +722,7 @@ static ret_code macho_write_module( struct module_info *modinfo )
 		mm.header.cputype = CPU_TYPE_X86_64;
 		mm.header.cpusubtype = CPU_SUBTYPE_LITTLE_ENDIAN | CPU_SUBTYPE_X86_64_ALL;
 		mm.header.filetype = MH_OBJECT;
-		mm.header.flags = NULL;
+		mm.header.flags = 0;
 		
 		macho_build_structures(modinfo, mm);	
 	}

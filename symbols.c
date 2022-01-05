@@ -108,7 +108,7 @@ static struct asym *symPC; /* the $ symbol */
 
 struct tmitem {
     const char *name;
-    char *value;
+    const char *value;
     struct asym **store;
 };
 
@@ -155,7 +155,7 @@ static bool structLookup = FALSE;
 static unsigned int hashpjw( const char *s )
 /******************************************/
 {
-	uint_64 fnv_basis = 14695981039346656037;
+	uint_64 fnv_basis = 1469598103934665603;
 	uint_64 register fnv_prime = 1099511628211;
 	uint_64 h;
 	for (h = fnv_basis; *s; ++s) {
@@ -247,7 +247,7 @@ struct asym *SymAlloc( const char *name )
         memcpy( sym->name, name, len );
         sym->name[len] = NULLC;
     } else
-        sym->name = "";
+        sym->name = (char *)"";
     return( sym );
 }
 
@@ -717,7 +717,7 @@ void SymInit( void )
         sym->state = SYM_TMACRO;
         sym->isdefined = TRUE;
         sym->predefined = TRUE;
-        sym->string_ptr = tmtab[i].value;
+        sym->string_ptr = (char *)tmtab[i].value;
         if ( tmtab[i].store )
             *tmtab[i].store = sym;
     }

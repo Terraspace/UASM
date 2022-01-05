@@ -2464,7 +2464,8 @@ static void output_opc(struct code_info *CodeInfo)
                   tmp |= MOD_10;
                   tmp |= RM_SIB;
                   c = CodeInfo->indexreg;
-                  c = (c &= 0x7) << 3;
+                  c &= 0x7;
+                  c = c << 3;
                   CodeInfo->sib |= c;
                   c = CodeInfo->basereg;
                   c &= 0x7;
@@ -2493,7 +2494,8 @@ static void output_opc(struct code_info *CodeInfo)
                       tmp |= RM_SIB;
                       if (CodeInfo->indexreg != 0xFF){
                         c = CodeInfo->indexreg;
-                        c = (c &= 0x07) << 3;
+                        c &= 0x7;
+                        c = c << 3;
                         CodeInfo->sib |= c;
                         c = CodeInfo->basereg;
                         c &= 0x7;
@@ -2541,7 +2543,8 @@ static void output_opc(struct code_info *CodeInfo)
           if (!comprdsp) CodeInfo->tuple = 0;
           if (CodeInfo->indexreg != 0xFF){
             c = CodeInfo->indexreg;
-            c = (c &= 0x07) << 3;
+            c &= 0x7;
+            c = c << 3;
             CodeInfo->sib |= c;
             c = CodeInfo->basereg;
             c &= 0x7;

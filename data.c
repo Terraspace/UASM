@@ -86,6 +86,7 @@ extern ret_code segm_override( const struct expr *, struct code_info * );
 extern struct asym *SegOverride;
 extern const char szNull[];
 extern UINT_PTR UTF8toWideChar(const unsigned char *pSource, UINT_PTR nSourceLen, UINT_PTR *nSourceDone, unsigned short *szTarget, UINT_PTR nTargetMax);
+extern void OutputInterleavedBytes(const unsigned char *pbytes, int len, struct fixup *fixup);
 static ret_code data_item( int *, struct asm_tok[], struct asym *, uint_32, const struct asym *, uint_32, bool inside_struct, bool, bool, int );
 
 #define OutputDataBytes( x, y ) OutputBytes( x, y, NULL )
@@ -1301,9 +1302,9 @@ ret_code data_dir( int i, struct asm_tok tokenarray[], struct asym *type_sym )
 	struct sfield   *f2;
 	struct sfield   *fPrev;
 	bool foundSubType = FALSE;
-	uint_32 subid = 0;
+//uint_32 subid = 0;
 	uint_32 subcnt = 0;
-	uint_32 k = 0;
+//uint_32 k = 0;
 
     /* v2.05: the previous test in parser.c wasn't fool-proofed */
     if ( i > 1 && ModuleInfo.m510 == FALSE ) {
@@ -1511,16 +1512,16 @@ ret_code data_dir( int i, struct asm_tok tokenarray[], struct asym *type_sym )
 		// Check sub type.
 		symtype = ((struct dsym *)type_sym);
 		foundSubType = FALSE;
-		subid = 0;
+		//subid = 0;
 		subcnt = 0;
-		k = 0;
+		//k = 0;
 		for (f = symtype->e.structinfo->head; f != NULL; f = f->next) 
 		{
 			if (strcmp(tokenarray[i].string_ptr, f->sym.name) == 0)
 			{
 				f2 = f;
 				foundSubType = TRUE;
-				subid = subcnt;
+				//subid = subcnt;
 				fPrev = symtype->e.structinfo->head;
 			}
 			subcnt++;

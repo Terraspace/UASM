@@ -123,8 +123,8 @@ static const struct print_item cr[] = {
 
 struct lstleft {
     struct lstleft *next;
-    char buffer[4*8];
-    char last;
+    char buffer[4*8 + 1];
+    //char last;
 };
 
 /* write a source line to the listing file
@@ -190,8 +190,7 @@ void LstWrite(enum lsttype type, uint_32 oldofs, void* value)
 #endif
 
     ll.next = NULL;
-	if(ll.buffer)
-		memset( ll.buffer, ' ', sizeof( ll.buffer ) );
+    memset( ll.buffer, ' ', sizeof( ll.buffer ) );
     srcfile = get_curr_srcfile();
 
     switch ( type ) {
@@ -326,9 +325,9 @@ void LstWrite(enum lsttype type, uint_32 oldofs, void* value)
         if ( srcfile != ModuleInfo.srcfile ) {
             ll.buffer[30] = 'C';
         }
-#ifdef DEBUG_OUT
-        ll.last = NULLC;
-#endif
+//#ifdef DEBUG_OUT
+//        ll.last = NULLC;
+//#endif
 #if FASTPASS
     } else {
         idx = OFSSIZE + 2 + 2 * CODEBYTES;
@@ -969,7 +968,7 @@ static void log_symbol( const struct asym *sym )
         LstPrintf( "%s %s        ", sym->name, pdots );
 
         if ( sym->isarray ) {
-            i = sprintf( StringBufferEnd, "%s[%u]", GetMemtypeString( sym, NULL ), sym->total_length );
+            i = sprintf( StringBufferEnd, "%s[%" I32_SPEC "u]", GetMemtypeString( sym, NULL ), sym->total_length );
             LstPrintf( "%-10s ", StringBufferEnd );
         } else if ( sym->state == SYM_EXTERNAL && sym->iscomm == TRUE ) {
             LstPrintf( "%-10s ", strings[LS_COMM] );
@@ -1054,7 +1053,7 @@ void LstWriteCRef( void )
 {
     struct asym     **syms;
     struct dsym     *dir;
-    struct struct_info *si;
+    //struct struct_info *si;
     int             idx;
     uint_32         i;
     uint_32         SymCount;
@@ -1083,7 +1082,7 @@ void LstWriteCRef( void )
             continue;
         switch (syms[i]->state) {
         case SYM_TYPE:
-            si = ((struct dsym *)syms[i])->e.structinfo;
+            //si = ((struct dsym *)syms[i])->e.structinfo;
             switch ( syms[i]->typekind ) {
             case TYPE_RECORD:  idx = LQ_RECORDS; break;
             case TYPE_TYPEDEF: idx = LQ_TYPEDEFS;break;

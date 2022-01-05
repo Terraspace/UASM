@@ -42,6 +42,42 @@
  * - [unsigned] long  is either 32- or 64-bit
  */
 
+#ifdef WINDOWSDDK
+
+#ifdef _WIN32
+typedef _W64 int INT_PTR, *PINT_PTR;
+typedef _W64 unsigned int UINT_PTR, *PUINT_PTR;
+typedef _W64 long LONG_PTR, *PLONG_PTR;
+typedef _W64 unsigned long ULONG_PTR, *PULONG_PTR;
+#define __int3264   __int32
+#else
+typedef __int64 INT_PTR, *PINT_PTR;
+typedef unsigned __int64 UINT_PTR, *PUINT_PTR;
+typedef __int64 LONG_PTR, *PLONG_PTR;
+typedef unsigned __int64 ULONG_PTR, *PULONG_PTR;
+#define __int3264   __int64
+#endif
+
+#else
+
+#include <inttypes.h>
+#ifdef _WIN32
+typedef _W64 int INT_PTR, *PINT_PTR;
+typedef _W64 unsigned int UINT_PTR, *PUINT_PTR;
+typedef _W64 long LONG_PTR, *PLONG_PTR;
+typedef _W64 unsigned long ULONG_PTR, *PULONG_PTR;
+#define __int3264   __int32
+#else
+typedef int64_t INT_PTR, *PINT_PTR;
+typedef uint64_t UINT_PTR, *PUINT_PTR;
+typedef int64_t LONG_PTR, *PLONG_PTR;
+typedef uint64_t ULONG_PTR, *PULONG_PTR;
+#define __int3264   int64_t
+typedef int64_t __int64;
+#endif
+
+#endif
+
 typedef unsigned char   uint_8;
 typedef signed char     int_8;
 typedef unsigned short  uint_16;
@@ -68,7 +104,7 @@ typedef   signed __int64  int_64;
 #endif
 
 /* 32-bit integer format specifier */
-#ifdef __I86__
+#if defined(__I86__) || (defined(__GNUC__) && defined(__i386__))
 #define I32_SPEC "l"
 #else
 #define I32_SPEC ""

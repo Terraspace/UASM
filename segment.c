@@ -175,7 +175,7 @@ void UpdateCurrSegVars( void )
         info->symbol = NULL;
         info->is_flat = FALSE;
         info->error = TRUE;
-        symCurSeg->string_ptr = "";
+        symCurSeg->string_ptr = (char *)"";
     } else {
         info->is_flat = FALSE;
         info->error = FALSE;

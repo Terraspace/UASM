@@ -2943,7 +2943,7 @@ static ret_code check_size( struct code_info *CodeInfo, const struct expr opndx[
              */
             if( op1_size == 0 ) {
                 if( ( op1 & OP_M_ANY ) && ( op2 & OP_I ) ) {
-                    char *p = "WORD";
+                    const char *p = "WORD";
                     if( (uint_32)CodeInfo->opnd[OPND2].data32l > USHRT_MAX || op2_size == 4 ) {
                         CodeInfo->iswide = 1;
                         DebugMsg1(("check_size: op1=%X op1_size=0, op2=%X, op2_size=%u CodeInfo->data[2]=%X\n", op1, op2, op2_size, CodeInfo->opnd[OPND2].data32l ));
@@ -3047,14 +3047,10 @@ ret_code ParseLine(struct asm_tok tokenarray[]) {
 	struct asym        *sym;
 	uint_32            oldofs;
 	enum special_token regtok;
-	int                c0;
-	int                c1;
 	unsigned           flags;
-	char               *pnlbl;
 	int                alignCheck = 16;
 	int                infSize    = 0;
 	int                oldi       = 0;
-	struct dsym        *recsym    = 0;
 	struct code_info   CodeInfo;
 	struct expr        opndx[MAX_OPND + 1];
 	// We create copies of these structures for now as the old codegen has a very ugly way of working with additional vex 3 opnd forms, by
@@ -3064,7 +3060,9 @@ ret_code ParseLine(struct asm_tok tokenarray[]) {
 	struct expr        opndxV2[MAX_OPND + 1];
 	const char         *opcodePtr = NULL;
 	int                opndCount  = 0;
+#ifdef DEBUG_OUT
 	char               *instr     = NULL;
+#endif
     bool               doDataInProc = FALSE;
 
 	memset(&opndx, 0, sizeof(opndx));
@@ -3870,10 +3868,11 @@ dataInProc:
 	/* ******************************************************* */
 	if (CurrOpnd != j) 
 	{
-		for (; tokenarray[i].token != T_COMMA; i--);
-    if (CodeInfo.token < VEX_START) {
-      return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].tokpos));
-    }
+		for (; tokenarray[i].token != T_COMMA; i--)
+			;
+		if (CodeInfo.token < VEX_START) {
+			return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].tokpos));
+		}
 		else
 			if ((CodeInfo.token == T_VMASKMOVPS || CodeInfo.token == T_VMASKMOVPD) && (j < 3))
 				return(EmitErr(MISSING_OPERATOR_IN_EXPRESSION));
@@ -4074,7 +4073,7 @@ void ProcessFile( struct asm_tok tokenarray[] )
 	xmmOver0.bytval = 15;
 	xmmOver0.dirtype = 15;
 	xmmOver0.tokval = T_XMMWORD;
-	xmmOver0.string_ptr = "xmmword";
+	xmmOver0.string_ptr = (char *)"xmmword";
 	xmmOver0.stringlen = T_XMMWORD;
 	xmmOver0.idarg = T_XMMWORD;
 	xmmOver0.itemlen = T_XMMWORD;
@@ -4089,7 +4088,7 @@ void ProcessFile( struct asm_tok tokenarray[] )
 	xmmOver1.bytval = 4;
 	xmmOver1.dirtype = 4;
 	xmmOver1.tokval = T_PTR;
-	xmmOver1.string_ptr = "ptr";
+	xmmOver1.string_ptr = (char *)"ptr";
 	xmmOver1.stringlen = T_PTR;
 	xmmOver1.idarg = T_PTR;
 	xmmOver1.itemlen = T_PTR;
@@ -4103,7 +4102,7 @@ void ProcessFile( struct asm_tok tokenarray[] )
 	dsOver.floattype = 3;
 	dsOver.numbase = 3;
 	dsOver.specval = 3;
-	dsOver.string_ptr = "ds";
+	dsOver.string_ptr = (char *)"ds";
 	dsOver.tokval = 0x0000001c;
 	dsOver.stringlen = 0x0000001c;
 	dsOver.idarg = 0x0000001c;

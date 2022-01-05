@@ -23,6 +23,7 @@
 #include "listing.h"
 #include "fastpass.h"
 #include "myassert.h"
+#include "symbols.h"
 
 /* v2.04: changed to 0 */
 //#define ANYNAME 1 /* fixme: this probably should be changed to 0 */
@@ -166,7 +167,7 @@ static bool AreStructsEqual( const struct dsym *newstr, const struct dsym *oldst
 ret_code StructDirective( int i, struct asm_tok tokenarray[] )
 /************************************************************/
 {
-    char *name;
+    const char *name;
     unsigned alignment;
     uint_32 offset;
     uint_8 typekind = ( tokenarray[i].tokval == T_UNION ? TYPE_UNION : TYPE_STRUCT );
@@ -365,7 +366,7 @@ ret_code StructDirective( int i, struct asm_tok tokenarray[] )
 ret_code CStructDirective(int i, struct asm_tok tokenarray[])
 /************************************************************/
 {
-	char *name;
+	const char *name;
 	unsigned alignment;
 	uint_32 offset;
 	uint_8 typekind = (tokenarray[i].tokval == T_UNION ? TYPE_UNION : TYPE_STRUCT);
@@ -580,7 +581,7 @@ ret_code CStructDirective(int i, struct asm_tok tokenarray[])
 ret_code RAWStructDirective(int i, struct asm_tok tokenarray[])
 /************************************************************/
 {
-	char* name;
+	const char* name;
 	unsigned alignment;
 	uint_32 offset;
 	uint_8 typekind = (tokenarray[i].tokval == T_UNION ? TYPE_UNION : TYPE_STRUCT);
@@ -804,7 +805,7 @@ ret_code RAWStructDirective(int i, struct asm_tok tokenarray[])
 ret_code COMStructDirective(int i, struct asm_tok tokenarray[])
 /************************************************************/
 {
-	char *name;
+	const char *name;
 	unsigned alignment;
 	uint_32 offset;
 	uint_8 typekind = (tokenarray[i].tokval == T_UNION ? TYPE_UNION : TYPE_STRUCT);
@@ -1116,7 +1117,7 @@ ret_code EndstructDirective( int i, struct asm_tok tokenarray[] )
         //sym->name = dir->sym.name;
         //sym->name_size = strlen( dir->sym.name );
         sym->total_size = dir->sym.total_size;
-        dir->sym.name = ""; /* the type becomes anonymous */
+        dir->sym.name = (char *)""; /* the type becomes anonymous */
         dir->sym.name_size = 0;
     }
 
@@ -1297,7 +1298,7 @@ struct asym *CreateStructField( int loc, struct asm_tok tokenarray[], const char
         memcpy( f->sym.name, name, len );
         f->sym.name[len] = NULLC;
     } else
-        f->sym.name = "";
+        f->sym.name = (char *)"";
     f->sym.state = SYM_STRUCT_FIELD;
     f->sym.list = ModuleInfo.cref;
     f->sym.isdefined = TRUE;

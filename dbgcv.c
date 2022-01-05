@@ -17,7 +17,15 @@
 #include <fixup.h>
 #include <dbgcv.h>
 #include <linnum.h>
+#ifdef _WIN32
 #include <direct.h>
+#define MAX_PATH_LEN  (_MAX_PATH * 4)
+#define getcwd _getcwd
+#else
+#include <unistd.h>
+#define MAX_PATH_LEN  (1024 * 8)
+#define _pgmptr "uasm"
+#endif
 #include <picohash.h>
 
 #define SIZE_CV_SEGBUF ( MAX_LINE_LEN * 4 )
@@ -114,7 +122,7 @@ struct leaf32 {
 
 #pragma pack(pop)
 
-uint_8* SetPrefixName(uint_8* p, uint_8* name, int len)
+uint_8* SetPrefixName(uint_8* p, const uint_8* name, int len)
 {
 	if (Options.debug_symbols < CV_SIGNATURE_C13)
 		*p++ = len;
@@ -1245,14 +1253,14 @@ static uint_8* cv_FlushSection(dbgcv* cv, uint_32 signature, uint_32 ex)
 	seg->e.seginfo->current_loc = seg->e.seginfo->start_loc + currsize + ex + sizeof(CV_SECTION);
 	seg->e.seginfo->start_loc = seg->e.seginfo->current_loc;
 
-	return(cv->section);
+	return((uint_8 *)cv->section);
 }
 
 
 #define USEMD5
 
 #ifdef USEMD5
-#define BUFSIZ 1024*4
+#define BUFSIZE 1024*4
 #define MD5_LENGTH ( sizeof( uint_32 ) + sizeof( uint_16 ) + 16 + sizeof( uint_16 ) )
 
 static int calc_md5(const char* filename, unsigned char* sum)
@@ -1264,10 +1272,10 @@ static int calc_md5(const char* filename, unsigned char* sum)
 
 	if ((fp = fopen(filename, "rb")) == NULL)
 		return 0;
-	file_buf = MemAlloc(BUFSIZ);
+	file_buf = MemAlloc(BUFSIZE);
 	_picohash_md5_init(&ctx);
 	while (!feof(fp)) {
-		i = fread(file_buf, 1, BUFSIZ, fp);
+		i = fread(file_buf, 1, BUFSIZE, fp);
 		if (ferror(fp)) {
 			fclose(fp);
 			MemFree(file_buf);
@@ -1342,8 +1350,8 @@ void cv_write_debug_tables(struct dsym* symbols, struct dsym* types, void* pv)
 			cv.files[i].offset = 0;
 		}
 
-		cv.currdir = LclAlloc(_MAX_PATH * 4);
-		_getcwd(cv.currdir, _MAX_PATH * 4);
+		cv.currdir = LclAlloc(MAX_PATH_LEN);
+		UNUSED_RESULT( getcwd(cv.currdir, MAX_PATH_LEN) );
 		objname = cv.currdir + strlen(cv.currdir);
 
 		/* source filename string table */
@@ -1575,12 +1583,12 @@ void cv_write_debug_tables(struct dsym* symbols, struct dsym* types, void* pv)
 		len = strlen(p) + 1;
 		s = strcpy(s, p) + len;
 		*s++ = '\0';
-		EnvBlock->reclen = (unsigned short)(s - cv.ps - 2);
+		EnvBlock->reclen = (unsigned short)(s - (char *)cv.ps - 2);
 		cv.ps = s;
 
 		/* length needs to be added for each symbol */
 
-		cv.section->length += (s - start);
+		cv.section->length += (s - (char *)start);
 
 	}
 	else {

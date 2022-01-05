@@ -8,9 +8,9 @@
 *
 ****************************************************************************/
 
-#ifdef __GNUC__
-	#define _BITS_FLOATN_COMMON_H
-#endif
+//#ifdef __GNUC__
+//#define _BITS_FLOATN_COMMON_H
+//#endif
 
 #include <ctype.h>
 #include <time.h>
@@ -43,7 +43,7 @@
 #include "lqueue.h"
 #include "orgfixup.h"
 #include "macrolib.h"
-//#include "simd.h"
+#include "simd.h"
 
 #if DLLIMPORT
 #include "mangle.h"
@@ -169,6 +169,7 @@ static const enum seg_type stt[] = {
     SEGTYPE_CODE, SEGTYPE_DATA, SEGTYPE_DATA, SEGTYPE_BSS
 };
 
+/*
 static void CheckBOM(FILE *f)
 {
 	unsigned long bom;
@@ -176,6 +177,7 @@ static void CheckBOM(FILE *f)
 	if ((bom & 0xFFFFFF) != 0xBFBBEF)
 		rewind(f);
 }
+*/
 
 extern void RewindToWin64() 
 {
@@ -542,7 +544,7 @@ static ret_code WriteModule( struct module_info *modinfo )
     return( NOT_ERROR );
 }
 
-#define is_valid_first_char( ch )  ( isalpha(ch) || ch=='_' || ch=='@' || ch=='$' || ch=='?' || ch=='.' )
+#define is_valid_first_char_( ch )  ( isalpha(ch) || ch=='_' || ch=='@' || ch=='$' || ch=='?' || ch=='.' )
 
 /* check name of text macros defined via -D option */
 
@@ -552,7 +554,7 @@ static int is_valid_identifier( char *id )
     /* special handling of first char of an id: it can't be a digit,
      but can be a dot (don't care about ModuleInfo.dotname!). */
 
-    if( is_valid_first_char( *id ) == 0 )
+    if( is_valid_first_char_( *id ) == 0 )
         return( ERROR );
     id++;
     for( ; *id != NULLC; id++ ) {
@@ -1413,7 +1415,7 @@ void close_files( void )
 
 /* get default file extension for error, object and listing files */
 
-static char *GetExt( int type )
+static const char *GetExt( int type )
 /*****************************/
 {
     switch ( type ) {
@@ -1797,7 +1799,7 @@ int EXPQUAL AssembleModule( const char *source )
 						printf("%u errors\n", ModuleInfo.g.error_count);
 						SetConsoleTextAttribute(hConsole, screenBufferInfo.wAttributes);
 			#else
-						printf(FWHT("%s: %lu lines, "), GetFNamePart(GetFName(ModuleInfo.srcfile)->fname), GetLineNumber());
+						printf(FWHT("%s: %" I32_SPEC "u lines, "), GetFNamePart(GetFName(ModuleInfo.srcfile)->fname), GetLineNumber());
 						printf(FGRN("%u passes"), Parse_Pass + 1);
 						printf(", ");
 						printf(FCYN("%u ms"), endtime - starttime);

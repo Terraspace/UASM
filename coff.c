@@ -52,6 +52,7 @@ static const char* const SymDebName[DBGS_MAX] = { ".debug$S", ".debug$T" };
 
 static const char szdrectve[] = { ".drectve" };
 
+/*
 static const IMAGE_SYMBOL isFeat00 = {
     {"@feat.00"},
      1,
@@ -60,6 +61,7 @@ static const IMAGE_SYMBOL isFeat00 = {
      IMAGE_SYM_CLASS_STATIC,
      0
 };
+*/
 #if COMPID
 static const IMAGE_SYMBOL isCompId = {
     {"@comp.id"},
@@ -136,7 +138,7 @@ static ret_code coff_write_section_table( struct module_info *modinfo, struct co
         if ( len <= IMAGE_SIZEOF_SHORT_NAME )
             strncpy( ish.Name, secname, IMAGE_SIZEOF_SHORT_NAME );
         else
-            sprintf( ish.Name, "/%u", Coff_AllocString( cm, secname, len ) );
+            sprintf( ish.Name, "/%" I32_SPEC "u", Coff_AllocString( cm, secname, len ) );
 
         ish.Misc.PhysicalAddress = 0;
         ish.VirtualAddress = 0;
@@ -326,7 +328,7 @@ static uint_32 CRC32Comdat( uint_8 *lpBuffer, uint_32 dwBufLen, uint_32 dwCRC )
     return( dwCRC );
 }
 
-static void coff_write_symbol(char* name, int_32 strpos, int_32 value,
+static void coff_write_symbol(const char* name, int_32 strpos, int_32 value,
     int section, int type, int storageclass, int aux)
 {
     IMAGE_SYMBOL sym;
@@ -347,7 +349,7 @@ static void coff_write_symbol(char* name, int_32 strpos, int_32 value,
         WriteError();
 }
 
-static void coff_write_aux(void* sym, char* name)
+static void coff_write_aux(void* sym, const char* name)
 {
     uint_32 size = sizeof(IMAGE_AUX_SYMBOL);
 
@@ -387,7 +389,6 @@ static uint_32 coff_write_symbols( struct module_info *modinfo, struct coffmod *
     int         type;
     int         storageclass;
     int         aux;
-    int         count;
 
 #if COMPID
     /* write "@comp.id" entry */
@@ -685,7 +686,6 @@ static uint_32 SetSymbolIndices( struct module_info *ModuleInfo, struct coffmod 
     uint_32 i;
     struct asym *lastfproc;
     unsigned lastfile = 0;
-    int section;
 
     index = 0;
     cm->lastproc = NULL;

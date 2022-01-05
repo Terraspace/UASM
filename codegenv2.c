@@ -1,6 +1,7 @@
 
 #include "codegenv2.h"
 
+#include <ctype.h>
 #include <time.h>
 #include "globals.h"
 #include "parser.h"
@@ -12,6 +13,7 @@
 #include "types.h"
 #include "macro.h"
 #include "listing.h"
+#include "input.h"
 
 #define OutputCodeByte( x ) OutputByte( x )
 
@@ -34,7 +36,7 @@ struct Instr_Def* InstrHash[16384];
 static unsigned int hash(const uint_8* data, int size)
 /******************************************/
 {
-	uint_64 fnv_basis = 14695981039346656037;
+	uint_64 fnv_basis = 1469598103934665603;
 	uint_64 register fnv_prime = 1099511628211;
 	uint_64 h = fnv_basis;
 	int cnt = 0;
@@ -88,13 +90,13 @@ uint_32 GenerateInstrHash(struct Instr_Def* pInstruction)
 	*(pDst + 4) = pInstruction->operand_types[4];
 	len += 4;
 	pDst += 4;
-	return hash(&hashBuffer, len);
+	return hash(hashBuffer, len);
 }
 
 void BuildInstructionTable(void)
 {
 	uint_32 hash = 0;
-	struct Instr_Def* pInstrTbl = &InstrTableV2;
+	struct Instr_Def* pInstrTbl = InstrTableV2;
 	uint_32 i = 0;
 	uint_32 instrCount = sizeof(InstrTableV2) / sizeof(struct Instr_Def);
 
@@ -1216,7 +1218,7 @@ int BuildMemoryEncoding(unsigned char* pmodRM, unsigned char* pSIB, unsigned cha
 	unsigned char   idxRegNo = 17;
 	int             baseRegSize = 0;
 	int             idxRegSize = 0;
-	int             symSize = 0;
+//int             symSize = 0;
 	bool			skipSIB = FALSE;
 
 	/* Absolute addressing modes can skip this */
@@ -1272,7 +1274,7 @@ int BuildMemoryEncoding(unsigned char* pmodRM, unsigned char* pSIB, unsigned cha
 	/* If the memory address refers to a symbol indirectly.. */
 	if (opExpr[instr->memOpnd].sym && opExpr[instr->memOpnd].kind == EXPR_ADDR)
 	{
-		symSize = SizeFromMemtype(opExpr[instr->memOpnd].mem_type, ModuleInfo.Ofssize, opExpr[instr->memOpnd].sym);
+//		symSize = SizeFromMemtype(opExpr[instr->memOpnd].mem_type, ModuleInfo.Ofssize, opExpr[instr->memOpnd].sym);
 
 		/* For 64bit mode, all symbol references are RIP relative, unless the symbol is on the stack.
 		   EXCEPT, if the memory address includes a register. */
@@ -1550,9 +1552,9 @@ ret_code CodeGenV2(const char* instr, struct code_info* CodeInfo, uint_32 oldofs
 
 	/* Determine which Memory Encoding Format Table to Use. */
 	if (CodeInfo->Ofssize == USE64)
-		MemTable = &MemTable64;
+		MemTable = MemTable64;
 	else
-		MemTable = &MemTable32;
+		MemTable = MemTable32;
 
 	/* Force JWASM style FLAT: override back to legacy CodeGen. */
 	if ((opExpr[1].override && opExpr[1].override->tokval == T_FLAT) ||
@@ -1677,7 +1679,7 @@ ret_code CodeGenV2(const char* instr, struct code_info* CodeInfo, uint_32 oldofs
 		/* If the matched instruction requires processing of a memory address */
 		if (matchedInstr->memOpnd != NO_MEM)
 			aso = BuildMemoryEncoding(&modRM, &sib, &rexByte, &needModRM, &needSIB,								/* This could result in modifications to REX/VEX/EVEX, modRM and SIB bytes */
-				&dispSize, &displacement, matchedInstr, opExpr, &needB, &needX, &needRR, CodeInfo);
+				&dispSize, (uint_64 *)&displacement, matchedInstr, opExpr, &needB, &needX, &needRR, CodeInfo);
 		modRM |= BuildModRM(matchedInstr->modRM, matchedInstr, opExpr, &needModRM, &needSIB,
 			((matchedInstr->vexflags & VEX) || (matchedInstr->vexflags & EVEX)));								/* Modify the modRM value for any non-memory operands */
 
@@ -1685,12 +1687,12 @@ ret_code CodeGenV2(const char* instr, struct code_info* CodeInfo, uint_32 oldofs
 		   Create REX, VEX or EVEX prefixes                      
 		  ----------------------------------------------------------*/
 		if ((matchedInstr->vexflags & VEX) != 0 && (matchedInstr->evexflags & EVEX_ONLY) == 0 && CodeInfo->evex_flag == 0)
-			BuildVEX(&needVEX, &vexSize, &vexBytes, matchedInstr, opExpr, needB, needX, opCount);				/* Create the VEX prefix bytes for both reg and memory operands */
+			BuildVEX(&needVEX, &vexSize, vexBytes, matchedInstr, opExpr, needB, needX, opCount);				/* Create the VEX prefix bytes for both reg and memory operands */
 
 		  /* Either the instruction can ONLY be EVEX encoded, or user requested VEX->EVEX promotion. */
 		else if ((matchedInstr->evexflags & EVEX_ONLY) != 0 ||
 			((CodeInfo->evex_flag) && (matchedInstr->vexflags & EVEX) != 0))
-			BuildEVEX(&needEVEX, &evexBytes, matchedInstr, opExpr, needB, needX, needRR, opCount, CodeInfo);	/* Create the EVEX prefix bytes if the instruction supports an EVEX form */
+			BuildEVEX(&needEVEX, evexBytes, matchedInstr, opExpr, needB, needX, needRR, opCount, CodeInfo);	/* Create the EVEX prefix bytes if the instruction supports an EVEX form */
 
 		if (CodeInfo->evex_flag && matchedInstr->evexflags == NO_EVEX)											/* Not possible to EVEX encode instruction per users request */
 			EmitError(NO_EVEX_FORM);
@@ -1979,7 +1981,8 @@ ret_code CodeGenV2(const char* instr, struct code_info* CodeInfo, uint_32 oldofs
 		}
 
 	}
-skip:
+
+//skip:
 	/* Write out listing. */
 	if (retcode == NOT_ERROR)
 	{

@@ -32,45 +32,15 @@
 #include "trmem.h"
 #include "fastpass.h"
 #include "atofloat.h"
+#include "inttype.h"
 
-#if defined(WINDOWSDDK)
-#if defined(_WIN32)
-typedef _W64 int INT_PTR, *PINT_PTR;
-typedef _W64 unsigned int UINT_PTR, *PUINT_PTR;
-typedef _W64 long LONG_PTR, *PLONG_PTR;
-typedef _W64 unsigned long ULONG_PTR, *PULONG_PTR;
-#define __int3264   __int32
-#else
-typedef __int64 INT_PTR, *PINT_PTR;
-typedef unsigned __int64 UINT_PTR, *PUINT_PTR;
-typedef __int64 LONG_PTR, *PLONG_PTR;
-typedef unsigned __int64 ULONG_PTR, *PULONG_PTR;
-#define __int3264   __int64
-#endif
-#else
-#include <inttypes.h>
-#if defined(_WIN32)
-typedef _W64 int INT_PTR, *PINT_PTR;
-typedef _W64 unsigned int UINT_PTR, *PUINT_PTR;
-typedef _W64 long LONG_PTR, *PLONG_PTR;
-typedef _W64 unsigned long ULONG_PTR, *PULONG_PTR;
-#define __int3264   __int32
-#else
-typedef int64_t INT_PTR, *PINT_PTR;
-typedef uint64_t UINT_PTR, *PUINT_PTR;
-typedef int64_t LONG_PTR, *PLONG_PTR;
-typedef uint64_t ULONG_PTR, *PULONG_PTR;
-#define __int3264   int64_t
-typedef int64_t __int64;
-#endif
-#endif
 
 int Tokenize(char *, unsigned int, struct asm_tok[], unsigned int);
 void myatoi128(const char *src, uint_64 dst[], int base, int size);
 #define LABELSIZE 8
 #define LABELSGLOBAL 0 /* make the generated labels global */
 #define JMPPREFIX      /* define spaces before "jmp" or "loop" */
-#define LABELFMT "@C%04X"
+#define LABELFMT "@C%04" I32_SPEC "X"
 /* v2.10: static variables moved to ModuleInfo */
 #define HllStack ModuleInfo.g.HllStack
 #define HllFree  ModuleInfo.g.HllFree
@@ -200,6 +170,7 @@ static const char neg_cjmptype[] = { 0, 1, 0, 0, 1, 1 };
 /* in Masm, there's a nesting level limit of 20. In Uasm, there's
 * currently no limit.
 */
+/*
 #ifdef __WATCOMC__
 static _inline char HexDigit( char x )
 #elif defined(_MSC_VER)
@@ -211,6 +182,7 @@ static char HexDigit( char x )
     x &= 0xF;
     return((x > 9) ? (x - 10 + 'A') : (x + '0'));
 }
+*/
 
 #ifdef DEBUG_OUT
 static unsigned evallvl;
@@ -457,6 +429,7 @@ static char *RenderSimdInstr(char *dst, const char *instr, int start1, int end1,
 	return(dst);
 }
 
+#if 0
 /* render a Simd instruction using a temporary float immediate macro FP4/FP8 */
 static char *RenderSimdInstrTM(char *dst, const char *instr, int start1, int end1, int start2, int end2, struct asm_tok tokenarray[], enum c_bop op, bool isDouble)
 /*******************************************************************************************************************************/
@@ -503,6 +476,7 @@ static char *RenderSimdInstrTM(char *dst, const char *instr, int start1, int end
 	DebugMsg1(("%u RenderInstr(%s)=>%s<\n", evallvl, instr, old));
 	return(dst);
 }
+#endif
 
 static char *GetLabelStr(int_32 label, char *buff)
 /**************************************************/
@@ -1150,7 +1124,7 @@ static ret_code CheckCXZLines(char *p)
 	int lines = 0;
 	int i;
 	int addchars;
-	char *px;
+	const char *px;
 	bool NL = TRUE;
 
 	DebugMsg1(("CheckCXZLines enter, p=>%s<\n", p));
@@ -1707,7 +1681,7 @@ ret_code HllStartDir(int i, struct asm_tok tokenarray[])
       //copy the counter to the buffer
       cmcnt = 0;
       forbuffcnt[0] = NULLC;
-      hll->condlines = "";
+      hll->condlines = (char *)"";
       for (b = 0; forbuff[j] != ')'; b++, j++) {
         forbuffcnt[b] = forbuff[j];
         if (forbuffcnt[b] == ',' && forbuff[j - 1] != 39 && forbuff[j + 1] != 39) ++cmcnt;
@@ -1735,12 +1709,12 @@ ret_code HllStartDir(int i, struct asm_tok tokenarray[])
         memcpy(hll->counterlines, forbuffcnt, size);
         hll->cmcnt = cmcnt + 1;
       }
-      else hll->counterlines = "";    //there is nothing after the second ':'
+      else hll->counterlines = (char *)"";    //there is nothing after the second ':'
       if (forbuffcond[0]) {
         strcpy(transformed, ".for ");
         strcat(transformed, forbuffcond);
         strcat(transformed, "\0");
-        tokenarray[0].string_ptr = ".for\0";
+        tokenarray[0].string_ptr = (char *)".for\0";
         tokenarray[0].tokpos = transformed;
         Token_Count = Tokenize(tokenarray[0].tokpos, 0, tokenarray, 0);
         if (tokenarray[i].token != T_FINAL) {
@@ -1753,7 +1727,7 @@ ret_code HllStartDir(int i, struct asm_tok tokenarray[])
           }
         }
         else
-          hll->condlines = "";
+          hll->condlines = (char *)"";
       }
     }
     AddLineQueueX("%s" LABELQUAL, GetLabelStr(hll->labels[LSTART], buff));
@@ -2097,9 +2071,9 @@ ret_code HllEndDir(int i, struct asm_tok tokenarray[])
                   dcnt = 0;                          /* reset data caunter */
                   }
                   if (dcnt)
-                    sprintf(unum, ",%d", hll->pcases64[j]);
+                    sprintf(unum, ",%" I32_SPEC "ld", hll->pcases64[j]);
                   else
-                    sprintf(unum, "%d", hll->pcases64[j]);
+                    sprintf(unum, "%" I32_SPEC "ld", hll->pcases64[j]);
                   strcat(buffer, unum);
                   dcnt++;
                   j++;
