@@ -1,0 +1,23 @@
+..\src\CodeGenV2\EVEX1_64.ASM(75) : Error A2049: Invalid instruction operands
+..\src\CodeGenV2\EVEX1_64.ASM(80) : Error A2049: Invalid instruction operands
+..\src\CodeGenV2\EVEX1_64.ASM(81) : Error A2049: Invalid instruction operands
+..\src\CodeGenV2\EVEX1_64.ASM(82) : Error A2049: Invalid instruction operands
+..\src\CodeGenV2\EVEX1_64.ASM(83) : Error A2049: Invalid instruction operands
+..\src\CodeGenV2\EVEX1_64.ASM(84) : Error A2049: Invalid instruction operands
+..\src\CodeGenV2\EVEX1_64.ASM(85) : Error A2049: Invalid instruction operands
+..\src\CodeGenV2\EVEX1_64.ASM(86) : Error A2049: Invalid instruction operands
+..\src\CodeGenV2\EVEX1_64.ASM(87) : Error A2049: Invalid instruction operands
+..\src\CodeGenV2\EVEX1_64.ASM(91) : Error A2049: Invalid instruction operands
+..\src\CodeGenV2\EVEX1_64.ASM(97) : Error A2049: Invalid instruction operands
+..\src\CodeGenV2\EVEX1_64.ASM(101) : Error A2049: Invalid instruction operands
+..\src\CodeGenV2\EVEX1_64.ASM(102) : Error A2049: Invalid instruction operands
+..\src\CodeGenV2\EVEX1_64.ASM(103) : Error A2049: Invalid instruction operands
+..\src\CodeGenV2\EVEX1_64.ASM(104) : Error A2049: Invalid instruction operands
+..\src\CodeGenV2\EVEX1_64.ASM(105) : Error A2049: Invalid instruction operands
+..\src\CodeGenV2\EVEX1_64.ASM(106) : Error A2049: Invalid instruction operands
+..\src\CodeGenV2\EVEX1_64.ASM(107) : Error A2049: Invalid instruction operands
+..\src\CodeGenV2\EVEX1_64.ASM(108) : Error A2049: Invalid instruction operands
+..\src\CodeGenV2\EVEX1_64.ASM(110) : Error A2049: Invalid instruction operands
+..\src\CodeGenV2\EVEX1_64.ASM(111) : Error A2049: Invalid instruction operands
+..\src\CodeGenV2\EVEX1_64.ASM(116) : Error A2184: Use of register assumed to ERROR
+..\src\CodeGenV2\EVEX1_64.ASM(117) : Error A2184: Use of register assumed to ERROR

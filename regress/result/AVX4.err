@@ -1,0 +1,29 @@
+..\src\plain_bin\AVX4.ASM(67) : Error A2049: Invalid instruction operands
+..\src\plain_bin\AVX4.ASM(73) : Error A2049: Invalid instruction operands
+..\src\plain_bin\AVX4.ASM(74) : Error A2049: Invalid instruction operands
+..\src\plain_bin\AVX4.ASM(137) : Error A2049: Invalid instruction operands
+..\src\plain_bin\AVX4.ASM(138) : Error A2049: Invalid instruction operands
+..\src\plain_bin\AVX4.ASM(139) : Error A2049: Invalid instruction operands
+..\src\plain_bin\AVX4.ASM(146) : Error A2049: Invalid instruction operands
+..\src\plain_bin\AVX4.ASM(147) : Error A2049: Invalid instruction operands
+..\src\plain_bin\AVX4.ASM(154) : Error A2210: Syntax error: , [ebx]
+..\src\plain_bin\AVX4.ASM(163) : Error A2049: Invalid instruction operands
+..\src\plain_bin\AVX4.ASM(165) : Warning A4073: Size not specified, assuming: BYTE
+..\src\plain_bin\AVX4.ASM(165) : Error A2049: Invalid instruction operands
+..\src\plain_bin\AVX4.ASM(167) : Error A2049: Invalid instruction operands
+..\src\plain_bin\AVX4.ASM(170) : Error A2049: Invalid instruction operands
+..\src\plain_bin\AVX4.ASM(172) : Error A2210: Syntax error: , [ebx]
+..\src\plain_bin\AVX4.ASM(173) : Error A2210: Syntax error: , [ebx]
+..\src\plain_bin\AVX4.ASM(176) : Error A2049: Invalid instruction operands
+..\src\plain_bin\AVX4.ASM(179) : Error A2049: Invalid instruction operands
+..\src\plain_bin\AVX4.ASM(188) : Error A2049: Invalid instruction operands
+..\src\plain_bin\AVX4.ASM(195) : Error A2049: Invalid instruction operands
+..\src\plain_bin\AVX4.ASM(198) : Error A2049: Invalid instruction operands
+..\src\plain_bin\AVX4.ASM(201) : Error A2049: Invalid instruction operands
+..\src\plain_bin\AVX4.ASM(207) : Error A2210: Syntax error: , [ebx]
+..\src\plain_bin\AVX4.ASM(244) : Error A2210: Syntax error: , [ebx]
+..\src\plain_bin\AVX4.ASM(246) : Error A2210: Syntax error: , [ebx]
+..\src\plain_bin\AVX4.ASM(249) : Warning A4073: Size not specified, assuming: BYTE
+..\src\plain_bin\AVX4.ASM(249) : Error A2049: Invalid instruction operands
+..\src\plain_bin\AVX4.ASM(250) : Warning A4073: Size not specified, assuming: BYTE
+..\src\plain_bin\AVX4.ASM(250) : Error A2049: Invalid instruction operands

@@ -124,7 +124,6 @@ unsigned char           MODULEARCH;			/* MODULE Architecutre <avx or sse> */
 
 struct module_info      ModuleInfo;
 unsigned int            Parse_Pass;     /* assembly pass */
-//unsigned int            GeneratedCode; /* v2.10: moved to ModuleInfo */
 struct qdesc            LinnumQueue;    /* queue of line_num_info items */
 
 bool write_to_file;     /* write object module */
