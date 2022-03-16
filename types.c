@@ -1940,7 +1940,7 @@ ret_code RecordDirective( int i, struct asm_tok tokenarray[] )
 	{
         if ( cntBits > 64 ) 
 		{
-            newr->sym.total_size = 128;
+            newr->sym.total_size = 16;
             newr->sym.mem_type = MT_OWORD;
         } 
 		else if ( cntBits > 32 ) 

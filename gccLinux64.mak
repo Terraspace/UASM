@@ -31,7 +31,7 @@ include gccmod.inc
 #.c.o:
 #	$(CC) -c $(inc_dirs) $(c_flags) -o $(OUTD)/$*.o $<
 $(OUTD)/%.o: %.c
-	$(CC) -D __UNIX__ -c $(inc_dirs) $(c_flags) -o $(OUTD)/$*.o $<
+	$(CC) -D __UNIX__ -c $(inc_dirs) $(c_flags) $(CFLAGS) $(CPPFLAGS) -o $(OUTD)/$*.o $<
 
 all:  $(OUTD) $(OUTD)/$(TARGET1)
 
@@ -40,16 +40,16 @@ $(OUTD):
 
 $(OUTD)/$(TARGET1) : $(OUTD)/main.o $(proj_obj)
 ifeq ($(DEBUG),0)
-	$(CC) -D __UNIX__ $(OUTD)/main.o $(proj_obj) -s -o $@ -Wl,-Map,$(OUTD)/$(TARGET1).map
+	$(CC) -D __UNIX__ $(CFLAGS) $(OUTD)/main.o $(proj_obj) -s -o $@ -Wl,-Map,$(OUTD)/$(TARGET1).map $(LDFLAGS)
 else
-	$(CC) -D __UNIX__ $(OUTD)/main.o $(proj_obj) -o $@ -Wl,-Map,$(OUTD)/$(TARGET1).map
+	$(CC) -D __UNIX__ $(CFLAGS) $(OUTD)/main.o $(proj_obj) -o $@ -Wl,-Map,$(OUTD)/$(TARGET1).map $(LDFLAGS)
 endif
 
 $(OUTD)/msgtext.o: msgtext.c H/msgdef.h
-	$(CC) -D __UNIX__ -c $(inc_dirs) $(c_flags) -o $*.o msgtext.c
+	$(CC) -D __UNIX__ -c $(inc_dirs) $(c_flags) $(CFLAGS) $(CPPFLAGS) -o $*.o msgtext.c
 
 $(OUTD)/reswords.o: reswords.c H/instruct.h H/special.h H/directve.h H/opndcls.h H/instravx.h
-	$(CC) -D __UNIX__ -c $(inc_dirs) $(c_flags) -o $*.o reswords.c
+	$(CC) -D __UNIX__ -c $(inc_dirs) $(c_flags) $(CFLAGS) $(CPPFLAGS) -o $*.o reswords.c
 
 ######
 

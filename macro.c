@@ -478,7 +478,7 @@ ret_code StoreMacro( struct dsym *macro, int i, struct asm_tok tokenarray[], boo
         if( locals_done == FALSE && tok[0].token == T_DIRECTIVE && tok[0].tokval == T_LOCAL ) {
             if( !store_data )
                 continue;
-            for ( ;; ) {
+            for (;;) {
                 int size;
                 while( isspace( *ls.input ) ) ls.input++;
                 if ( *ls.input == NULLC || *ls.input == ';' ) /* 0 locals are ok */
@@ -812,7 +812,7 @@ ret_code StoreAutoMacro(struct dsym *macro, int i, struct asm_tok tokenarray[], 
 		if (locals_done == FALSE && tok[0].token == T_DIRECTIVE && tok[0].tokval == T_LOCAL) {
 			if (!store_data)
 				continue;
-			for (;; ) {
+			for (;;) {
 				int size;
 				while (isspace(*ls.input)) ls.input++;
 				if (*ls.input == NULLC || *ls.input == ';') /* 0 locals are ok */
