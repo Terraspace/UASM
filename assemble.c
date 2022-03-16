@@ -113,9 +113,17 @@ static const struct format_options formatoptions[] = {
 #endif
 };
 
+#if AVXSUPP
+unsigned char           decoflags;          /* EVEX  sets up decorator flags in P2: z, aaa   */
+unsigned char           broadflags;         /* EVEX  sets up decorator flags in P2: b        */
+unsigned char           evex;               /* EVEX  encoding  */
+unsigned char           evexflag;			/* UASM 2.48 User specified EVEX promotion */
+#endif
+
+unsigned char           MODULEARCH;			/* MODULE Architecutre <avx or sse> */
+
 struct module_info      ModuleInfo;
 unsigned int            Parse_Pass;     /* assembly pass */
-//unsigned int            GeneratedCode; /* v2.10: moved to ModuleInfo */
 struct qdesc            LinnumQueue;    /* queue of line_num_info items */
 
 bool write_to_file;     /* write object module */

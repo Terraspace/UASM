@@ -202,16 +202,16 @@
 
 /* Uasm version info */
 #ifdef _WIN64
-#define _UASM_VERSION_STR_ "2.52"
+#define _UASM_VERSION_STR_ "2.55"
 #else
-#define _UASM_VERSION_STR_ "2.52"
+#define _UASM_VERSION_STR_ "2.55"
 #endif
-#define _UASM_VERSION_INT_ 252
+#define _UASM_VERSION_INT_ 255
 #define _UASM_VERSION_SUFFIX_ "pre"
 #define _UASM_VERSION_ _UASM_VERSION_STR_ //_UASM_VERSION_SUFFIX_
 
 #define UASM_MAJOR_VER 2
-#define UASM_MINOR_VER 51
+#define UASM_MINOR_VER 55
 #define UASM_SUBMINOR_VER 1
 
 #if defined(_WIN32) || defined(_WIN64) 
@@ -874,13 +874,13 @@ struct module_info {
 };
 
 #if AVXSUPP
-	unsigned char       decoflags;          /* EVEX  sets up decorator flags in P2: z, aaa   */
-	unsigned char       broadflags;         /* EVEX  sets up decorator flags in P2: b        */
-	unsigned char       evex;               /* EVEX  encoding  */
-	unsigned char       evexflag;			/* UASM 2.48 User specified EVEX promotion */
+	extern unsigned char       decoflags;          /* EVEX  sets up decorator flags in P2: z, aaa   */
+    extern unsigned char       broadflags;         /* EVEX  sets up decorator flags in P2: b        */
+    extern unsigned char       evex;               /* EVEX  encoding  */
+    extern unsigned char       evexflag;			/* UASM 2.48 User specified EVEX promotion */
 #endif
 
-	unsigned char		MODULEARCH;			/* MODULE Architecutre <avx or sse> */
+    extern unsigned char		MODULEARCH;			/* MODULE Architecutre <avx or sse> */
 
 #define CurrSource      ModuleInfo.currsource
 #define Token_Count     ModuleInfo.token_count
