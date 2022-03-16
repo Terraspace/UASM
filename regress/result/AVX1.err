@@ -1,0 +1,63 @@
+..\src\plain_bin\AVX1.ASM(116) : Error A2210: Syntax error: , xmm2
+..\src\plain_bin\AVX1.ASM(117) : Error A2210: Syntax error: , ymm2
+..\src\plain_bin\AVX1.ASM(122) : Error A2049: Invalid instruction operands
+..\src\plain_bin\AVX1.ASM(123) : Error A2049: Invalid instruction operands
+..\src\plain_bin\AVX1.ASM(132) : Error A2049: Invalid instruction operands
+..\src\plain_bin\AVX1.ASM(133) : Error A2049: Invalid instruction operands
+..\src\plain_bin\AVX1.ASM(134) : Error A2049: Invalid instruction operands
+..\src\plain_bin\AVX1.ASM(135) : Error A2049: Invalid instruction operands
+..\src\plain_bin\AVX1.ASM(214) : Warning A4285: AVX requires 3 registers for this instruction, first register used twice
+..\src\plain_bin\AVX1.ASM(216) : Warning A4285: AVX requires 3 registers for this instruction, first register used twice
+..\src\plain_bin\AVX1.ASM(256) : Error A2049: Invalid instruction operands
+..\src\plain_bin\AVX1.ASM(257) : Error A2049: Invalid instruction operands
+..\src\plain_bin\AVX1.ASM(258) : Error A2049: Invalid instruction operands
+..\src\plain_bin\AVX1.ASM(259) : Error A2049: Invalid instruction operands
+..\src\plain_bin\AVX1.ASM(260) : Error A2049: Invalid instruction operands
+..\src\plain_bin\AVX1.ASM(261) : Error A2049: Invalid instruction operands
+..\src\plain_bin\AVX1.ASM(263) : Warning A4285: AVX requires 3 registers for this instruction, first register used twice
+..\src\plain_bin\AVX1.ASM(266) : Warning A4285: AVX requires 3 registers for this instruction, first register used twice
+..\src\plain_bin\AVX1.ASM(270) : Warning A4285: AVX requires 3 registers for this instruction, first register used twice
+..\src\plain_bin\AVX1.ASM(272) : Warning A4285: AVX requires 3 registers for this instruction, first register used twice
+..\src\plain_bin\AVX1.ASM(275) : Error A2049: Invalid instruction operands
+..\src\plain_bin\AVX1.ASM(276) : Error A2049: Invalid instruction operands
+..\src\plain_bin\AVX1.ASM(277) : Error A2049: Invalid instruction operands
+..\src\plain_bin\AVX1.ASM(278) : Error A2049: Invalid instruction operands
+..\src\plain_bin\AVX1.ASM(291) : Error A2210: Syntax error: , xmm2
+..\src\plain_bin\AVX1.ASM(292) : Error A2210: Syntax error: , m32
+..\src\plain_bin\AVX1.ASM(307) : Error A2049: Invalid instruction operands
+..\src\plain_bin\AVX1.ASM(308) : Error A2049: Invalid instruction operands
+..\src\plain_bin\AVX1.ASM(310) : Error A2049: Invalid instruction operands
+..\src\plain_bin\AVX1.ASM(311) : Error A2049: Invalid instruction operands
+..\src\plain_bin\AVX1.ASM(313) : Error A2049: Invalid instruction operands
+..\src\plain_bin\AVX1.ASM(314) : Error A2049: Invalid instruction operands
+..\src\plain_bin\AVX1.ASM(318) : Error A2049: Invalid instruction operands
+..\src\plain_bin\AVX1.ASM(319) : Error A2049: Invalid instruction operands
+..\src\plain_bin\AVX1.ASM(321) : Error A2210: Syntax error: , xmm2
+..\src\plain_bin\AVX1.ASM(322) : Error A2210: Syntax error: , m128
+..\src\plain_bin\AVX1.ASM(323) : Error A2210: Syntax error: , ymm2
+..\src\plain_bin\AVX1.ASM(324) : Error A2210: Syntax error: , m256
+..\src\plain_bin\AVX1.ASM(328) : Error A2049: Invalid instruction operands
+..\src\plain_bin\AVX1.ASM(329) : Error A2049: Invalid instruction operands
+..\src\plain_bin\AVX1.ASM(333) : Error A2049: Invalid instruction operands
+..\src\plain_bin\AVX1.ASM(334) : Error A2049: Invalid instruction operands
+..\src\plain_bin\AVX1.ASM(351) : Error A2049: Invalid instruction operands
+..\src\plain_bin\AVX1.ASM(352) : Error A2049: Invalid instruction operands
+..\src\plain_bin\AVX1.ASM(371) : Error A2049: Invalid instruction operands
+..\src\plain_bin\AVX1.ASM(372) : Error A2049: Invalid instruction operands
+..\src\plain_bin\AVX1.ASM(374) : Warning A4285: AVX requires 3 registers for this instruction, first register used twice
+..\src\plain_bin\AVX1.ASM(376) : Error A2049: Invalid instruction operands
+..\src\plain_bin\AVX1.ASM(377) : Error A2049: Invalid instruction operands
+..\src\plain_bin\AVX1.ASM(379) : Warning A4285: AVX requires 3 registers for this instruction, first register used twice
+..\src\plain_bin\AVX1.ASM(381) : Error A2049: Invalid instruction operands
+..\src\plain_bin\AVX1.ASM(382) : Error A2049: Invalid instruction operands
+..\src\plain_bin\AVX1.ASM(384) : Warning A4285: AVX requires 3 registers for this instruction, first register used twice
+..\src\plain_bin\AVX1.ASM(390) : Error A2210: Syntax error: , xmm2
+..\src\plain_bin\AVX1.ASM(391) : Error A2210: Syntax error: , m64
+..\src\plain_bin\AVX1.ASM(402) : Warning A4285: AVX requires 3 registers for this instruction, first register used twice
+..\src\plain_bin\AVX1.ASM(405) : Warning A4285: AVX requires 3 registers for this instruction, first register used twice
+..\src\plain_bin\AVX1.ASM(445) : Error A2210: Syntax error: , m64
+..\src\plain_bin\AVX1.ASM(447) : Error A2210: Syntax error: , m64
+..\src\plain_bin\AVX1.ASM(451) : Error A2049: Invalid instruction operands
+..\src\plain_bin\AVX1.ASM(452) : Error A2049: Invalid instruction operands
+..\src\plain_bin\AVX1.ASM(453) : Error A2049: Invalid instruction operands
+..\src\plain_bin\AVX1.ASM(453) : Fatal error A1113: Too many errors

@@ -1,0 +1,5 @@
+..\src\plain_bin\avx_3.asm(26) : Error A2049: Invalid instruction operands
+..\src\plain_bin\avx_3.asm(27) : Error A2049: Invalid instruction operands
+..\src\plain_bin\avx_3.asm(28) : Error A2049: Invalid instruction operands
+..\src\plain_bin\avx_3.asm(29) : Error A2049: Invalid instruction operands
+..\src\plain_bin\avx_3.asm(31) : Error A2210: Syntax error: , xmm17

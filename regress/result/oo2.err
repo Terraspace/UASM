@@ -1,0 +1,1 @@
+..\src\oo\oo2.asm(169) : Warning A4285: AVX requires 3 registers for this instruction, first register used twice

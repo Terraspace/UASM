@@ -1,0 +1,46 @@
+..\src\CodeGenV2\EVEX_PROMOTE.asm(41) : Error A2210: Syntax error: ,xmm0
+..\src\CodeGenV2\EVEX_PROMOTE.asm(42) : Error A2210: Syntax error: ,[rax]
+..\src\CodeGenV2\EVEX_PROMOTE.asm(69) : Error A2210: Syntax error: ,xmm2
+..\src\CodeGenV2\EVEX_PROMOTE.asm(70) : Error A2210: Syntax error: ,ymm2
+..\src\CodeGenV2\EVEX_PROMOTE.asm(139) : Error A2049: Invalid instruction operands
+..\src\CodeGenV2\EVEX_PROMOTE.asm(140) : Warning A4073: Size not specified, assuming: BYTE
+..\src\CodeGenV2\EVEX_PROMOTE.asm(140) : Error A2049: Invalid instruction operands
+..\src\CodeGenV2\EVEX_PROMOTE.asm(141) : Error A2049: Invalid instruction operands
+..\src\CodeGenV2\EVEX_PROMOTE.asm(142) : Error A2049: Invalid instruction operands
+..\src\CodeGenV2\EVEX_PROMOTE.asm(149) : Error A2049: Invalid instruction operands
+..\src\CodeGenV2\EVEX_PROMOTE.asm(150) : Error A2049: Invalid instruction operands
+..\src\CodeGenV2\EVEX_PROMOTE.asm(165) : Error A2049: Invalid instruction operands
+..\src\CodeGenV2\EVEX_PROMOTE.asm(166) : Error A2049: Invalid instruction operands
+..\src\CodeGenV2\EVEX_PROMOTE.asm(169) : Error A2049: Invalid instruction operands
+..\src\CodeGenV2\EVEX_PROMOTE.asm(170) : Error A2049: Invalid instruction operands
+..\src\CodeGenV2\EVEX_PROMOTE.asm(172) : Error A2049: Invalid instruction operands
+..\src\CodeGenV2\EVEX_PROMOTE.asm(177) : Error A2210: Syntax error: ,xmm2
+..\src\CodeGenV2\EVEX_PROMOTE.asm(178) : Error A2210: Syntax error: ,[rax]
+..\src\CodeGenV2\EVEX_PROMOTE.asm(183) : Error A2014: invalid combination of opcode and operands
+..\src\CodeGenV2\EVEX_PROMOTE.asm(184) : Error A2014: invalid combination of opcode and operands
+..\src\CodeGenV2\EVEX_PROMOTE.asm(185) : Error A2014: invalid combination of opcode and operands
+..\src\CodeGenV2\EVEX_PROMOTE.asm(186) : Error A2014: invalid combination of opcode and operands
+..\src\CodeGenV2\EVEX_PROMOTE.asm(187) : Error A2014: invalid combination of opcode and operands
+..\src\CodeGenV2\EVEX_PROMOTE.asm(188) : Error A2014: invalid combination of opcode and operands
+..\src\CodeGenV2\EVEX_PROMOTE.asm(219) : Error A2210: Syntax error: ,qword ptr [rax]
+..\src\CodeGenV2\EVEX_PROMOTE.asm(220) : Error A2014: invalid combination of opcode and operands
+..\src\CodeGenV2\EVEX_PROMOTE.asm(221) : Error A2210: Syntax error: ,qword ptr [rax]
+..\src\CodeGenV2\EVEX_PROMOTE.asm(222) : Error A2014: invalid combination of opcode and operands
+..\src\CodeGenV2\EVEX_PROMOTE.asm(223) : Error A2049: Invalid instruction operands
+..\src\CodeGenV2\EVEX_PROMOTE.asm(224) : Error A2049: Invalid instruction operands
+..\src\CodeGenV2\EVEX_PROMOTE.asm(229) : Error A2049: Invalid instruction operands
+..\src\CodeGenV2\EVEX_PROMOTE.asm(230) : Error A2049: Invalid instruction operands
+..\src\CodeGenV2\EVEX_PROMOTE.asm(233) : Error A2014: invalid combination of opcode and operands
+..\src\CodeGenV2\EVEX_PROMOTE.asm(234) : Error A2014: invalid combination of opcode and operands
+..\src\CodeGenV2\EVEX_PROMOTE.asm(235) : Error A2014: invalid combination of opcode and operands
+..\src\CodeGenV2\EVEX_PROMOTE.asm(236) : Error A2014: invalid combination of opcode and operands
+..\src\CodeGenV2\EVEX_PROMOTE.asm(237) : Error A2014: invalid combination of opcode and operands
+..\src\CodeGenV2\EVEX_PROMOTE.asm(238) : Error A2014: invalid combination of opcode and operands
+..\src\CodeGenV2\EVEX_PROMOTE.asm(248) : Error A2014: invalid combination of opcode and operands
+..\src\CodeGenV2\EVEX_PROMOTE.asm(249) : Error A2014: invalid combination of opcode and operands
+..\src\CodeGenV2\EVEX_PROMOTE.asm(251) : Error A2210: Syntax error: ,xmm1
+..\src\CodeGenV2\EVEX_PROMOTE.asm(252) : Error A2210: Syntax error: ,xmm1
+..\src\CodeGenV2\EVEX_PROMOTE.asm(258) : Error A2014: invalid combination of opcode and operands
+..\src\CodeGenV2\EVEX_PROMOTE.asm(259) : Error A2014: invalid combination of opcode and operands
+..\src\CodeGenV2\EVEX_PROMOTE.asm(261) : Error A2210: Syntax error: ,ymm1
+..\src\CodeGenV2\EVEX_PROMOTE.asm(262) : Error A2210: Syntax error: ,ymm1
