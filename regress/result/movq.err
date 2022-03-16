@@ -1,7 +1,0 @@
-..\src\plain_bin\movq.asm(28) : Warning A4285: AVX requires 3 registers for this instruction, first register used twice
-..\src\plain_bin\movq.asm(29) : Error A2049: Invalid instruction operands
-..\src\plain_bin\movq.asm(30) : Error A2049: Invalid instruction operands
-..\src\plain_bin\movq.asm(31) : Warning A4285: AVX requires 3 registers for this instruction, first register used twice
-..\src\plain_bin\movq.asm(32) : Error A2049: Invalid instruction operands
-..\src\plain_bin\movq.asm(33) : Error A2049: Invalid instruction operands
-..\src\plain_bin\movq.asm(34) : Error A2049: Invalid instruction operands

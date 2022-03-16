@@ -1,2 +1,0 @@
-..\src\vcall\vcall3.asm(3) : Warning A4305: Stackbase automatically changed to RSP to support WIN64 options
-..\src\vcall\vcall3.asm(389) : Error A2049: Invalid instruction operands
