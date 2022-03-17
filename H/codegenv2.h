@@ -132,7 +132,7 @@ enum op_type {
 	IMM8,
 	IMM16,
 	IMM32,
-  IMM48,
+    IMM48,
 	IMM64, /* 64bit ONLY immediate */	
 	R_STI,
 	R_ST0,

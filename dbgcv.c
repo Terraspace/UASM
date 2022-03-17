@@ -169,7 +169,7 @@ uint_32 GetTyperef(struct asym* sym, uint_8 Ofssize)
 			else {
 				switch (size) {
 				case 1: return ST_UCHAR;
-				case 2: return ST_UINT2;
+				case 2: return ST_CHAR16; //ST_UINT2;
 				case 4: return ST_UINT4;
 				case 6: return ST_REAL48;
 				case 8: return ST_UINT8;
