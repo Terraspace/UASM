@@ -1690,7 +1690,7 @@ ret_code CodeGenV2(const char* instr, struct code_info* CodeInfo, uint_32 oldofs
 		  /* Either the instruction can ONLY be EVEX encoded, or user requested VEX->EVEX promotion. */
 		else if ((matchedInstr->evexflags & EVEX_ONLY) != 0 ||
 			((CodeInfo->evex_flag) && (matchedInstr->vexflags & EVEX) != 0))
-			BuildEVEX(&needEVEX, &evexBytes, matchedInstr, opExpr, needB, needX, needRR, opCount, CodeInfo);	/* Create the EVEX prefix bytes if the instruction supports an EVEX form */
+			BuildEVEX(&needEVEX, evexBytes, matchedInstr, opExpr, needB, needX, needRR, opCount, CodeInfo);	/* Create the EVEX prefix bytes if the instruction supports an EVEX form */
 
 		if (CodeInfo->evex_flag && matchedInstr->evexflags == NO_EVEX)											/* Not possible to EVEX encode instruction per users request */
 			EmitError(NO_EVEX_FORM);
