@@ -61,7 +61,7 @@ static void genfailure( int signo )
 int main(int argc, char **argv)
 /*******************************/
 {
-	char    *pEnv;
+	char const *pEnv;
 	int     numArgs = 0;
 	int     numFiles = 0;
 	int     rc = 0;
