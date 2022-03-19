@@ -2045,4 +2045,11 @@ insn(KMOVW,      1,       OpCls(K,       M16,     NONE),     F_0F,        1,    
 insn(KMOVW,      2,       OpCls(M16,       K,     NONE),     F_0F,        0,         0,     0x91,      0x00,      P_686|P_AVX, 0)
 insn(KMOVW,      3,       OpCls(K,       R32,     NONE),     F_0F,        1,         0,     0x92,      0x00,      P_686|P_AVX, 0)
 insn(KMOVW,      4,       OpCls(R32,       K,     NONE),     F_0F,        1,         0,     0x93,      0x00,      P_686|P_AVX, 0)
+
+/* Don't forget to update parser line 3382 to evex exclusions */
+insx(KTESTB, ktestb,      OpCls(K, K, NONE), F_660F, 1, 0, 0x99, 0x00, P_686 | P_AVX, 1, RWF_VEX)
+insx(KTESTW, ktestw,      OpCls(K, K, NONE), F_0F, 1, 0, 0x99, 0x00, P_686 | P_AVX, 0, RWF_VEX)
+insx(KTESTD, ktestd,      OpCls(K, K, NONE), F_660F, 1, 0, 0x99, 0x00, P_686 | P_AVX, 2, RWF_VEX)
+insx(KTESTQ, ktestq,      OpCls(K, K, NONE), F_0F, 1, 0, 0x99, 0x00, P_686 | P_AVX, 2, RWF_VEX)
+
 #endif

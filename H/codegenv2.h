@@ -17,7 +17,8 @@ enum instr_group {
 	MVX0,
 	FP0,
 	FP1,
-	MMX0
+	MMX0,
+	EVX1
 };
 
 enum seg_prefix {

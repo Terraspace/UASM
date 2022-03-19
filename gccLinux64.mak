@@ -21,6 +21,7 @@ endif
 
 c_flags =-D __UNIX__ $(extra_c_flags)
 
+#From CLANG 11+, default has changed from allowing global variables to be defined in the headers (-fcommon) to not allowing it (-fno-common)."   USE: make CC="clang -fcommon" -f gccLinux64.mak
 CC = gcc
 
 .SUFFIXES:

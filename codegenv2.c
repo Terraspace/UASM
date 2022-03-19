@@ -34,7 +34,7 @@ struct Instr_Def* InstrHash[16384];
 static unsigned int hash(const uint_8* data, int size)
 /******************************************/
 {
-	uint_64 fnv_basis = 14695981039346656037U;
+	uint_64 fnv_basis = 14695981039346656037;
 	uint_64 register fnv_prime = 1099511628211;
 	uint_64 h = fnv_basis;
 	int cnt = 0;

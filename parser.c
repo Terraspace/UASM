@@ -3379,7 +3379,7 @@ dataInProc:
 	CodeInfo.basereg   = 0xff;
 	CodeInfo.indexreg  = 0xff;
 	CodeInfo.zreg      = 0;
-	if (tokenarray[0].tokval >= T_KADDB && tokenarray[0].tokval <= T_KMOVW)
+	if (tokenarray[0].tokval >= T_KADDB && tokenarray[0].tokval <= T_KTESTQ)
 		CodeInfo.evex_flag = FALSE;
 	else 
 	{

@@ -408,5 +408,6 @@ avxins (UNPCKHPD ,vunpckhpd ,    P_AVX, VX_LL|VX_L )     /* L, s */
 avxins (UNPCKHPS ,vunpckhps ,    P_AVX, VX_LL|VX_L )     /* L, s */
 avxins (UNPCKLPD ,vunpcklpd ,    P_AVX, VX_LL|VX_L )     /* L, s */
 avxins (UNPCKLPS ,vunpcklps ,    P_AVX, VX_LL|VX_L )     /* L, s */
+
 #endif
 

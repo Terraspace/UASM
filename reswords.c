@@ -879,6 +879,10 @@ VX_LL|VX_L,      /* VPMULTISHIFTQB */
 		 VX_NND,      /* KMOVD    */
 		 VX_NND,      /* KMOVQ    */
 		 VX_NND,      /* KMOVW    */
+         VX_NND,      /* KTESTB    */
+         VX_NND,      /* KTESTW    */
+         VX_NND,      /* KTESTD    */
+         VX_NND,      /* KTESTQ    */
 //         VX_NND,      /* BNDMK   */
 #define avxins( tok, string, cpu, flgs ) flgs,
 #include "instravx.h"

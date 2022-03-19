@@ -502,13 +502,14 @@ struct Instr_Def InstrTableV2[] = {
 
 	// BEXTR r32a, r / m32, r32b VEX.LZ.0F38.W0 F7 / r
 	// BEXTR r64a, r / m64, r64b VEX.LZ.0F38.W1 F7 / r
-	{ "bextr",     3, { R32,  R32,     R32     }, AVX0, (F_MODRM | F_MODRM_REG | F_MODRM_RM),          (VEX | VEX_W0 | VEX_0F38 | VEX_3RD_OP), (NO_EVEX), 1,  1, { 0xf7, 0x00, 0x00 }, 4, 1, MOD_REG_REG, 0, 0,  0, (X32 | X64), REG_DST, NO_PREFIX, NO_IMM, NO_MEM,             P_686 | P_AVX, 0, NULL },
-	{ "bextr",     3, { R32,  M_ANY,   R32     }, AVX0, (F_MODRM | F_MODRM_REG),					             (VEX | VEX_W0 | VEX_0F38 | VEX_3RD_OP), (NO_EVEX), 1,  1, { 0xf7, 0x00, 0x00 }, 4, 1, MOD_REG_MEM, 0, 0,  0, (X32 | X64), REG_DST, NO_PREFIX, NO_IMM, MEM_OPND_1,         P_686 | P_AVX, 0, NULL },
-	{ "bextr",     3, { R64,  R64,     R64     }, AVX0, (F_MODRM | F_MODRM_REG | F_MODRM_RM),          (VEX | VEX_W1 | VEX_0F38 | VEX_3RD_OP), (NO_EVEX), 1,  1, { 0xf7, 0x00, 0x00 }, 8, 1, MOD_REG_REG, 0, 0,  0, (X32 | X64), REG_DST, NO_PREFIX, NO_IMM, NO_MEM,             P_686 | P_AVX, 0, NULL },
-	{ "bextr",     3, { R64,  M_ANY,   R64     }, AVX0, (F_MODRM | F_MODRM_REG),					             (VEX | VEX_W1 | VEX_0F38 | VEX_3RD_OP), (NO_EVEX), 1,  1, { 0xf7, 0x00, 0x00 }, 8, 1, MOD_REG_MEM, 0, 0,  0, (X32 | X64), REG_DST, NO_PREFIX, NO_IMM, MEM_OPND_1,         P_686 | P_AVX, 0, NULL },
+	{ "bextr",     3, { R32,  R32,     R32     }, AVX0, (F_MODRM | F_MODRM_REG | F_MODRM_RM),               (VEX | VEX_W0 | VEX_0F38 | VEX_3RD_OP), (NO_EVEX), 1,  1, { 0xf7, 0x00, 0x00 }, 4, 1, MOD_REG_REG, 0, 0,  0, (X32 | X64), REG_DST, NO_PREFIX, NO_IMM, NO_MEM,             P_686 | P_AVX, 0, NULL },
+	{ "bextr",     3, { R32,  M_ANY,   R32     }, AVX0, (F_MODRM | F_MODRM_REG),					        (VEX | VEX_W0 | VEX_0F38 | VEX_3RD_OP), (NO_EVEX), 1,  1, { 0xf7, 0x00, 0x00 }, 4, 1, MOD_REG_MEM, 0, 0,  0, (X32 | X64), REG_DST, NO_PREFIX, NO_IMM, MEM_OPND_1,         P_686 | P_AVX, 0, NULL },
+	{ "bextr",     3, { R64,  R64,     R64     }, AVX0, (F_MODRM | F_MODRM_REG | F_MODRM_RM),               (VEX | VEX_W1 | VEX_0F38 | VEX_3RD_OP), (NO_EVEX), 1,  1, { 0xf7, 0x00, 0x00 }, 8, 1, MOD_REG_REG, 0, 0,  0, (X32 | X64), REG_DST, NO_PREFIX, NO_IMM, NO_MEM,             P_686 | P_AVX, 0, NULL },
+	{ "bextr",     3, { R64,  M_ANY,   R64     }, AVX0, (F_MODRM | F_MODRM_REG),					        (VEX | VEX_W1 | VEX_0F38 | VEX_3RD_OP), (NO_EVEX), 1,  1, { 0xf7, 0x00, 0x00 }, 8, 1, MOD_REG_MEM, 0, 0,  0, (X32 | X64), REG_DST, NO_PREFIX, NO_IMM, MEM_OPND_1,         P_686 | P_AVX, 0, NULL },
 
-		//insx(KTESTB, ktestb, OpCls(K, K, NONE), F_660F, 1, no_WDS, 0x99, 0x00, P_686 | P_AVX, 1, RWF_VEX)
-		//insx(KTESTW, ktestw, OpCls(K, K, NONE), F_0F, 1, no_WDS, 0x99, 0x00, P_686 | P_AVX, 0, RWF_VEX)
-		//insx(KTESTD, ktestd, OpCls(K, K, NONE), F_660F, 1, 0, 0x99, 0x00, P_686 | P_AVX, 2, RWF_VEX)
-		//insx(KTESTQ, ktestq, OpCls(K, K, NONE), F_0F, 1, 0, 0x99, 0x00, P_686 | P_AVX, 2, RWF_VEX)
+	/* AVX512BW and AVX512DQ */
+	{ "ktestb",    2, { R_K,  R_K              }, EVX1, (F_MODRM | F_MODRM_REG | F_MODRM_RM),			    (VEX | VEX_W0 | VEX_0F | VEX_66 | VEX_2OPND), (NO_EVEX), 1,  1, { 0x99, 0x00, 0x00 }, 4, 1, MOD_REG_REG, 0, 0,  0, (X32 | X64), REG_DST, NO_PREFIX, NO_IMM, NO_MEM,         P_686 | P_AVX, 0, NULL },
+	{ "ktestw",    2, { R_K,  R_K              }, EVX1, (F_MODRM | F_MODRM_REG | F_MODRM_RM),			    (VEX | VEX_W0 | VEX_0F | VEX_2OPND         ), (NO_EVEX), 1,  1, { 0x99, 0x00, 0x00 }, 4, 1, MOD_REG_REG, 0, 0,  0, (X32 | X64), REG_DST, NO_PREFIX, NO_IMM, NO_MEM,         P_686 | P_AVX, 0, NULL },
+	{ "ktestd",    2, { R_K,  R_K              }, EVX1, (F_MODRM | F_MODRM_REG | F_MODRM_RM),			    (VEX | VEX_W1 | VEX_0F | VEX_66 | VEX_2OPND), (NO_EVEX), 1,  1, { 0x99, 0x00, 0x00 }, 4, 1, MOD_REG_REG, 0, 0,  0, (X32 | X64), REG_DST, NO_PREFIX, NO_IMM, NO_MEM,         P_686 | P_AVX, 0, NULL },
+	{ "ktestq",    2, { R_K,  R_K              }, EVX1, (F_MODRM | F_MODRM_REG | F_MODRM_RM),			    (VEX | VEX_W1 | VEX_0F | VEX_2OPND         ), (NO_EVEX), 1,  1, { 0x99, 0x00, 0x00 }, 4, 1, MOD_REG_REG, 0, 0,  0, (X32 | X64), REG_DST, NO_PREFIX, NO_IMM, NO_MEM,         P_686 | P_AVX, 0, NULL },
 };
