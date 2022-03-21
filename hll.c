@@ -1236,7 +1236,7 @@ static ret_code ForInitAndNext(struct asm_tok tokenarray[], int cnt, char* buff)
         param[a] = '\0';
         //end of param
         //is it simple operator
-        if ((buff[b + 1] == '+') || (buff[b + 1] == '-')) {            //if ++ or -- finish it here
+        if (((buff[b + 1] == '+') || (buff[b + 1] == '-')) && buff[b] != '=') {            //if ++ or -- finish it here
             param[a] = '\0';
             if ((buff[b] == '+') && (buff[b + 1] == '+')) strcpy(codebuff, " inc ");
             else if ((buff[b] == '-') && (buff[b + 1] == '-')) strcpy(codebuff, " dec ");
