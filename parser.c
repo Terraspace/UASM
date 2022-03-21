@@ -438,6 +438,7 @@ static bool IsScalarSimdInstr(enum instr_token instr)
 	case T_VSUBSD:
 	case T_VUCOMISS:
 	case T_VUCOMISD:
+    case T_VPBROADCASTD:
 		result = TRUE;
 		break;
 	default:
