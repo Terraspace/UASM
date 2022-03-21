@@ -185,7 +185,7 @@ ret_code StructDirective( int i, struct asm_tok tokenarray[] )
         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].string_ptr ) );
     }
 
-    alignment = ( 1 << ModuleInfo.fieldalign );
+    alignment = (1 << ModuleInfo.fieldalign);
 
     i++; /* go past STRUCT/UNION */
 
@@ -1325,6 +1325,12 @@ struct asym *CreateStructField( int loc, struct asm_tok tokenarray[], const char
          vartype->typekind == TYPE_UNION ) ) {
         size = vartype->max_mbr_size;
     }
+    /* UASM 2.55 Fix nested struct/union declared via a typedef and it's application with fieldalign*/
+    else if (mem_type == MT_TYPE && vartype->typekind == TYPE_TYPEDEF && vartype->ttype != NULL &&
+        (vartype->ttype->sym.typekind == TYPE_STRUCT || vartype->ttype->sym.typekind == TYPE_UNION)) {
+        size = vartype->ttype->sym.max_mbr_size;
+    }
+    
 #endif
     /* align the field if an alignment argument was given */
     if ( si->alignment > 1 ) {
