@@ -590,6 +590,7 @@ static void output_opc(struct code_info *CodeInfo)
     }
 
 
+
   /* If there is no decoflags then it is AVX2 instruction with 3 parameters, Uasm 2.15 */
   if (CodeInfo->token >= T_VBROADCASTSS && CodeInfo->token <= T_VPBROADCASTMW2D)
       {
@@ -3365,7 +3366,21 @@ ret_code codegen( struct code_info *CodeInfo, uint_32 oldofs )
                CodeInfo->rm_byte, CodeInfo->sib,
                CodeInfo->prefix.rex, CodeInfo->prefix.opsiz ));
 #endif
-	
+
+    /* UASM 2.55 - Validate the proper usage of CRC32 and warn of no memory sizing */
+    if (CodeInfo->token == T_CRC32)
+    {
+        if ( ((CodeInfo->opnd[0].type & OP_R64) != 0 && (CodeInfo->opnd[1].type & OP_R16) != 0) || 
+             ((CodeInfo->opnd[0].type & OP_R64) != 0 && (CodeInfo->opnd[1].type & OP_R32) != 0))
+        {
+            EmitError(INVALID_INSTRUCTION_OPERANDS);
+        }
+        if (CodeInfo->opnd[1].type == OP_M) 
+        {
+            EmitWarn(2, SIZE_NOT_SPECIFIED_ASSUMING, "BYTE");
+        }
+    }
+
     /* UASM 2.50 error for movq xmmN,r32 */
     if (CodeInfo->token == T_MOVQ && CodeInfo->opnd[0].type == OP_XMM)
     {

@@ -1,5 +1,5 @@
 ;
-; AVX-2
+; EVEX KTEST
 ;
     .x64
     .model flat

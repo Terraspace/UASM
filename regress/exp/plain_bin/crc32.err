@@ -1,0 +1,4 @@
+..\src\plain_bin\crc32.asm(15) : Warning A4073: Size not specified, assuming: BYTE
+..\src\plain_bin\crc32.asm(17) : Warning A4073: Size not specified, assuming: BYTE
+..\src\plain_bin\crc32.asm(21) : Error A2049: Invalid instruction operands
+..\src\plain_bin\crc32.asm(22) : Error A2049: Invalid instruction operands
