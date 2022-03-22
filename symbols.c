@@ -231,6 +231,7 @@ struct asym *SymAlloc( const char *name )
     memset( sym, 0, sizeof( struct dsym ) );
 	sym->isClass = FALSE;
 	sym->isCOM = FALSE;
+    sym->altname = 0;
 #if 1
     /* the tokenizer ensures that identifiers are within limits, so
      * this check probably is redundant */

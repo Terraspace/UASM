@@ -1046,7 +1046,7 @@ static void PassOneChecks( void )
          * "elsewhere" ).
          */
 #if FASTPASS
-        if ( curr->sym.altname ) 
+        if ( curr->sym.altname > 1 ) 
 		{
             if ( curr->sym.altname->state == SYM_INTERNAL ) 
 			{
