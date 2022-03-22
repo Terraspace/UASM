@@ -1046,6 +1046,7 @@ static void PassOneChecks( void )
          * "elsewhere" ).
          */
 #if FASTPASS
+        /* UASM 2.55 , altname is set to 1 when the type is undefined */
         if ( curr->sym.altname > 1 ) 
 		{
             if ( curr->sym.altname->state == SYM_INTERNAL ) 
@@ -1080,10 +1081,9 @@ static void PassOneChecks( void )
     }
 #endif
 
-    if ( ModuleInfo.g.error_count == 0 ) {
-
-        /* make all symbols of type SYM_INTERNAL, which aren't
-         a constant, public.  */
+    if ( ModuleInfo.g.error_count == 0 ) 
+    {
+        /* make all symbols of type SYM_INTERNAL, which aren't a constant, public.  */
         if ( Options.all_symbols_public )
             SymMakeAllSymbolsPublic();
 
@@ -1093,7 +1093,6 @@ static void PassOneChecks( void )
         if ( ModuleInfo.g.Pass1Checks )
             ModuleInfo.g.Pass1Checks( &ModuleInfo );
     }
-
 
     return;
 }

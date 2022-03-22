@@ -5,6 +5,7 @@
 *  ========================================================================
 *
 * Description:	Generate CodeView symbolic debug info ( Version 4 format )
+* also see: https://github.com/microsoft/microsoft-pdb/blob/master/cvdump/cvdump.cpp
 *
 ****************************************************************************/
 
