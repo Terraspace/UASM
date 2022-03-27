@@ -1434,6 +1434,10 @@ void cv_write_debug_tables(struct dsym* symbols, struct dsym* types, void* pv)
 				CV_DebugSLinesFileBlockHeader_t* File;
 				struct line_num_info* Queue;
 
+				if (cv.section) {
+					cv_align(&cv);
+				}
+
 				p = cv_FlushSection(&cv, 0x000000F2,
 					sizeof(CV_DebugSLinesHeader_t) + sizeof(CV_DebugSLinesFileBlockHeader_t));
 
@@ -1454,10 +1458,10 @@ void cv_write_debug_tables(struct dsym* symbols, struct dsym* types, void* pv)
 				Queue = (struct line_num_info*)((struct qdesc*)seg->e.seginfo->LinnumQueue)->head;
 
 				while (Queue) {
-
 					CV_Line_t* Line;
 					CV_Line_t* Prev;
 					int fileStart = Queue->srcfile;
+					int maxOfs = 0;
 
 					if (Queue->number == 0)
 						fileStart = Queue->file;
@@ -1476,12 +1480,35 @@ void cv_write_debug_tables(struct dsym* symbols, struct dsym* types, void* pv)
 							offset = Queue->sym->offset;
 						}
 						else {
+							/* UASM 2.55 - move to next src file */
+							if (Queue->srcfile != fileCur) {
+								
+								Header->cbCon = maxOfs+1 - Header->offCon;
+
+								p = cv_FlushSection(&cv, 0x000000F2,
+									sizeof(CV_DebugSLinesHeader_t) + sizeof(CV_DebugSLinesFileBlockHeader_t));
+
+								p += sizeof(CV_SECTION);
+								Header = (CV_DebugSLinesHeader_t*)p;
+								p += sizeof(CV_DebugSLinesHeader_t);
+								File = (CV_DebugSLinesFileBlockHeader_t*)p;
+
+								Header->offCon = maxOfs + 1;
+								Header->segCon = 1;
+								Header->flags = 0;
+								Header->cbCon = seg->sym.max_offset - Header->offCon;
+								File->offFile = cv.files[Queue->srcfile].offset;
+								File->cbBlock = 12;
+								File->nLines = 0;
+								Prev = NULL;
+							}
 							fileCur = Queue->srcfile;
 							linenum = Queue->number;
 							offset = Queue->line_number;
+							if (offset > maxOfs) maxOfs = offset;
 						}
-						if (fileStart != fileCur)
-							break;
+						//if (fileStart != fileCur)
+						//	break;
 
 						if (Prev) {
 							if (offset < Prev->offset)
@@ -1499,7 +1526,7 @@ void cv_write_debug_tables(struct dsym* symbols, struct dsym* types, void* pv)
 						File->nLines++;
 						File->cbBlock += 8;
 
-						Line->offset = offset;
+						Line->offset = offset - Header->offCon;
 						Line->linenumStart = linenum;
 						Line->deltaLineEnd = 0;
 						Line->fStatement = 1;
