@@ -1461,7 +1461,6 @@ void cv_write_debug_tables(struct dsym* symbols, struct dsym* types, void* pv)
 					CV_Line_t* Line;
 					CV_Line_t* Prev;
 					int fileStart = Queue->srcfile;
-					int maxOfs = 0;
 
 					if (Queue->number == 0)
 						fileStart = Queue->file;
@@ -1470,9 +1469,12 @@ void cv_write_debug_tables(struct dsym* symbols, struct dsym* types, void* pv)
 					File->cbBlock = 12;
 					Prev = NULL;
 
+					int fileCur = fileStart;
+					int fs = Queue->line_number;
+
 					for (; Queue; Queue = Queue->next) {
 
-						int fileCur, linenum, offset;
+						int linenum, offset;
 
 						if (Queue->number == 0) {
 							fileCur = Queue->file;
@@ -1483,7 +1485,8 @@ void cv_write_debug_tables(struct dsym* symbols, struct dsym* types, void* pv)
 							/* UASM 2.55 - move to next src file */
 							if (Queue->srcfile != fileCur) {
 								
-								Header->cbCon = maxOfs+1 - Header->offCon;
+								Header->cbCon = offset+4-fs;
+								fs = Queue->line_number;
 
 								p = cv_FlushSection(&cv, 0x000000F2,
 									sizeof(CV_DebugSLinesHeader_t) + sizeof(CV_DebugSLinesFileBlockHeader_t));
@@ -1493,10 +1496,10 @@ void cv_write_debug_tables(struct dsym* symbols, struct dsym* types, void* pv)
 								p += sizeof(CV_DebugSLinesHeader_t);
 								File = (CV_DebugSLinesFileBlockHeader_t*)p;
 
-								Header->offCon = maxOfs + 1;
+								Header->offCon = 0x800+fs;
 								Header->segCon = 1;
 								Header->flags = 0;
-								Header->cbCon = seg->sym.max_offset - Header->offCon;
+								Header->cbCon = seg->sym.max_offset;
 								File->offFile = cv.files[Queue->srcfile].offset;
 								File->cbBlock = 12;
 								File->nLines = 0;
@@ -1505,18 +1508,15 @@ void cv_write_debug_tables(struct dsym* symbols, struct dsym* types, void* pv)
 							fileCur = Queue->srcfile;
 							linenum = Queue->number;
 							offset = Queue->line_number;
-							if (offset > maxOfs) maxOfs = offset;
 						}
-						//if (fileStart != fileCur)
-						//	break;
 
-						if (Prev) {
+						/*if (Prev) {
 							if (offset < Prev->offset)
 								continue;
 							if (offset == Prev->offset &&
 								linenum == Prev->linenumStart)
 								continue;
-						}
+						}*/
 
 						cv.ps = checkflush(cv.symbols, cv.ps, sizeof(CV_Line_t), cv.param);
 						Line = (CV_Line_t*)cv.ps;
@@ -1526,7 +1526,7 @@ void cv_write_debug_tables(struct dsym* symbols, struct dsym* types, void* pv)
 						File->nLines++;
 						File->cbBlock += 8;
 
-						Line->offset = offset - Header->offCon;
+						Line->offset = offset-fs;
 						Line->linenumStart = linenum;
 						Line->deltaLineEnd = 0;
 						Line->fStatement = 1;
