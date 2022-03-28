@@ -517,8 +517,7 @@ static ret_code DoFixup( struct dsym *curr, struct calc_param *cp )
 #endif
                 } 
                 /* UASM 2.55 - Fixup in plain bin that refers to an inter-segment symbol should only use it's offset relative to seg start */
-                else if ((ModuleInfo.sub_format == SFORMAT_NONE || ModuleInfo.sub_format == SFORMAT_64BIT) && Options.output_format == OFORMAT_BIN &&
-                    curr != seg) 
+                else if (ModuleInfo.sub_format == SFORMAT_64BIT && Options.output_format == OFORMAT_BIN && curr != seg) 
                 {
                     value = offset + cp->imagebase;
                     value64 = offset + cp->imagebase64;
