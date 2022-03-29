@@ -1485,7 +1485,7 @@ void cv_write_debug_tables(struct dsym* symbols, struct dsym* types, void* pv)
 							/* UASM 2.55 - move to next src file */
 							if (Queue->srcfile != fileCur) {
 								
-								Header->cbCon = offset+4-fs;
+								Header->cbCon = offset-fs;
 								fs = Queue->line_number;
 
 								p = cv_FlushSection(&cv, 0x000000F2,
