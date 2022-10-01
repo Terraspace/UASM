@@ -17,6 +17,7 @@
 #include <coff.h>
 #include <fixup.h>
 #include <dbgcv.h>
+#include "omfspec.h"
 #include <linnum.h>
 #ifdef __UNIX__
 #include <unistd.h>
@@ -1343,6 +1344,7 @@ void cv_write_debug_tables(struct dsym* symbols, struct dsym* types, void* pv)
 		COMPILESYM3* Uasm;
 		ENVBLOCKSYM* EnvBlock;
 		int q;
+		int baseOfs = 0;
 
 		cv.files = LclAlloc(ModuleInfo.g.cnt_fnames * sizeof(cv_file));
 		for (i = 0; i < ModuleInfo.g.cnt_fnames; i++) {
@@ -1413,7 +1415,6 @@ void cv_write_debug_tables(struct dsym* symbols, struct dsym* types, void* pv)
 		lineTable += (((cv.section->length + 3) & ~3) + sizeof(CV_SECTION) + 12);
 
 		if (CV8Label) {
-
 			int_32 data = 0;
 			fixup = CreateFixup(CV8Label, FIX_OFF32_SECREL, OPTJ_NONE);
 			fixup->locofs = lineTable;
@@ -1426,7 +1427,13 @@ void cv_write_debug_tables(struct dsym* symbols, struct dsym* types, void* pv)
 		/* line numbers for section */
 		for (seg = SymTables[TAB_SEG].head; seg; seg = seg->next) {
 
-			cv.section = NULL;
+			/* don't write section data for bss and uninitialized stack segments */
+			if (seg->e.seginfo->combine == COMB_STACK && seg->e.seginfo->bytes_written == 0)
+				continue;
+			if (seg->e.seginfo->segtype == SEGTYPE_BSS)
+				continue;
+
+			//cv.section = NULL;       // ???
 
 			if (seg->e.seginfo->LinnumQueue) {
 
@@ -1438,8 +1445,7 @@ void cv_write_debug_tables(struct dsym* symbols, struct dsym* types, void* pv)
 					cv_align(&cv);
 				}
 
-				p = cv_FlushSection(&cv, 0x000000F2,
-					sizeof(CV_DebugSLinesHeader_t) + sizeof(CV_DebugSLinesFileBlockHeader_t));
+				p = cv_FlushSection(&cv, 0x000000F2, sizeof(CV_DebugSLinesHeader_t) + sizeof(CV_DebugSLinesFileBlockHeader_t));
 
 				p += sizeof(CV_SECTION);
 				Header = (CV_DebugSLinesHeader_t*)p;
@@ -1449,7 +1455,7 @@ void cv_write_debug_tables(struct dsym* symbols, struct dsym* types, void* pv)
 				Header->offCon = 0;
 				Header->segCon = 0;
 				Header->flags = 0;
-				Header->cbCon = seg->sym.max_offset;
+				Header->cbCon = seg->sym.max_offset; /* cbCon controls the size? if wrong.. get out of bounds warning with cvdump */
 
 				File->offFile = 0;
 				File->nLines = 0;
@@ -1470,7 +1476,6 @@ void cv_write_debug_tables(struct dsym* symbols, struct dsym* types, void* pv)
 					Prev = NULL;
 
 					int fileCur = fileStart;
-					int fs = Queue->line_number;
 
 					for (; Queue; Queue = Queue->next) {
 
@@ -1480,26 +1485,36 @@ void cv_write_debug_tables(struct dsym* symbols, struct dsym* types, void* pv)
 							fileCur = Queue->file;
 							linenum = Queue->line_number;
 							offset = Queue->sym->offset;
+							continue;
 						}
 						else {
 							/* UASM 2.55 - move to next src file */
 							if (Queue->srcfile != fileCur) {
 								
-								Header->cbCon = offset-fs;
-								fs = Queue->line_number;
+								Header->cbCon = Queue->line_number - baseOfs;
+								Header->offCon = baseOfs;
+	
+								lineTable += (((cv.section->length + 3) & ~3) + sizeof(CV_SECTION));
+								if (CV8Label) {
+									int_32 data = 0;
+									fixup = CreateFixup(CV8Label, FIX_OFF32_SECREL, OPTJ_NONE);
+									fixup->locofs = lineTable;
+									store_fixup(fixup, cv.symbols, &data);
+									fixup = CreateFixup(CV8Label, FIX_SEG, OPTJ_NONE);
+									fixup->locofs = lineTable + 4;
+									store_fixup(fixup, cv.symbols, &data);
+								}
 
-								p = cv_FlushSection(&cv, 0x000000F2,
-									sizeof(CV_DebugSLinesHeader_t) + sizeof(CV_DebugSLinesFileBlockHeader_t));
+								p = cv_FlushSection(&cv, 0x000000F2, sizeof(CV_DebugSLinesHeader_t) + sizeof(CV_DebugSLinesFileBlockHeader_t));
 
 								p += sizeof(CV_SECTION);
 								Header = (CV_DebugSLinesHeader_t*)p;
 								p += sizeof(CV_DebugSLinesHeader_t);
 								File = (CV_DebugSLinesFileBlockHeader_t*)p;
-
-								Header->offCon = 0x800+fs;
-								Header->segCon = 1;
+								
+								baseOfs += Queue->line_number; 
+								Header->segCon = 0;
 								Header->flags = 0;
-								Header->cbCon = seg->sym.max_offset;
 								File->offFile = cv.files[Queue->srcfile].offset;
 								File->cbBlock = 12;
 								File->nLines = 0;
@@ -1510,28 +1525,31 @@ void cv_write_debug_tables(struct dsym* symbols, struct dsym* types, void* pv)
 							offset = Queue->line_number;
 						}
 
-						/*if (Prev) {
-							if (offset < Prev->offset)
-								continue;
-							if (offset == Prev->offset &&
-								linenum == Prev->linenumStart)
-								continue;
-						}*/
+						/* It's possible that more than one source line correspond to the same offset, when the source line itself doesn't generate any output in the section */
+						if (Queue->next && Queue->next->line_number == offset && linenum < Queue->next->number) {
+							continue;
+						}
 
 						cv.ps = checkflush(cv.symbols, cv.ps, sizeof(CV_Line_t), cv.param);
 						Line = (CV_Line_t*)cv.ps;
 						cv.ps += sizeof(CV_Line_t);
 						cv.section->length += sizeof(CV_Line_t);
+						seg->e.seginfo->num_linnums++;
 
 						File->nLines++;
 						File->cbBlock += 8;
 
-						Line->offset = offset-fs;
+						Line->offset = offset - baseOfs;
 						Line->linenumStart = linenum;
 						Line->deltaLineEnd = 0;
 						Line->fStatement = 1;
 						Prev = Line;
 					}
+
+					/* Finalize last line queue record*/
+					Header->cbCon = seg->sym.max_offset - baseOfs;
+					Header->offCon = baseOfs;
+
 				}
 			}
 		}
