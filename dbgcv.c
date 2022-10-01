@@ -1512,7 +1512,7 @@ void cv_write_debug_tables(struct dsym* symbols, struct dsym* types, void* pv)
 								p += sizeof(CV_DebugSLinesHeader_t);
 								File = (CV_DebugSLinesFileBlockHeader_t*)p;
 								
-								baseOfs += Queue->line_number; 
+								baseOfs = Queue->line_number; 
 								Header->segCon = 0;
 								Header->flags = 0;
 								File->offFile = cv.files[Queue->srcfile].offset;
