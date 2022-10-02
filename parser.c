@@ -951,6 +951,13 @@ ret_code segm_override( const struct expr *opndx, struct code_info *CodeInfo )
     return( NOT_ERROR );
 }
 
+static char fits32(int_64 val) {
+    uint64_t top = ((uint64_t)val) >> 32;
+    if (top == 0 || top == 0x00000000ffffffff)
+        return TRUE;
+    return FALSE;
+}
+
 /* get an immediate operand without a fixup.
  * output:
  * - ERROR: error
@@ -976,7 +983,7 @@ static ret_code idata_nofixup( struct code_info *CodeInfo, unsigned CurrOpnd, co
     CodeInfo->opnd[CurrOpnd].data32l = value;
 
 	/* 64bit immediates are restricted to MOV <reg>,<imm64> */
-	if (opndx->value64 > 0xFFFFFFFF && (CodeInfo->token != T_MOV || 
+	if (fits32(opndx->value64)==0 && (CodeInfo->token != T_MOV || 
 		(CodeInfo->token == T_MOV && (CodeInfo->opnd[OPND1].type & OP_R64) == 0) ))
 	{ 
 		/* magnitude > 64 bits? */
