@@ -648,8 +648,9 @@ static void macho_build_structures( struct module_info *modinfo, struct macho_mo
 	/* Write out symbol table entries */
 	for (currStr = mm.strings;currStr;currStr = currStr->next)
 	{
-		if (!currStr->sym->used && !currStr->sym->ispublic)
-			continue;
+		/* UASM 2.56, just because it's not public and not used, doesn't mean we shouldn't write it out */
+		/*if (!currStr->sym->used && !currStr->sym->ispublic)
+			continue;*/
 
 		memset(&symEntry, 0, sizeof(struct nlist_64));
 
