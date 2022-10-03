@@ -3453,7 +3453,7 @@ ret_code codegen( struct code_info *CodeInfo, uint_32 oldofs )
                 retcode = check_operand_2( CodeInfo, CodeInfo->opnd[OPND1].type );
                 break;
             }
-            if( retcode == NOT_ERROR) {
+            if(retcode == NOT_ERROR) {
                 if (CurrFile[LST])
                 {
                     LstWrite(LSTTYPE_CODE, oldofs, NULL);

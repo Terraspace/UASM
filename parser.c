@@ -951,6 +951,7 @@ ret_code segm_override( const struct expr *opndx, struct code_info *CodeInfo )
     return( NOT_ERROR );
 }
 
+/* UASM 2.56 - improved check if an immediate fits in 32bits */
 static char fits32(int_64 val) {
     uint64_t top = ((uint64_t)val) >> 32;
     if (top == 0 || top == 0x00000000ffffffff)
@@ -3312,7 +3313,7 @@ ret_code ParseLine(struct asm_tok tokenarray[]) {
 				}
 
 				/* v2.0: for generated code it's important that list file is written in ALL passes, to update file position! */
-				if (ModuleInfo.list && (Parse_Pass == PASS_1 || ModuleInfo.GeneratedCode || UseSavedState == FALSE))
+				if (ModuleInfo.list && (Parse_Pass == PASS_2 || ModuleInfo.GeneratedCode || UseSavedState == FALSE))
 					LstWriteSrcLine();
 				return(temp);
 

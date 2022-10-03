@@ -281,6 +281,8 @@ static void SetLocalOffsets_RBP(struct proc_info *info);
 static void pop_register(uint_16 *regist);
 static void WriteSEHData(struct dsym *proc);
 
+static void SetLocalOffsets_RBP_SYSV(struct proc_info* info);
+
 #if OWFC_SUPPORT
 /* register usage for OW fastcall (register calling convention).
 * registers are used for parameter size 1,2,4,8.
@@ -2163,8 +2165,7 @@ static void ProcFini(struct dsym *proc)
 #if FASTPASS
 		LstSetPosition(); /* needed if generated code is done BEFORE the line is listed */
 #endif
-						  /* Don't attempt to write SEH data for SYSTEM V calls */
-		if (proc->sym.langtype != LANG_SYSVCALL)
+		if(proc->sym.langtype != LANG_SYSVCALL)
 			WriteSEHData(proc);
 	}
 #endif
@@ -2175,10 +2176,15 @@ static void ProcFini(struct dsym *proc)
 	if (Parse_Pass == PASS_1) {
 		/* in case the procedure is empty, init addresses of local variables ( for proper listing ) */
 		if (ProcStatus & PRST_PROLOGUE_NOT_DONE) {
-			if (ModuleInfo.basereg[USE64] == T_RSP)
+			if (ModuleInfo.basereg[USE64] == T_RSP) {
 				SetLocalOffsets_RSP(CurrProc->e.procinfo);
-			else
+			}
+			else if (proc->sym.langtype == LANG_SYSVCALL) {
+				SetLocalOffsets_RBP_SYSV(CurrProc->e.procinfo);
+			}
+			else {
 				SetLocalOffsets_RBP(CurrProc->e.procinfo);
+			}
 		}
 		SymGetLocal((struct asym *)CurrProc);
 	}
@@ -4885,6 +4891,7 @@ runqueue:
 	*/
 	oldlinenumbers = Options.line_numbers;
 	Options.line_numbers = FALSE; /* temporarily disable line numbers */
+	UseSavedState = FALSE;
 	RunLineQueue();
 	Options.line_numbers = oldlinenumbers;
 
