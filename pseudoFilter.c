@@ -114,7 +114,7 @@ int get_pseudoVCMPXX(char* dst, char* p1, int index)
 /******************************************************************/
 {
   int i;
-
+  bool hadComment = FALSE;
   switch (index) {
   case T_VCMPEQPD:
   case T_VCMPLTPD:
@@ -264,7 +264,13 @@ int get_pseudoVCMPXX(char* dst, char* p1, int index)
   memcpy(p1, dst, 6);
   for (p1 += 6; *p1 > ' '; p1++)
     * p1 = ' ';
-  while (*p1) p1++;
+  while (*p1) {
+      if (*p1 == ';') {
+          hadComment = TRUE;
+          break;
+      }
+      p1++;
+  }
   *(p1)++ = ',';
   if (i <= 9) {
     *(p1)++ = i + 0x30;
@@ -279,27 +285,47 @@ int get_pseudoVCMPXX(char* dst, char* p1, int index)
 int get_pseudoPCLMULXX(char* dst, char* p1, int index)
 /******************************************************************/
 {
-  strcpy(dst, "pclmulqdq");
-  memcpy(p1, dst, 9);
-  for (p1 += 9; *p1 > ' '; p1++)
-    * p1 = ' ';
-  while (*p1) p1++;
-  *(p1)++ = ',';
-  switch (index) {
-  case T_PCLMULLQLQDQ:
-    *(p1)++ = '0';
-    break;
+    bool hadComment = FALSE;
+    strcpy(dst, "pclmulqdq");
+    memcpy(p1, dst, 9);
+    for (p1 += 9; *p1 > ' '; p1++)
+        * p1 = ' ';
+    while (*p1)
+    {
+        if (*p1 == ';') {
+            hadComment = TRUE;
+            break;
+        }
+        p1++;
+    } 
+    *(p1)++ = ',';
+    switch (index) {
+    case T_PCLMULLQLQDQ:
+        *(p1)++ = '0';
+        if (hadComment) {
+            *(p1)++ = ';';
+        }
+        break;
   case T_PCLMULHQLQDQ:
-    *(p1)++ = '1';
-    break;
+        *(p1)++ = '1';
+        if (hadComment) {
+            *(p1)++ = ';';
+        }
+        break;
   case T_PCLMULLQHQDQ:
-    *(p1)++ = '1';
-    *(p1)++ = '6';
-    break;
+        *(p1)++ = '1';
+        *(p1)++ = '6';
+        if (hadComment) {
+            *(p1)++ = ';';
+        }
+        break;
   case T_PCLMULHQHQDQ:
-    *(p1)++ = '1';
-    *(p1)++ = '7';
-    break;
+        *(p1)++ = '1';
+        *(p1)++ = '7';
+        if (hadComment) {
+            *(p1)++ = ';';
+        }
+        break;
   }
   index = T_PCLMULQDQ;
   *p1 = 0;
@@ -309,31 +335,50 @@ int get_pseudoPCLMULXX(char* dst, char* p1, int index)
 int get_pseudoVPCLMULXX(char* dst, char* p1, int index)
 /******************************************************************/
 {
-  strcpy(dst, "vpclmulqdq");
-  memcpy(p1, dst, 10);
-  for (p1 += 10; *p1 > ' '; p1++)
-    * p1 = ' ';
-  while (*p1) p1++;
-  *(p1)++ = ',';
-  switch (index) {
-  case T_VPCLMULLQLQDQ:
-    *(p1)++ = '0';
-    break;
-  case T_VPCLMULHQLQDQ:
-    *(p1)++ = '1';
-    break;
-  case T_VPCLMULLQHQDQ:
-    *(p1)++ = '1';
-    *(p1)++ = '6';
-    break;
-  case T_VPCLMULHQHQDQ:
-    *(p1)++ = '1';
-    *(p1)++ = '7';
-    break;
-  }
-  index = T_VPCLMULQDQ;
-  *p1 = 0;
-  return index;
+    bool hadComment = FALSE;
+    strcpy(dst, "vpclmulqdq");
+    memcpy(p1, dst, 10);
+    for (p1 += 10; *p1 > ' '; p1++)
+        * p1 = ' ';
+    while (*p1) {
+        if (*p1 == ';') {
+            hadComment = TRUE;
+            break;
+        }
+        p1++;
+    }
+    *(p1)++ = ',';
+    switch (index) {
+    case T_VPCLMULLQLQDQ:
+        *(p1)++ = '0';
+        if (hadComment) {
+            *(p1)++ = ';';
+        }
+        break;
+    case T_VPCLMULHQLQDQ:
+        *(p1)++ = '1';
+        if (hadComment) {
+            *(p1)++ = ';';
+        }
+        break;
+    case T_VPCLMULLQHQDQ:
+        *(p1)++ = '1';
+        *(p1)++ = '6';
+        if (hadComment) {
+            *(p1)++ = ';';
+        }
+        break;
+    case T_VPCLMULHQHQDQ:
+        *(p1)++ = '1';
+        *(p1)++ = '7';
+        if (hadComment) {
+            *(p1)++ = ';';
+        }
+        break;
+    }
+    index = T_VPCLMULQDQ;
+    *p1 = 0;
+    return index;
 }
 
 
