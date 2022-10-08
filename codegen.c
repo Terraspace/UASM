@@ -2671,7 +2671,7 @@ static void output_opc(struct code_info *CodeInfo)
     return;
 }
 
-static void output_data(const struct code_info *CodeInfo, enum operand_type determinant, int index)
+static void output_data(struct code_info *CodeInfo, enum operand_type determinant, int index)
 /***************************************************************************************************/
 /*
  * output address displacement and immediate data;
@@ -2821,8 +2821,8 @@ static void output_data(const struct code_info *CodeInfo, enum operand_type dete
   			CodeInfo->opnd[index].InsFixup->locofs = GetCurrOffset();
 			if(CodeInfo->isptr)
 				OutputBytes((unsigned char *)&CodeInfo->opnd[index].data32l, size, NULL);
-			else
-				OutputBytes((unsigned char *)&CodeInfo->opnd[index].data32l, size, CodeInfo->opnd[index].InsFixup);
+            else
+                OutputBytes((unsigned char*)&CodeInfo->opnd[index].data32l, size, CodeInfo->opnd[index].InsFixup);
           return;
         }
       }
@@ -3280,10 +3280,10 @@ static ret_code check_operand_2( struct code_info *CodeInfo, enum operand_type o
 
         output_opc( CodeInfo );
         output_data( CodeInfo, opnd1, OPND1 );
-#if AMD64_SUPPORT
+
         if ( CodeInfo->Ofssize == USE64 && CodeInfo->opnd[OPND1].InsFixup && CodeInfo->opnd[OPND1].InsFixup->type == FIX_RELOFF32 )
             CodeInfo->opnd[OPND1].InsFixup->addbytes = GetCurrOffset() - CodeInfo->opnd[OPND1].InsFixup->locofs;
-#endif
+
         return( NOT_ERROR );
     }
 

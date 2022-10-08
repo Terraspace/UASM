@@ -198,16 +198,26 @@ static ret_code coff_write_section_table( struct module_info *modinfo, struct co
          */
         if ( curr->e.seginfo->FixupList.head ) {
             for ( fix = curr->e.seginfo->FixupList.head; fix ; fix = fix->nextrlc ) {
-                if ( fix->sym == NULL ) {
-                    if ( fix->type == FIX_RELOFF32 ) {
-                        uint_32 *cp = (uint_32 *)( curr->e.seginfo->CodeBuffer + (fix->locofs - curr->e.seginfo->start_loc ));
+
+                if (fix->sym == NULL) {
+                    if (fix->type == FIX_RELOFF32) {
+                        uint_32* cp = (uint_32*)(curr->e.seginfo->CodeBuffer + (fix->locofs - curr->e.seginfo->start_loc));
                         uint_32 src = fix->locofs + fix->addbytes;
                         (*cp) -= src;
                     }
                     fix->type = FIX_VOID;
                     continue;
                 }
+                /* UASM 2.56 For RIP relative addresses in the same section, we don't want a COFF fixup */
+                else if (fix->sym && curr->e.seginfo->Ofssize == USE64 && curr == fix->sym->segment && fix->type == FIX_RELOFF32 && fix->sym->isdefined) {
+                    uint_32* cp = (uint_32*)(curr->e.seginfo->CodeBuffer + (fix->locofs - curr->e.seginfo->start_loc));
+                    uint_32 src = fix->sym->offset - (fix->locofs + fix->addbytes);
+                    (*cp) += src;
+                    fix->type = FIX_VOID;
+                    continue;
+                }
                 curr->e.seginfo->num_relocs++;
+
             }
             fileoffset = (fileoffset + 1) & ~1;
             ish.PointerToRelocations = fileoffset;
@@ -874,14 +884,20 @@ static void coff_write_fixups( struct dsym *section, uint_32 *poffset, uint_32 *
                    fix->sym->included == FALSE &&
                    fix->sym->ispublic == FALSE ) {
             fix->sym->included = TRUE;
-            AddPublicData( fix->sym );
+            AddPublicData(fix->sym);
             fix->sym->ext_idx = index++;
-            if ( Options.line_numbers && fix->sym->isproc && Options.debug_symbols != 4 )
+            if (Options.line_numbers && fix->sym->isproc && Options.debug_symbols != 4)
                 index += 6;
         }
-        coff_write_fixup(fix->locofs, fix->sym->ext_idx, type);
-        offset += sizeof(IMAGE_RELOCATION);
-        section->e.seginfo->num_relocs++;
+
+        /* UASM 2.56 For RIP relative addresses in the same section, we don't want a COFF fixup */
+        if (fix->sym && section->e.seginfo->Ofssize == USE64 && section == fix->sym->segment && fix->type == FIX_RELOFF32 && fix->sym->isdefined) {
+        }
+        else {
+            coff_write_fixup(fix->locofs, fix->sym->ext_idx, type);
+            offset += sizeof(IMAGE_RELOCATION);
+            section->e.seginfo->num_relocs++;
+        }
     } /* end for */
 
     *poffset = offset;
@@ -1021,7 +1037,6 @@ static ret_code coff_write_data( struct module_info *modinfo, struct coffmod *cm
 /* check if a .drectve section has to be created.
  * if yes, create it and set its contents.
  */
-
 static void coff_create_drectve( struct module_info *modinfo, struct coffmod *cm )
 /********************************************************************************/
 {
@@ -1151,7 +1166,6 @@ static void coff_create_drectve( struct module_info *modinfo, struct coffmod *cm
 /* Write current object module in COFF format.
  * This function is called AFTER all assembly passes have been done.
  */
-
 static ret_code coff_write_module( struct module_info *modinfo )
 /**************************************************************/
 {

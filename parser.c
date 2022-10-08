@@ -1934,8 +1934,9 @@ static ret_code memory_operand( struct code_info *CodeInfo, unsigned CurrOpnd, s
          * However, CMPSD and MOVSD are also SSE2 opcodes, so the fixups must be generated
          * anyways.
          */
-        if ( CodeInfo->token != T_XLAT && CodeInfo->token != T_XLATB ) 
-            CodeInfo->opnd[CurrOpnd].InsFixup = CreateFixup( sym, fixup_type, OPTJ_NONE );
+        if (CodeInfo->token != T_XLAT && CodeInfo->token != T_XLATB) {
+            CodeInfo->opnd[CurrOpnd].InsFixup = CreateFixup(sym, fixup_type, OPTJ_NONE);
+        }
     }
 
     if( set_rm_sib( CodeInfo, CurrOpnd, ss, index, base, sym ) == ERROR ) 
