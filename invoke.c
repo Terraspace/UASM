@@ -1373,11 +1373,12 @@ static int sysv_fcstart(struct dsym const *proc, int numparams, int start, struc
 	}
 
 	/* Perform stack alignment pre operand setup to ensure stack aligned 16 at point of call */
-	*value = 0;
-	if (CurrProc && CurrProc->e.procinfo->stackAdj % 16 != 0) {
+	/**value = 0;
+	if (proc->e.procinfo->stackAdj % 16 != 0) {
 		AddLineQueueX("sub %r, %u", T_RSP, NUMQUAL 8);
 		*value = 8;
-	}
+	}*/
+
 	if (CurrProc)
 		CurrProc->e.procinfo->stackAdj = 0;
 
@@ -1387,8 +1388,10 @@ static int sysv_fcstart(struct dsym const *proc, int numparams, int start, struc
 static void sysv_fcend(struct dsym const *proc, int numparams, int value)
 /*************************************************************************/
 {
-	if (value != 0)
-		AddLineQueueX("add %r, %d", T_RSP, NUMQUAL value);
+	if (proc->e.procinfo->stackAdj != 0)
+		AddLineQueueX("add %r, %d", T_RSP, NUMQUAL 8);
+
+	proc->e.procinfo->stackAdj = 0;
 	return;
 }
 
@@ -1637,7 +1640,7 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 			else
 				sprintf(info->stackOps[info->stackOpCount++], "push %s", paramvalue);
 			info->stackOfs += 8;
-			if (CurrProc) CurrProc->e.procinfo->stackAdj += 8; // ?
+			info->stackAdj += 8; // ?
 
 		}
 		return(1);
@@ -1684,7 +1687,7 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 		{
 			sprintf(info->stackOps[info->stackOpCount++], "push %s", paramvalue);
 			info->stackOfs += 8;
-			if (CurrProc) CurrProc->e.procinfo->stackAdj += 8; // ?
+			info->stackAdj += 8; // ?
 		}
 		return(1);
 	}
@@ -1747,7 +1750,7 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 					BuildCodeLine(info->stackOps[info->stackOpCount++], "movsx %r, %s", sysv_regTo64(reg), paramvalue);
 				}	
 				info->stackOfs += 8;
-				if (CurrProc) CurrProc->e.procinfo->stackAdj += 8; // ?
+				info->stackAdj += 8; // ?
 			}
 			else if (GetValueSp(reg) & OP_XMM)
 			{
@@ -1814,7 +1817,7 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 			{
 				sprintf(info->stackOps[info->stackOpCount++], "push %s", paramvalue);
 				info->stackOfs += 8;
-				if (CurrProc) CurrProc->e.procinfo->stackAdj += 8; // ?
+				info->stackAdj += 8; // ?
 			}
 			else if (psize == 4)
 			{
@@ -1822,7 +1825,7 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 				BuildCodeLine(info->stackOps[info->stackOpCount++], "movsxd rax, eax");
 				BuildCodeLine(info->stackOps[info->stackOpCount++], "mov eax, %s", paramvalue);
 				info->stackOfs += 8;
-				if (CurrProc) CurrProc->e.procinfo->stackAdj += 8; // ?
+				info->stackAdj += 8; // ?
 			}
 			else if (psize == 2)
 			{
@@ -1830,7 +1833,7 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 				BuildCodeLine(info->stackOps[info->stackOpCount++], "movsx rax, ax");
 				BuildCodeLine(info->stackOps[info->stackOpCount++], "mov ax, %s", paramvalue);
 				info->stackOfs += 8;
-				if (CurrProc) CurrProc->e.procinfo->stackAdj += 8; // ?
+				info->stackAdj += 8; // ?
 			}
 			else if (psize == 1)
 			{
@@ -1838,7 +1841,7 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 				BuildCodeLine(info->stackOps[info->stackOpCount++], "movsx rax, al");
 				BuildCodeLine(info->stackOps[info->stackOpCount++], "mov al, %s", paramvalue);
 				info->stackOfs += 8;
-				if (CurrProc) CurrProc->e.procinfo->stackAdj += 8; // ?
+				info->stackAdj += 8; // ?
 			}
 		}
 		
@@ -1867,7 +1870,7 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 			{
 				sprintf(info->stackOps[info->stackOpCount++], "push %s", paramvalue);
 				info->stackOfs += 8;
-				if (CurrProc) CurrProc->e.procinfo->stackAdj += 8; // ?
+				info->stackAdj += 8; // ?
 			}
 			else if (psize == 4)
 			{
@@ -1875,7 +1878,7 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 				BuildCodeLine(info->stackOps[info->stackOpCount++], "movsxd rax, eax");
 				BuildCodeLine(info->stackOps[info->stackOpCount++], "mov eax, %s", paramvalue);
 				info->stackOfs += 8;
-				if (CurrProc) CurrProc->e.procinfo->stackAdj += 8; // ?
+				info->stackAdj += 8; // ?
 			}
 			else if (psize == 2)
 			{
@@ -1883,7 +1886,7 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 				BuildCodeLine(info->stackOps[info->stackOpCount++], "movsx rax, ax");
 				BuildCodeLine(info->stackOps[info->stackOpCount++], "mov ax, %s", paramvalue);
 				info->stackOfs += 8;
-				if (CurrProc) CurrProc->e.procinfo->stackAdj += 8; // ?
+				info->stackAdj += 8; // ?
 			}
 			else if (psize == 1)
 			{
@@ -1891,7 +1894,7 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 				BuildCodeLine(info->stackOps[info->stackOpCount++], "movsx rax, al");
 				BuildCodeLine(info->stackOps[info->stackOpCount++], "mov al, %s", paramvalue);
 				info->stackOfs += 8;
-				if (CurrProc) CurrProc->e.procinfo->stackAdj += 8; // ?
+				info->stackAdj += 8; // ?
 			}
 		}
 		return(1);
@@ -2001,7 +2004,7 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 			BuildCodeLine(info->stackOps[info->stackOpCount++], "push rax", paramvalue);
 			BuildCodeLine(info->stackOps[info->stackOpCount++], "lea rax, %s", paramvalue);
 			info->stackOfs += 8;
-			if (CurrProc) CurrProc->e.procinfo->stackAdj += 8; // ?
+			info->stackAdj += 8; // ?
 		}
 		return(1);
 	}
@@ -2471,7 +2474,7 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 				BuildCodeLine(info->stackOps[info->stackOpCount++], "push %r", T_RAX);
 				BuildCodeLine(info->stackOps[info->stackOpCount++], "mov %r, %s", T_EAX, paramvalue);
 				info->stackOfs += 8;
-				if (CurrProc) CurrProc->e.procinfo->stackAdj += 8; // ?
+				info->stackAdj += 8; // ?
 				return(1);
 			}
 			if (opnd->kind == EXPR_CONST)
@@ -2487,9 +2490,9 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 				if (GetValueSp(reg) & OP_XMM)
 				{
 					BuildCodeLine(info->stackOps[info->stackOpCount++], "%s [%r], %s", MOVE_SINGLE(), T_RSP, paramvalue);
-					//BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 8", T_RSP);
+					BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 8", T_RSP);
 					info->stackOfs += 8;
-					if (CurrProc) CurrProc->e.procinfo->stackAdj += 8; // ?
+					info->stackAdj += 8; // ?
 					return(1);
 				}
 				else
@@ -2503,9 +2506,9 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 				*regs_used |= (1 << 6);
 				BuildCodeLine(info->stackOps[info->stackOpCount++], "mov [%r], eax", T_RSP);
 				BuildCodeLine(info->stackOps[info->stackOpCount++], "mov eax, dword ptr %s", paramvalue);
-				//BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 8", T_RSP);
+				BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 8", T_RSP);
 				info->stackOfs += 8;
-				if (CurrProc) CurrProc->e.procinfo->stackAdj += 8; // ?
+				info->stackAdj += 8; // ?
 				return(1);
 			}
 			if (opnd->kind == EXPR_ADDR)
@@ -2515,9 +2518,9 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 					*regs_used |= (1 << 6);
 					BuildCodeLine(info->stackOps[info->stackOpCount++], "mov [%r], eax", T_RSP);
 					BuildCodeLine(info->stackOps[info->stackOpCount++], "mov eax, dword ptr %s", paramvalue);
-					//BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 8", T_RSP);
+					BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 8", T_RSP);
 					info->stackOfs += 8;
-					if (CurrProc) CurrProc->e.procinfo->stackAdj += 8; // ?
+					info->stackAdj += 8; // ?
 					return(1);
 				}
 				else
@@ -2542,7 +2545,7 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 				BuildCodeLine(info->stackOps[info->stackOpCount++], "push %r", T_RAX);
 				BuildCodeLine(info->stackOps[info->stackOpCount++], "mov %r, %r ptr %s", T_RAX, T_REAL8, paramvalue);
 				info->stackOfs += 8;
-				if (CurrProc) CurrProc->e.procinfo->stackAdj += 8; // ?
+				info->stackAdj += 8; // ?
 				return(1);
 			}
 			if (opnd->kind == EXPR_CONST)
@@ -2551,7 +2554,7 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 				BuildCodeLine(info->stackOps[info->stackOpCount++], "push %r", T_RAX);
 				BuildCodeLine(info->stackOps[info->stackOpCount++], "mov %r, %r ptr %s.0", T_RAX, T_REAL8, paramvalue);
 				info->stackOfs += 8;
-				if (CurrProc) CurrProc->e.procinfo->stackAdj += 8; // ?
+				info->stackAdj += 8; // ?
 				return(1);
 			}
 			if (opnd->kind == EXPR_REG && opnd->indirect == FALSE)
@@ -2560,9 +2563,9 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 				if (GetValueSp(reg) & OP_XMM)
 				{
 					BuildCodeLine(info->stackOps[info->stackOpCount++], "%s [%r], %s", MOVE_DOUBLE(), T_RSP, paramvalue);
-					//BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 8", T_RSP);
+					BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 8", T_RSP);
 					info->stackOfs += 8;
-					if (CurrProc) CurrProc->e.procinfo->stackAdj += 8; // ?
+					info->stackAdj += 8; // ?
 					return(1);
 				}
 				else
@@ -2576,9 +2579,9 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 				*regs_used |= (1 << 6);
 				BuildCodeLine(info->stackOps[info->stackOpCount++], "mov [%r], rax", T_RSP);
 				BuildCodeLine(info->stackOps[info->stackOpCount++], "mov rax, qword ptr %s", paramvalue);
-				//BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 8", T_RSP);
+				BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 8", T_RSP);
 				info->stackOfs += 8;
-				if (CurrProc) CurrProc->e.procinfo->stackAdj += 8; // ?
+				info->stackAdj += 8; // ?
 				return(1);
 			}
 			if (opnd->kind == EXPR_ADDR)
@@ -2588,9 +2591,9 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 					*regs_used |= (1 << 6);
 					BuildCodeLine(info->stackOps[info->stackOpCount++], "mov [%r], rax", T_RSP);
 					BuildCodeLine(info->stackOps[info->stackOpCount++], "mov rax, qword ptr %s", paramvalue);
-					//BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 8", T_RSP);
+					BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 8", T_RSP);
 					info->stackOfs += 8;
-					if (CurrProc) CurrProc->e.procinfo->stackAdj += 8; // ?
+					info->stackAdj += 8; // ?
 					return(1);
 				}
 				else
@@ -2705,7 +2708,7 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 				else
 					BuildCodeLine(info->stackOps[info->stackOpCount++], "push %s", paramvalue);
 				info->stackOfs += 8;
-				if (CurrProc) CurrProc->e.procinfo->stackAdj += 8; // ?
+				info->stackAdj += 8; // ?
 				return(1);
 			}
 
@@ -2746,7 +2749,7 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 						BuildCodeLine(info->stackOps[info->stackOpCount++], "movsx %r, %s", sysv_regTo64(reg), paramvalue);
 					}
 					info->stackOfs += 8;
-					if (CurrProc) CurrProc->e.procinfo->stackAdj += 8; // ?
+					info->stackAdj += 8; // ?
 				}
 				else if (GetValueSp(reg) & OP_XMM)
 				{
@@ -2815,7 +2818,7 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 				{
 					sprintf(info->stackOps[info->stackOpCount++], "push %s", paramvalue);
 					info->stackOfs += 8;
-					if (CurrProc) CurrProc->e.procinfo->stackAdj += 8; // ?
+					info->stackAdj += 8; // ?
 				}
 				else if (psize == 4)
 				{
@@ -2823,7 +2826,7 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 					BuildCodeLine(info->stackOps[info->stackOpCount++], "movsxd rax, eax");
 					BuildCodeLine(info->stackOps[info->stackOpCount++], "mov eax, %s", paramvalue);
 					info->stackOfs += 8;
-					if (CurrProc) CurrProc->e.procinfo->stackAdj += 8; // ?
+					info->stackAdj += 8; // ?
 				}
 				else if (psize == 2)
 				{
@@ -2831,7 +2834,7 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 					BuildCodeLine(info->stackOps[info->stackOpCount++], "movsx rax, ax");
 					BuildCodeLine(info->stackOps[info->stackOpCount++], "mov ax, %s", paramvalue);
 					info->stackOfs += 8;
-					if (CurrProc) CurrProc->e.procinfo->stackAdj += 8; // ?
+					info->stackAdj += 8; // ?
 				}
 				else if (psize == 1)
 				{
@@ -2839,7 +2842,7 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 					BuildCodeLine(info->stackOps[info->stackOpCount++], "movsx rax, al");
 					BuildCodeLine(info->stackOps[info->stackOpCount++], "mov al, %s", paramvalue);
 					info->stackOfs += 8;
-					if (CurrProc) CurrProc->e.procinfo->stackAdj += 8; // ?
+					info->stackAdj += 8; // ?
 				}
 				return(1);
 			}
@@ -2856,7 +2859,7 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 				{
 					sprintf(info->stackOps[info->stackOpCount++], "push %s", paramvalue);
 					info->stackOfs += 8;
-					if (CurrProc) CurrProc->e.procinfo->stackAdj += 8; // ?
+					info->stackAdj += 8; // ?
 				}
 				else if (psize == 4)
 				{
@@ -2864,7 +2867,7 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 					BuildCodeLine(info->stackOps[info->stackOpCount++], "movsxd rax, eax");
 					BuildCodeLine(info->stackOps[info->stackOpCount++], "mov eax, %s", paramvalue);
 					info->stackOfs += 8;
-					if (CurrProc) CurrProc->e.procinfo->stackAdj += 8; // ?
+					info->stackAdj += 8; // ?
 				}
 				else if (psize == 2)
 				{
@@ -2872,7 +2875,7 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 					BuildCodeLine(info->stackOps[info->stackOpCount++], "movsx rax, ax");
 					BuildCodeLine(info->stackOps[info->stackOpCount++], "mov ax, %s", paramvalue);
 					info->stackOfs += 8;
-					if (CurrProc) CurrProc->e.procinfo->stackAdj += 8; // ?
+					info->stackAdj += 8; // ?
 				}
 				else if (psize == 1)
 				{
@@ -2880,7 +2883,7 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 					BuildCodeLine(info->stackOps[info->stackOpCount++], "movsx rax, al");
 					BuildCodeLine(info->stackOps[info->stackOpCount++], "mov al, %s", paramvalue);
 					info->stackOfs += 8;
-					if (CurrProc) CurrProc->e.procinfo->stackAdj += 8; // ?
+					info->stackAdj += 8; // ?
 				}
 				return(1);
 			}
@@ -2890,7 +2893,7 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 				BuildCodeLine(info->stackOps[info->stackOpCount++], "push %r", T_RAX);
 				BuildCodeLine(info->stackOps[info->stackOpCount++], "lea %r, %s", T_RAX, paramvalue);
 				info->stackOfs += 8;
-				if (CurrProc) CurrProc->e.procinfo->stackAdj += 8; // ?
+				info->stackAdj += 8; // ?
 
 				/* Mark temp register rax as written */
 				*regs_used |= (1 << 6);
@@ -4385,8 +4388,6 @@ ret_code InvokeDirective(int i, struct asm_tok tokenarray[])
 			*(info->stackOps[j]) = NULLC;
 		info->stackOpCount = 0;
 		info->stackOfs = 0;
-		//if (CurrProc)
-			//CurrProc->e.procinfo->stackAdj = 0;
 	}
 
 	memset(info->vregs, 0, 6); /* reset vregs EVERY pass */
@@ -4452,8 +4453,6 @@ ret_code InvokeDirective(int i, struct asm_tok tokenarray[])
 			{
 			}
 			if (PushInvokeParam(i, tokenarray, proc, NULL, numParam, &r0flags) != ERROR) {
-				//DebugMsg(("InvokeDir: superfluous argument, i=%u\n", i));
-				//return(EmitErr(TOO_MANY_ARGUMENTS_TO_INVOKE));
 			}
 			curr = info->paralist;
 		}
@@ -4529,7 +4528,7 @@ ret_code InvokeDirective(int i, struct asm_tok tokenarray[])
 				DebugMsg(("InvokeDir: PushInvokeParam(curr=%u, i=%u, numParam=%u) failed\n", curr, i, numParam));
 				EmitErr(TOO_FEW_ARGUMENTS_TO_INVOKE, sym->name);
 			}
-		}	
+		}
 		/* Handle VARARG operands AFTER normal ones for SYSTEMV */
 		if (proc->sym.langtype == LANG_SYSVCALL && proc->e.procinfo->has_vararg)
 		{
@@ -4539,6 +4538,9 @@ ret_code InvokeDirective(int i, struct asm_tok tokenarray[])
 		}
 
 		/* Reverse Write out all Stack based operations */
+		if (proc->e.procinfo->stackAdj % 16 != 0) {
+			BuildCodeLine(proc->e.procinfo->stackOps[proc->e.procinfo->stackOpCount++], "sub %r, 8", T_RSP);
+		}
 		if (proc->sym.langtype == LANG_SYSVCALL)
 		{
 			for (j = proc->e.procinfo->stackOpCount; j >= 0; j--)

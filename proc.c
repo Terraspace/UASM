@@ -4906,7 +4906,7 @@ runqueue:
 	*/
 	oldlinenumbers = Options.line_numbers;
 	Options.line_numbers = FALSE; /* temporarily disable line numbers */
-	OldState = UseSavedState;
+	OldState = UseSavedState; /* UASM 2.56 - we need this to ensure we don't accidental generate duplicate symbol definitions */
 	UseSavedState = FALSE;
 	RunLineQueue();
 	UseSavedState = OldState;
