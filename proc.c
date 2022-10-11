@@ -4864,6 +4864,7 @@ static ret_code write_default_prologue(void)
 	struct proc_info    *info;
 	uint_8              oldlinenumbers;
 	int                 resstack = 0;
+	bool                OldState = FALSE;
 
 	info = CurrProc->e.procinfo;
 
@@ -4905,8 +4906,10 @@ runqueue:
 	*/
 	oldlinenumbers = Options.line_numbers;
 	Options.line_numbers = FALSE; /* temporarily disable line numbers */
+	OldState = UseSavedState;
 	UseSavedState = FALSE;
 	RunLineQueue();
+	UseSavedState = OldState;
 	Options.line_numbers = oldlinenumbers;
 
 	if (ModuleInfo.list && UseSavedState && (Parse_Pass > PASS_1))
