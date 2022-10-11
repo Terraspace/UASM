@@ -530,6 +530,7 @@ struct asym *CreateConstant( struct asm_tok tokenarray[] )
         //}
         sym->variable = FALSE;
         SetValue( sym, &opnd );
+
         DebugMsg1(("CreateConstant(%s): memtype=%Xh value=%" I64_SPEC "X isproc=%u variable=%u type=%s\n",
             name, sym->mem_type, (uint_64)sym->value + ( (uint_64)sym->value3264 << 32), sym->isproc, sym->variable, sym->type ? sym->type->name : "NULL" ));
         return( sym );

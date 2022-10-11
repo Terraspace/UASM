@@ -3367,6 +3367,17 @@ ret_code codegen( struct code_info *CodeInfo, uint_32 oldofs )
                CodeInfo->prefix.rex, CodeInfo->prefix.opsiz ));
 #endif
 
+    /* UASM 2.56 - Validate the proper usage of SARX,SHLX, SHRX */
+    if (CodeInfo->token == T_SARX || CodeInfo->token == T_SHLX || CodeInfo->token == T_SHRX)
+    {
+        if((CodeInfo->opnd[0].type & OP_R) == 0)
+            EmitError(INVALID_INSTRUCTION_OPERANDS);
+        if (((CodeInfo->opnd[1].type & OP_R) == 0) && ((CodeInfo->opnd[1].type & OP_M) == 0))
+            EmitError(INVALID_INSTRUCTION_OPERANDS);
+        if ((CodeInfo->opnd[2].type & OP_I) == 0)
+            EmitError(INVALID_INSTRUCTION_OPERANDS);
+    }
+
     /* UASM 2.55 - Validate the proper usage of CRC32 and warn of no memory sizing */
     if (CodeInfo->token == T_CRC32)
     {

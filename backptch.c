@@ -199,7 +199,6 @@ static void DoPatch( struct asym *sym, struct fixup *fixup )
                         if ( fixup2->locofs <= fixup->locofs )
                             break;
                         fixup2->locofs += size;
-                        DebugMsg(("for sym=%s fixup loc %" I32_SPEC "X changed to %" I32_SPEC "X\n", fixup2->sym->name, fixup2->locofs - size, fixup2->locofs ));
                     }
 #else
                     DebugMsg(("DoPatch: sym %s, offset changed %" I32_SPEC "X -> %" I32_SPEC "X\n", sym->name, sym->offset, sym->offset + size));

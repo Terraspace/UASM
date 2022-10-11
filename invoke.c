@@ -451,7 +451,7 @@ static int ms64_fcstart(struct dsym const *proc, int numparams, int start, struc
 			sym_ReservedStack->value = numparams * sizeof(uint_64);
 	}
 	else
-		AddLineQueueX(" sub %r, %d", T_RSP, numparams * sizeof(uint_64));
+		AddLineQueueX("sub %r, %d", T_RSP, numparams * sizeof(uint_64));
 
 	/* since Win64 fastcall doesn't push, it's a better/faster strategy to handle the arguments from left to right. */
 	return(0);
@@ -1374,31 +1374,21 @@ static int sysv_fcstart(struct dsym const *proc, int numparams, int start, struc
 
 	/* Perform stack alignment pre operand setup to ensure stack aligned 16 at point of call */
 	*value = 0;
-	if (proc->e.procinfo->stackAdj > 0)
-	{
-		AddLineQueueX("sub %r, %u", T_RSP, NUMQUAL proc->e.procinfo->stackAdj);
-		*value = proc->e.procinfo->stackAdj;
+	if (CurrProc && CurrProc->e.procinfo->stackAdj % 16 != 0) {
+		AddLineQueueX("sub %r, %u", T_RSP, NUMQUAL 8);
+		*value = 8;
 	}
-	
+	if (CurrProc)
+		CurrProc->e.procinfo->stackAdj = 0;
 
-	DebugMsg1(("sysv_fcstart(%s, numparams=%u) vararg=%u\n", proc->sym.name, numparams, proc->e.procinfo->has_vararg));
 	return(0);	// Return 0=left_to_right, 1=right_to_left
 }
 
 static void sysv_fcend(struct dsym const *proc, int numparams, int value)
 /*************************************************************************/
 {
-	/* use <value>, which has been set by sysv_fcstart() */
-	if ( (value + proc->e.procinfo->stackOfs) > 0 )
-		AddLineQueueX( "add %r, %d", T_RSP, NUMQUAL value + proc->e.procinfo->stackOfs );
-
-	/* 
-	If the given operands that go to stack push out the alignment at point of call, 
-	it can only be out by 8 so set adjustment value 
-	*/
-	if ((proc->e.procinfo->stackOfs + proc->e.procinfo->stackAdj) % 16 != 0)
-		proc->e.procinfo->stackAdj = 8;
-
+	if (value != 0)
+		AddLineQueueX("add %r, %d", T_RSP, NUMQUAL value);
 	return;
 }
 
@@ -1647,6 +1637,8 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 			else
 				sprintf(info->stackOps[info->stackOpCount++], "push %s", paramvalue);
 			info->stackOfs += 8;
+			if (CurrProc) CurrProc->e.procinfo->stackAdj += 8; // ?
+
 		}
 		return(1);
 	}
@@ -1692,6 +1684,7 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 		{
 			sprintf(info->stackOps[info->stackOpCount++], "push %s", paramvalue);
 			info->stackOfs += 8;
+			if (CurrProc) CurrProc->e.procinfo->stackAdj += 8; // ?
 		}
 		return(1);
 	}
@@ -1754,6 +1747,7 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 					BuildCodeLine(info->stackOps[info->stackOpCount++], "movsx %r, %s", sysv_regTo64(reg), paramvalue);
 				}	
 				info->stackOfs += 8;
+				if (CurrProc) CurrProc->e.procinfo->stackAdj += 8; // ?
 			}
 			else if (GetValueSp(reg) & OP_XMM)
 			{
@@ -1820,6 +1814,7 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 			{
 				sprintf(info->stackOps[info->stackOpCount++], "push %s", paramvalue);
 				info->stackOfs += 8;
+				if (CurrProc) CurrProc->e.procinfo->stackAdj += 8; // ?
 			}
 			else if (psize == 4)
 			{
@@ -1827,6 +1822,7 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 				BuildCodeLine(info->stackOps[info->stackOpCount++], "movsxd rax, eax");
 				BuildCodeLine(info->stackOps[info->stackOpCount++], "mov eax, %s", paramvalue);
 				info->stackOfs += 8;
+				if (CurrProc) CurrProc->e.procinfo->stackAdj += 8; // ?
 			}
 			else if (psize == 2)
 			{
@@ -1834,6 +1830,7 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 				BuildCodeLine(info->stackOps[info->stackOpCount++], "movsx rax, ax");
 				BuildCodeLine(info->stackOps[info->stackOpCount++], "mov ax, %s", paramvalue);
 				info->stackOfs += 8;
+				if (CurrProc) CurrProc->e.procinfo->stackAdj += 8; // ?
 			}
 			else if (psize == 1)
 			{
@@ -1841,6 +1838,7 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 				BuildCodeLine(info->stackOps[info->stackOpCount++], "movsx rax, al");
 				BuildCodeLine(info->stackOps[info->stackOpCount++], "mov al, %s", paramvalue);
 				info->stackOfs += 8;
+				if (CurrProc) CurrProc->e.procinfo->stackAdj += 8; // ?
 			}
 		}
 		
@@ -1869,6 +1867,7 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 			{
 				sprintf(info->stackOps[info->stackOpCount++], "push %s", paramvalue);
 				info->stackOfs += 8;
+				if (CurrProc) CurrProc->e.procinfo->stackAdj += 8; // ?
 			}
 			else if (psize == 4)
 			{
@@ -1876,6 +1875,7 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 				BuildCodeLine(info->stackOps[info->stackOpCount++], "movsxd rax, eax");
 				BuildCodeLine(info->stackOps[info->stackOpCount++], "mov eax, %s", paramvalue);
 				info->stackOfs += 8;
+				if (CurrProc) CurrProc->e.procinfo->stackAdj += 8; // ?
 			}
 			else if (psize == 2)
 			{
@@ -1883,6 +1883,7 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 				BuildCodeLine(info->stackOps[info->stackOpCount++], "movsx rax, ax");
 				BuildCodeLine(info->stackOps[info->stackOpCount++], "mov ax, %s", paramvalue);
 				info->stackOfs += 8;
+				if (CurrProc) CurrProc->e.procinfo->stackAdj += 8; // ?
 			}
 			else if (psize == 1)
 			{
@@ -1890,6 +1891,7 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 				BuildCodeLine(info->stackOps[info->stackOpCount++], "movsx rax, al");
 				BuildCodeLine(info->stackOps[info->stackOpCount++], "mov al, %s", paramvalue);
 				info->stackOfs += 8;
+				if (CurrProc) CurrProc->e.procinfo->stackAdj += 8; // ?
 			}
 		}
 		return(1);
@@ -1999,6 +2001,7 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 			BuildCodeLine(info->stackOps[info->stackOpCount++], "push rax", paramvalue);
 			BuildCodeLine(info->stackOps[info->stackOpCount++], "lea rax, %s", paramvalue);
 			info->stackOfs += 8;
+			if (CurrProc) CurrProc->e.procinfo->stackAdj += 8; // ?
 		}
 		return(1);
 	}
@@ -2468,6 +2471,7 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 				BuildCodeLine(info->stackOps[info->stackOpCount++], "push %r", T_RAX);
 				BuildCodeLine(info->stackOps[info->stackOpCount++], "mov %r, %s", T_EAX, paramvalue);
 				info->stackOfs += 8;
+				if (CurrProc) CurrProc->e.procinfo->stackAdj += 8; // ?
 				return(1);
 			}
 			if (opnd->kind == EXPR_CONST)
@@ -2483,8 +2487,9 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 				if (GetValueSp(reg) & OP_XMM)
 				{
 					BuildCodeLine(info->stackOps[info->stackOpCount++], "%s [%r], %s", MOVE_SINGLE(), T_RSP, paramvalue);
-					BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 8", T_RSP);
+					//BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 8", T_RSP);
 					info->stackOfs += 8;
+					if (CurrProc) CurrProc->e.procinfo->stackAdj += 8; // ?
 					return(1);
 				}
 				else
@@ -2498,8 +2503,9 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 				*regs_used |= (1 << 6);
 				BuildCodeLine(info->stackOps[info->stackOpCount++], "mov [%r], eax", T_RSP);
 				BuildCodeLine(info->stackOps[info->stackOpCount++], "mov eax, dword ptr %s", paramvalue);
-				BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 8", T_RSP);
+				//BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 8", T_RSP);
 				info->stackOfs += 8;
+				if (CurrProc) CurrProc->e.procinfo->stackAdj += 8; // ?
 				return(1);
 			}
 			if (opnd->kind == EXPR_ADDR)
@@ -2509,8 +2515,9 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 					*regs_used |= (1 << 6);
 					BuildCodeLine(info->stackOps[info->stackOpCount++], "mov [%r], eax", T_RSP);
 					BuildCodeLine(info->stackOps[info->stackOpCount++], "mov eax, dword ptr %s", paramvalue);
-					BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 8", T_RSP);
+					//BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 8", T_RSP);
 					info->stackOfs += 8;
+					if (CurrProc) CurrProc->e.procinfo->stackAdj += 8; // ?
 					return(1);
 				}
 				else
@@ -2535,6 +2542,7 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 				BuildCodeLine(info->stackOps[info->stackOpCount++], "push %r", T_RAX);
 				BuildCodeLine(info->stackOps[info->stackOpCount++], "mov %r, %r ptr %s", T_RAX, T_REAL8, paramvalue);
 				info->stackOfs += 8;
+				if (CurrProc) CurrProc->e.procinfo->stackAdj += 8; // ?
 				return(1);
 			}
 			if (opnd->kind == EXPR_CONST)
@@ -2543,6 +2551,7 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 				BuildCodeLine(info->stackOps[info->stackOpCount++], "push %r", T_RAX);
 				BuildCodeLine(info->stackOps[info->stackOpCount++], "mov %r, %r ptr %s.0", T_RAX, T_REAL8, paramvalue);
 				info->stackOfs += 8;
+				if (CurrProc) CurrProc->e.procinfo->stackAdj += 8; // ?
 				return(1);
 			}
 			if (opnd->kind == EXPR_REG && opnd->indirect == FALSE)
@@ -2551,8 +2560,9 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 				if (GetValueSp(reg) & OP_XMM)
 				{
 					BuildCodeLine(info->stackOps[info->stackOpCount++], "%s [%r], %s", MOVE_DOUBLE(), T_RSP, paramvalue);
-					BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 8", T_RSP);
+					//BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 8", T_RSP);
 					info->stackOfs += 8;
+					if (CurrProc) CurrProc->e.procinfo->stackAdj += 8; // ?
 					return(1);
 				}
 				else
@@ -2566,8 +2576,9 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 				*regs_used |= (1 << 6);
 				BuildCodeLine(info->stackOps[info->stackOpCount++], "mov [%r], rax", T_RSP);
 				BuildCodeLine(info->stackOps[info->stackOpCount++], "mov rax, qword ptr %s", paramvalue);
-				BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 8", T_RSP);
+				//BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 8", T_RSP);
 				info->stackOfs += 8;
+				if (CurrProc) CurrProc->e.procinfo->stackAdj += 8; // ?
 				return(1);
 			}
 			if (opnd->kind == EXPR_ADDR)
@@ -2577,8 +2588,9 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 					*regs_used |= (1 << 6);
 					BuildCodeLine(info->stackOps[info->stackOpCount++], "mov [%r], rax", T_RSP);
 					BuildCodeLine(info->stackOps[info->stackOpCount++], "mov rax, qword ptr %s", paramvalue);
-					BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 8", T_RSP);
+					//BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 8", T_RSP);
 					info->stackOfs += 8;
+					if (CurrProc) CurrProc->e.procinfo->stackAdj += 8; // ?
 					return(1);
 				}
 				else
@@ -2688,11 +2700,12 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 				{
 					BuildCodeLine(info->stackOps[info->stackOpCount++], "mov %r ptr [%r+4], %r ( %s )", T_DWORD, T_RSP, T_HIGH32, paramvalue);
 					BuildCodeLine(info->stackOps[info->stackOpCount++], "mov %r ptr [%r], %r ( %s )", T_DWORD, T_RSP, T_LOW32, paramvalue);
-					BuildCodeLine(info->stackOps[info->stackOpCount++], "sub rsp,8");
+					//BuildCodeLine(info->stackOps[info->stackOpCount++], "sub rsp,8");
 				}
 				else
 					BuildCodeLine(info->stackOps[info->stackOpCount++], "push %s", paramvalue);
 				info->stackOfs += 8;
+				if (CurrProc) CurrProc->e.procinfo->stackAdj += 8; // ?
 				return(1);
 			}
 
@@ -2733,6 +2746,7 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 						BuildCodeLine(info->stackOps[info->stackOpCount++], "movsx %r, %s", sysv_regTo64(reg), paramvalue);
 					}
 					info->stackOfs += 8;
+					if (CurrProc) CurrProc->e.procinfo->stackAdj += 8; // ?
 				}
 				else if (GetValueSp(reg) & OP_XMM)
 				{
@@ -2801,6 +2815,7 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 				{
 					sprintf(info->stackOps[info->stackOpCount++], "push %s", paramvalue);
 					info->stackOfs += 8;
+					if (CurrProc) CurrProc->e.procinfo->stackAdj += 8; // ?
 				}
 				else if (psize == 4)
 				{
@@ -2808,6 +2823,7 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 					BuildCodeLine(info->stackOps[info->stackOpCount++], "movsxd rax, eax");
 					BuildCodeLine(info->stackOps[info->stackOpCount++], "mov eax, %s", paramvalue);
 					info->stackOfs += 8;
+					if (CurrProc) CurrProc->e.procinfo->stackAdj += 8; // ?
 				}
 				else if (psize == 2)
 				{
@@ -2815,6 +2831,7 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 					BuildCodeLine(info->stackOps[info->stackOpCount++], "movsx rax, ax");
 					BuildCodeLine(info->stackOps[info->stackOpCount++], "mov ax, %s", paramvalue);
 					info->stackOfs += 8;
+					if (CurrProc) CurrProc->e.procinfo->stackAdj += 8; // ?
 				}
 				else if (psize == 1)
 				{
@@ -2822,6 +2839,7 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 					BuildCodeLine(info->stackOps[info->stackOpCount++], "movsx rax, al");
 					BuildCodeLine(info->stackOps[info->stackOpCount++], "mov al, %s", paramvalue);
 					info->stackOfs += 8;
+					if (CurrProc) CurrProc->e.procinfo->stackAdj += 8; // ?
 				}
 				return(1);
 			}
@@ -2838,6 +2856,7 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 				{
 					sprintf(info->stackOps[info->stackOpCount++], "push %s", paramvalue);
 					info->stackOfs += 8;
+					if (CurrProc) CurrProc->e.procinfo->stackAdj += 8; // ?
 				}
 				else if (psize == 4)
 				{
@@ -2845,6 +2864,7 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 					BuildCodeLine(info->stackOps[info->stackOpCount++], "movsxd rax, eax");
 					BuildCodeLine(info->stackOps[info->stackOpCount++], "mov eax, %s", paramvalue);
 					info->stackOfs += 8;
+					if (CurrProc) CurrProc->e.procinfo->stackAdj += 8; // ?
 				}
 				else if (psize == 2)
 				{
@@ -2852,6 +2872,7 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 					BuildCodeLine(info->stackOps[info->stackOpCount++], "movsx rax, ax");
 					BuildCodeLine(info->stackOps[info->stackOpCount++], "mov ax, %s", paramvalue);
 					info->stackOfs += 8;
+					if (CurrProc) CurrProc->e.procinfo->stackAdj += 8; // ?
 				}
 				else if (psize == 1)
 				{
@@ -2859,6 +2880,7 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 					BuildCodeLine(info->stackOps[info->stackOpCount++], "movsx rax, al");
 					BuildCodeLine(info->stackOps[info->stackOpCount++], "mov al, %s", paramvalue);
 					info->stackOfs += 8;
+					if (CurrProc) CurrProc->e.procinfo->stackAdj += 8; // ?
 				}
 				return(1);
 			}
@@ -2868,6 +2890,7 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 				BuildCodeLine(info->stackOps[info->stackOpCount++], "push %r", T_RAX);
 				BuildCodeLine(info->stackOps[info->stackOpCount++], "lea %r, %s", T_RAX, paramvalue);
 				info->stackOfs += 8;
+				if (CurrProc) CurrProc->e.procinfo->stackAdj += 8; // ?
 
 				/* Mark temp register rax as written */
 				*regs_used |= (1 << 6);
@@ -3415,20 +3438,7 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 	/* if curr is NULL this call is just a parameter check */
 	if (!curr) return(NOT_ERROR);
 
-#if 1 /* v2.05 */
 	psize = curr->sym.total_size;
-	DebugMsg1(("PushInvokeParam(%s,%u): pmtype=%Xh, psize=%u\n", proc->sym.name, reqParam, curr->sym.mem_type, psize));
-#else
-	/* set psize (size of parameter) */
-	if (curr->is_ptr) {
-		psize = 2 << curr->sym.Ofssize;
-		if (curr->sym.isfar)
-			psize += 2;
-	}
-	else
-		psize = SizeFromMemtype(curr->sym.mem_type, curr->sym.Ofssize, curr->sym.type);
-	DebugMsg1(("PushInvokeParam(%s,%u): is_ptr=%u, pmtype=%Xh, psize=%u\n", proc->sym.name, reqParam, curr->is_ptr, curr->sym.mem_type, psize));
-#endif
 
 	if (_stricmp(tokenarray[i].string_ptr, "L") == 0 && (*(tokenarray[i+1].string_ptr) == '"') )
 	{
@@ -4375,15 +4385,15 @@ ret_code InvokeDirective(int i, struct asm_tok tokenarray[])
 			*(info->stackOps[j]) = NULLC;
 		info->stackOpCount = 0;
 		info->stackOfs = 0;
-		if (Parse_Pass == PASS_1)
-			info->stackAdj = 0;
+		//if (CurrProc)
+			//CurrProc->e.procinfo->stackAdj = 0;
 	}
 
-	/* if (Parse_Pass == PASS_1) */
 	memset(info->vregs, 0, 6); /* reset vregs EVERY pass */
 							   /* clear sse register flags every pass*/
 	memset(info->xyzused, 0, 6);
 	memset(info->vecregsize, 0, 6);
+
 	/* added for delphi used registers v2.29 */
 	if (Parse_Pass == PASS_1)
 		memset(info->delregsused, 0, 3);
@@ -4611,14 +4621,10 @@ ret_code InvokeDirective(int i, struct asm_tok tokenarray[])
 	}
 	vcallpass = 0;
 
-#if 1
 	/* v2.05 added. A warning only, because Masm accepts this. */
-	if (opnd.base_reg != NULL &&
-		Parse_Pass == PASS_1 &&
-		(r0flags & R0_USED) &&
-		opnd.base_reg->bytval == 0)
+	if (opnd.base_reg != NULL && Parse_Pass == PASS_1 && (r0flags & R0_USED) && opnd.base_reg->bytval == 0)
 		EmitWarn(2, REGISTER_VALUE_OVERWRITTEN_BY_INVOKE);
-#endif
+
 	p = StringBufferEnd;
 	
 	/* Generate BND (Intel MPX) call */
@@ -4633,11 +4639,6 @@ ret_code InvokeDirective(int i, struct asm_tok tokenarray[])
 		p += 6;
 	}
 
-	/* v2.09: 'uselabel' obsolete */
-	//if ( uselabel ) {
-	//    DebugMsg1(("InvokeDir: opnd.label_tok is used: %s\n", opnd.label_tok->string_ptr ));
-	//    strcpy( p, opnd.label_tok->string_ptr );
-	//} else {
 #if DLLIMPORT
 	if (sym->state == SYM_EXTERNAL && sym->dll) {
 		char *iatname = p;
@@ -4669,37 +4670,34 @@ ret_code InvokeDirective(int i, struct asm_tok tokenarray[])
 		*(p + size) = NULLC;
 	}
 
-#if 0  /* v2.09: uselabel obsolete */
-}
-#endif
-AddLineQueue(StringBufferEnd);
+	AddLineQueue(StringBufferEnd);
 
-if ((sym->langtype == LANG_C || sym->langtype == LANG_SYSCALL) &&
-	(info->parasize || (info->has_vararg && size_vararg))) {
-	if (info->has_vararg) {
-		DebugMsg1(("InvokeDir: size of fix args=%u, var args=%u\n", info->parasize, size_vararg));
-		AddLineQueueX(" add %r, %u", stackreg[ModuleInfo.Ofssize], NUMQUAL info->parasize + size_vararg);
+	if ((sym->langtype == LANG_C || sym->langtype == LANG_SYSCALL) &&
+		(info->parasize || (info->has_vararg && size_vararg))) {
+		if (info->has_vararg) {
+			DebugMsg1(("InvokeDir: size of fix args=%u, var args=%u\n", info->parasize, size_vararg));
+			AddLineQueueX(" add %r, %u", stackreg[ModuleInfo.Ofssize], NUMQUAL info->parasize + size_vararg);
+		}
+		else
+			AddLineQueueX(" add %r, %u", stackreg[ModuleInfo.Ofssize], NUMQUAL info->parasize);
 	}
-	else
-		AddLineQueueX(" add %r, %u", stackreg[ModuleInfo.Ofssize], NUMQUAL info->parasize);
-}
-else if (sym->langtype == LANG_FASTCALL) {
-	fastcall_tab[ModuleInfo.fctype].invokeend(proc, numParam, value);
-}
-else if (sym->langtype == LANG_VECTORCALL) {
-	vectorcall_tab[ModuleInfo.fctype].invokeend(proc, numParam, value);
-}
-else if (sym->langtype == LANG_SYSVCALL) {
-	sysvcall_tab[ModuleInfo.fctype].invokeend(proc, numParam, value);
-}
-else if (sym->langtype == LANG_DELPHICALL) {
-	delphicall_tab[ModuleInfo.fctype].invokeend(proc, numParam, value);
-}
+	else if (sym->langtype == LANG_FASTCALL) {
+		fastcall_tab[ModuleInfo.fctype].invokeend(proc, numParam, value);
+	}
+	else if (sym->langtype == LANG_VECTORCALL) {
+		vectorcall_tab[ModuleInfo.fctype].invokeend(proc, numParam, value);
+	}
+	else if (sym->langtype == LANG_SYSVCALL) {
+		sysvcall_tab[ModuleInfo.fctype].invokeend(proc, numParam, value);
+	}
+	else if (sym->langtype == LANG_DELPHICALL) {
+		delphicall_tab[ModuleInfo.fctype].invokeend(proc, numParam, value);
+	}
 
-LstWrite(LSTTYPE_DIRECTIVE, GetCurrOffset(), NULL);
+	LstWrite(LSTTYPE_DIRECTIVE, GetCurrOffset(), NULL);
 
-RunLineQueue();
+	RunLineQueue();
 
-return(NOT_ERROR);
+	return(NOT_ERROR);
 }
 

@@ -194,13 +194,6 @@ void SetFixupFrame( const struct asym *sym, char ign_grp )
 void store_fixup( struct fixup *fixup, struct dsym *seg, int_32 *pdata )
 /**********************************************************************/
 {
-    //struct fixup     *fixup;
-
-    //fixup = CodeInfo->InsFixup[index];
-
-    //CodeInfo->data[index] = CodeInfo->data[index] - fixup->sym->offset;
-    //fixup->offset = CodeInfo->data[index];
-    fixup->offset = *pdata;
 
 #ifdef DEBUG_OUT
     if ( fixup->sym )
@@ -212,18 +205,7 @@ void store_fixup( struct fixup *fixup, struct dsym *seg, int_32 *pdata )
 #endif
 
     fixup->nextrlc = NULL;
-#if 0
-    /* v2.07: no error checks here! store_fixup() is called only if pass > 1
-     * and as long as write_to_file is true! This check is now done in
-     * codegen() and data_item().
-     */
-    if ( ( 1 << fixup->type ) & ModuleInfo.fmtopt->invalid_fixup_type ) {
-        EmitErr( UNSUPPORTED_FIXUP_TYPE,
-               ModuleInfo.fmtopt->formatname,
-               fixup->sym ? fixup->sym->name : szNull );
-        return( ERROR );
-    }
-#endif
+
     if ( Options.output_format == OFORMAT_OMF ) {
 
         /* for OMF, the target's offset is stored at the fixup's location. */
