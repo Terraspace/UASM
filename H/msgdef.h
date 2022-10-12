@@ -387,3 +387,4 @@ pick( INVALID_REG_STRUCT_SIZE, "Invalid structure size for WIN64 by-value passin
 pick( STACKBASE_NOT_SUPPORTED, "Stackbase option not supported with output format")
 pick( STACKBASE_CHANGED, "Stackbase automatically changed to RSP to support WIN64 options")
 pick( REAL10_BY_VALUE, "REAL10 are passed by reference not value")
+pick( RIP_ONLY, "Addressing Mode RIP+REG cannot be encoded")

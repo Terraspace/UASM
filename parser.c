@@ -4059,7 +4059,17 @@ dataInProc:
 			}
 		}
 	}
-	/* *********************************************************** */
+    
+    /* UASM 2.56 prevent RIP+REG encodings */
+    for (i = 0; i < 4; i++) {
+        if (opndx[i].base_reg != NULL && opndx[i].idx_reg != NULL) {
+            if (opndx[i].base_reg->tokval == T_RIP && opndx[i].idx_reg != NULL) {
+                return EmitErr(RIP_ONLY);
+            }
+        }
+    }
+
+    /* *********************************************************** */
 	/* Use the V2 CodeGen, else fallback to the standard CodeGen   */
 	/* *********************************************************** */
 	if (ModuleInfo.Ofssize == USE32 || ModuleInfo.Ofssize == USE64)
