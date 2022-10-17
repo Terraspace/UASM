@@ -3378,6 +3378,16 @@ ret_code codegen( struct code_info *CodeInfo, uint_32 oldofs )
             EmitError(INVALID_INSTRUCTION_OPERANDS);
     }
 
+    /* UASM 2.56 - Validate proper usage of VPBROADCASTn as legacy CODEGEN only handles AVX2 (not 512) */
+    if (CodeInfo->token == T_VPBROADCASTB ||
+        CodeInfo->token == T_VPBROADCASTW ||
+        CodeInfo->token == T_VPBROADCASTD ||
+        CodeInfo->token == T_VPBROADCASTQ) {
+        if (CodeInfo->opnd[1].type & OP_R) {
+            EmitError(INVALID_INSTRUCTION_OPERANDS);
+        }
+    }
+
     /* UASM 2.55 - Validate the proper usage of CRC32 and warn of no memory sizing */
     if (CodeInfo->token == T_CRC32)
     {
