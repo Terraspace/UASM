@@ -769,7 +769,7 @@ static void output_opc(struct code_info *CodeInfo)
                   /* first and second operand can not be memory, v2.46.11 */
                   if (CodeInfo->r1type < OP_XMM || CodeInfo->r2type < OP_XMM)    
                      EmitError(INVALID_INSTRUCTION_OPERANDS);
-                  if ((CodeInfo->reg2 <= 7)&&(CodeInfo->reg3 <= 7) && ((CodeInfo->opnd[OPND2].type & OP_M_ANY ) == 0))
+                  if ((CodeInfo->reg2 <= 7) && (CodeInfo->reg3 <= 7 || CodeInfo->reg3 == 255) && ((CodeInfo->opnd[OPND2].type & OP_M_ANY ) == 0))
                   goto outC5;    // go handle 0xC5 instruction
 
 					/* John: Validate 3 operand vex form */
