@@ -449,6 +449,21 @@ bool IsValidInCPUMode(struct Instr_Def* instr)
 }
 
 /* =====================================================================
+  Given an input token (string) for a register name, check if it 
+  is a 16bit register.
+  ===================================================================== */
+bool IsReg16bit(struct asm_tok* regTok)
+{
+	bool result = FALSE;
+	if (regTok)
+	{
+		if (regTok->tokval >= T_AX && regTok->tokval <= T_DI)
+			result = TRUE;
+	}
+	return result;
+}
+
+/* =====================================================================
   Given an input token (string) for a register name, match it and return
   the correct register number for encoding reg/rm fields.
   ===================================================================== */
@@ -1545,6 +1560,15 @@ ret_code CodeGenV2(const char* instr, struct code_info* CodeInfo, uint_32 oldofs
 						CodeInfo->opnd[OPND2].type = OP_I8;
 				}
 			}
+		}
+	}
+	/* UASM 2.56 force the use of 16bit memory addressing back to legacy codegen when in 32bit code */
+	if (CodeInfo->Ofssize == USE32) {
+		if ( opExpr[1].kind == EXPR_ADDR && (IsReg16bit(opExpr[1].base_reg) || IsReg16bit(opExpr[1].idx_reg)) ) {
+			return EMPTY;
+		}
+		if (opExpr[0].kind == EXPR_ADDR && (IsReg16bit(opExpr[0].base_reg) || IsReg16bit(opExpr[0].idx_reg))) {
+			return EMPTY;
 		}
 	}
 
