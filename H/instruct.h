@@ -2052,4 +2052,9 @@ insx(KTESTW, ktestw,      OpCls(K, K, NONE), F_0F, 1, 0, 0x99, 0x00, P_686 | P_A
 insx(KTESTD, ktestd,      OpCls(K, K, NONE), F_660F, 1, 0, 0x99, 0x00, P_686 | P_AVX, 2, RWF_VEX)
 insx(KTESTQ, ktestq,      OpCls(K, K, NONE), F_0F, 1, 0, 0x99, 0x00, P_686 | P_AVX, 2, RWF_VEX)
 
+insx(VPDPBUSDS, vpdpbusds, OpCls(K, K, NONE), F_0F, 1, 0, 0x99, 0x00, P_686 | P_AVX, 2, RWF_VEX)
+insx(VPDPBUSD,  vpdpbusd,  OpCls(K, K, NONE), F_0F, 1, 0, 0x99, 0x00, P_686 | P_AVX, 2, RWF_VEX)
+insx(VPDPWSSDS, vpdpwssds, OpCls(K, K, NONE), F_0F, 1, 0, 0x99, 0x00, P_686 | P_AVX, 2, RWF_VEX)
+insx(VPDPWSSD,  vpdpwssd,  OpCls(K, K, NONE), F_0F, 1, 0, 0x99, 0x00, P_686 | P_AVX, 2, RWF_VEX)
+
 #endif
