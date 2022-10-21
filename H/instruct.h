@@ -2057,4 +2057,8 @@ insx(VPDPBUSD,  vpdpbusd,  OpCls(K, K, NONE), F_0F, 1, 0, 0x99, 0x00, P_686 | P_
 insx(VPDPWSSDS, vpdpwssds, OpCls(K, K, NONE), F_0F, 1, 0, 0x99, 0x00, P_686 | P_AVX, 2, RWF_VEX)
 insx(VPDPWSSD,  vpdpwssd,  OpCls(K, K, NONE), F_0F, 1, 0, 0x99, 0x00, P_686 | P_AVX, 2, RWF_VEX)
 
+insx(VGF2P8MULB,        vgf2p8mulb, OpCls(K, K, NONE), F_0F, 1, 0, 0x99, 0x00, P_686 | P_AVX, 2, RWF_VEX)
+insx(VGF2P8AFFINEQB,    vgf2p8affineqb, OpCls(K, K, NONE), F_0F, 1, 0, 0x99, 0x00, P_686 | P_AVX, 2, RWF_VEX)
+insx(VGF2P8AFFINEINVQB, vgf2p8affineinvqb, OpCls(K, K, NONE), F_0F, 1, 0, 0x99, 0x00, P_686 | P_AVX, 2, RWF_VEX)
+
 #endif

@@ -94,4 +94,39 @@
 	vpdpwssd zmm0,zmm1,zmm2
 	vpdpwssd zmm0,zmm1,[rdi]		
 	
+	;-------------------------------------------
+	; gfni
+	vgf2p8mulb xmm0,xmm1,xmm2
+	vgf2p8mulb ymm0,ymm1,ymm2
+	vgf2p8mulb xmm0,xmm1,[rdi]
+	vgf2p8mulb ymm0,ymm1,[rdi]	
+	vgf2p8mulb zmm0,zmm1,zmm2
+	{evex} vgf2p8mulb xmm0,xmm1,xmm2
+	{evex} vgf2p8mulb ymm0,ymm1,ymm2
+	vgf2p8mulb xmm0{k1},xmm1,xmm2
+	vgf2p8mulb ymm0{k1},ymm1,ymm2
+	vgf2p8mulb zmm0{k2},zmm1,[rdi]
+
+	vgf2p8affineqb xmm0,xmm1,xmm2,1
+	vgf2p8affineqb ymm0,ymm1,ymm2,1
+	vgf2p8affineqb xmm0,xmm1,[rdi],1
+	vgf2p8affineqb ymm0,ymm1,[rdi],1
+	vgf2p8affineqb zmm0,zmm1,zmm2,1
+	{evex} vgf2p8affineqb xmm0,xmm1,xmm2,1
+	{evex} vgf2p8affineqb ymm0,ymm1,ymm2,1
+	vgf2p8affineqb xmm0{k1},xmm1,xmm2,1
+	vgf2p8affineqb ymm0{k1},ymm1,ymm2,1
+	vgf2p8affineqb zmm0{k2},zmm1,[rdi],1
+	
+	vgf2p8affineinvqb xmm0,xmm1,xmm2,1
+	vgf2p8affineinvqb ymm0,ymm1,ymm2,1
+	vgf2p8affineinvqb xmm0,xmm1,[rdi],1
+	vgf2p8affineinvqb ymm0,ymm1,[rdi],1
+	vgf2p8affineinvqb zmm0,zmm1,zmm2,1
+	{evex} vgf2p8affineinvqb xmm0,xmm1,xmm2,1
+	{evex} vgf2p8affineinvqb ymm0,ymm1,ymm2,1
+	vgf2p8affineinvqb xmm0{k1},xmm1,xmm2,1
+	vgf2p8affineinvqb ymm0{k1},ymm1,ymm2,1
+	vgf2p8affineinvqb zmm0{k2},zmm1,[rdi],1	
+	
     end
