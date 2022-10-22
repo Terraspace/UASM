@@ -1163,7 +1163,7 @@ static void write_relocs64( struct dsym *curr )
                 symidx = fixup->sym->segment->ext_idx;
             }
 #endif
-            reloc64.r_addend += fixup->sym->offset;
+            reloc64.r_addend += *(int_32*)(curr->e.seginfo->CodeBuffer + fixup->locofs);
             elftype = R_X86_64_PC32;
             break;
         case FIX_OFF64:        elftype = R_X86_64_64;          break;
