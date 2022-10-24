@@ -4487,7 +4487,7 @@ static void write_sysv_default_epilogue_RBP(struct proc_info *info)
 
 	if (info->fpo)
 	{
-		if (info->pushed_reg % 2 == 0)
+		if (info->pushed_reg % 2 == 0 && info->pushed_reg != 0)
 			stackadj += 8;
 		else
 			stackadj += 0;
