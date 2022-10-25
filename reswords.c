@@ -832,6 +832,14 @@ VX_LL|VX_L,      /* VPMULTISHIFTQB */
   VX_NND,           /* PEXT          */
   VX_NND,           /* RORX          */
   
+    VX_LL | VX_L,
+    VX_LL | VX_L,
+    VX_LL | VX_L,
+    VX_LL | VX_L,
+    VX_LL | VX_L,
+    VX_LL | VX_L,
+    VX_LL | VX_L,
+
   VX_L | VX_NND,      /* KADDB    */ /* v2.12 */
   VX_L | VX_NND,      /* KADDW    */ /* v2.12 */
   VX_L | VX_NND,      /* KANDB    */ /* v2.12 */
