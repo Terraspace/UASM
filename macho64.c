@@ -157,8 +157,14 @@ struct dysymtab_command * macho_build_dysymtbl_cmd()
 /* ==========================================================================================
 Add an entry to the string table.
 ========================================================================================== */
-static void macho_add_string(struct strentry *pstr, struct macho_module *mm)
+static int macho_add_string(struct strentry *pstr, struct macho_module *mm)
 {
+	/* Don't output static type */
+	if ((pstr->sym->state == SYM_TYPE) && !pstr->sym->ispublic)
+	{
+		return 0;
+	}
+
 	struct strentry *pCurrStr = mm->strings;
 	int lastIdx = 1;
 	int ofs = 1;
@@ -181,7 +187,7 @@ static void macho_add_string(struct strentry *pstr, struct macho_module *mm)
 		pstr->offset = ofs;
 		pCurrStr->next = pstr;
 	}
-	return;
+	return 1;
 }
 
 /* ==========================================================================================
@@ -204,14 +210,16 @@ int macho_build_string_tbl(struct symtab_command *pSymCmd, struct macho_module *
 		{ 
 			if (sym->state != SYM_EXTERNAL && !sym->ispublic && sym->used)
 			{
-				tblSize += strlen(sym->name) + 1;
 				pstr = malloc(sizeof(struct strentry));
 				memset(pstr, 0, sizeof(struct strentry));
 				pstr->pstr = sym->name;
 				pstr->sym = sym;
-				macho_add_string(pstr, mm);
-				mm->symCount++;
-				totalSymCount++;
+				if (macho_add_string(pstr, mm))
+				{
+					mm->symCount++;
+					totalSymCount++;
+					tblSize += strlen(sym->name) + 1;
+				}
 			}
 		}
 	}
@@ -224,14 +232,16 @@ int macho_build_string_tbl(struct symtab_command *pSymCmd, struct macho_module *
 		{
 			if (sym->ispublic)
 			{
-				tblSize += strlen(sym->name) + 1;
 				pstr = malloc(sizeof(struct strentry));
 				memset(pstr, 0, sizeof(struct strentry));
 				pstr->pstr = sym->name;
 				pstr->sym = sym;
-				macho_add_string(pstr, mm);
-				mm->extSymCount++;
-				totalSymCount++;
+				if (macho_add_string(pstr, mm))
+				{
+					mm->extSymCount++;
+					totalSymCount++;
+					tblSize += strlen(sym->name) + 1;
+				}
 			}
 		}
 	}
@@ -244,14 +254,16 @@ int macho_build_string_tbl(struct symtab_command *pSymCmd, struct macho_module *
 		{
 			if (sym->state == SYM_EXTERNAL)
 			{
-				tblSize += strlen(sym->name) + 1;
 				pstr = malloc(sizeof(struct strentry));
 				memset(pstr, 0, sizeof(struct strentry));
 				pstr->pstr = sym->name;
 				pstr->sym = sym;
-				macho_add_string(pstr, mm);
-				mm->undefSymCount++;
-				totalSymCount++;
+				if (macho_add_string(pstr, mm))
+				{
+					mm->undefSymCount++;
+					totalSymCount++;
+					tblSize += strlen(sym->name) + 1;
+				}
 			}
 		}
 	}
@@ -725,7 +737,7 @@ static ret_code macho_write_module( struct module_info *modinfo )
 		mm.header.cputype = CPU_TYPE_X86_64;
 		mm.header.cpusubtype = CPU_SUBTYPE_LITTLE_ENDIAN | CPU_SUBTYPE_X86_64_ALL;
 		mm.header.filetype = MH_OBJECT;
-		mm.header.flags = NULL;
+		mm.header.flags = 0;
 		
 		macho_build_structures(modinfo, mm);	
 	}
