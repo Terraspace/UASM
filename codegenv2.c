@@ -2,6 +2,7 @@
 #include "codegenv2.h"
 
 #include <time.h>
+#include <ctype.h>
 #include "globals.h"
 #include "parser.h"
 #include "segment.h"
@@ -12,6 +13,7 @@
 #include "types.h"
 #include "macro.h"
 #include "listing.h"
+#include "input.h"
 
 #define OutputCodeByte( x ) OutputByte( x )
 
@@ -863,7 +865,7 @@ void BuildEVEX(bool* needEvex, unsigned char* evexBytes, struct Instr_Def* instr
 
 	 BYTE1:
 	 | 7 | 6 | 5 | 4  | 3 | 2 | 1-0 |
-	 | R | X | B | R’ | 0 | 0 |  m  |
+	 | R | X | B | Rï¾’ | 0 | 0 |  m  |
 
 	BYTE2:
 	 | 7 | 6-3      | 2 | 1-0 |

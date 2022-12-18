@@ -23,7 +23,7 @@
 #include "myassert.h"
 #include "label.h"
 #include "hll.h"
-
+#include "fixup.h"
 #include "segment.h"
 
 #if DLLIMPORT
