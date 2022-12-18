@@ -946,4 +946,15 @@ extern char             *num2hex64(uint_64 value, char *buffer);
 extern char             *ConvertSectionName( const struct asym *, enum seg_type *pst, char *buffer );
 extern void             RewindToWin64(void);
 
+#if defined(__UNIX__)
+extern char* _strupr( char* s );
+#endif
+
+extern void CreateMacroLibCases64(void);
+extern void CreateMacroLibCases32(void);
+extern void OutputInterleavedBytes(const unsigned char *pbytes, int len, struct fixup *fixup);
+extern void SymSimd(struct dsym *sym);
+extern void RunLineQueue( void );
+extern ret_code BackPatch( struct asym *sym );
+
 #endif

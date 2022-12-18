@@ -1261,7 +1261,9 @@ static uint_8* cv_FlushSection(dbgcv* cv, uint_32 signature, uint_32 ex)
 #define USEMD5
 
 #ifdef USEMD5
+#ifndef BUFSIZ
 #define BUFSIZ 1024*4
+#endif
 #define MD5_LENGTH ( sizeof( uint_32 ) + sizeof( uint_16 ) + 16 + sizeof( uint_16 ) )
 
 static int calc_md5(const char* filename, unsigned char* sum)
@@ -1273,10 +1275,10 @@ static int calc_md5(const char* filename, unsigned char* sum)
 
 	if ((fp = fopen(filename, "rb")) == NULL)
 		return 0;
-	file_buf = MemAlloc(BUFSIZ);
+	file_buf = MemAlloc(4*BUFSIZ);
 	_picohash_md5_init(&ctx);
 	while (!feof(fp)) {
-		i = fread(file_buf, 1, BUFSIZ, fp);
+		i = fread(file_buf, 1, 4*BUFSIZ, fp);
 		if (ferror(fp)) {
 			fclose(fp);
 			MemFree(file_buf);

@@ -43,7 +43,7 @@
 #include "lqueue.h"
 #include "orgfixup.h"
 #include "macrolib.h"
-//#include "simd.h"
+#include "simd.h"
 
 #if DLLIMPORT
 #include "mangle.h"

@@ -4142,7 +4142,7 @@ void ProcessFile( struct asm_tok tokenarray[] )
 
     if ( ModuleInfo.EndDirFound == FALSE && GetTextLine( CurrSource ) ) 
 	{
-		if (CurrSource[0] == 0xEF && CurrSource[1] == 0xBB && CurrSource[2] == 0xBF)
+		if ((uint8_t)CurrSource[0] == 0xEF && (uint8_t)CurrSource[1] == 0xBB && (uint8_t)CurrSource[2] == 0xBF)
 			strcpy(CurrSource, &CurrSource[3]);
 		do
 		{
