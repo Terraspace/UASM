@@ -17,7 +17,10 @@
 #include <fixup.h>
 #include <dbgcv.h>
 #include <linnum.h>
+#if defined __MSVCRT__
+#include <io.h>
 #include <direct.h>
+#endif /* __MSVCRT__ */
 #include <picohash.h>
 
 #define SIZE_CV_SEGBUF ( MAX_LINE_LEN * 4 )
