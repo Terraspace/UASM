@@ -3755,7 +3755,7 @@ dataInProc:
 				}
 				if (j <= 2) 
 				{
-					DebugMsg(("ParseLine(%s,%u): avx not enough operands (%u)\n", instr, CurrOpnd, opndx[OPND2].kind, j));
+					DebugMsg(("ParseLine(%s,%u): avx not enough operands (%u)\n", GetResWName(CodeInfo.token, NULL), CurrOpnd, opndx[OPND2].kind, j));
 				}
 				else
 
@@ -3941,14 +3941,14 @@ dataInProc:
 		/* the first op must be EAX/AX or RAX/EAX. The operand class
 		* used in the instruction table is OP_A ( which is AL/AX/EAX/RAX ). */
 		if ( ( CodeInfo.opnd[OPND1].type & ( CodeInfo.Ofssize == USE64 ? OP_R64 | OP_R32 : OP_R32 | OP_R16 ) ) == 0 ) {
-			DebugMsg(("ParseLine(%s): opnd1 unexpected type=%X\n", instr, CodeInfo.opnd[OPND1].type ));
+			DebugMsg(("ParseLine(%s): opnd1 unexpected type=%X\n", GetResWName(CodeInfo.token, NULL), CodeInfo.opnd[OPND1].type ));
 			return( EmitErr( INVALID_INSTRUCTION_OPERANDS ) );
 		}
 		/* the INVLPGA instruction has a fix second operand (=ECX). However, there's no
 		 * operand class for ECX alone. So it has to be ensured here that the register IS ecx. */
 		if ( CodeInfo.token == T_INVLPGA )
 			if ( ( CodeInfo.rm_byte & BIT_345 ) != ( 1 << 3 ) ) { /* ECX is register 1 */
-				DebugMsg(("ParseLine(%s): opnd2 is not ecx\n", instr ));
+				DebugMsg(("ParseLine(%s): opnd2 is not ecx\n", GetResWName(CodeInfo.token, NULL) ));
 				return( EmitErr( INVALID_INSTRUCTION_OPERANDS ) );
 			}
 	#endif
