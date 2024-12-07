@@ -91,9 +91,9 @@ int main(int argc, char **argv)
 
 	pEnv = getenv("UASM");
 	if (pEnv == NULL)
-		pEnv = "";
+		pEnv = STR_EMPTY;
 	argv[0] = pEnv;
-	
+
 	/* Set the default module architecture to SSE */
 	//MODULEARCH = ARCH_SSE;
 

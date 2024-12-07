@@ -738,7 +738,7 @@ struct module_vars {
     struct qdesc        LibQueue;        /* includelibs */
     struct qdesc	    LinkQueue;	     /* .pragma comment(linker,"/..") */
     struct dll_desc     *DllQueue;       /* dlls of OPTION DLLIMPORT */
-    char                *imp_prefix;
+    const char          *imp_prefix;
     FILE                *curr_file[NUM_FILE_TYPES];  /* ASM, ERR, OBJ and LST */
     char                *curr_fname[NUM_FILE_TYPES];
     char *              *FNames;         /* array of input files */
@@ -951,4 +951,7 @@ extern char             *num2hex64(uint_64 value, char *buffer);
 extern char             *ConvertSectionName( const struct asym *, enum seg_type *pst, char *buffer );
 extern void             RewindToWin64(void);
 
-#endif
+/* empty string (char *)"" in types.c */
+extern char STR_EMPTY[1];
+
+#endif /* _GLOBALS_H_INCLUDED */

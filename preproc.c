@@ -35,6 +35,14 @@ int_32 cntppl1;    /* count preprocessed lines 2 */
 int_32 cntppl2;    /* count lines NOT handled by preprocessor */
 #endif
 
+static char STR_INVOKE[] = { 'i','n','v','o','k','e', 0 };
+static char STR_UINVOKE[] = { 'u','i','n','v','o','k','e', 0 };
+static char STR_ARGINVOKE[] = { 'a','r','g','i','n','v','o','k','e','(','%','%',',','%','%',',', 0 };
+static char STR_ADDR[] = { 'A','D','D','R',' ', 0 };
+static char STR_COMMA[] = { ',', 0 };
+static char STR_SPACE[] = { ',', 0 };
+static char STR_PAREN_OPEN[] = { '(', 0 };
+
 /* preprocessor directive or macro procedure is preceded
  * by a code label.
  */
@@ -870,7 +878,7 @@ static void ExpandHllCalls(char *line, struct asm_tok tokenarray[], bool inParam
 					{
 						// token identifier begins with address of operator.
 						//strcpy(tokenarray[j].string_ptr, "ADDR ");
-						tokenarray[j].string_ptr = "ADDR ";
+						tokenarray[j].string_ptr = STR_ADDR;
 					}
 				}
 
@@ -883,19 +891,19 @@ static void ExpandHllCalls(char *line, struct asm_tok tokenarray[], bool inParam
 					if (clIdx > opIdx + 1)
 					{
 						tokenarray[clIdx + 1].token = T_FINAL;
-						tokenarray[opIdx + 1].string_ptr = ",";
+						tokenarray[opIdx + 1].string_ptr = STR_COMMA;
 						tokenarray[opIdx + 1].token = T_COMMA;
 					}
 					/* Proc with no params */
 					else
 					{
-						tokenarray[opIdx + 1].string_ptr = "";
+						tokenarray[opIdx + 1].string_ptr = STR_EMPTY;
 						tokenarray[opIdx + 1].token = T_FINAL;
 					}
 					tokenarray[i].token = T_DIRECTIVE;
 					tokenarray[i].tokval = T_INVOKE;
 					tokenarray[i].dirtype = DRT_INVOKE;
-					tokenarray[i].string_ptr = "invoke";
+					tokenarray[i].string_ptr = STR_INVOKE;
 				}
 				else
 				{
@@ -908,24 +916,24 @@ static void ExpandHllCalls(char *line, struct asm_tok tokenarray[], bool inParam
 						tokenarray[j] = tokenarray[j - 1];
 
 					Token_Count+=2;
-					tokenarray[Token_Count].string_ptr = "";
+					tokenarray[Token_Count].string_ptr = STR_EMPTY;
 					tokenarray[Token_Count].token = T_FINAL;
 					if (clIdx > opIdx + 1)
 					{
-						tokenarray[opIdx + 2].string_ptr = ",";
+						tokenarray[opIdx + 2].string_ptr = STR_COMMA;
 						tokenarray[opIdx + 2].token = T_COMMA;
 					}
 					else
 					{
-						tokenarray[opIdx + 2].string_ptr = " ";
+						tokenarray[opIdx + 2].string_ptr = STR_SPACE;
 					}
 					tokenarray[i].token = T_ID;
 					tokenarray[i].tokval = 0;
 					tokenarray[i].dirtype = 0;
 					if (inExpr && !inParam)
 					{
-						tokenarray[i].string_ptr = "uinvoke";
-						tokenarray[i + 1].string_ptr = "(";
+						tokenarray[i].string_ptr = STR_UINVOKE;
+						tokenarray[i + 1].string_ptr = STR_PAREN_OPEN;
 						tokenarray[i + 1].token = '(';
 						uCnt++; // Increment count of uinvokes, as we only allow 1 per expression.
 						if (uCnt > 1)
@@ -935,8 +943,8 @@ static void ExpandHllCalls(char *line, struct asm_tok tokenarray[], bool inParam
 					}
 					else if (inParam)
 					{
-						tokenarray[i].string_ptr = "arginvoke(%%,%%,";
-						tokenarray[i + 1].string_ptr = ""; 
+						tokenarray[i].string_ptr = STR_ARGINVOKE;
+						tokenarray[i + 1].string_ptr = STR_EMPTY;
 						tokenarray[i + 1].token = 0; 
 					}
 				}

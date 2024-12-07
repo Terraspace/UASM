@@ -6,11 +6,10 @@ TARGET1=uasm
 ifndef DEBUG
 DEBUG=0
 endif
-ifndef CLANG
-CLANG=0
-endif
 
 inc_dirs  = -IH
+
+CC = gcc
 
 #cflags stuff
 
@@ -22,13 +21,6 @@ OUTD=GccUnixR
 else
 extra_c_flags = -DDEBUG_OUT -g
 OUTD=GccUnixD
-endif
-
-ifeq ($(CLANG),0)
-CC = gcc
-extra_c_flags += -Wno-discarded-qualifiers
-else
-CC = clang
 endif
 
 c_flags =-D __UNIX__ $(extra_c_flags)

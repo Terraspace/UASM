@@ -77,6 +77,14 @@ extern char    *commentbuffer;
 #define tolower(c) ((c >= 'A' && c <= 'Z') ? c | 0x20 : c )
 #endif
 
+static char STR_DBL_COLON[]     = { ':',':', 0 };
+static char STR_COLON[]         = { ':', 0 };
+static char STR_POINTER[]       = { '-','>', 0 };
+static char STR_PERCENT[]       = { '%', 0 };
+static char STR_EQUALSGN[]      = { '=', 0 };
+static char STR_AMPERSAND[]     = { '&', 0 };
+static char STR_QUESTION_MARK[] = { '?', 0 };
+
 /* strings for token 0x28 - 0x2F */
 static const short stokstr1[] = {
     '(',')','*','+',',','-','.','/'};
@@ -596,10 +604,10 @@ static ret_code get_special_symbol( struct asm_tok *buf, struct line_status *p )
         if ( *p->input == ':' ) {
             p->input++;
             buf->token = T_DBL_COLON;
-            buf->string_ptr = "::";
+            buf->string_ptr = STR_DBL_COLON;
         } else {
             buf->token = T_COLON;
-            buf->string_ptr = ":";
+            buf->string_ptr = STR_COLON;
         }
         break;
 	case '-': 
@@ -607,7 +615,7 @@ static ret_code get_special_symbol( struct asm_tok *buf, struct line_status *p )
 		if (*p->input == '>') {
 			p->input++;
 			buf->token = T_POINTER;
-			buf->string_ptr = "->";
+			buf->string_ptr = STR_POINTER;
 		}
 		else {
 			p->input--;
@@ -634,7 +642,7 @@ static ret_code get_special_symbol( struct asm_tok *buf, struct line_status *p )
             return( EMPTY );
         }
         buf->token = T_PERCENT;
-        buf->string_ptr = "%";
+        buf->string_ptr = STR_PERCENT;
         break;
     case '(' : /* 0x28: T_OP_BRACKET operator - needs a matching ')' */
         /* v2.11: reset c-expression flag if a macro function call is detected */
@@ -696,7 +704,7 @@ static ret_code get_special_symbol( struct asm_tok *buf, struct line_status *p )
             buf->token = T_DIRECTIVE;
             buf->tokval = T_EQU;
             buf->dirtype = DRT_EQUALSGN; /* to make it differ from EQU directive */
-            buf->string_ptr = "=";
+            buf->string_ptr = STR_EQUALSGN;
             p->input++;
             break;
         }
@@ -734,7 +742,7 @@ static ret_code get_special_symbol( struct asm_tok *buf, struct line_status *p )
         if ( symbol == '&' ) {
             p->input++;
             buf->token = '&';
-            buf->string_ptr = "&";
+            buf->string_ptr = STR_AMPERSAND;
             break;
         }
         /* anything we don't recognise we will consider a string,
@@ -996,7 +1004,7 @@ continue_scan:
     if( size == 1 && *p->output == '?' ) {
         p->input = src;
         buf->token = T_QUESTION_MARK;
-        buf->string_ptr = "?";
+        buf->string_ptr = STR_QUESTION_MARK;
         return( NOT_ERROR );
     }
     index = FindResWord( p->output, size );
@@ -1474,7 +1482,7 @@ int Tokenize( char *line, unsigned int start, struct asm_tok tokenarray[], unsig
 skipline:
     tokenarray[p.index].token  = T_FINAL;
     tokenarray[p.index].bytval = p.flags3;
-    tokenarray[p.index].string_ptr = "";
+    tokenarray[p.index].string_ptr = STR_EMPTY;
     return( p.index );
 }
 

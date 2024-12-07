@@ -1425,7 +1425,7 @@ void close_files( void )
 #endif
 #endif
 
-static char *GetExt( int type )
+static const char *GetExt( int type )
 /*****************************/
 {
     switch ( type ) {

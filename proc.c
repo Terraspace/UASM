@@ -821,7 +821,7 @@ static ret_code ParseParams(struct dsym *proc, int i, struct asm_tok tokenarray[
 			if (paracurr)
 				name = paracurr->sym.name;
 			else
-				name = "";
+				name = STR_EMPTY;
 		}
 		else {
 
@@ -2239,7 +2239,7 @@ static void WriteSEHData(struct dsym *proc)
 /*******************************************/
 {
 	struct dsym *xdata;
-	char *segname = ".xdata";
+	char *segname;
 	int i;
 	int simplespec;
 	uint_8 olddotname;
@@ -2250,6 +2250,9 @@ static void WriteSEHData(struct dsym *proc)
 	/* 2016-02-10 John Hankinson - Don't bother writing SEH data for ELF64, MACHO64 or Uasm flat mode even if it was generated */
 	if (Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_BIN || Options.output_format == OFORMAT_MAC)
 		return;
+
+	segname = segnamebuff;
+	strcpy(segname, ".xdata");
 
 	if (endprolog_found == FALSE) {
 		EmitErr(MISSING_ENDPROLOG, proc->sym.name);
@@ -2276,7 +2279,7 @@ static void WriteSEHData(struct dsym *proc)
 		UNW_VERSION, unw_info.Flags, unw_info.SizeOfProlog,
 		unw_info.CountOfCodes, unw_info.FrameRegister, unw_info.FrameOffset);
 	if (unw_info.CountOfCodes) {
-		char *pfx = "dw";
+		const char *pfx = "dw";
 		buffer[0] = NULLC;
 		/* write the codes from right to left */
 		for (i = unw_info.CountOfCodes; i; i--) {
@@ -2303,7 +2306,7 @@ static void WriteSEHData(struct dsym *proc)
 
 	/* v2.07: ensure that .pdata items are sorted */
 	if (0 == strcmp(SimGetSegName(SIM_CODE), proc->sym.segment->name)) {
-		segname = ".pdata";
+		strcpy(segname, ".pdata");
 		simplespec = (unw_segs_defined & 1);
 		unw_segs_defined = 3;
 	}

@@ -112,12 +112,15 @@ struct tmitem {
     struct asym **store;
 };
 
+static char STR_VERSION[] = { '1','0','0','0', 0 }; /* "1000" */
+
 /* table of predefined text macros */
 static const struct tmitem tmtab[] = {
     /* @Version contains the Masm compatible version */
     /* v2.06: value of @Version changed to 800 */
     //{"@Version",  "615", NULL },
-    {"@Version",  "1000", NULL },
+    //{"@Version",  "1000", NULL },
+    {"@Version",  STR_VERSION, NULL },
     {"@Date",     szDate, NULL },
     {"@Time",     szTime, NULL },
     {"@FileName", ModuleInfo.name, NULL },
@@ -125,7 +128,7 @@ static const struct tmitem tmtab[] = {
     /* v2.09: @CurSeg value is never set if no segment is ever opened.
      * this may have caused an access error if a listing was written.
      */
-    {"@CurSeg",   "", &symCurSeg }
+    {"@CurSeg",   STR_EMPTY, &symCurSeg }
 };
 
 struct eqitem {
@@ -248,7 +251,7 @@ struct asym *SymAlloc( const char *name )
         memcpy( sym->name, name, len );
         sym->name[len] = NULLC;
     } else
-        sym->name = "";
+        sym->name = STR_EMPTY;
     return( sym );
 }
 
