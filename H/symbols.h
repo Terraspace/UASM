@@ -222,6 +222,7 @@ struct asym {
         uint_32         max_mbr_size; /* max size members */
         /* SYM_STACK, SYM_TYPE (TYPEKIND_TYPEDEF), SYM_EXTERNAL, SYM_INTERNAL (code labels) */
         struct asym     *target_type; /* set if ptr_memtype is MT_TYPE */
+        uintptr_t       target_type_val;
         /* SYM_TMACRO (if it's a register variable for FASTCALL) */
         uint_16         regist[2];
     };
@@ -246,6 +247,7 @@ struct asym {
          * total number of elements (LENGTHOF)
          */
         uint_32        total_length;
+        uintptr_t      altname_val;
         struct asym    *altname;     /* SYM_EXTERNAL (comm==0): alternative name */
         struct debug_info *debuginfo;/* SYM_INTERNAL (isproc==1): debug info (COFF) */
         internal_func  sfunc_ptr;    /* SYM_INTERNAL+predefined */

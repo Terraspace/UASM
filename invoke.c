@@ -22,6 +22,7 @@
 #include "listing.h"
 #include "myassert.h"
 #include "label.h"
+#include "fixup.h"
 #include "hll.h"
 
 #include "segment.h"
@@ -487,7 +488,7 @@ static int ms64_param(struct dsym const *proc, int index, struct dsym *param, bo
 {
 	uint_32 size;
 	uint_32 psize;
-	int reg;
+	int reg = 0;
 	int reg2;
 	int i;
 	int j = 0;
@@ -1004,7 +1005,7 @@ vcall:
 		if (addr || psize > 8) { /* psize > 8 should happen only for vectorcall */
 			if (psize >= 4) {
 				if (proc->sym.langtype == LANG_VECTORCALL) {
-					if ((param->sym.mem_type == MT_TYPE)) {
+					if (param->sym.mem_type == MT_TYPE) {
 						t = param->sym.ttype;
 
 						if (vcallpass == 0 && opnd->kind == EXPR_REG && opnd->indirect == FALSE && reg < T_XMM6 && index < 6 && info->xyzused[(reg - T_XMM0)] != 0 && (index != reg - T_XMM0))
@@ -1579,15 +1580,22 @@ static int sysv_GetNextGPR(struct proc_info *info, int size)
 /* Return the first free Vector register useable in a SystemV invoke/call */
 static int sysv_GetNextVEC(struct proc_info *info, int size)
 {
-	//int base = 0;
 	if (info->firstVEC >= 8)
 		return(-1);
-	if(size == 16)
+
+	switch (size)
+	{
+	case 16:
 		return(sysV64_regsXMM[info->firstVEC++]);
-	if (size == 32)
+	case 32:
 		return(sysV64_regsYMM[info->firstVEC++]);
-	if (size == 64)
+	case 64:
 		return(sysV64_regsZMM[info->firstVEC++]);
+	default:
+		break;
+	}
+
+	return(-1);
 }
 
 /*
@@ -2023,7 +2031,7 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 /************************************************************************************************************************************************/
 {
 	uint_32 psize;
-	int reg;
+	int reg = 0;
 	int reg2;
 	int i;
 	int base;
@@ -3050,8 +3058,8 @@ static int watc_param(struct dsym const *proc, int index, struct dsym *param, bo
 		i = 0;
 		if (reg[1] != NULL) {
 			char buffer[128];
-			short sreg;
-			if (sreg = GetSegmentPart(opnd, buffer, paramvalue))
+			short sreg = GetSegmentPart(opnd, buffer, paramvalue);
+			if (sreg)
 				AddLineQueueX("%r %s, %r", T_MOV, reg[0], sreg);
 			else
 				AddLineQueueX("%r %s, %s", T_MOV, reg[0], buffer);
@@ -3145,7 +3153,7 @@ static int ParamIsString(char *pStr, int param, struct dsym* proc) {
 			if (p->sym.target_type)
 			{
 				type = p->sym.target_type;
-				while (type->target_type && (int)type->target_type > 0x2000)
+				while (type->target_type && (unsigned long)type->target_type > 0x2000)
 				{
 					type = type->target_type;
 					if (type->mem_type == MT_PTR)
@@ -3192,8 +3200,8 @@ static int ParamIsString(char *pStr, int param, struct dsym* proc) {
 static unsigned int hashpjw(const char *s)
 /******************************************/
 {
-	uint_64 fnv_basis = 14695981039346656037;
-	uint_64 register fnv_prime = 1099511628211;
+	uint_64 fnv_basis = 14695981039346656037u;
+	uint_64 register fnv_prime = 1099511628211u;
 	uint_64 h;
 	for (h = fnv_basis; *s; ++s) {
 		h ^= (*s | ' ');
@@ -3234,12 +3242,12 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 
 	struct asym *lbl = NULL;
 	struct dsym *curseg;
-	struct dsym *prev;
 	struct dsym *currs;
 	size_t slen;
 	char *pSrc;
-	char *pDest;
-	char *labelstr = "__ls";
+	uint_16 *pDest;
+	uint_8 *pDest2;
+	const char *labelstr = "__ls";
 	char buf[32];
 	char c1;
 	char c2;
@@ -3268,9 +3276,8 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 				// Preserve current Segment.
 				curseg = ModuleInfo.currseg;
 				// Find Data Segment.
-				prev = NULL;
 				currs = NULL;
-				for (currs = SymTables[TAB_SEG].head; currs && currs->next; prev = currs, currs = currs->next)
+				for (currs = SymTables[TAB_SEG].head; currs && currs->next; currs = currs->next)
 				{
 					if (strcmp(currs->sym.name, "_DATA") == 0)
 						break;
@@ -3286,7 +3293,7 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 
 				lbl = SymLookup(buf);
 				SetSymSegOfs(lbl);
-				memset(&buff, 0, 256);
+				memset(&buff, 0, 256*sizeof(uint_16));
 				pDest = buff;
 				finallen = slen;
 
@@ -3344,9 +3351,8 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 				// Preserve current Segment.
 				curseg = ModuleInfo.currseg;
 				// Find Data Segment.
-				prev = NULL;
 				currs = NULL;
-				for (currs = SymTables[TAB_SEG].head; currs && currs->next; prev = currs, currs = currs->next)
+				for (currs = SymTables[TAB_SEG].head; currs && currs->next; currs = currs->next)
 				{
 					if (strcmp(currs->sym.name, "_DATA") == 0)
 						break;
@@ -3359,9 +3365,9 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 				pSrc = (tokenarray[i + 1].string_ptr) + 1;
 				sprintf(buf, "%s%d", labelstr, hashpjw(pSrc));
 				lbl = SymLookup(buf);
-				memset(&buff, 0, 256);
+				memset(&buff, 0, 256*sizeof(uint_16));
 
-				pDest = buff2;
+				pDest2 = buff2;
 				finallen = slen;
 
 				while (*pSrc != '"')
@@ -3370,28 +3376,28 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 					c2 = *(pSrc);
 					if (c1 == '\\' && c2 == 'n')
 					{
-						*pDest++ = 10;
+						*pDest2++ = 10;
 						finallen--;
 						pSrc++;
 					}
 					else if (c1 == '\\' && c2 == 'r')
 					{
-						*pDest++ = 13;
+						*pDest2++ = 13;
 						finallen--;
 						pSrc++;
 					}
 					else if (c1 == '\\' && c2 == 't')
 					{
-						*pDest++ = 9;
+						*pDest2++ = 9;
 						finallen--;
 						pSrc++;
 					}
 					else
-						*pDest++ = c1;
+						*pDest2++ = c1;
 				}
-				*pDest++ = 0;
+				*pDest2++ = 0;
 
-				j = UTF8toWideChar(&buff2, slen, NULL, (unsigned short *)&buff, slen);
+				j = UTF8toWideChar(buff2, slen, NULL, buff, slen);
 				/* j contains a proper number of wide chars, it can be different than slen, v2.38 */
 				SetSymSegOfs(lbl);
 				OutputBytes((unsigned char *)&buff, (j * 2) + 2, NULL);
@@ -3840,7 +3846,7 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 						}
 						else if (pushsize == 2) { /* 16-bit code? */
 							if (opnd.mem_type == MT_BYTE) {
-								if (psize == 4)
+								if (psize == 4) {
 									if ((ModuleInfo.curr_cpu & P_CPU_MASK) < P_186) {
 										if (!(*r0flags & R0_X_CLEARED))
 											AddLineQueueX(" xor %r, %r", T_AX, T_AX);
@@ -3849,6 +3855,7 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 									}
 									else
 										AddLineQueue(" push 0");
+								}
 								AddLineQueueX(" mov %r, %s", T_AL, fullparam);
 								if (!(*r0flags & R0_H_CLEARED)) {
 									AddLineQueueX(" mov %r, 0", T_AH);
@@ -4092,7 +4099,7 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 									*r0flags |= R0_USED;
 									*r0flags &= ~R0_X_CLEARED;
 								}
-								if (psize != 1) /* v2.11: don't modify AH if paramsize is 1 */
+								if (psize != 1) { /* v2.11: don't modify AH if paramsize is 1 */
 									if (IS_SIGNED(opnd.mem_type)) {
 										AddLineQueue(" cbw");
 										*r0flags &= ~(R0_H_CLEARED | R0_X_CLEARED);
@@ -4101,6 +4108,7 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 										AddLineQueueX(" mov %r, 0", T_AH);
 										*r0flags |= R0_H_CLEARED;
 									}
+								}
 							}
 							reg = regax[ModuleInfo.Ofssize];
 						}
@@ -4160,7 +4168,7 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 				//asize = CurrWordSize;
 				asize = 2 << Ofssize;
 
-				if (psize < asize)  /* ensure that the default argsize (2,4,8) is met */
+				if (psize < asize) { /* ensure that the default argsize (2,4,8) is met */
 					if (psize == 0 && curr->sym.is_vararg) {
 						/* v2.04: push a dword constant in 16-bit */
 						if (asize == 2 &&
@@ -4168,9 +4176,10 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 							psize = 4;
 						else
 							psize = asize;
-					}
-					else
+					} else {
 						psize = asize;
+					}
+				}
 
 				if ((ModuleInfo.curr_cpu & P_CPU_MASK) < P_186) {
 					*r0flags |= R0_USED;
@@ -4207,8 +4216,8 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 					AddLineQueueX(" push %r", T_AX);
 				}
 				else { /* cpu >= 80186 */
-					char *instr = "";
-					char *suffix;
+					const char *instr = "";
+					const char *suffix;
 					int qual = EMPTY;
 					//if ( asize != psize ) {
 					if (psize != pushsize) {
@@ -4280,7 +4289,7 @@ ret_code InvokeDirective(int i, struct asm_tok tokenarray[])
 	int            size;
 	int            parmpos;
 	int            namepos;
-	int            porder;
+	int            porder = 0;
 	int            j;
 	uint_8         r0flags = 0;
 	struct proc_info *info;

@@ -636,7 +636,7 @@ ret_code SizeStrDir( int i, struct asm_tok tokenarray[] )
     //sizestr = GetLiteralValue( StringBufferEnd, tokenarray[2].string_ptr );
     sizestr = tokenarray[2].stringlen;
 
-    if ( sym = CreateVariable( tokenarray[0].string_ptr, sizestr ) ) {
+    if ( (sym = CreateVariable( tokenarray[0].string_ptr, sizestr )) != NULL ) {
         DebugMsg1(("SizeStrDir(%s) exit, value=%u\n", tokenarray[0].string_ptr, sizestr));
         LstWrite( LSTTYPE_EQUATE, 0, sym );
         return( NOT_ERROR );
@@ -744,7 +744,7 @@ ret_code InStrDir( int i, struct asm_tok tokenarray[] )
     if ( ( start > 0 ) && ( sizestr >= j ) && j && ( string1 = strstr( p, q ) ))
         strpos = string1 - src + 1;
 
-    if ( sym = CreateVariable( tokenarray[0].string_ptr, strpos ) ) {
+    if ( (sym = CreateVariable( tokenarray[0].string_ptr, strpos )) != NULL ) {
         DebugMsg1(("InStrDir(%s) exit, value=%u\n", tokenarray[0].string_ptr, strpos));
         LstWrite( LSTTYPE_EQUATE, 0, sym );
         return ( NOT_ERROR );

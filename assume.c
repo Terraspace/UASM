@@ -255,11 +255,12 @@ void ModelAssumeInit( void )
 struct asym *GetStdAssume( int reg )
 /**********************************/
 {
-    if ( StdAssumeTable[reg].symbol )
+    if ( StdAssumeTable[reg].symbol ) {
         if ( StdAssumeTable[reg].symbol->mem_type == MT_TYPE )
             return( StdAssumeTable[reg].symbol->type );
         else
             return( StdAssumeTable[reg].symbol->target_type );
+    }
     return ( NULL );
 }
 

@@ -356,13 +356,14 @@ ret_code ExterndefDirective( int i, struct asm_tok tokenarray[] )
         }
 #endif
 
-        if ( tokenarray[i].token != T_FINAL )
+        if ( tokenarray[i].token != T_FINAL ) {
             if ( tokenarray[i].token == T_COMMA ) {
                 if ( (i + 1) < Token_Count )
                     i++;
             } else {
                 return( EmitErr( EXPECTING_COMMA, tokenarray[i].tokpos ) );
             }
+        }
 
     } while ( i < Token_Count );
 
@@ -655,12 +656,13 @@ ret_code ExternDirective( int i, struct asm_tok tokenarray[] )
 
         SetMangler( sym, langtype, mangle_type );
 
-        if ( tokenarray[i].token != T_FINAL )
+        if ( tokenarray[i].token != T_FINAL ) {
             if ( tokenarray[i].token == T_COMMA &&  ( (i + 1) < Token_Count ) ) {
                 i++;
             } else {
                 return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].string_ptr ) );
             }
+        }
     }  while ( i < Token_Count );
 
     return( NOT_ERROR );
@@ -891,7 +893,7 @@ ret_code PublicDirective( int i, struct asm_tok tokenarray[] )
     char                *token;
     struct asym         *sym;
     //struct dsym       *dir;
-    char                skipitem;
+    char                skipitem = FALSE;
     enum lang_type      langtype;
 
     DebugMsg1(("PublicDirective(%u) enter\n", i));
@@ -917,7 +919,7 @@ ret_code PublicDirective( int i, struct asm_tok tokenarray[] )
         sym = SymSearch( token );
         if ( Parse_Pass == PASS_1 ) {
             if ( sym == NULL ) {
-                if ( sym = SymCreate( token ) ) {
+                if ( (sym = SymCreate( token )) != NULL ) {
                     sym_add_table( &SymTables[TAB_UNDEF], (struct dsym *)sym );
                     DebugMsg1(("PublicDirective(%s): new symbol\n", sym->name ));
                 } else
@@ -967,13 +969,14 @@ ret_code PublicDirective( int i, struct asm_tok tokenarray[] )
             }
         }
 
-        if ( tokenarray[i].token != T_FINAL )
+        if ( tokenarray[i].token != T_FINAL ) {
             if ( tokenarray[i].token == T_COMMA ) {
                 if ( (i + 1) < Token_Count )
                     i++;
             } else {
                 return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].tokpos ) );
             }
+        }
 
     } while ( i < Token_Count );
 

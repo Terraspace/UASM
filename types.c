@@ -24,6 +24,8 @@
 #include "fastpass.h"
 #include "myassert.h"
 
+extern void SymSimd(struct dsym *);
+
 /* v2.04: changed to 0 */
 //#define ANYNAME 1 /* fixme: this probably should be changed to 0 */
 #define ANYNAME 0
@@ -42,6 +44,9 @@ static const char szStructure[] = "structure";
 static const char szRecord[] = "record";
 
 static const char szNonUnique[] = "NONUNIQUE";
+
+/* empty string (char *)"" */
+char STR_EMPTY[1] = { 0 };
 
 void TypesInit( void )
 /********************/
@@ -101,13 +106,13 @@ struct asym *SearchNameInStruct( const struct asym *tstruct, const char *name, u
         if ( *( fl->sym.name ) == NULLC ) {
             /* there are 2 cases: an anonymous inline struct ... */
             if ( fl->sym.state == SYM_TYPE ) {
-                if ( sym = SearchNameInStruct( &fl->sym, name, poffset, level ) ) {
+                if ( (sym = SearchNameInStruct( &fl->sym, name, poffset, level )) != NULL ) {
                     *poffset += fl->sym.offset;
                     break;
                 }
             /* or an anonymous structured field */
             } else if ( fl->sym.mem_type == MT_TYPE ) {
-                if ( sym = SearchNameInStruct( fl->sym.type, name, poffset, level ) ) {
+                if ( (sym = SearchNameInStruct( fl->sym.type, name, poffset, level )) != NULL ) {
                     *poffset += fl->sym.offset;
                     break;
                 }
@@ -202,7 +207,7 @@ ret_code StructDirective( int i, struct asm_tok tokenarray[] )
             name = tokenarray[i].string_ptr;
             i++;
         } else {
-            name = "";
+            name = STR_EMPTY;
         }
     } else {
         name = tokenarray[0].string_ptr;
@@ -402,7 +407,7 @@ ret_code CStructDirective(int i, struct asm_tok tokenarray[])
 			i++;
 		}
 		else {
-			name = "";
+			name = STR_EMPTY;
 		}
 	}
 	else {
@@ -617,7 +622,7 @@ ret_code RAWStructDirective(int i, struct asm_tok tokenarray[])
 			i++;
 		}
 		else {
-			name = "";
+			name = STR_EMPTY;
 		}
 	}
 	else {
@@ -841,7 +846,7 @@ ret_code COMStructDirective(int i, struct asm_tok tokenarray[])
 			i++;
 		}
 		else {
-			name = "";
+			name = STR_EMPTY;
 		}
 	}
 	else {
@@ -1116,7 +1121,7 @@ ret_code EndstructDirective( int i, struct asm_tok tokenarray[] )
         //sym->name = dir->sym.name;
         //sym->name_size = strlen( dir->sym.name );
         sym->total_size = dir->sym.total_size;
-        dir->sym.name = ""; /* the type becomes anonymous */
+        dir->sym.name = STR_EMPTY; /* the type becomes anonymous */
         dir->sym.name_size = 0;
     }
 
@@ -1240,7 +1245,7 @@ struct asym *CreateStructField( int loc, struct asm_tok tokenarray[], const char
              vartype->typekind == TYPE_UNION ) ) {
             CheckAnonymousStruct( (struct dsym *)vartype );
         }
-        name = "";
+        name = STR_EMPTY;
         len = 0;
     }
 
@@ -1299,7 +1304,7 @@ struct asym *CreateStructField( int loc, struct asm_tok tokenarray[], const char
         memcpy( f->sym.name, name, len );
         f->sym.name[len] = NULLC;
     } else
-        f->sym.name = "";
+        f->sym.name = STR_EMPTY;
     f->sym.state = SYM_STRUCT_FIELD;
     f->sym.list = ModuleInfo.cref;
     f->sym.isdefined = TRUE;

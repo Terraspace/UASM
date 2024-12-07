@@ -89,6 +89,8 @@ void myatoi128(const char* src, uint_64 dst[], int base, int size);
 #define EOLSTR  "\n"
 #endif
 
+static char STR_DOTFOR[] = { '.','f','o','r', 0 };
+
 /* values for struct hll_item.cmd */
 enum hll_cmd {
     HLL_IF,
@@ -199,9 +201,8 @@ static const char neg_cjmptype[] = { 0, 1, 0, 0, 1, 1 };
 /* in Masm, there's a nesting level limit of 20. In Uasm, there's
 * currently no limit.
 */
-#ifdef __WATCOMC__
-static _inline char HexDigit(char x)
-#elif defined(_MSC_VER)
+/*
+#if defined(_MSC_VER) || defined(__WATCOMC__)
 static _inline char HexDigit(char x)
 #else
 static char HexDigit(char x)
@@ -210,6 +211,7 @@ static char HexDigit(char x)
     x &= 0xF;
     return((x > 9) ? (x - 10 + 'A') : (x + '0'));
 }
+*/
 
 #ifdef DEBUG_OUT
 static unsigned evallvl;
@@ -352,11 +354,11 @@ static void bubblesort(struct hll_item* hll, uint_16* lbl, int* src, int n) {
     hll->delta = hll->maxcase - hll->mincase;
 }
 #if AMD64_SUPPORT 
-static void bubblesort64(struct hll_item* hll, uint_16* lbl, int_64* src, int n) {
+static void bubblesort64(struct hll_item* hll, uint_16* lbl, uint_64* src, int n) {
     /*******************************************************************************************************************************/
     int i;
     int j;
-    int_64 temp1;
+    uint_64 temp1;
     uint_16 temp2;
     for (i = 0; i < n; ++i)
     {
@@ -457,6 +459,7 @@ static char* RenderSimdInstr(char* dst, const char* instr, int start1, int end1,
 }
 
 /* render a Simd instruction using a temporary float immediate macro FP4/FP8 */
+#if 0
 static char* RenderSimdInstrTM(char* dst, const char* instr, int start1, int end1, int start2, int end2, struct asm_tok tokenarray[], enum c_bop op, bool isDouble)
 /*******************************************************************************************************************************/
 {
@@ -502,6 +505,7 @@ static char* RenderSimdInstrTM(char* dst, const char* instr, int start1, int end
     DebugMsg1(("%u RenderInstr(%s)=>%s<\n", evallvl, instr, old));
     return(dst);
 }
+#endif
 
 static char* GetLabelStr(int_32 label, char* buff)
 /**************************************************/
@@ -913,7 +917,7 @@ static void ReplaceLabel(char* p, uint_32 olabel, uint_32 nlabel)
     i = (int)strlen(newlbl);
 
     DebugMsg1(("%u ReplaceLabel(%s->%s, >%s<)\n", evallvl, oldlbl, newlbl, p));
-    while (p = strstr(p, oldlbl)) {
+    while ( (p = strstr(p, oldlbl)) != NULL ) {
         memcpy(p, newlbl, i);
         p += i;
     }
@@ -1090,7 +1094,7 @@ static ret_code QueueTestLines(char* src)
     while (src) {
         //if (*src == ' ') src++; /* v2.11: obsolete */
         start = src;
-        if (src = strchr(src, EOLCHAR))
+        if ( (src = strchr(src, EOLCHAR)) != NULL )
             *src++ = NULLC;
         if (*start)
             AddLineQueue(start);
@@ -1149,7 +1153,7 @@ static ret_code CheckCXZLines(char* p)
     int lines = 0;
     int i;
     int addchars;
-    char* px;
+    const char* px;
     bool NL = TRUE;
 
     DebugMsg1(("CheckCXZLines enter, p=>%s<\n", p));
@@ -1701,7 +1705,7 @@ ret_code HllStartDir(int i, struct asm_tok tokenarray[])
         //copy the counter to the buffer
         cmcnt = 0;
         forbuffcnt[0] = NULLC;
-        hll->condlines = "";
+        hll->condlines = STR_EMPTY;
         for (b = 0; forbuff[j] != ')'; b++, j++) {
             forbuffcnt[b] = forbuff[j];
             if (forbuffcnt[b] == ',' && forbuff[j - 1] != 39 && forbuff[j + 1] != 39) ++cmcnt;
@@ -1727,7 +1731,7 @@ ret_code HllStartDir(int i, struct asm_tok tokenarray[])
             memcpy(hll->counterlines, forbuffcnt, size);
             hll->cmcnt = cmcnt + 1;
         }
-        else hll->counterlines = "";    //there is nothing after the second ':'
+        else hll->counterlines = STR_EMPTY;    //there is nothing after the second ':'
         if (forbuffcond[0]) {
             //jump to test the first time
             hll->labels[LTEST] = GetHllLabel();
@@ -1735,7 +1739,7 @@ ret_code HllStartDir(int i, struct asm_tok tokenarray[])
             strcpy(transformed, ".for ");
             strcat(transformed, forbuffcond);
             strcat(transformed, "\0");
-            tokenarray[0].string_ptr = ".for\0";
+            tokenarray[0].string_ptr = STR_DOTFOR; /* ".for\0"; */
             tokenarray[0].tokpos = transformed;
             Token_Count = Tokenize(tokenarray[0].tokpos, 0, tokenarray, 0);
             if (tokenarray[i].token != T_FINAL) {
@@ -1748,7 +1752,7 @@ ret_code HllStartDir(int i, struct asm_tok tokenarray[])
                 }
             }
             else
-                hll->condlines = "";
+                hll->condlines = STR_EMPTY;
         }
         if (forbuffcnt[0] == NULLC && forbuffcond[0] == NULLC)
             hll->labels[LCONT] = hll->labels[LSTART];
@@ -1832,9 +1836,9 @@ ret_code HllEndDir(int i, struct asm_tok tokenarray[])
     int                 cmd = tokenarray[i].tokval;
     int                 j, n;
 #if AMD64_SUPPORT
-    __int64             temp;
+    __int64             temp = 0;
 #else
-    int                 temp;
+    int                 temp = 0;
 #endif
     int                 acnt = 0;
     int                 bcnt = 0;
@@ -2095,9 +2099,9 @@ ret_code HllEndDir(int i, struct asm_tok tokenarray[])
                             dcnt = 0;                          /* reset data caunter */
                         }
                         if (dcnt)
-                            sprintf(unum, ",%d", hll->pcases64[j]);
+                            sprintf(unum, ",%lu", hll->pcases64[j]);
                         else
-                            sprintf(unum, "%d", hll->pcases64[j]);
+                            sprintf(unum, "%lu", hll->pcases64[j]);
                         strcat(buffer, unum);
                         dcnt++;
                         j++;
@@ -2869,7 +2873,7 @@ ret_code HllExitDir(int i, struct asm_tok tokenarray[])
     char* p;
     char buffer[MAX_LINE_LEN];
 #if AMD64_SUPPORT
-    int_64* newcp64;
+    uint_64* newcp64;
 #endif
 
 

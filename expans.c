@@ -175,7 +175,7 @@ static void SkipMacro( struct asm_tok tokenarray[] )
 int RunMacro( struct dsym *macro, int idx, struct asm_tok tokenarray[], char *out, int mflags, bool *is_exitm )
 /*************************************************************************************************************/
 {
-    char        *currparm;
+    char        *currparm = NULL;
     char        *savedStringBuffer = StringBufferEnd;
     int         i;
     //int         start = idx-1;
@@ -254,7 +254,7 @@ int RunMacro( struct dsym *macro, int idx, struct asm_tok tokenarray[], char *ou
             memcpy( currparm, tokenarray[0].string_ptr, i+1 );
             currparm = GetAlignedPointer( currparm, i );
         } else
-            mi.parm_array[parmidx] = "";
+            mi.parm_array[parmidx] = STR_EMPTY;
         parmidx++;
     }
 #endif
@@ -353,7 +353,7 @@ int RunMacro( struct dsym *macro, int idx, struct asm_tok tokenarray[], char *ou
                             continue;
                         }
                         /* count brackets */
-                        if ( parm_end_delim == T_CL_BRACKET )
+                        if ( parm_end_delim == T_CL_BRACKET ) {
                             if ( tokenarray[i].token == T_OP_BRACKET )
                                 cnt++;
                             else if ( tokenarray[i].token == T_CL_BRACKET ) {
@@ -361,6 +361,7 @@ int RunMacro( struct dsym *macro, int idx, struct asm_tok tokenarray[], char *ou
                                     break;
                                 cnt--;
                             }
+                        }
 
                         /* stop if undelimited string occurs (need to scan for '!') */
                         if ( tokenarray[i].token == T_STRING && tokenarray[i].string_delim == NULLC )
@@ -483,7 +484,7 @@ int RunMacro( struct dsym *macro, int idx, struct asm_tok tokenarray[], char *ou
                      * text macros are expanded only selectively
                      */
                     if ( tokenarray[idx].token == T_ID ) {
-                        if ( sym = SymSearch( tokenarray[idx].string_ptr ) ) {
+                        if ( (sym = SymSearch( tokenarray[idx].string_ptr )) != NULL ) {
                             if ( sym->state == SYM_MACRO && sym->isdefined == TRUE &&
                                 sym->isfunc == TRUE && tokenarray[idx+1].token == T_OP_BRACKET ) {
                                 bool is_exitm2;
@@ -579,7 +580,7 @@ int RunMacro( struct dsym *macro, int idx, struct asm_tok tokenarray[], char *ou
                 DebugMsg1(("RunMacro(%s.%u): curr parameter value=>%s<\n", macro->sym.name, parmidx, currparm ));
                 currparm = GetAlignedPointer( currparm, ptr - currparm );
             } else {
-                mi.parm_array[parmidx] = "";
+                mi.parm_array[parmidx] = STR_EMPTY;
                 DebugMsg1(("RunMacro(%s.%u): curr parameter value=><\n", macro->sym.name, parmidx ));
             }
         } /*end if */

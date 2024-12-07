@@ -1,8 +1,10 @@
 
 #include "codegenv2.h"
 
+#include <ctype.h>
 #include <time.h>
 #include "globals.h"
+#include "input.h"
 #include "parser.h"
 #include "segment.h"
 #include "extern.h"
@@ -34,8 +36,8 @@ struct Instr_Def* InstrHash[16384];
 static unsigned int hash(const uint_8* data, int size)
 /******************************************/
 {
-	uint_64 fnv_basis = 14695981039346656037;
-	uint_64 register fnv_prime = 1099511628211;
+	uint_64 fnv_basis = 14695981039346656037u;
+	uint_64 register fnv_prime = 1099511628211u;
 	uint_64 h = fnv_basis;
 	int cnt = 0;
 	for (cnt = 0; cnt < size; cnt++) {
@@ -88,7 +90,7 @@ uint_32 GenerateInstrHash(struct Instr_Def* pInstruction)
 	*(pDst + 4) = pInstruction->operand_types[4];
 	len += 4;
 	pDst += 4;
-	return hash(&hashBuffer, len);
+	return hash(hashBuffer, len);
 }
 
 void BuildInstructionTable(void)
@@ -863,7 +865,7 @@ void BuildEVEX(bool* needEvex, unsigned char* evexBytes, struct Instr_Def* instr
 
 	 BYTE1:
 	 | 7 | 6 | 5 | 4  | 3 | 2 | 1-0 |
-	 | R | X | B | R’ | 0 | 0 |  m  |
+	 | R | X | B | Rï¿½ | 0 | 0 |  m  |
 
 	BYTE2:
 	 | 7 | 6-3      | 2 | 1-0 |
@@ -1231,7 +1233,6 @@ int BuildMemoryEncoding(unsigned char* pmodRM, unsigned char* pSIB, unsigned cha
 	unsigned char   idxRegNo = 17;
 	int             baseRegSize = 0;
 	int             idxRegSize = 0;
-	int             symSize = 0;
 	bool			skipSIB = FALSE;
 
 	/* Absolute addressing modes can skip this */
@@ -1287,7 +1288,7 @@ int BuildMemoryEncoding(unsigned char* pmodRM, unsigned char* pSIB, unsigned cha
 	/* If the memory address refers to a symbol indirectly.. */
 	if (opExpr[instr->memOpnd].sym && opExpr[instr->memOpnd].kind == EXPR_ADDR)
 	{
-		symSize = SizeFromMemtype(opExpr[instr->memOpnd].mem_type, ModuleInfo.Ofssize, opExpr[instr->memOpnd].sym);
+		SizeFromMemtype(opExpr[instr->memOpnd].mem_type, ModuleInfo.Ofssize, opExpr[instr->memOpnd].sym);
 
 		/* For 64bit mode, all symbol references are RIP relative, unless the symbol is on the stack.
 		   EXCEPT, if the memory address includes a register. */
@@ -1701,7 +1702,7 @@ ret_code CodeGenV2(const char* instr, struct code_info* CodeInfo, uint_32 oldofs
 		/* If the matched instruction requires processing of a memory address */
 		if (matchedInstr->memOpnd != NO_MEM)
 			aso = BuildMemoryEncoding(&modRM, &sib, &rexByte, &needModRM, &needSIB,								/* This could result in modifications to REX/VEX/EVEX, modRM and SIB bytes */
-				&dispSize, &displacement, matchedInstr, opExpr, &needB, &needX, &needRR, CodeInfo);
+				&dispSize, &displacement.displacement64, matchedInstr, opExpr, &needB, &needX, &needRR, CodeInfo);
 		modRM |= BuildModRM(matchedInstr->modRM, matchedInstr, opExpr, &needModRM, &needSIB,
 			((matchedInstr->vexflags & VEX) || (matchedInstr->vexflags & EVEX)));								/* Modify the modRM value for any non-memory operands */
 
@@ -1709,7 +1710,7 @@ ret_code CodeGenV2(const char* instr, struct code_info* CodeInfo, uint_32 oldofs
 		   Create REX, VEX or EVEX prefixes                      
 		  ----------------------------------------------------------*/
 		if ((matchedInstr->vexflags & VEX) != 0 && (matchedInstr->evexflags & EVEX_ONLY) == 0 && CodeInfo->evex_flag == 0)
-			BuildVEX(&needVEX, &vexSize, &vexBytes, matchedInstr, opExpr, needB, needX, opCount);				/* Create the VEX prefix bytes for both reg and memory operands */
+			BuildVEX(&needVEX, &vexSize, vexBytes, matchedInstr, opExpr, needB, needX, opCount);				/* Create the VEX prefix bytes for both reg and memory operands */
 
 		  /* Either the instruction can ONLY be EVEX encoded, or user requested VEX->EVEX promotion. */
 		else if ((matchedInstr->evexflags & EVEX_ONLY) != 0 ||
@@ -2003,7 +2004,7 @@ ret_code CodeGenV2(const char* instr, struct code_info* CodeInfo, uint_32 oldofs
 		}
 
 	}
-skip:
+
 	/* Write out listing. */
 	if (retcode == NOT_ERROR)
 	{

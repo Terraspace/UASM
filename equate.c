@@ -176,7 +176,9 @@ static struct asym *CreateAssemblyTimeVariable( struct asm_tok tokenarray[] )
              */
             if( opnd.sym && opnd.sym->state == SYM_UNDEFINED && opnd.indirect == FALSE ) {
 #if FASTPASS
-                if ( StoreState == FALSE ) FStoreLine(0); /* make sure this line is evaluated in pass two */
+                if ( StoreState == FALSE ) {
+                    FStoreLine(0) {} /* make sure this line is evaluated in pass two */
+                }
 #endif
             } else
                 EmitError( CONSTANT_EXPECTED );
@@ -269,7 +271,7 @@ ret_code EqualSgnDirective( int i, struct asm_tok tokenarray[] )
     if( tokenarray[0].token != T_ID ) {
         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[0].string_ptr ) );
     }
-    if ( sym = CreateAssemblyTimeVariable( tokenarray ) ) {
+    if ( (sym = CreateAssemblyTimeVariable( tokenarray )) != NULL ) {
         if ( ModuleInfo.list == TRUE ) {
             LstWrite( LSTTYPE_EQUATE, 0, sym );
         }
@@ -358,7 +360,6 @@ struct asym *CreateConstant( struct asm_tok tokenarray[] )
 	struct asm_tok      tokenarray2[32];
     const char          *name = tokenarray[0].string_ptr;
     int                 i = 2;
-	int                 j;
     ret_code            rc;
     char                *p;
     bool                cmpvalue = FALSE;
@@ -555,7 +556,7 @@ ret_code EquDirective( int i, struct asm_tok tokenarray[] )
         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[0].string_ptr ) );
     }
     DebugMsg1(("EquDirective(%s): calling CreateConstant\n", tokenarray[0].string_ptr ));
-    if ( sym = CreateConstant( tokenarray ) ) {
+    if ( (sym = CreateConstant( tokenarray )) != NULL ) {
         /**/myassert( sym->state == SYM_INTERNAL ); /* must not be a text macro */
         if ( ModuleInfo.list == TRUE ) {
             LstWrite( LSTTYPE_EQUATE, 0, sym );

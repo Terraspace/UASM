@@ -177,6 +177,7 @@ static const enum seg_type stt[] = {
     SEGTYPE_CODE, SEGTYPE_DATA, SEGTYPE_DATA, SEGTYPE_BSS
 };
 
+/*
 static void CheckBOM(FILE *f)
 {
 	unsigned long bom;
@@ -184,6 +185,7 @@ static void CheckBOM(FILE *f)
 	if ((bom & 0xFFFFFF) != 0xBFBBEF)
 		rewind(f);
 }
+*/
 
 extern void RewindToWin64() 
 {
@@ -408,7 +410,7 @@ void OutputBytes( const unsigned char *pbytes, int len, struct fixup *fixup )
 void OutputInterleavedBytes(const unsigned char *pbytes, int len, struct fixup *fixup)
 {
 	int i = 0;
-	char *pOut = NULL;
+	unsigned char *pOut = NULL;
 
 	if (write_to_file == TRUE) {
 		uint_32 idx = CurrSeg->e.seginfo->current_loc - CurrSeg->e.seginfo->start_loc;
@@ -688,7 +690,7 @@ static void CmdlParamsInit( int pass )
         add_cmdline_tmacros();
         add_incpaths();
         if ( Options.ignore_include == FALSE )
-            if ( env = getenv( "INCLUDE" ) )
+            if ( (env = getenv( "INCLUDE" )) != NULL )
                 AddStringToIncludePath( env );
     }
     DebugMsg(("CmdlParamsInit exit\n"));
@@ -1039,7 +1041,7 @@ static void PassOneChecks( void )
          */
 #if FASTPASS
         /* UASM 2.55 , altname is set to 1 when the type is undefined */
-        if ( curr->sym.altname > 1 ) 
+        if ( curr->sym.altname_val > 1 )
 		{
             if ( curr->sym.altname->state == SYM_INTERNAL ) 
 			{
@@ -1203,10 +1205,11 @@ static int OnePass( void )
             DebugMsg1(("OnePass(%u) cur/nxt=%X/%X src=%X.%u mlvl=%u: >%s<\n", Parse_Pass+1, LineStoreCurr, LineStoreCurr->next, LineStoreCurr->srcfile, LineStoreCurr->lineno, MacroLevel, LineStoreCurr->line ));
             ModuleInfo.CurrComment = NULL; /* v2.08: added (var is never reset because GetTextLine() isn't called) */
 #if USELSLINE
-            if ( Token_Count = Tokenize( LineStoreCurr->line, 0, ModuleInfo.tokenarray, TOK_DEFAULT ) )
+            Token_Count = Tokenize( LineStoreCurr->line, 0, ModuleInfo.tokenarray, TOK_DEFAULT );
 #else
-            if ( Token_Count = Tokenize( CurrSource, 0, ModuleInfo.tokenarray, TOK_DEFAULT ) )
+            Token_Count = Tokenize( CurrSource, 0, ModuleInfo.tokenarray, TOK_DEFAULT );
 #endif
+            if ( Token_Count > 0 )
                 ParseLine( ModuleInfo.tokenarray );
             LineStoreCurr = LineStoreCurr->next;
         }
@@ -1414,24 +1417,29 @@ void close_files( void )
 
 /* get default file extension for error, object and listing files */
 
-static char *GetExt( int type )
+#if MZ_SUPPORT || PE_SUPPORT
+#if PE_SUPPORT
+#define SUB_FORMAT_IS_MZ_OR_PE  (Options.sub_format == SFORMAT_MZ || Options.sub_format == SFORMAT_PE)
+#else
+#define SUB_FORMAT_IS_MZ_OR_PE  (Options.sub_format == SFORMAT_MZ)
+#endif
+#endif
+
+static const char *GetExt( int type )
 /*****************************/
 {
     switch ( type ) {
     case OBJ:
 #if BIN_SUPPORT
-        if ( Options.output_format == OFORMAT_BIN )
-#if MZ_SUPPORT || PE_SUPPORT
-            if ( Options.sub_format == SFORMAT_MZ
-#if PE_SUPPORT
-                || Options.sub_format == SFORMAT_PE
-#endif
-               )
+        if ( Options.output_format == OFORMAT_BIN ) {
+#ifdef SUB_FORMAT_IS_MZ_OR_PE
+            if ( SUB_FORMAT_IS_MZ_OR_PE ) {
                 return( EXE_EXT );
-            else
+            }
 #endif
-                return( BIN_EXT );
+            return( BIN_EXT );
 #endif
+        }
         return( OBJ_EXT );
     case LST:
         return( LST_EXT );
@@ -1798,7 +1806,7 @@ int EXPQUAL AssembleModule( const char *source )
 						printf("%u errors\n", ModuleInfo.g.error_count);
 						SetConsoleTextAttribute(hConsole, screenBufferInfo.wAttributes);
 			#else
-						printf(FWHT("%s: %lu lines, "), GetFNamePart(GetFName(ModuleInfo.srcfile)->fname), GetLineNumber());
+						printf(FWHT("%s: %u lines, "), GetFNamePart(GetFName(ModuleInfo.srcfile)->fname), GetLineNumber());
 						printf(FGRN("%u passes"), Parse_Pass + 1);
 						printf(", ");
 						printf(FCYN("%u ms"), endtime - starttime);

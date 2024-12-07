@@ -206,7 +206,7 @@ static unsigned AddFile( char const *fname )
             memcpy( newfn, ModuleInfo.g.FNames, index * sizeof( struct fname_item ) );
             MemFree( ModuleInfo.g.FNames );
         }
-        ModuleInfo.g.FNames = newfn;
+        ModuleInfo.g.FNames = (char **)newfn;
     }
     ModuleInfo.g.cnt_fnames++;
 
@@ -218,7 +218,7 @@ static unsigned AddFile( char const *fname )
 const struct fname_item *GetFName( unsigned index )
 /*************************************************/
 {
-    return( ModuleInfo.g.FNames+index );
+    return( (struct fname_item *)(ModuleInfo.g.FNames+index) );
 }
 
 /* free the file array.
@@ -586,7 +586,6 @@ FILE *SearchFile( const char *path, bool queue )
 {
     FILE        *file = NULL;
     struct src_item *fl;
-    const char  *fn;
     bool        isabs;
     char        fullpath[FILENAME_MAX];
 
@@ -594,7 +593,7 @@ FILE *SearchFile( const char *path, bool queue )
 
     //_splitpath( path, drive, dir, fname, ext );
     //DebugMsg1(("SearchFile(): drive=%s, dir=%s, fname=%s, ext=%s\n", drive, dir, fname, ext ));
-    fn = GetFNamePart( path );
+    GetFNamePart( path );
 
     /* if no absolute path is given, then search in the directory
      * of the current source file first!
@@ -620,7 +619,7 @@ FILE *SearchFile( const char *path, bool queue )
                      */
                     memcpy( fullpath, src, i );
                     strcpy( fullpath + i, path );
-                    if ( file = fopen( fullpath, "rb" ) ) {
+                    if ( (file = fopen( fullpath, "rb" )) != NULL ) {
                         DebugMsg1(("SearchFile(): file found, fopen(%s)=%X\n", fullpath, file ));
                         path = fullpath;
 						if(file) 
@@ -646,7 +645,7 @@ FILE *SearchFile( const char *path, bool queue )
          * and NO absolute path is given, then search include dirs
          */
         if( file == NULL && ModuleInfo.g.IncludePath != NULL && !isabs ) {
-            if ( file = open_file_in_include_path( path, fullpath ) ) {
+            if ( (file = open_file_in_include_path( path, fullpath )) != NULL ) {
                 DebugMsg1(("SearchFile(): open_file_in_include_path(%s)=%X [%s]\n", path, file, fullpath ));
                 path = fullpath;
             }

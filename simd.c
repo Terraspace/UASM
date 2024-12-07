@@ -10,14 +10,13 @@ and their sub-types
 #include "simd.h"
 #include "globals.h"
 #include "symbols.h"
+#include "lqueue.h"
 
 extern void     AddLineQueue(const char *line);
 extern void     AddLineQueueX(const char *fmt, ...);
 
 void AddSimdTypes()
 {
-	struct asym* sym = 0;
-
 	AddLineQueue("__m128b struct");
 	AddLineQueue("b0 BYTE ?");
 	AddLineQueue("b1 BYTE ?");

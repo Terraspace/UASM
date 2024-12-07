@@ -175,7 +175,7 @@ void UpdateCurrSegVars( void )
         info->symbol = NULL;
         info->is_flat = FALSE;
         info->error = TRUE;
-        symCurSeg->string_ptr = "";
+        symCurSeg->string_ptr = STR_EMPTY;
     } else {
         info->is_flat = FALSE;
         info->error = FALSE;
@@ -1168,7 +1168,7 @@ void SegmentInit( int pass )
 {
     struct dsym *curr;
     uint_32     i;
-    char        *p;
+    uint_8      *p;
     CurrSeg      = NULL;
     stkindex     = 0;
 

@@ -129,7 +129,7 @@ static ret_code  GetMask128(struct expr *opnd1, int index, struct asm_tok tokena
     char            buffer1[MAX_LINE_LEN];
     char            buff[18];
     char            *ptr;
-    int             i= Token_Count; /* i must remain the start index */
+    //int             i= Token_Count; /* i must remain the start index */
 
 
       strcpy( buffer,tokenarray->tokpos); 
@@ -241,12 +241,10 @@ static ret_code  GetMask128(struct expr *opnd1, int index, struct asm_tok tokena
 static ret_code  InitRecordVar( struct expr *opnd1, int index, struct asm_tok tokenarray[], const struct dsym *symtype )
 /****************************************************************************************************************************/
 {
-    char            *ptr, *ptr2, *ptr3;
+    char            *ptr;
     struct sfield   *f;
     int_32          nextofs;
     int             i;
-    int             nlabel;
-    struct asym    *sym = NULL;
     struct          asym *lbl = NULL;
 #if AMD64_SUPPORT
     uint_64         dst128Hi;
@@ -257,7 +255,7 @@ static ret_code  InitRecordVar( struct expr *opnd1, int index, struct asm_tok to
 #else
     uint_32         dwRecInit;
 #endif
-    bool            is_record_set;
+    //bool            is_record_set;
     struct expr     opndx;
     char            buffer[MAX_LINE_LEN];
     char            buffer1[MAX_LINE_LEN];
@@ -284,7 +282,7 @@ static ret_code  InitRecordVar( struct expr *opnd1, int index, struct asm_tok to
         dwRecInit = 0;
         dst128Hi = 0; /* clear Hi 64 bit for the 128 bit RECORD */
         dst128Lo = 0; /* clear Lo 64 bit for the 128 bit RECORD */
-        is_record_set = FALSE;
+        //is_record_set = FALSE;
     }
 
     /* scan the RECORD's members */
@@ -305,7 +303,7 @@ static ret_code  InitRecordVar( struct expr *opnd1, int index, struct asm_tok to
                     int j = Token_Count + 1;
                     int max_item = Tokenize( f->ivalue, j, tokenarray, TOK_RESCAN );
                     EvalOperand( &j, tokenarray, max_item, &opndx, 0 );
-                    is_record_set = TRUE;
+                    //is_record_set = TRUE;
                 } else {
                     opndx.value = 0;
                     opndx.kind = EXPR_CONST;
@@ -313,7 +311,7 @@ static ret_code  InitRecordVar( struct expr *opnd1, int index, struct asm_tok to
                 }
             } else {
                 EvalOperand( &i, tokenarray, Token_Count, &opndx, 0 );
-                is_record_set = TRUE;
+                //is_record_set = TRUE;
             }
             if ( opndx.kind != EXPR_CONST || opndx.quoted_string != NULL )
                 EmitError( CONSTANT_EXPECTED );
@@ -367,8 +365,7 @@ static ret_code  InitRecordVar( struct expr *opnd1, int index, struct asm_tok to
             break;
 
         if ( f->next != NULL ) {
-
-            if ( tokenarray[i].token != T_FINAL )
+            if ( tokenarray[i].token != T_FINAL ) {
                 if ( tokenarray[i].token == T_COMMA )
                     i++;
                 else {
@@ -376,6 +373,7 @@ static ret_code  InitRecordVar( struct expr *opnd1, int index, struct asm_tok to
                     while ( tokenarray[i].token != T_FINAL && tokenarray[i].token != T_COMMA )
                         i++;
                 }
+            }
         }
     }  /* end for */
     opnd1->llvalue = dwRecInit;
@@ -863,6 +861,8 @@ static ret_code get_operand( struct expr *opnd, int *idx, struct asm_tok tokenar
 	struct asym *labelsym2;
 	struct asm_tok tok;
 
+    memset( &tok, 0, sizeof(struct asm_tok) );
+
     DebugMsg1(("%u get_operand(idx=%u >%s<) enter [memtype=%Xh]\n", evallvl, i, tokenarray[i].tokpos, opnd->mem_type ));
     switch( tokenarray[i].token ) {
 	case T_DOT:
@@ -873,6 +873,7 @@ static ret_code get_operand( struct expr *opnd, int *idx, struct asm_tok tokenar
 			sprintf(clabel, "%s%s", ".", tokenarray[(*idx) + 1].string_ptr);
 			labelsym = SymFind(clabel);
 			labelsym2 = SymFind(tokenarray[(*idx) + 1].string_ptr);
+			(void)labelsym2;
 
 			if ((*idx) > 0)
 			{
@@ -884,12 +885,11 @@ static ret_code get_operand( struct expr *opnd, int *idx, struct asm_tok tokenar
 			{
 				(*idx)++;
 				strcpy(clabel, tokenarray[(*idx)].string_ptr);
-				sprintf(tokenarray[(*idx)].string_ptr, "%s%s", ".", &clabel);
+				sprintf(tokenarray[(*idx)].string_ptr, "%s%s", ".", clabel);
 			}
-			else if (labelsym == NULL && labelsym2 == NULL)
-			{
-
-			}
+			//else if (labelsym == NULL && labelsym2 == NULL)
+			//{
+			//}
 			i++;
 			goto isNowID;
 		}
@@ -2143,7 +2143,7 @@ handles ARGSIZE operator.
 */
 static ret_code argsize_op(int oper, struct expr *opnd1, struct expr *opnd2, struct asym *sym, char *name)
 {
-	int argNo = 1;
+	//int argNo = 1;
 	bool argFound = FALSE;
 	struct dsym* param = NULL;
 
@@ -2178,7 +2178,7 @@ static ret_code argsize_op(int oper, struct expr *opnd1, struct expr *opnd2, str
 			argFound = TRUE;
 			break;
 		}
-		argNo++;
+		//argNo++;
 		param = param->nextparam;
 	}
 
@@ -2206,7 +2206,7 @@ handles ARGTYPE operator.
 */
 static ret_code argtype_op(int oper, struct expr *opnd1, struct expr *opnd2, struct asym *sym, char *name)
 {
-	int argNo = 1;
+	//int argNo = 1;
 	bool argFound = FALSE;
 	struct dsym* param = NULL;
 
@@ -2241,7 +2241,7 @@ static ret_code argtype_op(int oper, struct expr *opnd1, struct expr *opnd2, str
 			argFound = TRUE;
 			break;
 		}
-		argNo++;
+		//argNo++;
 		param = param->nextparam;
 	}
 
@@ -3311,8 +3311,8 @@ static ret_code check_streg( struct expr *opnd1, struct expr *opnd2 )
 static void cmp_types( struct expr *opnd1, struct expr *opnd2, int trueval )
 /**************************************************************************/
 {
-    struct asym *type1;
-    struct asym *type2;
+    struct asym *type1 = NULL;
+    struct asym *type2 = NULL;
 
     /* v2.10: special handling of pointer types. */
     //if ( opnd1->mem_type == MT_PTR && opnd2->mem_type == MT_PTR && opnd1->type && opnd2->type ) {
@@ -4042,14 +4042,15 @@ static ret_code evaluate( struct expr *opnd1, int *i, struct asm_tok tokenarray[
 /********************************************************************************************************************/
 {
     ret_code rc = NOT_ERROR;
-    char *p;
     char *p1;
 	char clabel[100];
 	struct asym *labelsym;
 	struct asym *labelsym2;
 	struct asm_tok tok;
     struct dsym *recordsym;
-    
+
+    memset( &tok, 0, sizeof(struct asm_tok) );
+
     DebugMsg1(("%u evaluate(i=%d, end=%d, flags=%X) enter [opnd1: kind=%d type=%s]\n",
                ++evallvl, *i, end, flags, opnd1->kind, opnd1->type ? opnd1->type->name : "NULL" ));
 
@@ -4080,12 +4081,11 @@ static ret_code evaluate( struct expr *opnd1, int *i, struct asm_tok tokenarray[
 		{
 			(*i)++;
 			strcpy(clabel, tokenarray[(*i)].string_ptr);
-			sprintf(tokenarray[(*i)].string_ptr, "%s%s", ".", &clabel);
+			sprintf(tokenarray[(*i)].string_ptr, "%s%s", ".", clabel);
 		}
-		else if (labelsym == NULL && labelsym2 == NULL)
-		{
-			
-		} 
+		//else if (labelsym == NULL && labelsym2 == NULL)
+		//{
+        //} 
 	}
 	if ((tokenarray[*i].tokval == T_SHORT || tokenarray[*i].tokval == T_OFFSET) && tokenarray[(*i) + 1].token == T_DOT && tokenarray[(*i) + 2].token == T_ID)
 	{
@@ -4104,7 +4104,7 @@ static ret_code evaluate( struct expr *opnd1, int *i, struct asm_tok tokenarray[
 		{
 			//(*i)++;
 			strcpy(clabel, tokenarray[(*i)+2].string_ptr);
-			sprintf(tokenarray[(*i)+2].string_ptr, "%s%s", ".", &clabel);
+			sprintf(tokenarray[(*i)+2].string_ptr, "%s%s", ".", clabel);
 			tokenarray[(*i) + 1].string_ptr = tokenarray[(*i) + 2].string_ptr;
 			tokenarray[(*i) + 1].token = T_ID;
 			tokenarray[(*i) + 2].token = T_FINAL;
@@ -4128,7 +4128,6 @@ static ret_code evaluate( struct expr *opnd1, int *i, struct asm_tok tokenarray[
 
         int curr_operator;
         struct expr opnd2;
-        struct expr opnd3;
         curr_operator = *i;
         DebugMsg1(("%u evaluate loop, operator=>%s< opnd1->sym=%X, type=%s\n",
                    evallvl, tokenarray[curr_operator].string_ptr, opnd1->sym, (opnd1->type ? opnd1->type->name : "NULL") ));
@@ -4144,7 +4143,7 @@ static ret_code evaluate( struct expr *opnd1, int *i, struct asm_tok tokenarray[
 				{
 					if (opnd1->type != NULL)
 					{
-						recordsym = SymSearch(opnd1->type->name);
+						recordsym = (struct dsym *)SymSearch(opnd1->type->name);
 						/* if it is a RECORD don't throw an error but decorate it with an actual value v2.41*/
 						if (recordsym && recordsym->sym.typekind == TYPE_RECORD)
 						{

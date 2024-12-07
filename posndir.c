@@ -114,7 +114,9 @@ ret_code OrgDirective( int i, struct asm_tok tokenarray[] )
             return( EmitError( MUST_BE_IN_SEGMENT_BLOCK ) );
         }
 #if FASTPASS
-        if ( StoreState == FALSE ) FStoreLine(0);
+        if ( StoreState == FALSE ) {
+            FStoreLine(0) {}
+        }
 #endif
         /* v2.04: added */
         if ( Parse_Pass == PASS_1 && CurrSeg->e.seginfo->FixupList.head )
@@ -244,7 +246,9 @@ ret_code AlignDirective( int i, struct asm_tok tokenarray[] )
         return( AlignInStruct( align_value ));
 
 #if FASTPASS
-    if ( StoreState == FALSE ) FStoreLine(0);
+    if ( StoreState == FALSE ) {
+        FStoreLine(0) {}
+    }
 #endif
     seg_align = GetCurrSegAlign(); /* # of bytes */
     if( seg_align <= 0 ) {

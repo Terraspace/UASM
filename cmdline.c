@@ -828,6 +828,7 @@ static char *ReadParamFile( const char *name )
     FILE        *file;
     int         len;
     char        ch;
+    size_t      nread;
 
     DebugMsg(("ReadParamFile(%s) enter\n"));
     env = NULL;
@@ -843,11 +844,8 @@ static char *ReadParamFile( const char *name )
         len = ftell( file );
         rewind( file );
         env = MemAlloc( len + 1 );
-#if defined(__GNUC__) /* gcc warns if return value of fread() is "ignored" */
-        if ( fread( env, 1, len, file ) );
-#else
-        fread( env, 1, len, file );
-#endif
+        nread = fread( env, 1, len, file );
+        (void)nread;
         env[len] = NULLC;
     }
     fclose( file );

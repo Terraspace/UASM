@@ -1240,7 +1240,7 @@ insx(SWAPGS, swapgs,            OpCls( NONE,     NONE,       NONE ), F_0F,   0, 
 insx(SYSCALL_, syscall,         OpCls( NONE,     NONE,       NONE ), F_0F,   0,  no_RM,  0x05,     0x00,       P_64,       0,        RWF_X64)
 insx(SYSRET, sysret,            OpCls( NONE,     NONE,       NONE ), F_0F,   0,  no_RM,  0x07,     0x00,       P_64,       0,        RWF_X64)
 
-/* #if 0 /* v2.09: added, inactive ( not supported by ML64 v8,9,10 ) */
+//#if 0 /* v2.09: added, inactive ( not supported by ML64 v8,9,10 ) */
 insx(FXRSTOR64, fxrstor64,      OpCls( M_ANY,    NONE,       NONE ), F_480F, 0,  no_WDS, 0xAE,     0x08,       P_64,       0,        RWF_X64)
 insx(FXSAVE64, fxsave64,        OpCls( M_ANY,    NONE,       NONE ), F_480F, 0,  no_WDS, 0xAE,     0x00,       P_64,       0,        RWF_X64)
 #if SSE4SUPP
@@ -1248,7 +1248,7 @@ insx(XRSTOR64, xrstor64,        OpCls( M_ANY,    NONE,       NONE ), F_480F, 0, 
 insx(XSAVE64, xsave64,          OpCls( M_ANY,    NONE,       NONE ), F_480F, 0,  no_WDS, 0xAE,     0x20,       P_64|P_SSE4,0,        RWF_X64)
 insx(XSAVEOPT64, xsaveopt64,    OpCls( M_ANY,    NONE,       NONE ), F_480F, 0,  no_WDS, 0xAE,     0x30,       P_64|P_SSE4,0,        RWF_X64)
 #endif
-/*#endif*/
+//#endif
 #endif
 
 #if SSE4SUPP

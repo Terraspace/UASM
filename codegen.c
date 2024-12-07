@@ -758,8 +758,8 @@ static void output_opc(struct code_info *CodeInfo)
             else{
               /* These instructions if, not 0x62, can be only 0xC5, Uasm 2.16 */
                 if (CodeInfo->token == T_VPMOVMSKB){
-                  if(ins->byte1_info == F_0F && (CodeInfo->prefix.rex & REX_B == 0)&& 
-                     (CodeInfo->prefix.rex & REX_X == 0) && (CodeInfo->prefix.rex & REX_W == 8))
+                  if(ins->byte1_info == F_0F && ((CodeInfo->prefix.rex & REX_B) == 0) && 
+                     ((CodeInfo->prefix.rex & REX_X) == 0) && ((CodeInfo->prefix.rex & REX_W) == 8))
                         goto outC5;    // go handle 0xC5 instruction
                   //CodeInfo->prefix.rex &= ~REX_W; // clear the W bit.
                   if(CodeInfo->reg3 > 7) lbyte |= 1;
@@ -895,7 +895,7 @@ static void output_opc(struct code_info *CodeInfo)
                 if ((CodeInfo->reg2 <= 7) || (CodeInfo->reg2 >= 16 && CodeInfo->reg2 <= 23))
                   byte1 |= EVEX_P0RMASK;
                 else byte1 &= ~EVEX_P0RMASK;
-                if (CodeInfo->opnd[OPND1].type & OP_M_ANY == 0){
+                if ((CodeInfo->opnd[OPND1].type & OP_M_ANY) == 0){
                   if (CodeInfo->reg1 <= 15) byte1 |= EVEX_P0XMASK;
                   else byte1 &= ~EVEX_P0XMASK;
                   if ((CodeInfo->reg1 <= 7) || (CodeInfo->reg1 >= 16 && CodeInfo->reg1 <= 23))
@@ -1469,9 +1469,11 @@ static void output_opc(struct code_info *CodeInfo)
                     //else if (CodeInfo->mem_type == MT_YMMWORD && CodeInfo->r1type == OP_YMM);//that is good
                     //else if (CodeInfo->mem_type == MT_ZMMWORD && CodeInfo->r1type == OP_ZMM);//that is good
                     //else  goto error1;
-                      if (CodeInfo->indextype == OP_XMM || CodeInfo->indextype == OP_YMM) 
-                         if (CodeInfo->r2type != OP_XMM) goto error1;
-                      else if (CodeInfo->r2type == OP_YMM && CodeInfo->indextype != OP_ZMM) goto error1;
+                      if (CodeInfo->indextype == OP_XMM || CodeInfo->indextype == OP_YMM) {
+                        if (CodeInfo->r2type != OP_XMM) goto error1;
+                      } else if (CodeInfo->r2type == OP_YMM && CodeInfo->indextype != OP_ZMM) {
+                        goto error1;
+                      }
                       if (CodeInfo->indextype == OP_YMM) CodeInfo->evex_p2 |= EVEX_P2LMASK;
                       else if (CodeInfo->indextype == OP_ZMM){
                         CodeInfo->evex_p2 &= ~EVEX_P2LMASK;    /* Clear first EVEX_P2LMASK because it was set before */
@@ -2465,7 +2467,8 @@ static void output_opc(struct code_info *CodeInfo)
                   tmp |= MOD_10;
                   tmp |= RM_SIB;
                   c = CodeInfo->indexreg;
-                  c = (c &= 0x7) << 3;
+                  c &= 0x7;
+                  c = c << 3;
                   CodeInfo->sib |= c;
                   c = CodeInfo->basereg;
                   c &= 0x7;
@@ -2494,7 +2497,8 @@ static void output_opc(struct code_info *CodeInfo)
                       tmp |= RM_SIB;
                       if (CodeInfo->indexreg != 0xFF){
                         c = CodeInfo->indexreg;
-                        c = (c &= 0x07) << 3;
+                        c &= 0x07;
+                        c = c << 3;
                         CodeInfo->sib |= c;
                         c = CodeInfo->basereg;
                         c &= 0x7;
@@ -2542,7 +2546,8 @@ static void output_opc(struct code_info *CodeInfo)
           if (!comprdsp) CodeInfo->tuple = 0;
           if (CodeInfo->indexreg != 0xFF){
             c = CodeInfo->indexreg;
-            c = (c &= 0x07) << 3;
+            c &= 0x07;
+            c = c << 3;
             CodeInfo->sib |= c;
             c = CodeInfo->basereg;
             c &= 0x7;
@@ -3181,11 +3186,12 @@ static ret_code match_phase_3( struct code_info *CodeInfo, enum operand_type opn
             if ( CodeInfo->opnd[OPND2].InsFixup != NULL && CodeInfo->opnd[OPND2].InsFixup->sym && CodeInfo->opnd[OPND2].InsFixup->sym->state != SYM_UNDEFINED ) /* external? then skip */
                 break;
 
-            if ( CodeInfo->const_size_fixed == FALSE )
+            if ( CodeInfo->const_size_fixed == FALSE ) {
                 if ( ( opnd1 & ( OP_R16 | OP_M16 ) ) && (int_8)CodeInfo->opnd[OPND2].data32l == (int_16)CodeInfo->opnd[OPND2].data32l )
                     tbl_op2 |= OP_I16;
                 else if ( ( opnd1 & ( OP_RGT16 | OP_MGT16 ) ) && (int_8)CodeInfo->opnd[OPND2].data32l == (int_32)CodeInfo->opnd[OPND2].data32l )
                     tbl_op2 |= OP_I32;
+            }
 
             if( opnd2 & tbl_op2 ) {
                 DebugMsg1(("match_phase_3: matched OP_I8\n"));

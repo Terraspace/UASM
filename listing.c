@@ -123,7 +123,7 @@ static const struct print_item cr[] = {
 
 struct lstleft {
     struct lstleft *next;
-    char buffer[4*8];
+    char buffer[4*8 + 1];
     char last;
 };
 
@@ -190,8 +190,7 @@ void LstWrite(enum lsttype type, uint_32 oldofs, void* value)
 #endif
 
     ll.next = NULL;
-	if(ll.buffer)
-		memset( ll.buffer, ' ', sizeof( ll.buffer ) );
+	memset( ll.buffer, ' ', sizeof( ll.buffer ) );
     srcfile = get_curr_srcfile();
 
     switch ( type ) {
@@ -1054,7 +1053,7 @@ void LstWriteCRef( void )
 {
     struct asym     **syms;
     struct dsym     *dir;
-    struct struct_info *si;
+    //struct struct_info *si;
     int             idx;
     uint_32         i;
     uint_32         SymCount;
@@ -1083,7 +1082,7 @@ void LstWriteCRef( void )
             continue;
         switch (syms[i]->state) {
         case SYM_TYPE:
-            si = ((struct dsym *)syms[i])->e.structinfo;
+            //si = ((struct dsym *)syms[i])->e.structinfo;
             switch ( syms[i]->typekind ) {
             case TYPE_RECORD:  idx = LQ_RECORDS; break;
             case TYPE_TYPEDEF: idx = LQ_TYPEDEFS;break;
@@ -1136,7 +1135,26 @@ void LstWriteCRef( void )
                 }
             }
             for( dir = queues[cr[idx].type].head; dir ; dir = dir->next ) {
-                cr[idx].function( &dir->sym, ( cr[idx].flags & PRF_ADDSEG ) ? queues[LQ_SEGS].head : NULL, 0 );
+                //cr[idx].function( &dir->sym, ( cr[idx].flags & PRF_ADDSEG ) ? queues[LQ_SEGS].head : NULL, 0 );
+                void (*fptr)() = cr[idx].function;
+
+#define LOG_ARG2 ( cr[idx].flags & PRF_ADDSEG ) ? queues[LQ_SEGS].head : NULL
+
+                if (fptr == log_macro) {
+                    log_macro( &dir->sym );
+                } else if (fptr == log_struct) {
+                    log_struct( &dir->sym, LOG_ARG2, 0 );
+                } else if (fptr == log_record) {
+                    log_record( &dir->sym );
+                } else if (fptr == log_typedef) {
+                    log_typedef( &dir->sym );
+                } else if (fptr == log_segment) {
+                    log_segment( &dir->sym, LOG_ARG2 );
+                } else if (fptr == log_group) {
+                    log_group( &dir->sym, LOG_ARG2 );
+                } else if (fptr == log_proc) {
+                    log_proc( &dir->sym );
+                }
             }
         }
     }

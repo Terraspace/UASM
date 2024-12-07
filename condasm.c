@@ -222,7 +222,7 @@ ret_code CondAsmDirective( int i, struct asm_tok tokenarray[] )
     int directive = tokenarray[i].tokval;
     const char *string1;
     const char *string2;
-    enum if_state NextIfState;
+    enum if_state NextIfState = BLOCK_DONE;
     struct expr opndx;
 
     if ( CurrIfState != BLOCK_ACTIVE ) {
@@ -417,6 +417,9 @@ ret_code CondAsmDirective( int i, struct asm_tok tokenarray[] )
         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].string_ptr ) );
     }
 escape:
+    if ( NextIfState == BLOCK_DONE ) {
+        return( ERROR );
+    }
     CurrIfState = NextIfState;
 
     DebugMsg1(("CondAsmDirective(%s) exit, state=%s, lvl=%u, falselvl=%u\n",

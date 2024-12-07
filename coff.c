@@ -52,6 +52,7 @@ static const char* const SymDebName[DBGS_MAX] = { ".debug$S", ".debug$T" };
 
 static const char szdrectve[] = { ".drectve" };
 
+/*
 static const IMAGE_SYMBOL isFeat00 = {
     {"@feat.00"},
      1,
@@ -60,6 +61,8 @@ static const IMAGE_SYMBOL isFeat00 = {
      IMAGE_SYM_CLASS_STATIC,
      0
 };
+*/
+
 #if COMPID
 static const IMAGE_SYMBOL isCompId = {
     {"@comp.id"},
@@ -209,8 +212,8 @@ static ret_code coff_write_section_table( struct module_info *modinfo, struct co
                     continue;
                 }
                 /* UASM 2.56 For RIP relative addresses in the same section, we don't want a COFF fixup */
-                else if (fix->sym && curr->e.seginfo->Ofssize == USE64 && curr == fix->sym->segment && fix->type == FIX_RELOFF32 
-                    && fix->sym->isdefined && !fix->sym->isfar && fix->sym->state != SYM_EXTERNAL) {
+                else if (fix->sym && curr->e.seginfo->Ofssize == USE64 && curr == (struct dsym *)(fix->sym->segment)
+                    && fix->type == FIX_RELOFF32 && fix->sym->isdefined && !fix->sym->isfar && fix->sym->state != SYM_EXTERNAL) {
                     uint_32* cp = (uint_32*)(curr->e.seginfo->CodeBuffer + (fix->locofs - curr->e.seginfo->start_loc));
                     uint_32 src = fix->sym->offset - (fix->locofs + fix->addbytes);
                     (*cp) += src;
@@ -337,13 +340,13 @@ static uint_32 CRC32Comdat( uint_8 *lpBuffer, uint_32 dwBufLen, uint_32 dwCRC )
     return( dwCRC );
 }
 
-static void coff_write_symbol(char* name, int_32 strpos, int_32 value,
+static void coff_write_symbol(const char* name, int_32 strpos, int_32 value,
     int section, int type, int storageclass, int aux)
 {
     IMAGE_SYMBOL sym;
 
     if (name) {
-        strncpy(sym.N.ShortName, name, IMAGE_SIZEOF_SHORT_NAME);
+        strncpy((char *)sym.N.ShortName, name, IMAGE_SIZEOF_SHORT_NAME);
     }
     else {
         sym.N.LongName[0] = 0;
@@ -398,7 +401,6 @@ static uint_32 coff_write_symbols( struct module_info *modinfo, struct coffmod *
     int         type;
     int         storageclass;
     int         aux;
-    int         count;
 
 #if COMPID
     /* write "@comp.id" entry */
@@ -694,9 +696,8 @@ static uint_32 SetSymbolIndices( struct module_info *ModuleInfo, struct coffmod 
     struct asym  *sym;
     uint_32 index;
     uint_32 i;
-    struct asym *lastfproc;
+    struct asym *lastfproc = NULL;
     unsigned lastfile = 0;
-    int section;
 
     index = 0;
     cm->lastproc = NULL;
@@ -892,8 +893,8 @@ static void coff_write_fixups( struct dsym *section, uint_32 *poffset, uint_32 *
         }
 
         /* UASM 2.56 For RIP relative addresses in the same section, we don't want a COFF fixup */
-        if (fix->sym && section->e.seginfo->Ofssize == USE64 && section == fix->sym->segment && fix->type == FIX_RELOFF32 
-            && fix->sym->isdefined && !fix->sym->isfar && fix->sym->state != SYM_EXTERNAL) {
+        if (fix->sym && section->e.seginfo->Ofssize == USE64 && section == (struct dsym *)(fix->sym->segment)
+            && fix->type == FIX_RELOFF32 && fix->sym->isdefined && !fix->sym->isfar && fix->sym->state != SYM_EXTERNAL) {
         }
         else {
             coff_write_fixup(fix->locofs, fix->sym->ext_idx, type);
@@ -1067,11 +1068,12 @@ static void coff_create_drectve( struct module_info *modinfo, struct coffmod *cm
      */
     if ( modinfo->g.start_label != NULL || modinfo->g.LibQueue.head != NULL ||
         imp != NULL || exp != NULL ) {
-        if ( cm->directives = (struct dsym *)CreateIntSegment( szdrectve, "", MAX_SEGALIGNMENT, modinfo->Ofssize, FALSE ) ) {
+        cm->directives = (struct dsym *)CreateIntSegment( szdrectve, "", MAX_SEGALIGNMENT, modinfo->Ofssize, FALSE );
+        if ( cm->directives ) {
             struct dsym *tmp;
             int size = 0;
             struct qitem *q;
-            uint_8 *p;
+            char *p;
             cm->directives->e.seginfo->info = TRUE;
 
             /* calc the size for this segment */
@@ -1115,7 +1117,7 @@ static void coff_create_drectve( struct module_info *modinfo, struct coffmod *cm
 
             cm->directives->sym.max_offset = size;
             cm->directives->e.seginfo->CodeBuffer = LclAlloc( size + 1 );
-            p = cm->directives->e.seginfo->CodeBuffer;
+            p = (char *)cm->directives->e.seginfo->CodeBuffer;
 
             /* copy the data */
 
@@ -1124,22 +1126,22 @@ static void coff_create_drectve( struct module_info *modinfo, struct coffmod *cm
                 if( tmp->e.procinfo->isexport ) {
                     Mangle( &tmp->sym, buffer );
                     if ( Options.no_export_decoration == FALSE )
-                        p += sprintf( (char *)p, "-export:%s ", buffer );
+                        p += sprintf( p, "-export:%s ", buffer );
                     else
-                        p += sprintf( (char *)p, "-export:%s=%s ", tmp->sym.name, buffer );
+                        p += sprintf( p, "-export:%s=%s ", tmp->sym.name, buffer );
                 }
             }
             /* 2. libraries */
             for( q = modinfo->g.LibQueue.head; q ; q = q->next ) {
                 if ( *q->value != '"' && strchr( q->value, ' ' ) )
-                    p += sprintf( (char *)p,"-defaultlib:\"%s\" ", (char *)q->value );
+                    p += sprintf( p,"-defaultlib:\"%s\" ", (char *)q->value );
                 else
-                    p += sprintf( (char *)p,"-defaultlib:%s ", (char *)q->value );
+                    p += sprintf( p,"-defaultlib:%s ", (char *)q->value );
             }
             /* 3. entry */
             if ( modinfo->g.start_label ) {
                 GetStartLabel( buffer, FALSE );
-                p += sprintf( (char *)p, "-entry:%s ", buffer );
+                p += sprintf( p, "-entry:%s ", buffer );
             }
             /* 4. impdefs */
             for( tmp = imp; tmp ; tmp = tmp->next ) {
@@ -1159,7 +1161,7 @@ static void coff_create_drectve( struct module_info *modinfo, struct coffmod *cm
             }
             /* 5. pragma comment(linker,"/..") */
             for (q = modinfo->g.LinkQueue.head; q; q = q->next) {
-                p += sprintf((char*)p, "%s ", (char*)q->value);
+                p += sprintf(p, "%s ", (char*)q->value);
             }
          }
     }
@@ -1195,7 +1197,7 @@ static ret_code coff_write_module( struct module_info *modinfo )
                 break;
             cm.SymDeb[i].seg->e.seginfo->characteristics = (IMAGE_SCN_MEM_READ | IMAGE_SCN_MEM_DISCARDABLE) >> 24;
             /* use the source line buffer as code buffer. It isn't needed anymore */
-            cm.SymDeb[i].seg->e.seginfo->CodeBuffer = CurrSource + i * SIZE_CV_SEGBUF;
+            cm.SymDeb[i].seg->e.seginfo->CodeBuffer = (uint_8 *)(CurrSource + i * SIZE_CV_SEGBUF);
             cm.SymDeb[i].seg->e.seginfo->flushfunc = coff_flushfunc;
             cm.SymDeb[i].q.head = NULL;
         }
@@ -1224,7 +1226,8 @@ static ret_code coff_write_module( struct module_info *modinfo )
     if ( modinfo->g.SafeSEHQueue.head ) {
         struct qnode *sehp;
         unsigned cnt = 0;
-        if ( cm.sxdata = (struct dsym *)CreateIntSegment( ".sxdata", "", MAX_SEGALIGNMENT, modinfo->Ofssize, FALSE ) ) {
+        cm.sxdata = (struct dsym *)CreateIntSegment( ".sxdata", "", MAX_SEGALIGNMENT, modinfo->Ofssize, FALSE );
+        if ( cm.sxdata ) {
             cm.sxdata->e.seginfo->info = TRUE;
             /* calc the size for this segment */
             for( sehp = modinfo->g.SafeSEHQueue.head; sehp ; sehp = sehp->next, cnt++ );

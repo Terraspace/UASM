@@ -112,12 +112,15 @@ struct tmitem {
     struct asym **store;
 };
 
+static char STR_VERSION[] = { '1','0','0','0', 0 }; /* "1000" */
+
 /* table of predefined text macros */
 static const struct tmitem tmtab[] = {
     /* @Version contains the Masm compatible version */
     /* v2.06: value of @Version changed to 800 */
     //{"@Version",  "615", NULL },
-    {"@Version",  "1000", NULL },
+    //{"@Version",  "1000", NULL },
+    {"@Version",  STR_VERSION, NULL },
     {"@Date",     szDate, NULL },
     {"@Time",     szTime, NULL },
     {"@FileName", ModuleInfo.name, NULL },
@@ -125,7 +128,7 @@ static const struct tmitem tmtab[] = {
     /* v2.09: @CurSeg value is never set if no segment is ever opened.
      * this may have caused an access error if a listing was written.
      */
-    {"@CurSeg",   "", &symCurSeg }
+    {"@CurSeg",   STR_EMPTY, &symCurSeg }
 };
 
 struct eqitem {
@@ -155,8 +158,8 @@ static bool structLookup = FALSE;
 static unsigned int hashpjw( const char *s )
 /******************************************/
 {
-	uint_64 fnv_basis = 14695981039346656037;
-	uint_64 register fnv_prime = 1099511628211;
+	uint_64 fnv_basis = 14695981039346656037u;
+	uint_64 register fnv_prime = 1099511628211u;
 	uint_64 h;
 	for (h = fnv_basis; *s; ++s) {
 		h ^= (*s | ' ');
@@ -248,7 +251,7 @@ struct asym *SymAlloc( const char *name )
         memcpy( sym->name, name, len );
         sym->name[len] = NULLC;
     } else
-        sym->name = "";
+        sym->name = STR_EMPTY;
     return( sym );
 }
 
@@ -866,13 +869,13 @@ void SymSimd(struct dsym *sym)
 
   sym->e.structinfo->memberCount = memberCount;
   if (vtotal == 0x20 && sym->e.structinfo->isHomogenous == 1 && ((sym->sym.typekind == TYPE_UNION) || 
-    (htype == MT_REAL4 || htype == MT_REAL8 || htype == MT_BYTE || htype == MT_WORD | htype == MT_DWORD || htype == MT_QWORD)))  
+    (htype == MT_REAL4 || htype == MT_REAL8 || htype == MT_BYTE || htype == MT_WORD || htype == MT_DWORD || htype == MT_QWORD)))
     sym->e.structinfo->stype = MM256;
   else if (vtotal == 0x10 && sym->e.structinfo->isHomogenous == 1 && ((sym->sym.typekind == TYPE_UNION) ||
-    (htype == MT_REAL4 || htype == MT_REAL8 || htype == MT_BYTE || htype == MT_WORD | htype == MT_DWORD || htype == MT_QWORD)))
+    (htype == MT_REAL4 || htype == MT_REAL8 || htype == MT_BYTE || htype == MT_WORD || htype == MT_DWORD || htype == MT_QWORD)))
     sym->e.structinfo->stype = MM128;
   else if (vtotal == 0x40 && sym->e.structinfo->isHomogenous == 1 && ((sym->sym.typekind == TYPE_UNION) ||
-    (htype == MT_REAL4 || htype == MT_REAL8 || htype == MT_BYTE || htype == MT_WORD | htype == MT_DWORD || htype == MT_QWORD)))
+    (htype == MT_REAL4 || htype == MT_REAL8 || htype == MT_BYTE || htype == MT_WORD || htype == MT_DWORD || htype == MT_QWORD)))
     sym->e.structinfo->stype = MM512;
 
   // Ensure unions of multiple MM128 or MM256 types default to a 4/8 member float arrangement.
@@ -1022,7 +1025,7 @@ void WriteSymbols()
 		ld = fopen(pName, "wb");
 		sym = NULL;
 		fseek(ld, 4, SEEK_SET);
-		while (sym = SymEnum(sym, &i)) 
+		while ( (sym = SymEnum(sym, &i)) != NULL )
 		{
 			if ((sym->state == SYM_INTERNAL && sym->offset==0 && !sym->isproc) || sym->state == SYM_MACRO || sym->state == SYM_TMACRO || sym->state == SYM_GRP) continue;
 			if (sym->state == SYM_TYPE && sym->typekind != TYPE_TYPEDEF && sym->cvtyperef == 0) 

@@ -9,10 +9,14 @@ endif
 
 inc_dirs  = -IH
 
+CC = gcc
+
 #cflags stuff
 
 ifeq ($(DEBUG),0)
-extra_c_flags = -DNDEBUG -O2 -funsigned-char -Wwrite-strings
+extra_c_flags = -DNDEBUG -O2 -funsigned-char -Werror=write-strings
+extra_c_flags += -Wunused -Wuninitialized
+extra_c_flags += -Wno-switch -Wno-enum-conversion -Wno-enum-compare
 OUTD=GccUnixR
 else
 extra_c_flags = -DDEBUG_OUT -g
@@ -20,9 +24,6 @@ OUTD=GccUnixD
 endif
 
 c_flags =-D __UNIX__ $(extra_c_flags)
-
-#From CLANG 11+, default has changed from allowing global variables to be defined in the headers (-fcommon) to not allowing it (-fno-common)."   USE: make CC="clang -fcommon" -f gccLinux64.mak
-CC = gcc
 
 .SUFFIXES:
 .SUFFIXES: .c .o
@@ -55,6 +56,6 @@ $(OUTD)/reswords.o: reswords.c H/instruct.h H/special.h H/directve.h H/opndcls.h
 ######
 
 clean:
-	rm $(OUTD)/$(TARGET1)
-	rm $(OUTD)/*.o
-	rm $(OUTD)/*.map
+	rm -f $(OUTD)/$(TARGET1)
+	rm -f $(OUTD)/*.o
+	rm -f $(OUTD)/*.map

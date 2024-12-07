@@ -970,8 +970,8 @@ static bool  b64bit = FALSE; /* resw tables in 64bit mode? */
 static unsigned get_hash(const char *s, unsigned char size)
 /***********************************************************/
 {
-  uint_64 fnv_basis = 14695981039346656037;
-  uint_64 register fnv_prime = 1099511628211;
+  uint_64 fnv_basis = 14695981039346656037u;
+  uint_64 register fnv_prime = 1099511628211u;
   uint_64 h;
   for (h = fnv_basis; size; size--) {
 	  h ^= (*s++ | ' ');

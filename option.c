@@ -33,6 +33,8 @@ extern struct asym          *sym_Interface;
 #define OPTFUNC( name ) extern ret_code OPTQUAL name( int *pi, struct asm_tok tokenarray[] )
 extern void UpdateStackBase( struct asym *, void * );
 extern void UpdateProcStatus( struct asym *, void * );
+extern void CreateMacroLibCases32( void );
+extern void CreateMacroLibCases64( void );
 
 static struct asym *AddPredefinedConstant(const char *name, int value)
 /**********************************************************************/

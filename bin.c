@@ -434,7 +434,7 @@ static ret_code DoFixup( struct dsym *curr, struct calc_param *cp )
     struct dsym *seg;
     uint_32 value;
 #if PE_SUPPORT && AMD64_SUPPORT
-    uint_64 value64;
+    uint_64 value64 = 0;
 #endif
     uint_32 offset;  /* v2.07 */
     struct fixup *fixup;
@@ -477,7 +477,7 @@ static ret_code DoFixup( struct dsym *curr, struct calc_param *cp )
                 /* check if symbol's segment name contains a '$'.
                  * If yes, search the segment without suffix.
                  */
-                if ( tmp = strchr( seg->sym.name, '$' ) ) {
+                if ( (tmp = strchr( seg->sym.name, '$' )) != NULL ) {
                     int namlen = tmp - seg->sym.name;
                     struct dsym *segfirst;
                     for( segfirst = SymTables[TAB_SEG].head; segfirst; segfirst = segfirst->next ) {
@@ -993,10 +993,10 @@ static void pe_emit_import_data( void )
     int type = 0;
 #if AMD64_SUPPORT
     int ptrtype = ( ModuleInfo.defOfssize == USE64 ? T_QWORD : T_DWORD );
-    char *align = ( ModuleInfo.defOfssize == USE64 ? "ALIGN(8)" : "ALIGN(4)" );
+    const char *align = ( ModuleInfo.defOfssize == USE64 ? "ALIGN(8)" : "ALIGN(4)" );
 #else
     int ptrtype = T_DWORD;
-    char *align = "DWORD";
+    const char *align = "DWORD";
 #endif
 
     DebugMsg(("pe_emit_import_data enter\n" ));
@@ -1011,7 +1011,7 @@ static void pe_emit_import_data( void )
             }
 
             /* avoid . in IDs */
-            if ( pdot = strchr( p->name, '.') )
+            if ( (pdot = strchr( p->name, '.')) != NULL )
                 *pdot = '_';
 
             /* import directory entry */
@@ -1245,9 +1245,9 @@ static void pe_set_values( struct calc_param *cp )
     struct dsym *pehdr;
     struct dsym *objtab;
     struct dsym *reloc = NULL;
-    struct IMAGE_PE_HEADER32 *ph32;
+    struct IMAGE_PE_HEADER32 *ph32 = NULL;
 #if AMD64_SUPPORT
-    struct IMAGE_PE_HEADER64 *ph64;
+    struct IMAGE_PE_HEADER64 *ph64 = NULL;
 #endif
     struct IMAGE_FILE_HEADER *fh;
     struct IMAGE_SECTION_HEADER *section;
@@ -1432,13 +1432,13 @@ static void pe_set_values( struct calc_param *cp )
 #endif
 
     /* set export directory data dir value */
-    if ( curr = (struct dsym *)SymSearch( edataname ) ) {
+    if ( (curr = (struct dsym *)SymSearch( edataname )) != NULL ) {
         datadir[IMAGE_DIRECTORY_ENTRY_EXPORT].VirtualAddress = curr->e.seginfo->start_offset;
         datadir[IMAGE_DIRECTORY_ENTRY_EXPORT].Size = curr->sym.max_offset;
     }
 
     /* set import directory and IAT data dir value */
-    if ( curr = (struct dsym *)SymSearch( ".idata$" IMPDIRSUF ) ) {
+    if ( (curr = (struct dsym *)SymSearch( ".idata$" IMPDIRSUF )) != NULL ) {
         struct dsym *idata_null;
         struct dsym *idata_iat;
         uint_32 size;
@@ -1452,13 +1452,13 @@ static void pe_set_values( struct calc_param *cp )
     }
 
     /* set resource directory data dir value */
-    if ( curr = (struct dsym *)SymSearch(".rsrc") ) {
+    if ( (curr = (struct dsym *)SymSearch(".rsrc")) != NULL ) {
         datadir[IMAGE_DIRECTORY_ENTRY_RESOURCE].VirtualAddress = curr->e.seginfo->start_offset;
         datadir[IMAGE_DIRECTORY_ENTRY_RESOURCE].Size = curr->sym.max_offset;
     }
 
     /* set relocation data dir value */
-    if ( curr = (struct dsym *)SymSearch(".reloc") ) {
+    if ( (curr = (struct dsym *)SymSearch(".reloc")) != NULL ) {
         datadir[IMAGE_DIRECTORY_ENTRY_BASERELOC].VirtualAddress = curr->e.seginfo->start_offset;
         datadir[IMAGE_DIRECTORY_ENTRY_BASERELOC].Size = curr->sym.max_offset;
     }
@@ -1466,14 +1466,14 @@ static void pe_set_values( struct calc_param *cp )
     /* fixme: TLS entry is not written because there exists a segment .tls, but
      * because a _tls_used symbol is found ( type: IMAGE_THREAD_DIRECTORY )
      */
-    if ( curr = (struct dsym *)SymSearch(".tls") ) {
+    if ( (curr = (struct dsym *)SymSearch(".tls")) != NULL ) {
         datadir[IMAGE_DIRECTORY_ENTRY_TLS].VirtualAddress = curr->e.seginfo->start_offset;
         datadir[IMAGE_DIRECTORY_ENTRY_TLS].Size = curr->sym.max_offset;
     }
 
 #if AMD64_SUPPORT
     if ( ModuleInfo.defOfssize == USE64 ) {
-        if ( curr = (struct dsym *)SymSearch( ".pdata" ) ) {
+        if ( (curr = (struct dsym *)SymSearch( ".pdata" )) != NULL ) {
             datadir[IMAGE_DIRECTORY_ENTRY_EXCEPTION].VirtualAddress = curr->e.seginfo->start_offset;
             datadir[IMAGE_DIRECTORY_ENTRY_EXCEPTION].Size = curr->sym.max_offset;
         }
@@ -1516,16 +1516,15 @@ static ret_code bin_write_module( struct module_info *modinfo )
     uint_32 sizetotal;
     int i;
     int first;
-    uint_32 sizeheap;
+    uint_32 sizeheap = 0;
 #if MZ_SUPPORT
     struct IMAGE_DOS_HEADER *pMZ;
-    uint_16 reloccnt;
+    uint_16 reloccnt = 0;
     uint_32 sizemem;
     struct dsym *stack = NULL;
-    uint_8  *hdrbuf;
+    uint_8  *hdrbuf = NULL;
 #endif
     struct calc_param cp = { TRUE, 0 };
-	uint_32 origsize;
 	uint_32 writesize;
 	uint_8 *codeptr;
 
@@ -1554,10 +1553,12 @@ static ret_code bin_write_module( struct module_info *modinfo )
     }
     cp.fileoffset = cp.sizehdr;
 
+#if MZ_SUPPORT
     if ( cp.sizehdr ) {
         hdrbuf = LclAlloc( cp.sizehdr );
         memset( hdrbuf, 0, cp.sizehdr );
     }
+#endif
     cp.entryoffset = -1;
 
     /* set starting offsets for all sections */
@@ -1704,6 +1705,7 @@ static ret_code bin_write_module( struct module_info *modinfo )
     }
 #endif
 
+#if MZ_SUPPORT
     if ( cp.sizehdr ) {
         if ( fwrite( hdrbuf, 1, cp.sizehdr, CurrFile[OBJ] ) != cp.sizehdr )
             WriteError();
@@ -1713,6 +1715,7 @@ static ret_code bin_write_module( struct module_info *modinfo )
 #endif
         LclFree( hdrbuf );
     }
+#endif
 
 #ifdef DEBUG_OUT
     for( curr = SymTables[TAB_SEG].head; curr; curr = curr->next ) {
@@ -1772,7 +1775,6 @@ static ret_code bin_write_module( struct module_info *modinfo )
 			if (ModuleInfo.flat)
 			{
 				/* For flat type we have to write out one byte at a time and verify it against the org fixup list */
-				origsize = size;
 				codeptr = curr->e.seginfo->CodeBuffer;
 				while (codeptr < (curr->e.seginfo->CodeBuffer+size))
 				{

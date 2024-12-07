@@ -34,6 +34,7 @@
 
 #define _CRT_DISABLE_PERFCRIT_LOCKS
 
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -543,14 +544,14 @@ enum opt_queues {
 };
 
 enum prologue_epilogue_mode {
-    PEM_DEFAULT, /* must be value 0 */
+    PEM_DEFAULT = 0, /* must be value 0 */
     PEM_MACRO,
     PEM_NONE
 };
 
 /* Stack distance */
 enum dist_type {
-    //STACK_NONE,
+    STACK_NONE,
     STACK_NEAR,
     STACK_FAR,
 };
@@ -737,7 +738,7 @@ struct module_vars {
     struct qdesc        LibQueue;        /* includelibs */
     struct qdesc	    LinkQueue;	     /* .pragma comment(linker,"/..") */
     struct dll_desc     *DllQueue;       /* dlls of OPTION DLLIMPORT */
-    char                *imp_prefix;
+    const char          *imp_prefix;
     FILE                *curr_file[NUM_FILE_TYPES];  /* ASM, ERR, OBJ and LST */
     char                *curr_fname[NUM_FILE_TYPES];
     char *              *FNames;         /* array of input files */
@@ -922,6 +923,10 @@ extern uint_8                MacroLevel;    /* macro nesting level */
 extern bool                  write_to_file; /* 1=write the object module */
 extern bool                  gmaskflag;
 
+#if defined(__UNIX__)
+extern char *strupr(char *);
+#endif
+
 /* functions in assemble.c */
 
 struct fixup;
@@ -946,4 +951,7 @@ extern char             *num2hex64(uint_64 value, char *buffer);
 extern char             *ConvertSectionName( const struct asym *, enum seg_type *pst, char *buffer );
 extern void             RewindToWin64(void);
 
-#endif
+/* empty string (char *)"" in types.c */
+extern char STR_EMPTY[1];
+
+#endif /* _GLOBALS_H_INCLUDED */

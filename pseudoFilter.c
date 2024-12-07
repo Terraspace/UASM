@@ -13,7 +13,7 @@
 
 /**
 	 * C++ version 0.4 char* style "itoa":
-	 * Written by Lukás Chmela
+	 * Written by Lukï¿½s Chmela
 	 * Released under GPLv3.
 
 	 */
@@ -46,7 +46,7 @@ char* itoa(int value, char* result, int base) {
 int get_pseudoCMPXX(char* dst, char* p1, int index)
 /******************************************************************/
 {
-  int i;
+  int i = 0;
 
   switch (index) {
   case T_CMPEQPD:
@@ -113,8 +113,8 @@ int get_pseudoCMPXX(char* dst, char* p1, int index)
 int get_pseudoVCMPXX(char* dst, char* p1, int index)
 /******************************************************************/
 {
-  int i;
-  bool hadComment = FALSE;
+  int i = 0;
+  //bool hadComment = FALSE;
   switch (index) {
   case T_VCMPEQPD:
   case T_VCMPLTPD:
@@ -266,7 +266,7 @@ int get_pseudoVCMPXX(char* dst, char* p1, int index)
     * p1 = ' ';
   while (*p1) {
       if (*p1 == ';') {
-          hadComment = TRUE;
+          //hadComment = TRUE;
           break;
       }
       p1++;

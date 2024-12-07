@@ -44,7 +44,7 @@ struct macho_section_entry
 {
 	char *srcName;
 	struct section_64 section;
-	struct section_64 *next;
+	struct macho_section_entry *next;
 	int dif; /* padding to keep section size multiple of 16 */
 	int size;
 	int ofs;
@@ -197,7 +197,7 @@ int macho_build_string_tbl(struct symtab_command *pSymCmd, struct macho_module *
 	int totalSymCount = 0;
 
 	/* Normal local symbols */
-	while (sym = SymEnum(sym, &i))
+	while ( (sym = SymEnum(sym, &i)) != NULL )
 	{
 		if (strcmp(sym->name, "$xdatasym") == 0) continue;
 		if (sym->state != SYM_MACRO && sym->state != SYM_SEG && sym->state != SYM_TMACRO && sym->predefined == 0 && sym->state != SYM_GRP && sym->isequate == 0)
@@ -218,7 +218,7 @@ int macho_build_string_tbl(struct symtab_command *pSymCmd, struct macho_module *
 	mm->extSymIdx = totalSymCount;
 
 	/* External public symbols */
-	while (sym = SymEnum(sym, &i))
+	while ( (sym = SymEnum(sym, &i)) != NULL )
 	{
 		if (sym->state != SYM_MACRO && sym->state != SYM_SEG && sym->state != SYM_TMACRO && sym->predefined == 0 && sym->state != SYM_GRP && sym->isequate == 0)
 		{
@@ -238,7 +238,7 @@ int macho_build_string_tbl(struct symtab_command *pSymCmd, struct macho_module *
 	mm->undefSymIdx = totalSymCount;
 
 	/* Undefined symbols */
-	while (sym = SymEnum(sym, &i))
+	while ( (sym = SymEnum(sym, &i)) != NULL )
 	{
 		if (sym->state != SYM_MACRO && sym->state != SYM_SEG && sym->state != SYM_TMACRO && sym->predefined == 0 && sym->state != SYM_GRP && sym->isequate == 0)
 		{
@@ -280,7 +280,7 @@ static int GetSymbolIndex(const char *pName, struct macho_module *mm)
 /* ==========================================================================================
 Build a macho_section_entry structure.
 ========================================================================================== */
-struct section_64 * macho_build_section( const char *secName, const char *segName, uint32_t flags, const char *srcName )
+struct macho_section_entry * macho_build_section( const char *secName, const char *segName, uint32_t flags, char *srcName )
 {
 	struct macho_section_entry *pSec = NULL;
 	pSec = malloc(sizeof(struct macho_section_entry));
@@ -308,7 +308,7 @@ static void macho_add_section(struct macho_section_entry *pSec, struct macho_mod
 	{
 		while (pCurrSec->next != NULL)
 		{
-			pCurrSec = pCurrSec->next;
+			pCurrSec = (struct macho_section_entry *)pCurrSec->next;
 		}
 		pCurrSec->next = pSec;
 	}
@@ -385,7 +385,6 @@ Create all the macho obj file structures and calculate offsets.
 ========================================================================================== */
 static void macho_build_structures( struct module_info *modinfo, struct macho_module mm )
 {
-	int cnt = 0;
 	struct dsym *curr;
 	struct dsym *seg = NULL;
 	struct macho_section_entry *currSec;
@@ -703,7 +702,6 @@ static void macho_build_structures( struct module_info *modinfo, struct macho_mo
 static ret_code macho_write_module( struct module_info *modinfo )
 {
 	struct macho_module mm;
-	int fileofs = 0;
 
 	DebugMsg(("macho_write_module: enter\n"));
 
@@ -725,7 +723,7 @@ static ret_code macho_write_module( struct module_info *modinfo )
 		mm.header.cputype = CPU_TYPE_X86_64;
 		mm.header.cpusubtype = CPU_SUBTYPE_LITTLE_ENDIAN | CPU_SUBTYPE_X86_64_ALL;
 		mm.header.filetype = MH_OBJECT;
-		mm.header.flags = NULL;
+		mm.header.flags = 0;
 		
 		macho_build_structures(modinfo, mm);	
 	}

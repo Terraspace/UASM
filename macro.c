@@ -48,7 +48,7 @@
 
 extern int  MacroLocals;
 
-extern bool inMacroBody = FALSE;
+bool inMacroBody = FALSE;
 
 /* the list of macro param + local names is hold temporarily only.
  * once the names have been replaced by placeholders,
@@ -209,7 +209,8 @@ static int store_placeholders( char *line, struct mname_list *mnames )
             substprf = ( ( start > line && *(start-1) == '&') || *p == '&' );
             if ( quote == NULLC || substprf ) {
                 /* look for this word in the macro parms, and replace it if it is */
-                if ( start = replace_parm( line, start, p - start, mnames ) ) {
+                start = replace_parm( line, start, p - start, mnames );
+                if ( start ) {
                     params++;
                     p = start;
                 }
@@ -288,7 +289,7 @@ ret_code StoreMacro( struct dsym *macro, int i, struct asm_tok tokenarray[], boo
     struct macro_info   *info;
     char                *src;
     char                *token;
-    int                 mindex;
+    int                 mindex = 0;
     struct mparm_list   *paranode;
     struct srcline      **nextline;
 #ifdef DEBUG_OUT
@@ -317,7 +318,7 @@ ret_code StoreMacro( struct dsym *macro, int i, struct asm_tok tokenarray[], boo
             info->parmlist = NULL;
         }
 
-        for( paranode = info->parmlist, mindex = 0; i < Token_Count ; paranode++ ) {
+        for( paranode = info->parmlist; i < Token_Count ; paranode++ ) {
 
             token = tokenarray[i].string_ptr;
             /* Masm accepts reserved words and instructions as parameter
@@ -607,7 +608,7 @@ ret_code StoreAutoMacro(struct dsym *macro, int i, struct asm_tok tokenarray[], 
 	struct macro_info   *info;
 	char                *src;
 	char                *token;
-	int                 mindex;
+	int                 mindex = 0;
 	struct mparm_list   *paranode;
 	struct srcline      **nextline;
 #ifdef DEBUG_OUT
@@ -639,7 +640,7 @@ ret_code StoreAutoMacro(struct dsym *macro, int i, struct asm_tok tokenarray[], 
 			info->parmlist = NULL;
 		}
 
-		for (paranode = info->parmlist, mindex = 0; i < Token_Count; paranode++) {
+		for (paranode = info->parmlist; i < Token_Count; paranode++) {
 
 			token = tokenarray[i].string_ptr;
 			/* Masm accepts reserved words and instructions as parameter
@@ -939,7 +940,7 @@ struct dsym *CreateMacro( const char *name )
 /******************************************/
 {
     struct dsym *macro;
-    if ( macro = (struct dsym *)SymCreate( name ) ) {
+    if ( (macro = (struct dsym *)SymCreate( name )) != NULL ) {
         macro->sym.state = SYM_MACRO;
         macro->e.macroinfo = LclAlloc( sizeof( struct macro_info ) );
         macro->e.macroinfo->parmcnt  = 0;
@@ -1150,10 +1151,12 @@ ret_code DefineDirective( int i, struct asm_tok tokenarray[] )
     strcat(p, " EQU 1\0");
     strcpy(tokenarray[0].tokpos,buff);
     Token_Count = Tokenize(tokenarray[0].tokpos, 0, tokenarray, 0);
-  if ( sym = CreateConstant( tokenarray ) ) {
+  if ( (sym = CreateConstant( tokenarray )) != NULL ) {
       if ( sym->state != SYM_TMACRO ) {
 #if FASTPASS
-          if ( StoreState ) FStoreLine( 0 );
+          if ( StoreState ) {
+            FStoreLine( 0 ) {}
+          }
 #endif
           if ( Options.preprocessor_stdout == TRUE )
               WritePreprocessedLine( CurrSource );

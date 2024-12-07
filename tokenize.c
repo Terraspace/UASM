@@ -77,6 +77,14 @@ extern char    *commentbuffer;
 #define tolower(c) ((c >= 'A' && c <= 'Z') ? c | 0x20 : c )
 #endif
 
+static char STR_DBL_COLON[]     = { ':',':', 0 };
+static char STR_COLON[]         = { ':', 0 };
+static char STR_POINTER[]       = { '-','>', 0 };
+static char STR_PERCENT[]       = { '%', 0 };
+static char STR_EQUALSGN[]      = { '=', 0 };
+static char STR_AMPERSAND[]     = { '&', 0 };
+static char STR_QUESTION_MARK[] = { '?', 0 };
+
 /* strings for token 0x28 - 0x2F */
 static const short stokstr1[] = {
     '(',')','*','+',',','-','.','/'};
@@ -596,10 +604,10 @@ static ret_code get_special_symbol( struct asm_tok *buf, struct line_status *p )
         if ( *p->input == ':' ) {
             p->input++;
             buf->token = T_DBL_COLON;
-            buf->string_ptr = "::";
+            buf->string_ptr = STR_DBL_COLON;
         } else {
             buf->token = T_COLON;
-            buf->string_ptr = ":";
+            buf->string_ptr = STR_COLON;
         }
         break;
 	case '-': 
@@ -607,7 +615,7 @@ static ret_code get_special_symbol( struct asm_tok *buf, struct line_status *p )
 		if (*p->input == '>') {
 			p->input++;
 			buf->token = T_POINTER;
-			buf->string_ptr = "->";
+			buf->string_ptr = STR_POINTER;
 		}
 		else {
 			p->input--;
@@ -634,7 +642,7 @@ static ret_code get_special_symbol( struct asm_tok *buf, struct line_status *p )
             return( EMPTY );
         }
         buf->token = T_PERCENT;
-        buf->string_ptr = "%";
+        buf->string_ptr = STR_PERCENT;
         break;
     case '(' : /* 0x28: T_OP_BRACKET operator - needs a matching ')' */
         /* v2.11: reset c-expression flag if a macro function call is detected */
@@ -696,7 +704,7 @@ static ret_code get_special_symbol( struct asm_tok *buf, struct line_status *p )
             buf->token = T_DIRECTIVE;
             buf->tokval = T_EQU;
             buf->dirtype = DRT_EQUALSGN; /* to make it differ from EQU directive */
-            buf->string_ptr = "=";
+            buf->string_ptr = STR_EQUALSGN;
             p->input++;
             break;
         }
@@ -734,7 +742,7 @@ static ret_code get_special_symbol( struct asm_tok *buf, struct line_status *p )
         if ( symbol == '&' ) {
             p->input++;
             buf->token = '&';
-            buf->string_ptr = "&";
+            buf->string_ptr = STR_AMPERSAND;
             break;
         }
         /* anything we don't recognise we will consider a string,
@@ -948,14 +956,10 @@ static ret_code get_id_in_backquotes( struct asm_tok *buf, struct line_status *p
 static ret_code get_id( struct asm_tok *buf, struct line_status *p )
 /******************************************************************/
 {
-    //struct ReservedWord *resw;
     char *src = p->input;
     char *dst = p->output;
-    char *p1  = p->input;
     int  index;
     unsigned size;
-	int len = 0;
-	int i = 0;
 #if CONCATID || DOTNAMEX
 continue_scan:
 #endif
@@ -1000,7 +1004,7 @@ continue_scan:
     if( size == 1 && *p->output == '?' ) {
         p->input = src;
         buf->token = T_QUESTION_MARK;
-        buf->string_ptr = "?";
+        buf->string_ptr = STR_QUESTION_MARK;
         return( NOT_ERROR );
     }
     index = FindResWord( p->output, size );
@@ -1167,14 +1171,14 @@ continue_scan:
  * varname.abc -> . is an operator
  */
 
-#define is_valid_id_start( ch )  ( islalpha(ch) || ch=='_' || ch=='@' || ch=='$' || ch=='?' )
+#define GetToken_is_valid_id_start( ch )  ( islalpha(ch) || ch=='_' || ch=='@' || ch=='$' || ch=='?' )
 
 ret_code GetToken( struct asm_tok token[], struct line_status *p )
 /****************************************************************/
 {
     if( isldigit( *p->input ) ) {
         return( get_number( token, p ) );
-    } else if( is_valid_id_start( *p->input ) ) {
+    } else if( GetToken_is_valid_id_start( *p->input ) ) {
         return( get_id( token, p ) );
     } else if( *p->input == '.' &&
 #if DOTNAMEX /* allow dots within identifiers */
@@ -1231,7 +1235,7 @@ int Tokenize( char *line, unsigned int start, struct asm_tok tokenarray[], unsig
     p.flags = flags;
     p.flags2 = 0;
     p.flags3 = 0;
-    char* buff[256];
+    char buff[256];
     if ( p.index == 0 ) 
 	{
 #ifdef DEBUG_OUT
@@ -1333,28 +1337,28 @@ int Tokenize( char *line, unsigned int start, struct asm_tok tokenarray[], unsig
                 ;//OK QWORD
               else
                 goto nobcst;                       /* let parser throw error */
-              if (*input1 != '\[') {               /* if address is not inside [] */
-                *p1++ = '\[';                      /* force it   */
+              if (*input1 != '[') {                /* if address is not inside [] */
+                *p1++ = '[';                       /* force it   */
                 for (; *input1 > ','; p1++, input1++) {  /* input1 points to [address] */
                   if (*input1 == ';') 
                     break;
                   *p1 = *input1;                     /* copy first memory part over 'qword bcst */
                 }
-                *p1++ = '\]';
+                *p1++ = ']';
                 if (*input1 == ';')
                   *input1 = 0;
                 while (isspace(*input1)) input1++;   /* skip the space, now pointing to address  */
               }
               else {
-                for (; *input1 != '\]'; p1++, input1++) /* input1 points to [address] */
+                for (; *input1 != ']'; p1++, input1++) /* input1 points to [address] */
                   *p1 = *input1;                     /* copy first memory part over 'qword bcst */
                 *p1++ = *input1++;                   /* copy ']' */
               }
               /* now add broadcast size */
-              if (cnt == 2)       strcpy(p1, "\{1to2\}");
-              else if (cnt == 4)  strcpy(p1, "\{1to4\}");
-              else if (cnt == 8)  strcpy(p1, "\{1to8\}");
-              else if (cnt == 16) strcpy(p1, "\{1to16\}");
+              if (cnt == 2)       strcpy(p1, "{1to2}");
+              else if (cnt == 4)  strcpy(p1, "{1to4}");
+              else if (cnt == 8)  strcpy(p1, "{1to8}");
+              else if (cnt == 16) strcpy(p1, "{1to16}");
               else goto nobcst;                   /* let parser throw error */
               strcat(p1, input1);
             }
@@ -1364,24 +1368,24 @@ int Tokenize( char *line, unsigned int start, struct asm_tok tokenarray[], unsig
                 if (*p1 == ';') {                        /* found  ';' */
                   *p1 = 0;                             /* that means '{' is in comment */
                 }
-                if (*p1 == '\{') {                     /* found  '{' */
-                  if ((_memicmp(p1, "\{1to", 4) == 0))
+                if (*p1 == '{') {                      /* found  '{' */
+                  if ((_memicmp(p1, "{1to", 4) == 0))
                     break;                             /* found "bcst" */
                 }                                      /* if it was {kn} or {z} search till end */
               }
-              if (*p1 == '\{') {                       /* if found {1toN} */
+              if (*p1 == '{') {                        /* if found {1toN} */
                 p1--;                                  /* go back 1 byte to check if ']' is present */
                 while (isspace(*p1)) --p1;             /* skip the space  */
-                if (*p1 != '\]') {                     /* if not present insert it  */
+                if (*p1 != ']') {                      /* if not present insert it  */
                   while (*p1 != ',') --p1;             /* step backwards till the comma */
                   p1++;                                /* skip the comma forward  */
                   input1 = p1;                         /* save that location in input1  */
                   while (isspace(*p1)) p1++;           /* skip the space  */
                   strcpy(buff, p1);                    /* copy to the buffer from variable on  */
-                  *input1++ = '\[';                    /* skip the space  */
-                  for (p1 = buff; *p1 != '\{'; p1++, input1++) /* till the end of var  */
+                  *input1++ = '[';                     /* skip the space  */
+                  for (p1 = buff; *p1 != '{'; p1++, input1++) /* till the end of var  */
                     *input1 = *p1;                      /* copy it back to input string  */
-                  *input1++ = '\]';                    /* insert ']' before '{' */
+                  *input1++ = ']';                     /* insert ']' before '{' */
                   strcpy(input1, p1);                  /* now copy the rest of string from buffer */
                 }
               }
@@ -1478,7 +1482,7 @@ int Tokenize( char *line, unsigned int start, struct asm_tok tokenarray[], unsig
 skipline:
     tokenarray[p.index].token  = T_FINAL;
     tokenarray[p.index].bytval = p.flags3;
-    tokenarray[p.index].string_ptr = "";
+    tokenarray[p.index].string_ptr = STR_EMPTY;
     return( p.index );
 }
 

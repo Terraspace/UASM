@@ -76,7 +76,7 @@ struct asym *CreateLabel( const char *name, enum memtype mem_type, struct qualif
 /*********************************************************************************************************/
 {
     struct asym         *sym;
-    uint_32             addr;
+    uint_32             addr = 0;
     char                buffer[20];
 
     DebugMsg1(("CreateLabel(%s, memtype=%Xh, %" I32_SPEC "Xh, %u) enter\n", name, mem_type, ti, bLocal));
@@ -267,13 +267,14 @@ ret_code LabelDirective( int i, struct asm_tok tokenarray[] )
         LstWrite( LSTTYPE_LABEL, 0, NULL );
 
     /* v2.08: if label is a DATA label, set total_size and total_length */
-    if ( sym = CreateLabel( tokenarray[0].string_ptr, ti.mem_type, &ti, FALSE ) ) {
+    sym = CreateLabel( tokenarray[0].string_ptr, ti.mem_type, &ti, FALSE );
+    if ( sym ) {
         DebugMsg1(("LabelDirective(%s): label created, memtype=%Xh size=%u\n", sym->name, sym->mem_type, ti.size ));
         /* sym->isdata must be 0, else the LABEL directive was generated within data_item()
          * and fields total_size & total_length must not be modified then!
          * v2.09: data_item() no longer creates LABEL directives.
          */
-        if ( sym->isdata == FALSE && ( sym->mem_type & MT_SPECIAL_MASK ) != MT_ADDRESS )
+        if ( sym->isdata == FALSE && ( sym->mem_type & MT_SPECIAL_MASK ) != MT_ADDRESS ) {
 #if LABELARRAY
             if ( length != -1 ) {
                 sym->total_size = ti.size * length;
@@ -285,6 +286,7 @@ ret_code LabelDirective( int i, struct asm_tok tokenarray[] )
                 sym->total_size = ti.size;
                 sym->total_length = 1;
             }
+        }
         return( NOT_ERROR );
     }
     return( ERROR );

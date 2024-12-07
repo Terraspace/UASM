@@ -123,7 +123,7 @@ struct leaf32 {
 
 #pragma pack(pop)
 
-uint_8* SetPrefixName(uint_8* p, uint_8* name, int len)
+uint_8* SetPrefixName(uint_8* p, const char* name, int len)
 {
 	if (Options.debug_symbols < CV_SIGNATURE_C13)
 		*p++ = len;
@@ -552,8 +552,8 @@ static void cv_write_type_procedure(struct dbgcv* cv, struct asym* sym, int cnt)
 	int size = sizeof(CV_PROCEDURE);
 	int leaf = LF_PROCEDURE;
 	int type = sizeof(CV_typ_t);
-	CV_typ_t* p_32;
-	CV_typ16_t* p_16;
+	CV_typ_t* p_32 = NULL;
+	CV_typ16_t* p_16 = NULL;
 	struct dsym* param;
 
 	if (Options.debug_symbols == CV_SIGNATURE_C7) {
@@ -626,10 +626,10 @@ static void cv_write_type_procedure(struct dbgcv* cv, struct asym* sym, int cnt)
 static void cv_write_type(struct dbgcv* cv, struct asym* sym)
 {
 	struct dsym* type = (struct dsym*)sym;
-	uint_8* tmp;
+	uint_8* tmp = NULL;
 	int		namesize;
 	int		typelen;
-	int		size;
+	int		size = 0;
 	int		leaf;
 	CV_prop_t	property;
 	struct cv_counters count;
@@ -816,16 +816,17 @@ static void cv_write_symbol(struct dbgcv* cv, struct asym* sym)
 	enum fixup_types rlctype;
 	uint_8	Ofssize;
 	struct fixup* fixup;
-	struct dsym* proc;
+	struct dsym* proc = NULL;
 	struct dsym* lcl;
 	int		i, j, k;
 	int		cnt[2];
 	struct	dsym* locals[2];
-	struct	dsym* q;
+	struct	dsym* q = NULL;
 	int		size;
 	int		leaf;
 	uint_16	typeref;
 
+	j = 0;
 	Ofssize = GetSymOfssize(sym);
 	len = GetCVStructLen(sym, Ofssize);
 	cv->ps = checkflush(cv->symbols, cv->ps, 1 + sym->name_size + len, cv->param);
@@ -1254,14 +1255,14 @@ static uint_8* cv_FlushSection(dbgcv* cv, uint_32 signature, uint_32 ex)
 	seg->e.seginfo->current_loc = seg->e.seginfo->start_loc + currsize + ex + sizeof(CV_SECTION);
 	seg->e.seginfo->start_loc = seg->e.seginfo->current_loc;
 
-	return(cv->section);
+	return((uint_8*)cv->section);
 }
 
 
 #define USEMD5
 
 #ifdef USEMD5
-#define BUFSIZ 1024*4
+#define MD5_BUFSIZ 1024*4
 #define MD5_LENGTH ( sizeof( uint_32 ) + sizeof( uint_16 ) + 16 + sizeof( uint_16 ) )
 
 static int calc_md5(const char* filename, unsigned char* sum)
@@ -1273,10 +1274,10 @@ static int calc_md5(const char* filename, unsigned char* sum)
 
 	if ((fp = fopen(filename, "rb")) == NULL)
 		return 0;
-	file_buf = MemAlloc(BUFSIZ);
+	file_buf = MemAlloc(MD5_BUFSIZ);
 	_picohash_md5_init(&ctx);
 	while (!feof(fp)) {
-		i = fread(file_buf, 1, BUFSIZ, fp);
+		i = fread(file_buf, 1, MD5_BUFSIZ, fp);
 		if (ferror(fp)) {
 			fclose(fp);
 			MemFree(file_buf);
@@ -1353,7 +1354,9 @@ void cv_write_debug_tables(struct dsym* symbols, struct dsym* types, void* pv)
 		}
 
 		cv.currdir = LclAlloc(_MAX_PATH * 4);
-		_getcwd(cv.currdir, _MAX_PATH * 4);
+		if (!_getcwd(cv.currdir, _MAX_PATH * 4)) {
+			strcpy(cv.currdir, ".");
+		}
 		objname = cv.currdir + strlen(cv.currdir);
 
 		/* source filename string table */
@@ -1465,7 +1468,6 @@ void cv_write_debug_tables(struct dsym* symbols, struct dsym* types, void* pv)
 
 				while (Queue) {
 					CV_Line_t* Line;
-					CV_Line_t* Prev;
 					int fileStart = Queue->srcfile;
 
 					if (Queue->number == 0)
@@ -1473,7 +1475,6 @@ void cv_write_debug_tables(struct dsym* symbols, struct dsym* types, void* pv)
 
 					File->offFile = cv.files[fileStart].offset;
 					File->cbBlock = 12;
-					Prev = NULL;
 
 					int fileCur = fileStart;
 
@@ -1518,7 +1519,6 @@ void cv_write_debug_tables(struct dsym* symbols, struct dsym* types, void* pv)
 								File->offFile = cv.files[Queue->srcfile].offset;
 								File->cbBlock = 12;
 								File->nLines = 0;
-								Prev = NULL;
 							}
 							fileCur = Queue->srcfile;
 							linenum = Queue->number;
@@ -1543,7 +1543,6 @@ void cv_write_debug_tables(struct dsym* symbols, struct dsym* types, void* pv)
 						Line->linenumStart = linenum;
 						Line->deltaLineEnd = 0;
 						Line->fStatement = 1;
-						Prev = Line;
 					}
 
 					/* Finalize last line queue record*/
@@ -1605,7 +1604,7 @@ void cv_write_debug_tables(struct dsym* symbols, struct dsym* types, void* pv)
 		EnvBlock = cv.s_env;
 		EnvBlock->flags = 0;
 		EnvBlock->rectyp = S_ENVBLOCK;
-		s = EnvBlock->rgsz;
+		s = (char *)EnvBlock->rgsz;
 
 		/* pairs of 0-terminated strings - keys/values
 		 *
@@ -1621,15 +1620,15 @@ void cv_write_debug_tables(struct dsym* symbols, struct dsym* types, void* pv)
 		len = strlen(_pgmptr) + 1;
 		s = strcpy(s, _pgmptr) + len;
 		s = strcpy(s, "src") + 4;
-		p = cv.files[0].name;
-		if (_memicmp(p, cv.currdir, q) == 0)
+		p = (uint_8 *)cv.files[0].name;
+		if (_memicmp((const char *)p, cv.currdir, q) == 0)
 			p += q + 1;
 
-		len = strlen(p) + 1;
-		s = strcpy(s, p) + len;
+		len = strlen((const char *)p) + 1;
+		s = strcpy(s, (const char *)p) + len;
 		*s++ = '\0';
 		EnvBlock->reclen = (unsigned short)(s - (char*)cv.ps - 2);
-		cv.ps = s;
+		cv.ps = (uint_8 *)s;
 
 		/* length needs to be added for each symbol */
 
@@ -1684,7 +1683,7 @@ void cv_write_debug_tables(struct dsym* symbols, struct dsym* types, void* pv)
 	/* scan symbol table for types */
 
 	sym = NULL;
-	while (sym = SymEnum(sym, &i)) {
+	while ( (sym = SymEnum(sym, &i)) != NULL ) {
 		if (sym->state == SYM_TYPE && sym->typekind != TYPE_TYPEDEF && sym->cvtyperef == 0)
 			cv_write_type(&cv, sym);
 	}
@@ -1692,7 +1691,7 @@ void cv_write_debug_tables(struct dsym* symbols, struct dsym* types, void* pv)
 	/* scan symbol table for SYM_TYPE, SYM_INTERNAL */
 
 	sym = NULL;
-	while (sym = SymEnum(sym, &i)) {
+	while ( (sym = SymEnum(sym, &i)) != NULL ) {
 		switch (sym->state) {
 		case SYM_TYPE: /* may create an S_UDT entry in the symbols table */
 			if (Options.debug_ext < CVEX_NORMAL) /* v2.10: no UDTs for -Zi0 and -Zi1 */

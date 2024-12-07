@@ -353,7 +353,7 @@ static void omf_write_linnum( uint_8 is32 )
     struct line_num_info *next;
     struct omf_rec       obj;
 
-    for( node = LinnumQueue.head, data = StringBufferEnd; node; node = next ) {
+    for( node = LinnumQueue.head, data = (uint_8 *)StringBufferEnd; node; node = next ) {
         next = node->next;
         *(uint_16 *)data = node->number;
         data += sizeof( uint_16 );
@@ -367,7 +367,7 @@ static void omf_write_linnum( uint_8 is32 )
     if( size ) {
         omf_InitRec( &obj, CMD_LINNUM );
         obj.is_32 = is32;
-        AttachData( &obj, StringBufferEnd, size );
+        AttachData( &obj, (uint_8 *)StringBufferEnd, size );
         obj.d.linnum.base.grp_idx = omf_GetGrpIdx( GetGroup( &CurrSeg->sym ) ); /* fixme ? */
         obj.d.linnum.base.seg_idx = CurrSeg->e.seginfo->seg_idx;
         obj.d.linnum.base.frame = 0; /* field not used here */
@@ -387,7 +387,7 @@ static void omf_write_fixupp( struct dsym *seg, char is32 )
 
     fix = seg->e.seginfo->FixupList.head;
     while ( fix ) {
-        for( data = StringBufferEnd, size = 0; fix; fix = fix->nextrlc ) {
+        for( data = (uint_8 *)StringBufferEnd, size = 0; fix; fix = fix->nextrlc ) {
             switch( fix->type ) {
             case FIX_RELOFF32:
             case FIX_OFF32:
@@ -406,7 +406,7 @@ static void omf_write_fixupp( struct dsym *seg, char is32 )
         if ( size ) {
             omf_InitRec( &obj, CMD_FIXUPP );
             obj.is_32 = is32;
-            AttachData( &obj, StringBufferEnd, size );
+            AttachData( &obj, (uint_8 *)StringBufferEnd, size );
             omf_write_record( &obj );
         }
     }
@@ -434,7 +434,7 @@ static void omf_write_ledata( struct dsym *seg )
              */
             if ( seg->sym.used ) {
                 omf_InitRec( &obj, CMD_CEXTDEF );
-                AttachData( &obj, StringBufferEnd, 2 * sizeof( uint_16 ) );
+                AttachData( &obj, (uint_8 *)StringBufferEnd, 2 * sizeof( uint_16 ) );
                 PutIndex( &obj, seg->e.seginfo->comdat_idx ); /* Index */
                 PutIndex( &obj, 0 ); /* Type */
                 TruncRec( &obj );
@@ -536,7 +536,7 @@ static void omf_write_theadr( const char *name )
      * was given as filename!
      */
     len = strlen( name );
-    AttachData( &obj, StringBufferEnd, len + 1 );
+    AttachData( &obj, (uint_8 *)StringBufferEnd, len + 1 );
     PutName( &obj, name, len );
     omf_write_record( &obj );
 
@@ -732,7 +732,7 @@ static void omf_write_export( void )
             omf_InitRec( &obj, CMD_COMENT );
             obj.d.coment.attr = 0x00;
             obj.d.coment.cmt_class = CMT_OMF_EXT;
-            data = StringBufferEnd;
+            data = (uint_8 *)StringBufferEnd;
 
             /* structure of EXPDEF "comment":
              * type          db CMT_EXT_EXPDEF (=02)
@@ -744,14 +744,14 @@ static void omf_write_export( void )
              * ;ordinal      dw ?     ;optional
              */
             if ( Options.no_export_decoration == FALSE )
-                len = Mangle( &dir->sym, data+3 );
+                len = Mangle( &dir->sym, (char *)data+3 );
             else {
-                strcpy( data+3, dir->sym.name );
+                strcpy( (char *)data+3, dir->sym.name );
                 len = dir->sym.name_size;
             }
             /* v2.11: case mapping was missing */
             if ( ModuleInfo.convert_uppercase )
-                _strupr( data+3 );
+                _strupr( (char *)data+3 );
 #if MAX_ID_LEN > 255
             if ( len > 255 )
                 len = 255; /* restrict name to 255 chars */
@@ -801,7 +801,7 @@ static void omf_write_grpdef( void )
          * - 1 or 2 bytes for the group name index
          * - 2 or 3 bytes for each segment in the group
          */
-        AttachData( &grp, StringBufferEnd, 2 + 3 * curr->e.grpinfo->numseg );
+        AttachData( &grp, (uint_8 *)StringBufferEnd, 2 + 3 * curr->e.grpinfo->numseg );
         /* v2.01: the LName index of the group may be > 0xff */
         /* v2.03: use the group index directly */
         PutIndex( &grp, curr->e.grpinfo->lname_idx );
@@ -964,7 +964,7 @@ static void omf_write_lnames( void )
         memcpy( p, sym->name, sym->name_size + 1 );
         /* lnames are converted for casemaps ALL and NOTPUBLIC */
         if ( ModuleInfo.case_sensitive == FALSE )
-            _strupr( p );
+            _strupr( (char *)p );
         DebugMsg1(("omf_write_lnames: %u=%s\n", items, p ));
         p += sym->name_size; /* overwrite the null char */
         items++;
@@ -1056,13 +1056,13 @@ static uint_16 omf_write_extdef( void )
         for ( rec_size = 0, obj.d.extdef.num_names = 0; sym; sym = GetExt( &r ) ) {
             //DebugMsg(("omf_write_extdef: %s, weak=%u, used=%u\n", curr->sym.name, curr->sym.weak, curr->sym.used ));
             DebugMsg1(("omf_write_extdef: %s\n", sym->name));
-            len = Mangle( sym, buffer );
+            len = Mangle( sym, (char *)buffer );
 #if MAX_ID_LEN > 255
             if ( len > 255 )
                 len = 255; /* length is 1 byte only */
 #endif
             if ( ModuleInfo.convert_uppercase )
-                _strupr( buffer );
+                _strupr( (char *)buffer );
 
             if( rec_size + len + 2 >= MAX_EXT_LENGTH ) {
                 break;
@@ -1217,13 +1217,13 @@ static uint_16 omf_write_comdef( uint_16 index )
             numsize = 1;
             if ( curr->sym.isfar == TRUE ) {
                 number[0] = COMDEF_FAR;  /* 0x61 */
-                numsize += put_comdef_number( &number[1], curr->sym.total_length );
-                numsize += put_comdef_number( &number[numsize], varsize );
+                numsize += put_comdef_number( (uint_8 *)&number[1], curr->sym.total_length );
+                numsize += put_comdef_number( (uint_8 *)&number[numsize], varsize );
                 DebugMsg(("omf_write_comdef: numsize=%u, length=%u, varsize=%u\n",
                           numsize, curr->sym.total_length, varsize ));
             } else {
                 number[0] = COMDEF_NEAR; /* 0x62 */
-                numsize += put_comdef_number( &number[1], curr->sym.total_length * varsize );
+                numsize += put_comdef_number( (uint_8 *)&number[1], curr->sym.total_length * varsize );
                 DebugMsg1(("omf_write_comdef: numsize=%u, value=%u\n",
                           numsize, curr->sym.total_length * varsize ));
             }
@@ -1284,7 +1284,7 @@ static ret_code omf_write_autodep( void )
     unsigned        idx;
 
     DebugMsg(("omf_write_autodep() enter\n"));
-    for( idx = 0, curr = ModuleInfo.g.FNames; idx < ModuleInfo.g.cnt_fnames; idx++, curr++ ) {
+    for( idx = 0, curr = (struct fname_item *)ModuleInfo.g.FNames; idx < ModuleInfo.g.cnt_fnames; idx++, curr++ ) {
         omf_InitRec( &obj, CMD_COMENT );
         obj.d.coment.attr = CMT_TNP;
         obj.d.coment.cmt_class = CMT_DEPENDENCY; /* 0xE9 */
@@ -1335,7 +1335,7 @@ static void omf_write_alias( void )
         if ( len1 > MAX_ID_LEN_OMF )
             len1 = MAX_ID_LEN_OMF;
 #endif
-        p = buff;
+        p = (char *)buff;
         *p++ = len1;
         memcpy( p, tmp, len1 );
         p += len1;
@@ -1386,7 +1386,7 @@ static ret_code omf_write_pubdef( void )
         uint_8          curr32;
         uint_8          is32;
 
-        for ( size = 0, data = StringBufferEnd; q; q = q->next ) {
+        for ( size = 0, data = (uint_8 *)StringBufferEnd; q; q = q->next ) {
             unsigned    recsize;
             unsigned    len;
             struct asym *sym;
@@ -1404,7 +1404,7 @@ static ret_code omf_write_pubdef( void )
                     *StringBufferEnd = len;
                     if ( ModuleInfo.case_sensitive == FALSE )
                         _strupr( StringBufferEnd + 1 );
-                    AttachData( &obj, StringBufferEnd, len + 1 );
+                    AttachData( &obj, (uint_8 *)StringBufferEnd, len + 1 );
                     omf_write_record( &obj );
                 } else if ( Parse_Pass == PASS_1 ) {
                     /* ??? */
@@ -1433,13 +1433,13 @@ static ret_code omf_write_pubdef( void )
             /* exit loop if segment or offset magnitude changes, or record becomes too big */
             if( size && ( sym->segment != curr_seg || is32 != curr32 || recsize > MAX_PUB_LENGTH ) )
                 break;
-            len = Mangle( sym, data + 1 );
+            len = Mangle( sym, (char *)data + 1 );
 #if MAX_ID_LEN > MAX_ID_LEN_OMF
             if ( len > 255 )
                 len = 255; /* length is 1 byte only */
 #endif
             if ( ModuleInfo.convert_uppercase )
-                _strupr( data + 1 );
+                _strupr( (char *)data + 1 );
             curr_seg = sym->segment;
             curr32 = is32;
 
@@ -1458,7 +1458,7 @@ static ret_code omf_write_pubdef( void )
         if ( size ) {
             struct omf_rec      obj;
             omf_InitRec( &obj, CMD_PUBDEF );
-            AttachData( &obj, StringBufferEnd, size );
+            AttachData( &obj, (uint_8 *)StringBufferEnd, size );
             obj.is_32 = curr32;
             if( curr_seg == NULL ) { /* absolute symbol, no segment */
                 obj.d.pubdef.base.grp_idx = 0;
@@ -1529,10 +1529,11 @@ static void omf_write_header_dbgcv( void )
     omf_InitRec( &obj, CMD_COMENT );
     obj.d.coment.attr = 0x00;
     obj.d.coment.cmt_class = CMT_MS_OMF; /* MS extensions present */
-    AttachData( &obj, "\001CV", 3 );
+    AttachData( &obj, (uint_8 *)"\001CV", 3 );
     omf_write_record( &obj );
     for ( i = 0; i < DBGS_MAX; i++ ) {
-        if ( SymDebSeg[i] = (struct dsym *)CreateIntSegment( SymDebParm[i].name, SymDebParm[i].cname, 0, USE32, TRUE ) ) {
+        SymDebSeg[i] = (struct dsym *)CreateIntSegment( SymDebParm[i].name, SymDebParm[i].cname, 0, USE32, TRUE );
+        if ( SymDebSeg[i] ) {
             SymDebSeg[i]->e.seginfo->force32 = TRUE; /* without this a 32-bit segdef is emitted only if segsize > 64kB */
             SymDebSeg[i]->e.seginfo->flushfunc = omf_cv_flushfunc;
         }
@@ -1546,8 +1547,8 @@ static void omf_write_debug_tables( void )
 /****************************************/
 {
     if ( SymDebSeg[DBGS_SYMBOLS] && SymDebSeg[DBGS_TYPES] ) {
-        SymDebSeg[DBGS_SYMBOLS]->e.seginfo->CodeBuffer = CurrSource;
-        SymDebSeg[DBGS_TYPES]->e.seginfo->CodeBuffer = CurrSource + 1024;
+        SymDebSeg[DBGS_SYMBOLS]->e.seginfo->CodeBuffer = (uint_8 *)CurrSource;
+        SymDebSeg[DBGS_TYPES]->e.seginfo->CodeBuffer = (uint_8 *)CurrSource + 1024;
         cv_write_debug_tables( SymDebSeg[DBGS_SYMBOLS], SymDebSeg[DBGS_TYPES], NULL );
     }
 }
@@ -1564,6 +1565,10 @@ static ret_code omf_write_module( struct module_info *modinfo )
 #if TRUNCATE
     int fh;
     uint_32 size;
+#if defined(__UNIX__) || defined(__CYGWIN__) || defined(__DJGPP__)
+    int ret;
+#define HAVE_FTRUNCATE 1
+#endif
 #endif
     /* -if Zi is set, write symbols and types */
     if ( Options.debug_symbols )
@@ -1585,9 +1590,10 @@ static ret_code omf_write_module( struct module_info *modinfo )
      * won't become shorter anymore.
      */
     size = ftell( CurrFile[OBJ] );
-#if defined(__UNIX__) || defined(__CYGWIN__) || defined(__DJGPP__)
+#if defined(HAVE_FTRUNCATE)
     fh = fileno( CurrFile[OBJ] );
-    if ( ftruncate( fh, size ) ); /* gcc warns if return value of ftruncate() is "ignored" */
+    ret = ftruncate( fh, size );
+    (void)ret;
 #elif defined(__BORLANDC__)
     fh = _fileno( CurrFile[OBJ] );
     chsize( fh, size );

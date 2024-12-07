@@ -89,6 +89,10 @@ struct asm_tok      xmmOver0;				/* xmmword override tokens for -Zg switch (masm
 struct asm_tok      xmmOver1;
 struct asm_tok      dsOver;
 
+static char STR_XMMWORD[] = { 'x','m','m','w','o','r','d', 0 };
+static char STR_PTR[] = { 'p','t','r', 0 };
+static char STR_DS[] = { 'd','s', 0 };
+
 /* linked lists of:     index
  *--------------------------------
  * - undefined symbols  TAB_UNDEF
@@ -1770,7 +1774,8 @@ static ret_code memory_operand( struct code_info *CodeInfo, unsigned CurrOpnd, s
     {
         return(EmitError(USE_OF_REGISTER_ASSUMED_TO_ERROR));
     }
-    if (index != EMPTY && GetValueSp(index) & OP_XMM == 0 && GetValueSp(index) & OP_YMM == 0 && StdAssumeTable[GetRegNo(index)].error)
+    if (index != EMPTY && (GetValueSp(index) & OP_XMM) == 0 &&
+        (GetValueSp(index) & OP_YMM) == 0 && StdAssumeTable[GetRegNo(index)].error)
     {
         return(EmitError(USE_OF_REGISTER_ASSUMED_TO_ERROR));
     }
@@ -1924,11 +1929,12 @@ static ret_code memory_operand( struct code_info *CodeInfo, unsigned CurrOpnd, s
 		
 		/* v2.10: added; IMAGEREL/SECTIONREL for indirect memory operands */
 		#if IMAGERELSUPP || SECTIONRELSUPP 
-        if ( fixup_type == FIX_OFF32 )
+        if ( fixup_type == FIX_OFF32 ) {
             if ( opndx->instr == T_IMAGEREL )
                 fixup_type = FIX_OFF32_IMGREL;
             else if ( opndx->instr == T_SECTIONREL )
                 fixup_type = FIX_OFF32_SECREL;
+        }
 		#endif
 
         /* no fixups are needed for memory operands of string instructions and XLAT/XLATB.
@@ -2158,11 +2164,12 @@ static ret_code process_register( struct code_info *CodeInfo, unsigned CurrOpnd,
             CodeInfo->iswide = 0;
 
 #if AMD64_SUPPORT
-        if ( CodeInfo->Ofssize == USE64 && regno >=4 && regno <=7 )
+        if ( CodeInfo->Ofssize == USE64 && regno >=4 && regno <=7 ) {
             if ( SpecialTable[regtok].cpu == P_86 )
                 CodeInfo->x86hi_used = 1; /* it's AH,BH,CH,DH */
             else
                 CodeInfo->x64lo_used = 1; /* it's SPL,BPL,SIL,DIL */
+        }
 #endif
         if ( StdAssumeTable[regno].error & (( regtok >= T_AH && regtok <= T_BH ) ? RH_ERROR : RL_ERROR ) ) 
 		{
@@ -2371,11 +2378,12 @@ static void HandleStringInstructions( struct code_info *CodeInfo, const struct e
     case T_MOVQ:
 #endif
         /* movs allows prefix for the second operand (=source) only */
-        if ( CodeInfo->prefix.RegOverride != EMPTY )
+        if ( CodeInfo->prefix.RegOverride != EMPTY ) {
             if ( opndx[OPND2].override == NULL )
                 EmitError( INVALID_INSTRUCTION_OPERANDS );
             else if ( CodeInfo->prefix.RegOverride == ASSUME_DS )
                 CodeInfo->prefix.RegOverride = EMPTY;
+        }
         break;
     case T_OUTS:
     case T_OUTSB:
@@ -2401,11 +2409,12 @@ static void HandleStringInstructions( struct code_info *CodeInfo, const struct e
         /* INSx, SCASx and STOSx don't allow any segment prefix != ES
          for the memory operand.
          */
-        if ( CodeInfo->prefix.RegOverride != EMPTY )
+        if ( CodeInfo->prefix.RegOverride != EMPTY ) {
             if ( CodeInfo->prefix.RegOverride == ASSUME_ES )
                 CodeInfo->prefix.RegOverride = EMPTY;
             else
                 EmitError( INVALID_INSTRUCTION_OPERANDS );
+        }
     }
 
     if ( opnd_clstab[CodeInfo->pinstr->opclsidx].opnd_type[opndidx] == OP_NONE ) {
@@ -2626,11 +2635,12 @@ static ret_code check_size( struct code_info *CodeInfo, const struct expr opndx[
         op1_size = OperandSize( op1, CodeInfo );
         op2_size = OperandSize( op2, CodeInfo );
         DebugMsg1(("check_size, MOVZX/MOVSX: op2_size=%u, opndx.memtype=%Xh, opndx.sym=%X\n", op2_size, opndx[OPND2].mem_type, opndx[OPND2].sym ));
-        if ( op2_size == 0 && Parse_Pass == PASS_2 )
+        if ( op2_size == 0 && Parse_Pass == PASS_2 ) {
             if ( op1_size == 2 ) {
                 EmitWarn( 2, SIZE_NOT_SPECIFIED_ASSUMING, "BYTE" );
             } else
                 EmitErr( INSTRUCTION_OPERAND_MUST_HAVE_SIZE );
+        }
         switch( op1_size ) {
 #if AMD64_SUPPORT
         case 8:
@@ -2964,7 +2974,7 @@ static ret_code check_size( struct code_info *CodeInfo, const struct expr opndx[
              */
             if( op1_size == 0 ) {
                 if( ( op1 & OP_M_ANY ) && ( op2 & OP_I ) ) {
-                    char *p = "WORD";
+                    const char *p = "WORD";
                     if( (uint_32)CodeInfo->opnd[OPND2].data32l > USHRT_MAX || op2_size == 4 ) {
                         CodeInfo->iswide = 1;
                         DebugMsg1(("check_size: op1=%X op1_size=0, op2=%X, op2_size=%u CodeInfo->data[2]=%X\n", op1, op2, op2_size, CodeInfo->opnd[OPND2].data32l ));
@@ -3064,18 +3074,14 @@ ret_code ParseLine(struct asm_tok tokenarray[]) {
 	int                j;
 	unsigned           dirflags;
 	unsigned           CurrOpnd;
-	ret_code           temp;
+	ret_code           temp = ERROR;
 	struct asym        *sym;
-	uint_32            oldofs;
+	uint_32            oldofs = 0;
 	enum special_token regtok;
-	int                c0;
-	int                c1;
 	unsigned           flags;
-	char               *pnlbl;
 	int                alignCheck = 16;
 	int                infSize    = 0;
 	int                oldi       = 0;
-	struct dsym        *recsym    = 0;
 	struct code_info   CodeInfo;
 	struct expr        opndx[MAX_OPND + 1];
 	// We create copies of these structures for now as the old codegen has a very ugly way of working with additional vex 3 opnd forms, by
@@ -3085,7 +3091,6 @@ ret_code ParseLine(struct asm_tok tokenarray[]) {
 	struct expr        opndxV2[MAX_OPND + 1];
 	const char         *opcodePtr = NULL;
 	int                opndCount  = 0;
-	char               *instr     = NULL;
     bool               doDataInProc = FALSE;
 
 	memset(&opndx, 0, sizeof(opndx));
@@ -3325,7 +3330,8 @@ ret_code ParseLine(struct asm_tok tokenarray[]) {
 
 			case T_ID:
       
-				if (sym = IsType(tokenarray[i].string_ptr)) {
+				sym = IsType(tokenarray[i].string_ptr);
+				if (sym) {
 					return(data_dir(i, tokenarray, sym));
 				}
 				break;
@@ -3753,7 +3759,7 @@ dataInProc:
 				}
 				if (j <= 2) 
 				{
-					DebugMsg(("ParseLine(%s,%u): avx not enough operands (%u)\n", instr, CurrOpnd, opndx[OPND2].kind, j));
+					DebugMsg(("ParseLine(%s,%u): avx not enough operands (%u)\n", GetResWName(CodeInfo.token, NULL), CurrOpnd, opndx[OPND2].kind, j));
 				}
 				else
 
@@ -3891,7 +3897,8 @@ dataInProc:
 	/* ******************************************************* */
 	if (CurrOpnd != j) 
 	{
-		for (; tokenarray[i].token != T_COMMA; i--);
+		for (; tokenarray[i].token != T_COMMA; i--)
+		{}
     if (CodeInfo.token < VEX_START) {
       return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].tokpos));
     }
@@ -3938,14 +3945,14 @@ dataInProc:
 		/* the first op must be EAX/AX or RAX/EAX. The operand class
 		* used in the instruction table is OP_A ( which is AL/AX/EAX/RAX ). */
 		if ( ( CodeInfo.opnd[OPND1].type & ( CodeInfo.Ofssize == USE64 ? OP_R64 | OP_R32 : OP_R32 | OP_R16 ) ) == 0 ) {
-			DebugMsg(("ParseLine(%s): opnd1 unexpected type=%X\n", instr, CodeInfo.opnd[OPND1].type ));
+			DebugMsg(("ParseLine(%s): opnd1 unexpected type=%X\n", GetResWName(CodeInfo.token, NULL), CodeInfo.opnd[OPND1].type ));
 			return( EmitErr( INVALID_INSTRUCTION_OPERANDS ) );
 		}
 		/* the INVLPGA instruction has a fix second operand (=ECX). However, there's no
 		 * operand class for ECX alone. So it has to be ensured here that the register IS ecx. */
 		if ( CodeInfo.token == T_INVLPGA )
 			if ( ( CodeInfo.rm_byte & BIT_345 ) != ( 1 << 3 ) ) { /* ECX is register 1 */
-				DebugMsg(("ParseLine(%s): opnd2 is not ecx\n", instr ));
+				DebugMsg(("ParseLine(%s): opnd2 is not ecx\n", GetResWName(CodeInfo.token, NULL) ));
 				return( EmitErr( INVALID_INSTRUCTION_OPERANDS ) );
 			}
 	#endif
@@ -4105,7 +4112,7 @@ void ProcessFile( struct asm_tok tokenarray[] )
 	xmmOver0.bytval = 15;
 	xmmOver0.dirtype = 15;
 	xmmOver0.tokval = T_XMMWORD;
-	xmmOver0.string_ptr = "xmmword";
+	xmmOver0.string_ptr = STR_XMMWORD;
 	xmmOver0.stringlen = T_XMMWORD;
 	xmmOver0.idarg = T_XMMWORD;
 	xmmOver0.itemlen = T_XMMWORD;
@@ -4120,7 +4127,7 @@ void ProcessFile( struct asm_tok tokenarray[] )
 	xmmOver1.bytval = 4;
 	xmmOver1.dirtype = 4;
 	xmmOver1.tokval = T_PTR;
-	xmmOver1.string_ptr = "ptr";
+	xmmOver1.string_ptr = STR_PTR;
 	xmmOver1.stringlen = T_PTR;
 	xmmOver1.idarg = T_PTR;
 	xmmOver1.itemlen = T_PTR;
@@ -4134,7 +4141,7 @@ void ProcessFile( struct asm_tok tokenarray[] )
 	dsOver.floattype = 3;
 	dsOver.numbase = 3;
 	dsOver.specval = 3;
-	dsOver.string_ptr = "ds";
+	dsOver.string_ptr = STR_DS;
 	dsOver.tokval = 0x0000001c;
 	dsOver.stringlen = 0x0000001c;
 	dsOver.idarg = 0x0000001c;
