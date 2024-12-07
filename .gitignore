@@ -23,6 +23,8 @@ bld/
 [Ll]og/
 
 testers/
+GccMacR/
+GccMacD/
 GccUnixR/
 GccUnixD/
 MinGW-w64R/
@@ -275,3 +277,7 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
+
+# macOS forks
+.DS_Store
+
