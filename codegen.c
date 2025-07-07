@@ -3385,13 +3385,14 @@ ret_code codegen( struct code_info *CodeInfo, uint_32 oldofs )
 	}
 
     /* UASM 2.56 - Validate the proper usage of SARX,SHLX, SHRX */
+    /* UASM 2.58 - What the heck - 3rd operand shouldn't be IMM!! it's a register */
     if (CodeInfo->token == T_SARX || CodeInfo->token == T_SHLX || CodeInfo->token == T_SHRX)
     {
         if((CodeInfo->opnd[0].type & OP_R) == 0)
             EmitError(INVALID_INSTRUCTION_OPERANDS);
         if (((CodeInfo->opnd[1].type & OP_R) == 0) && ((CodeInfo->opnd[1].type & OP_M) == 0))
             EmitError(INVALID_INSTRUCTION_OPERANDS);
-        if ((CodeInfo->opnd[2].type & OP_I) == 0)
+        if ((CodeInfo->opnd[2].type & OP_R) == 0)
             EmitError(INVALID_INSTRUCTION_OPERANDS);
     }
 
