@@ -466,7 +466,7 @@ static void output_opc(struct code_info *CodeInfo)
    */
   
   if (CodeInfo->prefix.adrsiz == TRUE && (CodeInfo->token < T_VPGATHERDD || CodeInfo->token > T_VSCATTERQPD)&&
-      CodeInfo->token != T_VCVTPH2PS && CodeInfo->token != T_VCVTPS2PD) {
+      CodeInfo->token != T_VCVTPH2PS && CodeInfo->token != T_VCVTPS2PD && CodeInfo->token != T_VCVTPS2PH) {
 
 	  if (CodeInfo->basereg == 0x10) /* RIP used for relative addressing v2.36 */
 		  ;/* don't output 0x67 */
@@ -955,7 +955,7 @@ static void output_opc(struct code_info *CodeInfo)
                 if (CodeInfo->indexreg > 7 && CodeInfo->indexreg <= 31)
                   byte1 &= ~0x10;
               }
-              if (CodeInfo->token == T_VCVTPH2PS || CodeInfo->token == T_VCVTPD2UDQ || CodeInfo->token == T_VCVTQQ2PD||
+              if (CodeInfo->token == T_VCVTPH2PS || CodeInfo->token == T_VCVTPS2PH || CodeInfo->token == T_VCVTPD2UDQ || CodeInfo->token == T_VCVTQQ2PD||
                 CodeInfo->token == T_VCVTPD2DQ || CodeInfo->token == T_VCVTDQ2PD){
                 if ((CodeInfo->reg1 <= 7) || (CodeInfo->reg1 >= 16 && CodeInfo->reg1 <= 23))
                   byte1 |= EVEX_P0RMASK;
@@ -997,7 +997,7 @@ static void output_opc(struct code_info *CodeInfo)
                   }
                 /* fix v2.46 */
                 if (CodeInfo->token == T_VCVTPS2PD || CodeInfo->token == T_VCVTPH2PS || 
-                    CodeInfo->token == T_VCVTPS2PH | CodeInfo->token == T_VCVTQQ2PD){
+                    CodeInfo->token == T_VCVTPS2PH || CodeInfo->token == T_VCVTQQ2PD){
                   /* don't check for memory to reg here */
                   if (CodeInfo->opnd[OPND2].type & OP_M_ANY || CodeInfo->opnd[OPND1].type & OP_M_ANY)
                     ; /* skip */
@@ -1518,7 +1518,7 @@ static void output_opc(struct code_info *CodeInfo)
                       else CodeInfo->evex_p2 &= ~EVEX_P2VMASK;
                     }
               if ((CodeInfo->token == T_VRNDSCALEPD) || (CodeInfo->token == T_VRNDSCALEPS)||
-                   (CodeInfo->token ==  T_VCVTPS2PH))
+                   (CodeInfo->token == T_VCVTPS2PH))
                     CodeInfo->evex_p2 |= EVEX_P2VMASK;
                 CodeInfo->evex_p2 |= decoflags;
                 if (CodeInfo->token == T_VCVTDQ2PD){
@@ -2547,7 +2547,7 @@ static void output_opc(struct code_info *CodeInfo)
             c = CodeInfo->basereg;
             c &= 0x7;
             CodeInfo->sib |= c;
-            CodeInfo->sib = 0xf0;
+            //CodeInfo->sib = 0xf0;       // UASM 2.58 WTH IS THIS???
             tmp |= RM_SIB;
             }
           CodeInfo->rm_byte = tmp;
