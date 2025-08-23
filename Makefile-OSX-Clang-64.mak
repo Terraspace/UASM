@@ -7,6 +7,10 @@ ifndef DEBUG
 DEBUG=0
 endif
 
+ifndef DJGPP
+DJGPP=0
+endif
+
 inc_dirs  = -IH
 
 #cflags stuff
@@ -17,6 +21,10 @@ OUTD=GccUnixR
 else
 extra_c_flags = -DDEBUG_OUT -g
 OUTD=GccUnixD
+endif
+
+ifneq ($(DJGPP), 0)
+extra_c_flags += -DDJGPP_SUPPORT=1
 endif
 
 c_flags =-D __UNIX__ $(extra_c_flags)
