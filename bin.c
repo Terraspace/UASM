@@ -561,6 +561,16 @@ static ret_code DoFixup( struct dsym *curr, struct calc_param *cp )
 #endif
             //*codeptr.dd += (value - fixup->locofs + 4);
             /* changed in v1.95 */
+
+            /* UASM 2.58 -> when generating a 64bit option flat BIN, there are no relocations!
+            * a structure.field refernces encodes the field offset into codeptr.dd, then the below calculation
+            * is invalid without a relocation - in this case flush codeptr.dd to 0!
+            */
+            if (ModuleInfo.sub_format == SFORMAT_NONE && ModuleInfo.flat == TRUE && Options.output_format == OFORMAT_BIN) {
+                if (fixup->sym->mem_type == MT_TYPE && *codeptr.dd != 0) {
+                    *codeptr.dd = 0;
+                }
+            }
             *codeptr.dd += (value - (fixup->locofs + curr->e.seginfo->start_offset) - 4);
             DebugMsg(("DoFixup(%s, %04" I32_SPEC "X): FIX_RELOFF32, value=%" I32_SPEC "Xh, *target=%Xh\n", curr->sym.name, fixup->locofs, value, *codeptr.dd ));
             break;

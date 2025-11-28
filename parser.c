@@ -2885,8 +2885,9 @@ static ret_code check_size( struct code_info *CodeInfo, const struct expr opndx[
          */
         if( ( op1_size == 1 ) && ( op2 == OP_I16 ) &&
             ( CodeInfo->opnd[OPND2].data32l <= UCHAR_MAX ) &&
-            ( CodeInfo->opnd[OPND2].data32l >= -128 ) ) {
-            //( CodeInfo->opnd[OPND2].data32l >= -255 ) ) {
+            //( CodeInfo->opnd[OPND2].data32l >= -128 ) ) { v2.04+
+            //( CodeInfo->opnd[OPND2].data32l >= -255 ) ) { original
+            (CodeInfo->opnd[OPND2].data32l >= -256)) { /* UASM 2.58 */
 
             return( rc ); /* OK cause no sign extension */
         }
