@@ -315,7 +315,7 @@ static ret_code  InitRecordVar( struct expr *opnd1, int index, struct asm_tok to
                 EvalOperand( &i, tokenarray, Token_Count, &opndx, 0 );
                 is_record_set = TRUE;
             }
-            if ( opndx.kind != EXPR_CONST || opndx.quoted_string != NULL )
+            if ( opndx.kind != EXPR_CONST && opndx.quoted_string != NULL )
                 EmitError( CONSTANT_EXPECTED );
 
             /* fixme: max bits in 64-bit is 64 - see MAXRECBITS! */
