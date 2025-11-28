@@ -224,8 +224,8 @@ void InitAutoMacros64(void)
 	uint_32 start_pos = 0;
 	char  *srcLines[512]; // NB: 512 is the max number of lines of macro code per macro.  
 
-	//                    1   2   3   4  5  6  7   8   9   10  11 12 13  14 15 16 17 18 19 20  21 22 23  24  25  26 27 28  29  30  31  32 33  34  35  36  37  38 39 40  41  42 43 44  45  46  47  48  49  50 51  52  53  54 55 56 57 58   59  60 61 62   63   64  65  66 67 68 69
-	uint_32 macroLen[] = {17, 11, 29, 3, 3, 8, 37, 33, 37, 33, 7, 6, 10, 6, 7, 7, 7, 8, 8, 10, 3, 7, 11, 19, 10, 2, 10, 2, 18,  9, 14, 6, 39, 39, 39, 39, 12, 5, 2, 20, 21, 2, 2, 11, 38, 38, 11, 45, 91, 6, 10, 10, 37, 1, 1, 1, 1, 256, 10, 6, 6, 106, 137, 11, 7 , 2, 9, 4, 18 }; // Count of individual lines of macro-body code.
+	//                    1   2   3   4  5  6  7   8   9   10  11 12 13  14 15 16 17 18 19 20  21 22 23  24  25  26 27 28  29  30  31  32 33  34  35  36  37  38 39 40  41  42 43 44  45  46  47  48  49  50 51  52  53  54 55 56 57 58   59  60 61 62   63   64  65  66 67  68 69
+	uint_32 macroLen[] = {17, 11, 29, 3, 3, 8, 37, 33, 37, 33, 7, 6, 10, 6, 7, 7, 7, 8, 8, 10, 3, 7, 11, 19, 10, 2, 10, 2, 18,  9, 14, 6, 39, 39, 39, 39, 12, 5, 2, 20, 21, 2, 2, 11, 38, 38, 11, 45, 91, 6, 10, 10, 37, 1, 1, 1, 1, 256, 10, 6, 6, 106, 137, 11, 7 , 2, 10, 4, 18 }; // Count of individual lines of macro-body code.
 	char *macCode[] = {
 /*1 NOTMASK128*/		"IFNDEF GMASK",".data","GMASK OWORD 0","ENDIF","IFNDEF NOTMASK",".data","NOTMASK OWORD -1","ENDIF",".code","IF @Arch EQ 1","movups reg, MASK field","pxor reg, NOTMASK","ELSE","vmovups reg, MASK field","vpxor reg, reg, NOTMASK","ENDIF","ENDM",NULL,
 /*2 GETMASK128*/		"IFNDEF GMASK",".data","GMASK OWORD 0","ENDIF",".code","IF @Arch EQ 1","movups reg, MASK field","ELSE","vmovups reg, MASK field","ENDIF","ENDM",NULL,
@@ -293,7 +293,7 @@ void InitAutoMacros64(void)
 /*64 _SINVOKE*/			"fnex TEXTEQU <_>", "fnex CATSTR fnex, <&className&>", "fnex CATSTR fnex, <_>", "fnex CATSTR fnex, <&method&>", "IFNB <args>", "fnex2 TEXTEQU <invoke fnex, &args&>", "ELSE", "fnex2 TEXTEQU <invoke fnex>", "ENDIF", "fnex2", "ENDM", NULL,
 /*65 RAWINTERFACE*/		"curClass TEXTEQU <CName>", "% __&CName&_size = 0", "@CatStr(CName, < RAWSTRUCT >)", "ptrDefS TEXTEQU <psr>", "ptrDefS CATSTR ptrDefS, <&curClass&>, < TYPEDEF PTR >, <&curClass&>","% ptrDefS", "ENDM", NULL,
 /*66 ENDRAWINTERFACE*/	"curClass ENDS", "ENDM", NULL,
-/*67 _DEREFR */			"LOCAL argstr", "argstr TEXTEQU <>", "IFNB <&argsAndRegs&>", "mov rax,dref","% invoke [rax].&itype.&proc, &argsAndRefs", "ELSE", "% invoke [rax].&itype.&proc", "ENDIF","ENDM", NULL,
+/*67 _DEREFR */			"LOCAL argstr", "argstr TEXTEQU <>", "IFNB <&argsAndRefs&>", "mov rax,dref", "% invoke [rax].&itype.&proc, &argsAndRefs", "ELSE", "mov rax,dref", "% invoke [rax].&itype.&proc", "ENDIF","ENDM", NULL,
 /*68 _DEREFRR */		"LOCAL argstr", "argstr TEXTEQU <>", "% invoke &dref&.&itype.&proc, &argsAndRefs", "ENDM", NULL,
 /*69 STDFUNC */			"LOCAL sz1, sz2","pDef CATSTR <TYPEDEF PROTO >,<(&retType&) >","IFNB <protoDef>","pDef CATSTR pDef, <, >, <&protoDef>","ENDIF","sz2 CATSTR <_>, curClass, <_&method>, <Pto>","% &sz2 &pDef","% sz1 typedef PTR &sz2","% method sz1 0","% __&curClass&_size = __&curClass&_size + 8", "fnex TEXTEQU <_>","fnex CATSTR fnex, curClass, <_>, <&method&>, < PROTO >, <(&retType&) >","IFNB <&protoDef>","fnex CATSTR fnex, <, >, <&protoDef&>","ELSE","ENDIF","fnex", "ENDM", NULL,
     };	
