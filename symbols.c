@@ -75,6 +75,7 @@
 #endif
 
 extern struct asym *FileCur;  /* @FileCur symbol    */
+extern struct asym *ProcCur;  /* @ProcName symbol   */
 extern struct asym *LineCur;  /* @Line symbol       */
 extern struct asym *symCurSeg;/* @CurSeg symbol     */
 
@@ -121,6 +122,7 @@ static const struct tmitem tmtab[] = {
     {"@Date",     szDate, NULL },
     {"@Time",     szTime, NULL },
     {"@FileName", ModuleInfo.name, NULL },
+    {"@ProcName", NULL, &ProcCur },
     {"@FileCur",  NULL, &FileCur },
     /* v2.09: @CurSeg value is never set if no segment is ever opened.
      * this may have caused an access error if a listing was written.
@@ -146,7 +148,7 @@ static const struct eqitem eqtab[] = {
 	{ "@Arch",     ARCH_SSE,            NULL, NULL },
 	{ "@Platform", 0,                   NULL, NULL },
 	{ "@LastReturnType", 0,             NULL, NULL },
-	{ "@ProcName", 0,                   NULL, NULL },
+//	{ "@ProcName", 0,                   NULL, NULL },
     { "@WordSize", 0,                   UpdateWordSize, NULL }, /* must be last (see SymInit()) */
 };
 

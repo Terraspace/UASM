@@ -49,6 +49,8 @@
 */
 #define STACKPROBE 0
 
+extern struct asym *ProcCur;
+
 extern const char szDgroup[];
 extern uint_32 list_pos;  /* current LST file position */
 extern unsigned char regsize[6];
@@ -1893,12 +1895,15 @@ ret_code ProcDir(int i, struct asm_tok tokenarray[])
 	}
 
 	name = tokenarray[0].string_ptr;
+	sym = SymFind(name);
+	if (sym) 
+		ProcCur->string_ptr = sym->name;
 
 	if (CurrProc != NULL) {
-
+		
 		/* Set the current PROC name */
-		procname = SymFind("@ProcName");
-		procname->string_ptr = CurrProc->sym.name;
+		//procname = SymFind("@ProcName");
+		ProcCur->string_ptr = CurrProc->sym.name;
 
 		/* this is not needed for Uasm, but Masm will reject nested
 		* procs if there are params, locals or used registers.
@@ -1930,6 +1935,7 @@ ret_code ProcDir(int i, struct asm_tok tokenarray[])
 		if (sym == NULL || sym->state == SYM_UNDEFINED) {
 			sym = CreateProc(sym, name, SYM_INTERNAL);
 			is_global = FALSE;
+			ProcCur->string_ptr = sym->name;
 		}
 		else if (sym->state == SYM_EXTERNAL && sym->weak == TRUE) {
 			/* PROTO or EXTERNDEF item */
@@ -1948,6 +1954,7 @@ ret_code ProcDir(int i, struct asm_tok tokenarray[])
 				/* v2.03: don't call dir_free(), it'll clear field Ofssize */
 				//dir_free( (struct dsym *)sym );
 				sym = CreateProc(sym, name, SYM_INTERNAL);
+				ProcCur->string_ptr = sym->name;
 			}
 		}
 		else {

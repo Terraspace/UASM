@@ -53,6 +53,7 @@ char   *commentbuffer;
 
 struct asym *FileCur; /* @FileCur symbol, created in SymInit() */
 struct asym *LineCur; /* @Line symbol, created in SymInit()    */
+struct asym *ProcCur; /* @ProcName symbok, created in SymInit() */
 
 enum src_item_type {
     SIT_FILE,
