@@ -245,7 +245,7 @@ void store_fixup( struct fixup *fixup, struct dsym *seg, int_32 *pdata )
             } else if ( fixup->type == FIX_OFF32 ) {
                 *pdata += fixup->sym->offset;
                 fixup->offset += fixup->sym->offset; /* ok? */
-                fixup->segment = fixup->sym->segment;/* ok? */
+                fixup->segment_var = fixup->sym->segment;/* ok? */
             }
         } else
 #endif

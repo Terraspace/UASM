@@ -287,6 +287,7 @@ enum sformat
     SFORMAT_NONE,
     SFORMAT_MZ,    /* MZ binary */
     SFORMAT_PE,    /* PE (32- or 64-bit) binary */
+    SFORMAT_DJGPP, /* Djgpp variant of COFF */
     SFORMAT_64BIT, /* 64bit COFF or ELF */
 };
 
