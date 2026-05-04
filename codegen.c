@@ -1265,7 +1265,7 @@ static void output_opc(struct code_info *CodeInfo)
             case T_VPMOVZXDQ:
               if((CodeInfo->r1type == OP_XMM && (CodeInfo->r2type == OP_XMM || CodeInfo->mem_type == MT_QWORD || CodeInfo->mem_type == MT_EMPTY))||
                  (CodeInfo->r1type == OP_YMM && (CodeInfo->r2type == OP_XMM || CodeInfo->mem_type == MT_OWORD || CodeInfo->mem_type == MT_EMPTY ))||
-                 (CodeInfo->r1type == OP_ZMM && decoflags && (CodeInfo->r2type == OP_YMM || CodeInfo->mem_type == MT_YMMWORD || CodeInfo->mem_type == MT_EMPTY)))
+                 (CodeInfo->r1type == OP_ZMM && evex && (CodeInfo->r2type == OP_YMM || CodeInfo->mem_type == MT_YMMWORD || CodeInfo->mem_type == MT_EMPTY)))
                  lbyte &= ~EVEX_P1WMASK;  // make sure CodeInfo->evex_p1 W is not set
               else
                 EmitError(INVALID_COMBINATION_OF_OPCODE_AND_OPERANDS);
@@ -1276,7 +1276,7 @@ static void output_opc(struct code_info *CodeInfo)
             case T_VPMOVZXWQ:
               if((CodeInfo->r1type == OP_XMM && (CodeInfo->r2type == OP_XMM || CodeInfo->mem_type == MT_DWORD || CodeInfo->mem_type == MT_EMPTY))||
                  (CodeInfo->r1type == OP_YMM && (CodeInfo->r2type == OP_XMM || CodeInfo->mem_type == MT_QWORD || CodeInfo->mem_type == MT_EMPTY ))||
-                 (CodeInfo->r1type == OP_ZMM && decoflags && (CodeInfo->r2type == OP_XMM || CodeInfo->mem_type == MT_OWORD || CodeInfo->mem_type == MT_EMPTY)))
+                 (CodeInfo->r1type == OP_ZMM && evex && (CodeInfo->r2type == OP_XMM || CodeInfo->mem_type == MT_OWORD || CodeInfo->mem_type == MT_EMPTY)))
                  lbyte &= ~EVEX_P1WMASK;  // make sure CodeInfo->evex_p1 W is not set
               else
                 EmitError(INVALID_COMBINATION_OF_OPCODE_AND_OPERANDS);
@@ -3397,10 +3397,11 @@ ret_code codegen( struct code_info *CodeInfo, uint_32 oldofs )
     }
 
     /* UASM 2.56 - Validate proper usage of VPBROADCASTn as legacy CODEGEN only handles AVX2 (not 512) */
-    if (CodeInfo->token == T_VPBROADCASTB ||
+    /* When EVEX is enabled, GPR source is valid (AVX-512BW/VL). Only reject in legacy mode. */
+    if (!evex && (CodeInfo->token == T_VPBROADCASTB ||
         CodeInfo->token == T_VPBROADCASTW ||
         CodeInfo->token == T_VPBROADCASTD ||
-        CodeInfo->token == T_VPBROADCASTQ) {
+        CodeInfo->token == T_VPBROADCASTQ)) {
         if (CodeInfo->opnd[1].type & OP_R) {
             EmitError(INVALID_INSTRUCTION_OPERANDS);
         }
