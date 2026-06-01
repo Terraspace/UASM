@@ -88,7 +88,7 @@ struct print_item {
     short type;
     short flags;
     const short *capitems;
-    void (*function)();
+    void (*function)(const struct asym*, const void* dummy1, int_32 dummy2);
 };
 
 
@@ -100,13 +100,13 @@ static const short tdcap[]  = { LS_TXT_TYPEDEFS,LS_TXT_TYPEDEFCAP, 0 };
 static const short segcap[] = { LS_TXT_SEGS,    LS_TXT_SEGCAP, 0 };
 static const short prccap[] = { LS_TXT_PROCS,   LS_TXT_PROCCAP, 0 };
 
-static void log_macro(   const struct asym * );
-static void log_struct(  const struct asym *, const char *name, int_32 );
-static void log_record(  const struct asym * );
-static void log_typedef( const struct asym * );
-static void log_segment( const struct asym *, const struct asym *group );
-static void log_group(   const struct asym *, const struct dsym * );
-static void log_proc(    const struct asym * );
+static void log_macro(   const struct asym *, const void* dummy1, int_32 dummy2);
+static void log_struct(  const struct asym *, const char *name, int_32 ofs);
+static void log_record(  const struct asym *, const void* dummy1, int_32 dummy2 );
+static void log_typedef( const struct asym *, const void* dummy1, int_32 dummy2);
+static void log_segment( const struct asym *, const struct asym *group, int_32 dummy2);
+static void log_group(   const struct asym *, const struct dsym *, int_32 dummy2);
+static void log_proc(    const struct asym *, const void* dummy1, int_32 dummy2);
 
 static const struct print_item cr[] = {
     { LQ_MACROS,          0, maccap, log_macro   },
@@ -456,7 +456,7 @@ static const char *get_seg_combine( const struct seg_info *seg )
     return( "?" );
 }
 
-static void log_macro( const struct asym *sym )
+static void log_macro( const struct asym * sym, const void* dummy1, int_32 dummy2 )
 /*********************************************/
 {
     int i = sym->name_size;
@@ -636,7 +636,7 @@ static void log_struct( const struct asym *sym, const char *name, int_32 ofs )
     prefix -= 2;
 }
 
-static void log_record( const struct asym *sym )
+static void log_record( const struct asym *sym, const void* dummy1, int_32 dummy2 )
 /**********************************************/
 {
 #if AMD64_SUPPORT
@@ -678,7 +678,7 @@ static void log_record( const struct asym *sym )
 
 /* a typedef is a simple struct with no fields. Size might be 0. */
 
-static void log_typedef( const struct asym *sym )
+static void log_typedef( const struct asym *sym, const void* dummy1, int_32 dummy2)
 /***********************************************/
 {
     //struct dsym         *dir = (struct dsym *)sym;
@@ -712,7 +712,7 @@ static void log_typedef( const struct asym *sym )
     LstNL();
 }
 
-static void log_segment( const struct asym *sym, const struct asym *group )
+static void log_segment( const struct asym *sym, const struct asym *group, int_32 dummy2 )
 /*************************************************************************/
 {
     char buffer[32];
@@ -744,7 +744,7 @@ static void log_segment( const struct asym *sym, const struct asym *group )
     }
 }
 
-static void log_group( const struct asym *grp, const struct dsym *segs )
+static void log_group( const struct asym *grp, const struct dsym *segs, int_32 dummy2)
 /**********************************************************************/
 {
     unsigned i;
@@ -759,11 +759,11 @@ static void log_group( const struct asym *grp, const struct dsym *segs )
     /* the FLAT groups is always empty */
     if ( grp == (struct asym *)ModuleInfo.flat_grp ) {
         for( ; segs; segs = segs->next ) {
-            log_segment( (struct asym *)segs, grp );
+            log_segment( (struct asym *)segs, grp, 0 );
         }
     } else
         for( curr = ((struct dsym *)grp)->e.grpinfo->seglist; curr; curr = curr->next ) {
-            log_segment( (struct asym *)curr->seg, grp );
+            log_segment( (struct asym *)curr->seg, grp, 0 );
         }
 }
 
@@ -799,7 +799,7 @@ static const char *get_sym_seg_name( const struct asym *sym )
 
 /* list Procedures and Prototypes */
 
-static void log_proc( const struct asym *sym )
+static void log_proc( const struct asym *sym, const void* dummy1, int_32 dummy2 )
 /********************************************/
 {
     struct dsym *f;

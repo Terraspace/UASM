@@ -14,7 +14,7 @@ inc_dirs  = -IH
 #-Wno-error=implicit-function-declaration
 #-fwritable-strings
 ifeq ($(DEBUG),0)
-extra_c_flags = -DNDEBUG -O2 -funsigned-char 
+extra_c_flags = -DNDEBUG -O2 -funsigned-char -Wno-incompatible-pointer-types -Wno-implicit-function-declaration
 OUTD=GccUnixR
 else
 extra_c_flags = -DDEBUG_OUT -g
