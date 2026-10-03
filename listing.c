@@ -267,9 +267,9 @@ void LstWrite(enum lsttype type, uint_32 oldofs, void* value)
         }
         ll.buffer[idx] = '=';
         if ( sym->value3264 != 0 && ( sym->value3264 != -1 || sym->value >= 0 ) )
-            sprintf( &ll.buffer[idx+2], "%-" PREFFMTSTR I64_SPEC "X", (uint_64)sym->value + ( (uint_64)sym->value3264 << 32 ) );
+            snprintf( &ll.buffer[idx+2], sizeof( ll.buffer ) - idx - 2, "%-" PREFFMTSTR I64_SPEC "X", (uint_64)sym->value + ( (uint_64)sym->value3264 << 32 ) );
         else
-            sprintf( &ll.buffer[idx+2], "%-" PREFFMTSTR I32_SPEC "X", sym->value );
+            snprintf( &ll.buffer[idx+2], sizeof( ll.buffer ) - idx - 2, "%-" PREFFMTSTR I32_SPEC "X", sym->value );
         //ll.buffer[28] = ' ';
         break;
     case LSTTYPE_TMACRO:
@@ -320,8 +320,9 @@ void LstWrite(enum lsttype type, uint_32 oldofs, void* value)
         if ( ModuleInfo.GeneratedCode )
             ll.buffer[28] = '*';
         if ( MacroLevel ) {
-            len = sprintf( &ll.buffer[29], "%u", MacroLevel );
-            ll.buffer[29+len] = ' ';
+            len = snprintf( &ll.buffer[29], sizeof( ll.buffer ) - 29, "%u", MacroLevel );
+            if ( 29 + len < sizeof( ll.buffer ) )
+                ll.buffer[29+len] = ' ';
         }
         if ( srcfile != ModuleInfo.srcfile ) {
             ll.buffer[30] = 'C';
@@ -909,9 +910,9 @@ static void log_proc( const struct asym *sym )
             i = l->sym.name_size;
             pdots = (( i >= DOTSMAX-2 ) ? "" : dots + i + 1 + 2);
             if ( l->sym.isarray )
-                sprintf( buffer, "%s[%" I32_SPEC "u]", GetMemtypeString(&l->sym, NULL), l->sym.total_length );
+                snprintf( buffer, sizeof( buffer ), "%s[%" I32_SPEC "u]", GetMemtypeString(&l->sym, NULL), l->sym.total_length );
             else
-                strcpy( buffer, GetMemtypeString( &l->sym, NULL ) );
+                snprintf( buffer, sizeof( buffer ), "%s", GetMemtypeString( &l->sym, NULL ) );
             LstPrintf( szFmtProcStk, l->sym.name, pdots, buffer,
 #if STACKBASESUPP
                       GetResWName( dir->e.procinfo->basereg, NULL ),
