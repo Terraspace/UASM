@@ -427,7 +427,10 @@ static void output_opc(struct code_info *CodeInfo)
     }
 
   if (CodeInfo->evex_flag == TRUE) {
-	  if (!(vex_flags[CodeInfo->token - VEX_START] & VX_LL))
+	  /* {evex} on an instruction without a VEX form: vex_flags[] has no entry for it */
+	  if (CodeInfo->token < VEX_START)
+		  EmitError(NO_EVEX_FORM);
+	  else if (!(vex_flags[CodeInfo->token - VEX_START] & VX_LL))
 		  EmitError(INVALID_COMBINATION_OF_OPCODE_AND_OPERANDS);
   }
     if (CodeInfo->token == T_VCMPSD || CodeInfo->token == T_VCMPSS){
