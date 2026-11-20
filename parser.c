@@ -3773,7 +3773,7 @@ dataInProc:
 							/* first operand register is moved to vexregop */
 							/* handle VEX.NDD */
 							CodeInfo.vexregop = opndx[OPND1].base_reg->bytval + 1;
-							memcpy(&opndx[OPND1], &opndx[CurrOpnd], sizeof(opndx[0]) * 3);
+							memmove(&opndx[OPND1], &opndx[CurrOpnd], sizeof(opndx[0]) * 3);
 							CodeInfo.rm_byte = 0;
 							if (process_register(&CodeInfo, OPND1, opndx) == ERROR)
 								return(ERROR);
@@ -3804,7 +3804,7 @@ dataInProc:
 						CodeInfo.vexconst = opndx[CurrOpnd].value;
 						if(opndx[CurrOpnd].base_reg)
 							CodeInfo.vexregop = opndx[CurrOpnd].base_reg->bytval + 1;
-						memcpy(&opndx[CurrOpnd], &opndx[CurrOpnd + 1], sizeof(opndx[0]) * 2);
+						memmove(&opndx[CurrOpnd], &opndx[CurrOpnd + 1], sizeof(opndx[0]) * 2);
 					}
 					else
 					{
