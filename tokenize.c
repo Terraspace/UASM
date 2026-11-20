@@ -1237,6 +1237,11 @@ int Tokenize( char *line, unsigned int start, struct asm_tok tokenarray[], unsig
 #ifdef DEBUG_OUT
         cnttok0++;
 #endif
+        /* Reset per-line EVEX state even when the previous line was handled
+         * by the preprocessor and never reached the end of ParseLine(). */
+        decoflags  = 0;
+        broadflags = 0;
+        evexflag   = 0;
         p.output = token_stringbuf;
         if( ModuleInfo.inside_comment ) 
 		{
