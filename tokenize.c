@@ -1237,6 +1237,14 @@ int Tokenize( char *line, unsigned int start, struct asm_tok tokenarray[], unsig
 #ifdef DEBUG_OUT
         cnttok0++;
 #endif
+        /* A new line: clear the EVEX decorator flags.  A previous line may have
+         * left them set without reaching the reset at the end of ParseLine(),
+         * e.g. a line inside a macro definition, which is tokenized but not
+         * assembled.  Stale flags would wrongly force EVEX encoding (and apply
+         * the stale {k}{z} or {1toN}) to the next instruction. */
+        decoflags  = 0;
+        broadflags = 0;
+        evexflag   = 0;
         p.output = token_stringbuf;
         if( ModuleInfo.inside_comment ) 
 		{
