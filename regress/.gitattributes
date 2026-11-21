@@ -10,7 +10,7 @@
 
 *.lst -text
 
-# Fixed checkout bytes for sources whose MD5 is stored in CodeView 8 objects.
-src/codeview8_32/*.asm text eol=crlf
-src/codeview8_64/*.asm text eol=crlf
-src/cvptr8/*.asm text eol=crlf
+# Preserve exact source bytes: their MD5 is stored in CodeView 8 EXP objects.
+src/codeview8_32/*.asm -text
+src/codeview8_64/*.asm -text
+src/cvptr8/*.asm -text

@@ -50,7 +50,7 @@ in S_ENVBLOCK accept separator differences; filenames, symbols, code, data,
 relocations and source checksums remain significant. Existing timestamp,
 build-banner and elapsed-time metadata exceptions are retained.
 
-CodeView 8 fixtures use explicit CRLF checkout attributes so source-checksum
+CodeView 8 fixtures store exact CRLF bytes in Git (-text) so source-checksum
 bytes are reproducible in a fresh clone on either OS. One previously mixed-EOL
 fixture was made consistent; its EXP changed only in the 16-byte source MD5.
 
