@@ -44,7 +44,7 @@ struct macho_section_entry
 {
 	char *srcName;
 	struct section_64 section;
-	struct section_64 *next;
+	struct macho_section_entry *next;
 	int dif; /* padding to keep section size multiple of 16 */
 	int size;
 	int ofs;
@@ -280,7 +280,7 @@ static int GetSymbolIndex(const char *pName, struct macho_module *mm)
 /* ==========================================================================================
 Build a macho_section_entry structure.
 ========================================================================================== */
-struct section_64 * macho_build_section( const char *secName, const char *segName, uint32_t flags, const char *srcName )
+struct macho_section_entry * macho_build_section( const char *secName, const char *segName, uint32_t flags, const char *srcName )
 {
 	struct macho_section_entry *pSec = NULL;
 	pSec = malloc(sizeof(struct macho_section_entry));
@@ -725,7 +725,7 @@ static ret_code macho_write_module( struct module_info *modinfo )
 		mm.header.cputype = CPU_TYPE_X86_64;
 		mm.header.cpusubtype = CPU_SUBTYPE_LITTLE_ENDIAN | CPU_SUBTYPE_X86_64_ALL;
 		mm.header.filetype = MH_OBJECT;
-		mm.header.flags = NULL;
+		mm.header.flags = 0;
 		
 		macho_build_structures(modinfo, mm);	
 	}

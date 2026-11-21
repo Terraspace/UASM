@@ -1,7 +1,7 @@
 UASM regression runner
 ======================
 
-Run from newregress:
+Run from regress:
   go run .
   go run . -filter pr241
   go run . -audit
@@ -10,7 +10,7 @@ Run from newregress:
   regress.exe
 
 From the repository root:
-  newregress\regress.exe -root newregress
+  regress\regress.exe -root regress
 
 The default assembler is <suite>\..\x64\Release\UASM.exe.
 Override with -asm <path>. -timeout defaults to 30s per source.
@@ -397,3 +397,34 @@ validated by assembly/disassembly (host lacks AVX-512). See SYSTEMV-REVIEW.txt f
 coverage, implementation fixes, explicit limits and optional Linux execution.
 Only the pre-existing Lin64_4 EXP needed updating, for direct-CALL stack alignment.
 Full suite: 562 passed, 0 failed, 0 incomplete. No comparator rules changed.
+
+PR #240 listing fixes (2026-11-21)
+---------------------------------
+The in-segment equate field no longer pads a 20-character string into a
+20-byte destination plus a terminating NUL. Macro depth is formatted into a
+separate buffer; the listing space-fill loop stays within the 32-byte field.
+Procedure-local type names have room for MAX_ID_LEN plus an array suffix,
+rather than being truncated or overflowing a 32-byte temporary.
+
+New pr240 equate and macro_depth fixtures compare both .bin and .lst outputs;
+pr240_locals/locals compares the COFF object and listing, including a long
+structure type name used by a scalar local and an array local. The previous
+Windows build crashes on this locals case; the fixed build succeeds.
+The equate fixture independently checks values 2 and 3 and one NOP byte.
+The macro fixture exercises two-digit nesting and emits one NOP byte.
+
+The runner recognizes .lst baselines. Only a recognized initial UASM version
+and build-date banner and the final summary's numeric elapsed-millisecond
+field are excluded; all remaining listing bytes are exact. Filenames, line
+and pass counts, warning counts and error counts remain significant.
+Unit tests verify changed content and unrecognized banners still fail and
+that this exception does not apply to other file types. Listing baselines
+are marked -text to preserve their exact line endings.
+
+Linux portability update (2026-11-21)
+------------------------------------
+See ../BUILD-LINUX.txt for reproducible GCC/Clang builds, make test, portable
+comparison rules and self-contained SDK fixture changes. The cross-platform
+text/path rules described there supersede the original migration's exact
+Windows path and line-ending policy. No instruction/data bytes are ignored.
+Debug builds emit internal listing additions only with the debug-output option.

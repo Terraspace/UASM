@@ -1304,7 +1304,7 @@ static uint_8* cv_FlushSection(dbgcv* cv, uint_32 signature, uint_32 ex)
 	seg->e.seginfo->current_loc = seg->e.seginfo->start_loc + currsize + ex + sizeof(CV_SECTION);
 	seg->e.seginfo->start_loc = seg->e.seginfo->current_loc;
 
-	return(cv->section);
+	return((uint_8 *)cv->section);
 }
 
 
@@ -1399,7 +1399,7 @@ void cv_write_debug_tables(struct dsym* symbols, struct dsym* types, void* pv)
 
 		cv.files = LclAlloc(ModuleInfo.g.cnt_fnames * sizeof(cv_file));
 		for (i = 0; i < ModuleInfo.g.cnt_fnames; i++) {
-			cv.files[i].name = ModuleInfo.g.FNames[i];
+			cv.files[i].name = ModuleInfo.g.FNames[i].fname;
 			cv.files[i].offset = 0;
 		}
 

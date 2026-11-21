@@ -186,5 +186,7 @@
   "systemv_errors": [
     "-q",
     "-elf64"
-  ]
+  ],
+  "pr240": ["-q", "-bin", "-Fl"],
+  "pr240_locals": ["-q", "-coff", "-Fl"]
 }

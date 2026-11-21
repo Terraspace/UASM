@@ -11,6 +11,7 @@
 #include <ctype.h>
 #include <limits.h>
 #include "globals.h"
+#include "fixup.h"
 #include "memalloc.h"
 #include "parser.h"
 #include "reswords.h"
@@ -3222,7 +3223,8 @@ static unsigned int hashpjw(const char *s)
 	uint_64 register fnv_prime = 1099511628211;
 	uint_64 h;
 	for (h = fnv_basis; *s; ++s) {
-		h ^= (*s | ' ');
+		/* Keep literal symbol names independent of host plain-char signedness. */
+		h ^= ((int_8)(uint_8)*s | ' ');
 		h *= fnv_prime;
 	}
 	return((((h >> 16) ^ h) & 0xffff));
@@ -3313,7 +3315,7 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 				lbl = SymLookup(buf);
 				SetSymSegOfs(lbl);
 				memset(&buff, 0, 256);
-				pDest = buff;
+				pDest = (char *)buff;
 				finallen = slen;
 
 				while (*pSrc != '"')
@@ -3417,7 +3419,7 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 				}
 				*pDest++ = 0;
 
-				j = UTF8toWideChar(&buff2, slen, NULL, (unsigned short *)&buff, slen);
+				j = UTF8toWideChar(buff2, slen, NULL, (unsigned short *)&buff, slen);
 				/* j contains a proper number of wide chars, it can be different than slen, v2.38 */
 				SetSymSegOfs(lbl);
 				OutputBytes((unsigned char *)&buff, (j * 2) + 2, NULL);

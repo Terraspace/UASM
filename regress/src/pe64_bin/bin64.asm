@@ -5,7 +5,7 @@ option stackbase:rbp
 option win64:7
 
 .nolist
-include winnt64.inc   ; Modification for 64-bit of winnt.inc from Sample folder of UASM.
+include winnt64.INC   ; Modification for 64-bit of winnt.inc from Sample folder of UASM.
 .list
 
 STD_OUTPUT_HANDLE equ -11

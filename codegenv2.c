@@ -2,6 +2,8 @@
 #include "codegenv2.h"
 
 #include <time.h>
+#include <ctype.h>
+#include "input.h"
 #include "globals.h"
 #include "parser.h"
 #include "segment.h"
@@ -88,7 +90,7 @@ uint_32 GenerateInstrHash(struct Instr_Def* pInstruction)
 	*(pDst + 4) = pInstruction->operand_types[4];
 	len += 4;
 	pDst += 4;
-	return hash(&hashBuffer, len);
+	return hash(hashBuffer, len);
 }
 
 void BuildInstructionTable(void)
@@ -863,7 +865,7 @@ void BuildEVEX(bool* needEvex, unsigned char* evexBytes, struct Instr_Def* instr
 
 	 BYTE1:
 	 | 7 | 6 | 5 | 4  | 3 | 2 | 1-0 |
-	 | R | X | B | R’ | 0 | 0 |  m  |
+	 | R | X | B | Râ€™ | 0 | 0 |  m  |
 
 	BYTE2:
 	 | 7 | 6-3      | 2 | 1-0 |
@@ -1701,7 +1703,7 @@ ret_code CodeGenV2(const char* instr, struct code_info* CodeInfo, uint_32 oldofs
 		/* If the matched instruction requires processing of a memory address */
 		if (matchedInstr->memOpnd != NO_MEM)
 			aso = BuildMemoryEncoding(&modRM, &sib, &rexByte, &needModRM, &needSIB,								/* This could result in modifications to REX/VEX/EVEX, modRM and SIB bytes */
-				&dispSize, &displacement, matchedInstr, opExpr, &needB, &needX, &needRR, CodeInfo);
+				&dispSize, &displacement.displacement64, matchedInstr, opExpr, &needB, &needX, &needRR, CodeInfo);
 		modRM |= BuildModRM(matchedInstr->modRM, matchedInstr, opExpr, &needModRM, &needSIB,
 			((matchedInstr->vexflags & VEX) || (matchedInstr->vexflags & EVEX)));								/* Modify the modRM value for any non-memory operands */
 
@@ -1709,7 +1711,7 @@ ret_code CodeGenV2(const char* instr, struct code_info* CodeInfo, uint_32 oldofs
 		   Create REX, VEX or EVEX prefixes                      
 		  ----------------------------------------------------------*/
 		if ((matchedInstr->vexflags & VEX) != 0 && (matchedInstr->evexflags & EVEX_ONLY) == 0 && CodeInfo->evex_flag == 0)
-			BuildVEX(&needVEX, &vexSize, &vexBytes, matchedInstr, opExpr, needB, needX, opCount);				/* Create the VEX prefix bytes for both reg and memory operands */
+			BuildVEX(&needVEX, &vexSize, vexBytes, matchedInstr, opExpr, needB, needX, opCount);				/* Create the VEX prefix bytes for both reg and memory operands */
 
 		  /* Either the instruction can ONLY be EVEX encoded, or user requested VEX->EVEX promotion. */
 		else if ((matchedInstr->evexflags & EVEX_ONLY) != 0 ||

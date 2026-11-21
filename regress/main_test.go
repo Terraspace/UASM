@@ -34,7 +34,7 @@ func TestComparison(t *testing.T) {
 			t.Fatal("masked bytes in", ext)
 		}
 	}
-	if d, _ := compare([]byte("a\r\n"), []byte("a\n"), ".err"); d == "" {
+	if d, _ := compare([]byte("a\r\n"), []byte("a\n"), ".bin"); d == "" {
 		t.Fatal("normalized line endings")
 	}
 	if d, _ := compare([]byte{1}, []byte{1, 2}, ".bin"); d == "" {
@@ -97,5 +97,46 @@ func TestAuditAndCleanup(t *testing.T) {
 	}
 	if _, e := os.Stat(filepath.Join(root, "src/g/a.asm")); e != nil {
 		t.Fatal(e)
+	}
+}
+
+func TestListingComparison(t *testing.T) {
+	old := []byte("UASM v2.58, Nov 20 2026, Masm-compatible assembler.\r\n00000000  = 2                   loc equ $+2\r\n")
+	current := []byte("UASM v2.59, Nov 21 2026, Masm-compatible assembler.\r\n00000000  = 2                   loc equ $+2\r\n")
+	if d, ignored := compare(current, old, ".lst"); d != "" || len(ignored) != 1 {
+		t.Fatal(d, ignored)
+	}
+	changed := append([]byte(nil), current...)
+	changed[len(changed)-3] = '3'
+	if d, _ := compare(changed, old, ".lst"); d == "" {
+		t.Fatal("listing content change was ignored")
+	}
+	changed = append([]byte(nil), current...)
+	changed[0] = 'X'
+	if d, _ := compare(changed, old, ".lst"); d == "" {
+		t.Fatal("unrecognized banner was ignored")
+	}
+	if d, _ := compare(current, old, ".bin"); d == "" {
+		t.Fatal("banner normalization applied outside listings")
+	}
+}
+
+func TestListingTiming(t *testing.T) {
+	banner := "UASM v2.59, Nov 21 2026, Masm-compatible assembler.\r\n"
+	a := []byte(banner + "case.asm: 13 lines, 2 passes, 2 ms, 0 warnings, 0 errors\r\n")
+	b := []byte(banner + "case.asm: 13 lines, 2 passes, 123 ms, 0 warnings, 0 errors\r\n")
+	if d, _ := compare(a, b, ".lst"); d != "" {
+		t.Fatal(d)
+	}
+	for _, footer := range []string{
+		"other.asm: 13 lines, 2 passes, 2 ms, 0 warnings, 0 errors\r\n",
+		"case.asm: 14 lines, 2 passes, 2 ms, 0 warnings, 0 errors\r\n",
+		"case.asm: 13 lines, 3 passes, 2 ms, 0 warnings, 0 errors\r\n",
+		"case.asm: 13 lines, 2 passes, 2 ms, 1 warnings, 0 errors\r\n",
+		"case.asm: 13 lines, 2 passes, 2 ms, 0 warnings, 1 errors\r\n",
+	} {
+		if d, _ := compare(a, []byte(banner+footer), ".lst"); d == "" {
+			t.Fatal("ignored footer change", footer)
+		}
 	}
 }

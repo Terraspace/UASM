@@ -195,7 +195,7 @@ static unsigned AddFile( char const *fname )
 
     DebugMsg1(("AddFile(%s) enter, curr index=%u\n", fname, ModuleInfo.g.cnt_fnames ));
     for( index = 0; index < ModuleInfo.g.cnt_fnames; index++ ) {
-        if( filecmp( fname, ModuleInfo.g.FNames[index] ) == 0 ) {
+        if( filecmp( fname, ModuleInfo.g.FNames[index].fname ) == 0 ) {
             return( index );
         }
     }
@@ -211,8 +211,8 @@ static unsigned AddFile( char const *fname )
     }
     ModuleInfo.g.cnt_fnames++;
 
-    ModuleInfo.g.FNames[index] = (char *)LclAlloc( strlen( fname ) + 1 );
-    strcpy( ModuleInfo.g.FNames[index], fname );
+    ModuleInfo.g.FNames[index].fname = (char *)LclAlloc( strlen( fname ) + 1 );
+    strcpy( ModuleInfo.g.FNames[index].fname, fname );
     return( index );
 }
 

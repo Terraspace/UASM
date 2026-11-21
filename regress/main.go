@@ -154,7 +154,7 @@ func discover(root, filter string) ([]Case, []string, error) {
 		}
 		rel, _ := filepath.Rel(filepath.Join(root, "exp"), p)
 		ext := strings.ToLower(filepath.Ext(rel))
-		if ext != ".bin" && ext != ".err" && ext != ".obj" && ext != ".o" && ext != ".exe" {
+		if ext != ".bin" && ext != ".err" && ext != ".obj" && ext != ".o" && ext != ".exe" && ext != ".lst" {
 			return nil
 		}
 		key := strings.ToLower(strings.TrimSuffix(rel, filepath.Ext(rel)))
@@ -257,6 +257,17 @@ func assemble(root, results, asm string, c Case, timeout time.Duration) Result {
 	args := make([]string, len(c.Args))
 	for i, a := range c.Args {
 		args[i] = strings.ReplaceAll(a, "{stem}", stem)
+	}
+	// Explicit names avoid host-dependent defaults (.BIN/.bin and .o/.obj).
+	for _, expected := range c.Expected {
+		ext := strings.ToLower(filepath.Ext(expected))
+		if ext == ".o" {
+			ext = ".obj"
+		}
+		if ext == ".bin" || ext == ".obj" || ext == ".exe" {
+			args = append(args, "-Fo"+stem+ext)
+			break
+		}
 	}
 	// Preserve legacy relative source paths in diagnostics, including original case.
 	args = append(args, filepath.Join("..", "src", c.Source))
@@ -389,7 +400,41 @@ func timestampOffset(b []byte, ext string) int {
 	}
 	return offset + 4
 }
+
+var listingBanner = regexp.MustCompile(`^UASM v[0-9]+\.[0-9]+[^,\r\n]*, [A-Z][a-z]{2} +[0-9]{1,2} [0-9]{4}, Masm-compatible assembler\.[\r]?\n`)
+
+var listingTiming = regexp.MustCompile(`(?m)^([^\r\n]+: [0-9]+ lines, [0-9]+ passes, )[0-9]+( ms, [0-9]+ warnings, [0-9]+ errors\r?\n)\z`)
+
+var diagnosticSourcePath = regexp.MustCompile(`(?i)\.\.[\\/]src[\\/][^\r\n()<>" ]+\.asm`)
+
+func portableText(b []byte) []byte {
+	b = bytes.ReplaceAll(b, []byte("\r\n"), []byte("\n"))
+	return diagnosticSourcePath.ReplaceAllFunc(b, func(p []byte) []byte {
+		return bytes.ReplaceAll(p, []byte("\\"), []byte("/"))
+	})
+}
+
 func compare(got, want []byte, ext string) (string, []string) {
+	if ext == ".err" || ext == ".lst" {
+		got, want = portableText(got), portableText(want)
+	}
+
+	var listingIgnored bool
+	var timingIgnored bool
+	if ext == ".lst" {
+		a, b := listingBanner.FindIndex(got), listingBanner.FindIndex(want)
+		if a != nil && b != nil {
+			listingIgnored = !bytes.Equal(got[:a[1]], want[:b[1]])
+			got, want = got[a[1]:], want[b[1]:]
+			cg := listingTiming.ReplaceAll(got, []byte("${1}<elapsed>${2}"))
+			cw := listingTiming.ReplaceAll(want, []byte("${1}<elapsed>${2}"))
+			timingIgnored = !bytes.Equal(cg, got) || !bytes.Equal(cw, want)
+			got, want = cg, cw
+		}
+	}
+	if ext == ".obj" {
+		got, want = portableCOFFPaths(got), portableCOFFPaths(want)
+	}
 	var cvIgnored bool
 	if ext == ".obj" && !bytes.Equal(got, want) {
 		cg, eg := canonicalCV8(got)
@@ -401,6 +446,12 @@ func compare(got, want []byte, ext string) (string, []string) {
 	}
 	a, b := timestampOffset(got, ext), timestampOffset(want, ext)
 	var ignored []string
+	if timingIgnored {
+		ignored = append(ignored, "listing elapsed milliseconds")
+	}
+	if listingIgnored {
+		ignored = append(ignored, "listing version/build-date banner")
+	}
 	if cvIgnored {
 		ignored = append(ignored, "CV8 object/cwd/exe paths and backend version (derived layout adjusted)")
 	}

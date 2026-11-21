@@ -9,6 +9,7 @@ and their sub-types
 
 #include "simd.h"
 #include "globals.h"
+#include "lqueue.h"
 #include "symbols.h"
 
 extern void     AddLineQueue(const char *line);

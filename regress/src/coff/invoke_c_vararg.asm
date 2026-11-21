@@ -6,9 +6,21 @@
 .model flat, stdcall
 option casemap:none
 
-include C:\masm32\include\windows.inc
-include C:\masm32\include\kernel32.inc
-include C:\masm32\include\user32.inc
+; Only the Windows declarations exercised by this assembly-only test.
+RECT STRUCT
+left SDWORD ?
+top SDWORD ?
+right SDWORD ?
+bottom SDWORD ?
+RECT ENDS
+MB_OK EQU 0
+ExitProcess PROTO :DWORD
+MessageBoxA PROTO :DWORD, :PTR, :PTR, :DWORD
+MessageBox EQU <MessageBoxA>
+wsprintfA PROTO C :PTR, :PTR, :VARARG
+wsprintf EQU <wsprintfA>
+
+
 
 includelib user32.lib
 includelib kernel32.lib

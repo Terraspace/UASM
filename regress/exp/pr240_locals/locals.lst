@@ -1,0 +1,392 @@
+UASM v2.59, Nov 21 2026, Masm-compatible assembler.
+
+..\src\pr240_locals\locals.asm
+                                .386
+                                .model flat
+00000000                        LongStructureType_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx struct
+00000000                        value dd ?
+00000004                        LongStructureType_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx ends
+                                .code
+00000000                        testproc proc
+00000006                        ret
+00000008                        testproc endp
+                                end
+
+
+Macros:
+
+                N a m e                 Type
+
+@CatStr  . . . . . . . . . . . .        Func
+@Environ . . . . . . . . . . . .        Func
+@InStr . . . . . . . . . . . . .        Func
+@SizeStr . . . . . . . . . . . .        Func
+@SubStr  . . . . . . . . . . . .        Func
+ALIGNADDR  . . . . . . . . . . .        Proc
+ASDOUBLE . . . . . . . . . . . .        Func
+ASFLOAT  . . . . . . . . . . . .        Func
+COMINTERFACE . . . . . . . . . .        Proc
+CSTR . . . . . . . . . . . . . .        Func
+CVIRTUAL . . . . . . . . . . . .        Proc
+ENDCOMINTERFACE  . . . . . . . .        Proc
+ENDMETHODS . . . . . . . . . . .        Proc
+EXPAND_PREFIX  . . . . . . . . .        Func
+FP10 . . . . . . . . . . . . . .        Func
+FP4  . . . . . . . . . . . . . .        Func
+FP8  . . . . . . . . . . . . . .        Func
+GETMASK128 . . . . . . . . . . .        Proc
+LOADMSD  . . . . . . . . . . . .        Proc
+LOADMSS  . . . . . . . . . . . .        Proc
+LOADPS . . . . . . . . . . . . .        Proc
+LOADSS . . . . . . . . . . . . .        Proc
+MEMALLOC . . . . . . . . . . . .        Proc
+MEMFREE  . . . . . . . . . . . .        Proc
+MOV128 . . . . . . . . . . . . .        Proc
+MOV64  . . . . . . . . . . . . .        Proc
+MOVXMMR128 . . . . . . . . . . .        Proc
+NOTMASK128 . . . . . . . . . . .        Proc
+R4P  . . . . . . . . . . . . . .        Func
+R8P  . . . . . . . . . . . . . .        Func
+REPARG . . . . . . . . . . . . .        Func
+RV . . . . . . . . . . . . . . .        Func
+SHIFTLEFT128 . . . . . . . . . .        Proc
+SHIFTRIGHT128  . . . . . . . . .        Proc
+SLXMMR . . . . . . . . . . . . .        Proc
+SRXMMR . . . . . . . . . . . . .        Proc
+UINVOKE  . . . . . . . . . . . .        Func
+WSTR . . . . . . . . . . . . . .        Func
+_V . . . . . . . . . . . . . . .        Func
+_VINVOKE . . . . . . . . . . . .        Proc
+arginvoke  . . . . . . . . . . .        Func
+
+
+Structures and Unions:
+
+                N a m e                 Size/Ofs   Type
+
+LongStructureType_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx                4
+  value  . . . . . . . . . . . .               0   DWord
+__m128 . . . . . . . . . . . . .              10
+  f32  . . . . . . . . . . . . .               0   __m128f
+  i8 . . . . . . . . . . . . . .               0   __m128b
+  i16  . . . . . . . . . . . . .               0   __m128w
+  i32  . . . . . . . . . . . . .               0   __m128i
+  d64  . . . . . . . . . . . . .               0   __m128d
+  q64  . . . . . . . . . . . . .               0   __m128q
+__m128b  . . . . . . . . . . . .              10
+  b0 . . . . . . . . . . . . . .               0   Byte
+  b1 . . . . . . . . . . . . . .               1   Byte
+  b2 . . . . . . . . . . . . . .               2   Byte
+  b3 . . . . . . . . . . . . . .               3   Byte
+  b4 . . . . . . . . . . . . . .               4   Byte
+  b5 . . . . . . . . . . . . . .               5   Byte
+  b6 . . . . . . . . . . . . . .               6   Byte
+  b7 . . . . . . . . . . . . . .               7   Byte
+  b8 . . . . . . . . . . . . . .               8   Byte
+  b9 . . . . . . . . . . . . . .               9   Byte
+  b10  . . . . . . . . . . . . .               A   Byte
+  b11  . . . . . . . . . . . . .               B   Byte
+  b12  . . . . . . . . . . . . .               C   Byte
+  b13  . . . . . . . . . . . . .               D   Byte
+  b14  . . . . . . . . . . . . .               E   Byte
+  b15  . . . . . . . . . . . . .               F   Byte
+__m128d  . . . . . . . . . . . .              10
+  d0 . . . . . . . . . . . . . .               0   
+  d1 . . . . . . . . . . . . . .               8   
+__m128f  . . . . . . . . . . . .              10
+  f0 . . . . . . . . . . . . . .               0   
+  f1 . . . . . . . . . . . . . .               4   
+  f2 . . . . . . . . . . . . . .               8   
+  f3 . . . . . . . . . . . . . .               C   
+__m128i  . . . . . . . . . . . .              10
+  i0 . . . . . . . . . . . . . .               0   DWord
+  i1 . . . . . . . . . . . . . .               4   DWord
+  i2 . . . . . . . . . . . . . .               8   DWord
+  i3 . . . . . . . . . . . . . .               C   DWord
+__m128q  . . . . . . . . . . . .              10
+  q0 . . . . . . . . . . . . . .               0   QWord
+  q1 . . . . . . . . . . . . . .               8   QWord
+__m128w  . . . . . . . . . . . .              10
+  w0 . . . . . . . . . . . . . .               0   Word
+  w1 . . . . . . . . . . . . . .               2   Word
+  w2 . . . . . . . . . . . . . .               4   Word
+  w3 . . . . . . . . . . . . . .               6   Word
+  w4 . . . . . . . . . . . . . .               8   Word
+  w5 . . . . . . . . . . . . . .               A   Word
+  w6 . . . . . . . . . . . . . .               C   Word
+  w7 . . . . . . . . . . . . . .               E   Word
+__m256 . . . . . . . . . . . . .              20
+  f32  . . . . . . . . . . . . .               0   __m256f
+  i8 . . . . . . . . . . . . . .               0   __m256b
+  i16  . . . . . . . . . . . . .               0   __m256w
+  i32  . . . . . . . . . . . . .               0   __m256i
+  d64  . . . . . . . . . . . . .               0   __m256d
+  q64  . . . . . . . . . . . . .               0   __m256q
+__m256b  . . . . . . . . . . . .              20
+  b0 . . . . . . . . . . . . . .               0   Byte
+  b1 . . . . . . . . . . . . . .               1   Byte
+  b2 . . . . . . . . . . . . . .               2   Byte
+  b3 . . . . . . . . . . . . . .               3   Byte
+  b4 . . . . . . . . . . . . . .               4   Byte
+  b5 . . . . . . . . . . . . . .               5   Byte
+  b6 . . . . . . . . . . . . . .               6   Byte
+  b7 . . . . . . . . . . . . . .               7   Byte
+  b8 . . . . . . . . . . . . . .               8   Byte
+  b9 . . . . . . . . . . . . . .               9   Byte
+  b10  . . . . . . . . . . . . .               A   Byte
+  b11  . . . . . . . . . . . . .               B   Byte
+  b12  . . . . . . . . . . . . .               C   Byte
+  b13  . . . . . . . . . . . . .               D   Byte
+  b14  . . . . . . . . . . . . .               E   Byte
+  b15  . . . . . . . . . . . . .               F   Byte
+  b16  . . . . . . . . . . . . .              10   Byte
+  b17  . . . . . . . . . . . . .              11   Byte
+  b18  . . . . . . . . . . . . .              12   Byte
+  b19  . . . . . . . . . . . . .              13   Byte
+  b20  . . . . . . . . . . . . .              14   Byte
+  b21  . . . . . . . . . . . . .              15   Byte
+  b22  . . . . . . . . . . . . .              16   Byte
+  b23  . . . . . . . . . . . . .              17   Byte
+  b24  . . . . . . . . . . . . .              18   Byte
+  b25  . . . . . . . . . . . . .              19   Byte
+  b26  . . . . . . . . . . . . .              1A   Byte
+  b27  . . . . . . . . . . . . .              1B   Byte
+  b28  . . . . . . . . . . . . .              1C   Byte
+  b29  . . . . . . . . . . . . .              1D   Byte
+  b30  . . . . . . . . . . . . .              1E   Byte
+  b31  . . . . . . . . . . . . .              1F   Byte
+__m256d  . . . . . . . . . . . .              20
+  d0 . . . . . . . . . . . . . .               0   
+  d1 . . . . . . . . . . . . . .               8   
+  d2 . . . . . . . . . . . . . .              10   
+  d3 . . . . . . . . . . . . . .              18   
+__m256f  . . . . . . . . . . . .              20
+  f0 . . . . . . . . . . . . . .               0   
+  f1 . . . . . . . . . . . . . .               4   
+  f2 . . . . . . . . . . . . . .               8   
+  f3 . . . . . . . . . . . . . .               C   
+  f4 . . . . . . . . . . . . . .              10   
+  f5 . . . . . . . . . . . . . .              14   
+  f6 . . . . . . . . . . . . . .              18   
+  f7 . . . . . . . . . . . . . .              1C   
+__m256i  . . . . . . . . . . . .              20
+  i0 . . . . . . . . . . . . . .               0   DWord
+  i1 . . . . . . . . . . . . . .               4   DWord
+  i2 . . . . . . . . . . . . . .               8   DWord
+  i3 . . . . . . . . . . . . . .               C   DWord
+  i4 . . . . . . . . . . . . . .              10   DWord
+  i5 . . . . . . . . . . . . . .              14   DWord
+  i6 . . . . . . . . . . . . . .              18   DWord
+  i7 . . . . . . . . . . . . . .              1C   DWord
+__m256q  . . . . . . . . . . . .              20
+  q0 . . . . . . . . . . . . . .               0   QWord
+  q1 . . . . . . . . . . . . . .               8   QWord
+  q2 . . . . . . . . . . . . . .              10   QWord
+  q3 . . . . . . . . . . . . . .              18   QWord
+__m256w  . . . . . . . . . . . .              20
+  w0 . . . . . . . . . . . . . .               0   Word
+  w1 . . . . . . . . . . . . . .               2   Word
+  w2 . . . . . . . . . . . . . .               4   Word
+  w3 . . . . . . . . . . . . . .               6   Word
+  w4 . . . . . . . . . . . . . .               8   Word
+  w5 . . . . . . . . . . . . . .               A   Word
+  w6 . . . . . . . . . . . . . .               C   Word
+  w7 . . . . . . . . . . . . . .               E   Word
+  w8 . . . . . . . . . . . . . .              10   Word
+  w9 . . . . . . . . . . . . . .              12   Word
+  w10  . . . . . . . . . . . . .              14   Word
+  w11  . . . . . . . . . . . . .              16   Word
+  w12  . . . . . . . . . . . . .              18   Word
+  w13  . . . . . . . . . . . . .              1A   Word
+  w14  . . . . . . . . . . . . .              1C   Word
+  w15  . . . . . . . . . . . . .              1E   Word
+__m512 . . . . . . . . . . . . .              40
+  f32  . . . . . . . . . . . . .               0   __m512f
+  i8 . . . . . . . . . . . . . .               0   __m512b
+  i16  . . . . . . . . . . . . .               0   __m512w
+  i32  . . . . . . . . . . . . .               0   __m512i
+  d64  . . . . . . . . . . . . .               0   __m512d
+  q64  . . . . . . . . . . . . .               0   __m512q
+__m512b  . . . . . . . . . . . .              40
+  b0 . . . . . . . . . . . . . .               0   Byte
+  b1 . . . . . . . . . . . . . .               1   Byte
+  b2 . . . . . . . . . . . . . .               2   Byte
+  b3 . . . . . . . . . . . . . .               3   Byte
+  b4 . . . . . . . . . . . . . .               4   Byte
+  b5 . . . . . . . . . . . . . .               5   Byte
+  b6 . . . . . . . . . . . . . .               6   Byte
+  b7 . . . . . . . . . . . . . .               7   Byte
+  b8 . . . . . . . . . . . . . .               8   Byte
+  b9 . . . . . . . . . . . . . .               9   Byte
+  b10  . . . . . . . . . . . . .               A   Byte
+  b11  . . . . . . . . . . . . .               B   Byte
+  b12  . . . . . . . . . . . . .               C   Byte
+  b13  . . . . . . . . . . . . .               D   Byte
+  b14  . . . . . . . . . . . . .               E   Byte
+  b15  . . . . . . . . . . . . .               F   Byte
+  b16  . . . . . . . . . . . . .              10   Byte
+  b17  . . . . . . . . . . . . .              11   Byte
+  b18  . . . . . . . . . . . . .              12   Byte
+  b19  . . . . . . . . . . . . .              13   Byte
+  b20  . . . . . . . . . . . . .              14   Byte
+  b21  . . . . . . . . . . . . .              15   Byte
+  b22  . . . . . . . . . . . . .              16   Byte
+  b23  . . . . . . . . . . . . .              17   Byte
+  b24  . . . . . . . . . . . . .              18   Byte
+  b25  . . . . . . . . . . . . .              19   Byte
+  b26  . . . . . . . . . . . . .              1A   Byte
+  b27  . . . . . . . . . . . . .              1B   Byte
+  b28  . . . . . . . . . . . . .              1C   Byte
+  b29  . . . . . . . . . . . . .              1D   Byte
+  b30  . . . . . . . . . . . . .              1E   Byte
+  b31  . . . . . . . . . . . . .              1F   Byte
+  b32  . . . . . . . . . . . . .              20   Byte
+  b33  . . . . . . . . . . . . .              21   Byte
+  b34  . . . . . . . . . . . . .              22   Byte
+  b35  . . . . . . . . . . . . .              23   Byte
+  b36  . . . . . . . . . . . . .              24   Byte
+  b37  . . . . . . . . . . . . .              25   Byte
+  b38  . . . . . . . . . . . . .              26   Byte
+  b39  . . . . . . . . . . . . .              27   Byte
+  b40  . . . . . . . . . . . . .              28   Byte
+  b41  . . . . . . . . . . . . .              29   Byte
+  b42  . . . . . . . . . . . . .              2A   Byte
+  b43  . . . . . . . . . . . . .              2B   Byte
+  b44  . . . . . . . . . . . . .              2C   Byte
+  b45  . . . . . . . . . . . . .              2D   Byte
+  b46  . . . . . . . . . . . . .              2E   Byte
+  b47  . . . . . . . . . . . . .              2F   Byte
+  b48  . . . . . . . . . . . . .              30   Byte
+  b49  . . . . . . . . . . . . .              31   Byte
+  b50  . . . . . . . . . . . . .              32   Byte
+  b51  . . . . . . . . . . . . .              33   Byte
+  b52  . . . . . . . . . . . . .              34   Byte
+  b53  . . . . . . . . . . . . .              35   Byte
+  b54  . . . . . . . . . . . . .              36   Byte
+  b55  . . . . . . . . . . . . .              37   Byte
+  b56  . . . . . . . . . . . . .              38   Byte
+  b57  . . . . . . . . . . . . .              39   Byte
+  b58  . . . . . . . . . . . . .              3A   Byte
+  b59  . . . . . . . . . . . . .              3B   Byte
+  b60  . . . . . . . . . . . . .              3C   Byte
+  b61  . . . . . . . . . . . . .              3D   Byte
+  b62  . . . . . . . . . . . . .              3E   Byte
+  b63  . . . . . . . . . . . . .              3F   Byte
+__m512d  . . . . . . . . . . . .              40
+  d0 . . . . . . . . . . . . . .               0   
+  d1 . . . . . . . . . . . . . .               8   
+  d2 . . . . . . . . . . . . . .              10   
+  d3 . . . . . . . . . . . . . .              18   
+  d4 . . . . . . . . . . . . . .              20   
+  d5 . . . . . . . . . . . . . .              28   
+  d6 . . . . . . . . . . . . . .              30   
+  d7 . . . . . . . . . . . . . .              38   
+__m512f  . . . . . . . . . . . .              40
+  f0 . . . . . . . . . . . . . .               0   
+  f1 . . . . . . . . . . . . . .               4   
+  f2 . . . . . . . . . . . . . .               8   
+  f3 . . . . . . . . . . . . . .               C   
+  f4 . . . . . . . . . . . . . .              10   
+  f5 . . . . . . . . . . . . . .              14   
+  f6 . . . . . . . . . . . . . .              18   
+  f7 . . . . . . . . . . . . . .              1C   
+  f8 . . . . . . . . . . . . . .              20   
+  f9 . . . . . . . . . . . . . .              24   
+  f10  . . . . . . . . . . . . .              28   
+  f11  . . . . . . . . . . . . .              2C   
+  f12  . . . . . . . . . . . . .              30   
+  f13  . . . . . . . . . . . . .              34   
+  f14  . . . . . . . . . . . . .              38   
+  f15  . . . . . . . . . . . . .              3C   
+__m512i  . . . . . . . . . . . .              40
+  i0 . . . . . . . . . . . . . .               0   DWord
+  i1 . . . . . . . . . . . . . .               4   DWord
+  i2 . . . . . . . . . . . . . .               8   DWord
+  i3 . . . . . . . . . . . . . .               C   DWord
+  i4 . . . . . . . . . . . . . .              10   DWord
+  i5 . . . . . . . . . . . . . .              14   DWord
+  i6 . . . . . . . . . . . . . .              18   DWord
+  i7 . . . . . . . . . . . . . .              1C   DWord
+  i8 . . . . . . . . . . . . . .              20   DWord
+  i9 . . . . . . . . . . . . . .              24   DWord
+  i10  . . . . . . . . . . . . .              28   DWord
+  i11  . . . . . . . . . . . . .              2C   DWord
+  i12  . . . . . . . . . . . . .              30   DWord
+  i13  . . . . . . . . . . . . .              34   DWord
+  i14  . . . . . . . . . . . . .              38   DWord
+  i15  . . . . . . . . . . . . .              3C   DWord
+__m512q  . . . . . . . . . . . .              40
+  q0 . . . . . . . . . . . . . .               0   QWord
+  q1 . . . . . . . . . . . . . .               8   QWord
+  q2 . . . . . . . . . . . . . .              10   QWord
+  q3 . . . . . . . . . . . . . .              18   QWord
+  q4 . . . . . . . . . . . . . .              20   QWord
+  q5 . . . . . . . . . . . . . .              28   QWord
+  q6 . . . . . . . . . . . . . .              30   QWord
+  q7 . . . . . . . . . . . . . .              38   QWord
+__m512w  . . . . . . . . . . . .              40
+  w0 . . . . . . . . . . . . . .               0   Word
+  w1 . . . . . . . . . . . . . .               2   Word
+  w2 . . . . . . . . . . . . . .               4   Word
+  w3 . . . . . . . . . . . . . .               6   Word
+  w4 . . . . . . . . . . . . . .               8   Word
+  w5 . . . . . . . . . . . . . .               A   Word
+  w6 . . . . . . . . . . . . . .               C   Word
+  w7 . . . . . . . . . . . . . .               E   Word
+  w8 . . . . . . . . . . . . . .              10   Word
+  w9 . . . . . . . . . . . . . .              12   Word
+  w10  . . . . . . . . . . . . .              14   Word
+  w11  . . . . . . . . . . . . .              16   Word
+  w12  . . . . . . . . . . . . .              18   Word
+  w13  . . . . . . . . . . . . .              1A   Word
+  w14  . . . . . . . . . . . . .              1C   Word
+  w15  . . . . . . . . . . . . .              1E   Word
+  w16  . . . . . . . . . . . . .              20   Word
+  w17  . . . . . . . . . . . . .              22   Word
+  w18  . . . . . . . . . . . . .              24   Word
+  w19  . . . . . . . . . . . . .              26   Word
+  w20  . . . . . . . . . . . . .              28   Word
+  w21  . . . . . . . . . . . . .              2A   Word
+  w22  . . . . . . . . . . . . .              2C   Word
+  w23  . . . . . . . . . . . . .              2E   Word
+  w24  . . . . . . . . . . . . .              30   Word
+  w25  . . . . . . . . . . . . .              32   Word
+  w26  . . . . . . . . . . . . .              34   Word
+  w27  . . . . . . . . . . . . .              36   Word
+  w28  . . . . . . . . . . . . .              38   Word
+  w29  . . . . . . . . . . . . .              3A   Word
+  w30  . . . . . . . . . . . . .              3C   Word
+  w31  . . . . . . . . . . . . .              3E   Word
+
+
+Segments and Groups:
+
+                N a m e                 Size     Length   Align   Combine Class
+
+FLAT . . . . . . . . . . . . . .        GROUP
+_DATA  . . . . . . . . . . . . .        32 Bit   00000000 DWord   Public  'DATA'
+_TEXT  . . . . . . . . . . . . .        32 Bit   00000008 DWord   Public  'CODE'
+
+
+Procedures, parameters and locals:
+
+                N a m e                 Type     Value    Segment  Length
+
+testproc . . . . . . . . . . . .        P Near   00000000 _TEXT    00000008 Public   
+  scalar . . . . . . . . . . . .        LongStructureType_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx ebp - 0004
+  array  . . . . . . . . . . . .        LongStructureType_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx[2] ebp - 000C
+
+
+Symbols:
+
+                N a m e                 Type       Value     Attr
+
+@CodeSize  . . . . . . . . . . .        Number             0h 
+@DataSize  . . . . . . . . . . .        Number             0h 
+@Interface . . . . . . . . . . .        Number             0h 
+@Model . . . . . . . . . . . . .        Number             7h 
+@code  . . . . . . . . . . . . .        Text   _TEXT
+@data  . . . . . . . . . . . . .        Text   FLAT
+@stack . . . . . . . . . . . . .        Text   FLAT
+
+..\src\pr240_locals\locals.asm: 12 lines, 2 passes, 2 ms, 0 warnings, 0 errors

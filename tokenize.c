@@ -1231,7 +1231,7 @@ int Tokenize( char *line, unsigned int start, struct asm_tok tokenarray[], unsig
     p.flags = flags;
     p.flags2 = 0;
     p.flags3 = 0;
-    char* buff[256];
+    char buff[256 * sizeof(char *)];
     if ( p.index == 0 ) 
 	{
 #ifdef DEBUG_OUT

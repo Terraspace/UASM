@@ -11,6 +11,8 @@
 #include <ctype.h>
 
 #include "globals.h"
+extern void CreateMacroLibCases32(void);
+extern void CreateMacroLibCases64(void);
 #include "memalloc.h"
 #include "macrolib.h"
 #include "parser.h"

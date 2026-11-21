@@ -281,3 +281,11 @@ __pycache__/
 # macOS forks
 .DS_Store
 
+
+# Linux compiler output directories
+ClangUnixR/
+ClangUnixD/
+Gcc13UnixR/
+Gcc13UnixD/
+Gcc16UnixR/
+Gcc16UnixD/

@@ -27,7 +27,6 @@
 
 #define CODEBYTES 9
 #define OFSSIZE 8
-#define PREFFMTSTR "20"
 #define USELSLINE 1 /* also in assemble.c! */
 
 #ifdef __UNIX__
@@ -267,10 +266,10 @@ void LstWrite(enum lsttype type, uint_32 oldofs, void* value)
         }
         ll.buffer[idx] = '=';
         if ( sym->value3264 != 0 && ( sym->value3264 != -1 || sym->value >= 0 ) )
-            sprintf( &ll.buffer[idx+2], "%-" PREFFMTSTR I64_SPEC "X", (uint_64)sym->value + ( (uint_64)sym->value3264 << 32 ) );
+            sprintf( &ll.buffer[idx+2], "%" I64_SPEC "X", (uint_64)sym->value + ( (uint_64)sym->value3264 << 32 ) );
         else
-            sprintf( &ll.buffer[idx+2], "%-" PREFFMTSTR I32_SPEC "X", sym->value );
-        //ll.buffer[28] = ' ';
+            sprintf( &ll.buffer[idx+2], "%" I32_SPEC "X", sym->value );
+        /* The field is already space-filled; at most 16 hex digits plus NUL. */
         break;
     case LSTTYPE_TMACRO:
         ll.buffer[1] = '=';
@@ -320,8 +319,9 @@ void LstWrite(enum lsttype type, uint_32 oldofs, void* value)
         if ( ModuleInfo.GeneratedCode )
             ll.buffer[28] = '*';
         if ( MacroLevel ) {
-            len = sprintf( &ll.buffer[29], "%u", MacroLevel );
-            ll.buffer[29+len] = ' ';
+            char depth[4]; /* MacroLevel is uint_8: at most three digits. */
+            len = sprintf( depth, "%u", MacroLevel );
+            memcpy( &ll.buffer[29], depth, len );
         }
         if ( srcfile != ModuleInfo.srcfile ) {
             ll.buffer[30] = 'C';
@@ -338,7 +338,7 @@ void LstWrite(enum lsttype type, uint_32 oldofs, void* value)
     }
 #endif
 	
-	for (i = 32; i > 0; --i) {
+	for (i = 0; i < sizeof( ll.buffer ); ++i) {
 		if (ll.buffer[i] == 0)
 			ll.buffer[i] = ' ';
 	}
@@ -466,7 +466,8 @@ static void log_macro( const struct asym *sym )
     pdots = ((i >= DOTSMAX) ? "" : dots + i + 1 );
     LstPrintf( "%s %s        %s", sym->name, pdots ,type );
 #ifdef DEBUG_OUT
-    LstPrintf( " %5lu", ((struct dsym *)sym)->e.macroinfo->count );
+    if (Options.debug)
+        LstPrintf( " %5lu", ((struct dsym *)sym)->e.macroinfo->count );
 #endif
     LstNL();
     return;
@@ -826,7 +827,7 @@ static void log_proc( const struct asym *sym )
     LstPrintf( "%0*" I32_SPEC "X ", Ofssize > USE16 ? 8 : 4, sym->state == SYM_INTERNAL ? sym->total_size : 0 );
 
 #ifdef DEBUG_OUT
-    if ( sym->fwdref )
+    if ( Options.debug && sym->fwdref )
         LstPrintf( "(F) " );
 #endif
     if( sym->ispublic ) {
@@ -905,7 +906,8 @@ static void log_proc( const struct asym *sym )
 
         /* print the procedure's locals */
         for ( l = dir->e.procinfo->locallist; l; l = l->nextlocal ) {
-            char buffer[32];
+            /* Identifier, brackets, ten decimal digits and terminating NUL. */
+            char buffer[MAX_ID_LEN + 13];
             i = l->sym.name_size;
             pdots = (( i >= DOTSMAX-2 ) ? "" : dots + i + 1 + 2);
             if ( l->sym.isarray )
@@ -942,7 +944,7 @@ static void log_proc( const struct asym *sym )
                           l2->sym.offset,
                           get_sym_seg_name( &l2->sym ));
 #ifdef DEBUG_OUT
-                if ( l2->sym.fwdref )
+                if ( Options.debug && l2->sym.fwdref )
                     LstPrintf( " (F)" );
 #endif
                 LstNL();
@@ -1000,7 +1002,7 @@ static void log_symbol( const struct asym *sym )
             LstPrintf( "%s ", get_sym_seg_name( sym ) );
 
 #ifdef DEBUG_OUT
-        if ( sym->fwdref )
+        if ( Options.debug && sym->fwdref )
             LstPrintf( "(F) " );
 #endif
         if ( sym->state == SYM_EXTERNAL && sym->iscomm == TRUE )
@@ -1090,7 +1092,7 @@ void LstWriteCRef( void )
             case TYPE_STRUCT:
             case TYPE_UNION:   idx = LQ_STRUCTS ;break;
 #ifdef DEBUG_OUT
-            default:           idx = LQ_UNDEF_TYPES ;break;
+            default: if (!Options.debug) continue; idx = LQ_UNDEF_TYPES; break;
 #else
             default: continue; /* skip "undefined" types */
 #endif

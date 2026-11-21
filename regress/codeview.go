@@ -226,7 +226,11 @@ func canonicalCVRecord(r []byte) ([]byte, error) {
 				return fail()
 			}
 			if string(key) != "cwd" && string(key) != "exe" {
-				out = append(out, r[p:p+q]...)
+				value := r[p : p+q]
+				if string(key) == "src" {
+					value = bytes.ReplaceAll(value, []byte("\\"), []byte("/"))
+				}
+				out = append(out, value...)
 			}
 			out = append(out, 0)
 			p += q + 1

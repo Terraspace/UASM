@@ -802,7 +802,7 @@ static ret_code get_operand( struct expr *opnd, int *idx, struct asm_tok tokenar
 			{
 				(*idx)++;
 				strcpy(clabel, tokenarray[(*idx)].string_ptr);
-				sprintf(tokenarray[(*idx)].string_ptr, "%s%s", ".", &clabel);
+				sprintf(tokenarray[(*idx)].string_ptr, "%s%s", ".", clabel);
 			}
 			else if (labelsym == NULL && labelsym2 == NULL)
 			{
@@ -1796,7 +1796,7 @@ static ret_code type_op( int oper, struct expr *opnd1, struct expr *opnd2, struc
             opnd1->mem_type = opnd2->mem_type;
 #endif
         //if ( opnd2->type ) { /* v2.10a: see types14.asm */
-        if ( opnd2->type && opnd2->mbr == NULL ) {
+        if ( opnd2->type && (opnd2->mbr == NULL || opnd2->explicit) ) {
             opnd1->type_tok = opnd2->type_tok;
             opnd1->type = opnd2->type;
             opnd1->value = opnd1->type->total_size;
@@ -3229,8 +3229,8 @@ static ret_code check_streg( struct expr *opnd1, struct expr *opnd2 )
 static void cmp_types( struct expr *opnd1, struct expr *opnd2, int trueval )
 /**************************************************************************/
 {
-    struct asym *type1;
-    struct asym *type2;
+    struct asym *type1 = NULL;
+    struct asym *type2 = NULL;
 
     /* v2.10: special handling of pointer types. */
     //if ( opnd1->mem_type == MT_PTR && opnd2->mem_type == MT_PTR && opnd1->type && opnd2->type ) {
@@ -3246,6 +3246,8 @@ static void cmp_types( struct expr *opnd1, struct expr *opnd2, int trueval )
         if (!type1 || !type2)
         {
             EmitError(INVALID_TYPE_EXPRESSION);
+            opnd1->value64 = 0;
+            return;
         }
 
         //opnd1->value64 = ( ( type1->is_ptr == type2->is_ptr &&
@@ -3694,7 +3696,7 @@ static ret_code calculate( struct expr *opnd1, struct expr *opnd2, const struct 
 	            else {
                 /* Nidud fix v2.28*/
 		            if ( opnd1->value == -1 && ModuleInfo.Ofssize == USE32 )
-		              opnd1->llvalue = (unsigned long)opnd1->llvalue >> opnd2->value;
+		              opnd1->llvalue = (uint_32)opnd1->llvalue >> opnd2->value;
 		           else
 		             opnd1->llvalue = opnd1->llvalue >> opnd2->value;
 	            }
@@ -3997,7 +3999,7 @@ static ret_code evaluate( struct expr *opnd1, int *i, struct asm_tok tokenarray[
 		{
 			(*i)++;
 			strcpy(clabel, tokenarray[(*i)].string_ptr);
-			sprintf(tokenarray[(*i)].string_ptr, "%s%s", ".", &clabel);
+			sprintf(tokenarray[(*i)].string_ptr, "%s%s", ".", clabel);
 		}
 		else if (labelsym == NULL && labelsym2 == NULL)
 		{
@@ -4021,7 +4023,7 @@ static ret_code evaluate( struct expr *opnd1, int *i, struct asm_tok tokenarray[
 		{
 			//(*i)++;
 			strcpy(clabel, tokenarray[(*i)+2].string_ptr);
-			sprintf(tokenarray[(*i)+2].string_ptr, "%s%s", ".", &clabel);
+			sprintf(tokenarray[(*i)+2].string_ptr, "%s%s", ".", clabel);
 			tokenarray[(*i) + 1].string_ptr = tokenarray[(*i) + 2].string_ptr;
 			tokenarray[(*i) + 1].token = T_ID;
 			tokenarray[(*i) + 2].token = T_FINAL;
@@ -4061,7 +4063,7 @@ static ret_code evaluate( struct expr *opnd1, int *i, struct asm_tok tokenarray[
 				{
 					if (opnd1->type != NULL)
 					{
-						recordsym = SymSearch(opnd1->type->name);
+						recordsym = (struct dsym *)SymSearch(opnd1->type->name);
 						/* if it is a RECORD don't throw an error but decorate it with an actual value v2.41*/
 						if (recordsym && recordsym->sym.typekind == TYPE_RECORD)
 						{

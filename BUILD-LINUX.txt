@@ -1,0 +1,67 @@
+UASM: Linux x86-64 builds and regression tests
+============================================
+Prerequisites: a C compiler (GCC or Clang), GNU Make, and Go 1.22 or newer
+for the regression runner. The fixtures need no Windows SDK, MASM installation,
+import libraries, network downloads, or environment-specific include paths.
+Run these commands at the repository root.
+
+GCC release (uses gcc from PATH):
+  make -f Makefile-Linux-GCC-64.mak -j4
+  make -f Makefile-Linux-GCC-64.mak test
+
+Clang release:
+  make -f Makefile-Linux-Clang-64.mak CC=clang-23 -j4
+  make -f Makefile-Linux-Clang-64.mak CC=clang-23 test
+
+Select a versioned GCC, or an absolute compiler path:
+  make -f Makefile-Linux-GCC-64.mak CC=gcc-16 OUTD=Gcc16UnixR -j4
+  make -f Makefile-Linux-GCC-64.mak CC=gcc-16 OUTD=Gcc16UnixR test
+
+Debug builds: add DEBUG=1 to both build and test commands. When overriding
+OUTD, also choose a distinct debug directory, e.g. OUTD=Gcc16UnixD.
+Default directories: GccUnixR/GccUnixD and ClangUnixR/ClangUnixD.
+The old Makefile_Linux.mak forwards to the GCC entry point.
+
+CC, CPPFLAGS, CFLAGS, LDFLAGS, LDLIBS, GO and OUTD can be overridden.
+The compiler/flags stamp rebuilds objects when these settings change;
+-MMD/-MP dependencies rebuild objects after header changes. Parallel builds
+create the output directory before compiling. The clean target removes only
+files belonging to the selected output directory.
+
+The build explicitly uses GNU C99: UASM's bool is an unsigned byte and is not
+interchangeable with C23's built-in bool. -funsigned-char retains historical
+Unix character handling; literal hashes explicitly use signed input bytes to
+match Windows output. -fno-strict-aliasing is required for the existing symbol
+and expression representations. No -fcommon, -w, or error-demotion flags are
+required. Legacy compiler warnings remain visible; this is not a warning-free
+or -Werror build policy.
+
+Test behaviour
+--------------
+The test target runs Go unit tests and the entire assembly regression suite.
+All targets (including Windows COFF/PE) can be assembled and compared on Linux;
+this does not execute Windows binaries. Expected failures must still emit the
+expected diagnostics and exit status. Mismatches remain in regress/results.
+
+Output filenames are explicit so Linux .BIN/.o defaults do not change the
+fixture contract. Text comparisons accept CRLF/LF and separators in recognized
+suite source paths. COFF .file records, C13 filename tables and the source path
+in S_ENVBLOCK accept separator differences; filenames, symbols, code, data,
+relocations and source checksums remain significant. Existing timestamp,
+build-banner and elapsed-time metadata exceptions are retained.
+
+CodeView 8 fixtures use explicit CRLF checkout attributes so source-checksum
+bytes are reproducible in a fresh clone on either OS. One previously mixed-EOL
+fixture was made consistent; its EXP changed only in the 16-byte source MD5.
+
+Self-contained SDK fixtures
+---------------------------
+cinvoke and coff/invoke_c_vararg declare only the APIs/RECT they exercise.
+oo/oo_api.inc defines the small set of imported function pointer prototypes
+needed by oo1/2/3; the class/object macros remain UASM's built-in macrolib.
+The six cinvoke/OO baselines were rebuilt with Windows UASM after checking
+that code/data and OO unwind sections are unchanged. Changes remove absolute
+library paths and unused SDK debug types. No external library is opened.
+
+Validation: GCC 13.3, GCC 16.2.0 and Clang 23.1.6, release and debug,
+565 passing cases in each configuration on Ubuntu x86-64.

@@ -32,15 +32,15 @@
 
 #pragma pack(push, 1)
 
-typedef unsigned long	CV_uoff32_t;
-typedef		 long	CV_off32_t;
+typedef uint_32	CV_uoff32_t;
+typedef		 int_32	CV_off32_t;
 typedef unsigned short	CV_uoff16_t;
 typedef		 short	CV_off16_t;
 typedef unsigned short	CV_typ16_t;
-typedef unsigned long	CV_typ_t;
-typedef unsigned long	CV_pubsymflag_t; /* must be same as CV_typ_t. */
+typedef uint_32	CV_typ_t;
+typedef uint_32	CV_pubsymflag_t; /* must be same as CV_typ_t. */
 typedef unsigned short	_2BYTEPAD;
-typedef unsigned long	CV_tkn_t;
+typedef uint_32	CV_tkn_t;
 
 #if !defined (CV_ZEROLEN)
 #define CV_ZEROLEN
@@ -68,7 +68,7 @@ typedef struct FLOAT10 {
 #define GUID_DEFINED
 
 typedef struct _GUID {		/* size is 16 */
-    unsigned long   Data1;
+    uint_32   Data1;
     unsigned short  Data2;
     unsigned short  Data3;
     unsigned char   Data4[8];
@@ -1303,20 +1303,20 @@ typedef struct CV_POINTER {
     unsigned short leaf; /* LF_POINTER */
     CV_typ_t utype;	 /* type index of the underlying type */
     union {
-        unsigned long attr;
+        uint_32 attr;
         struct {
-            unsigned long ptrtype : 5; /* ordinal specifying pointer type (CV_ptrtype_e) */
-            unsigned long ptrmode : 3; /* ordinal specifying pointer mode (CV_ptrmode_e) */
-            unsigned long isflat32 : 1; /* true if 0:32 pointer */
-            unsigned long isvolatile : 1; /* TRUE if volatile pointer */
-            unsigned long isconst : 1; /* TRUE if const pointer */
-            unsigned long isunaligned : 1; /* TRUE if unaligned pointer */
-            unsigned long isrestrict : 1; /* TRUE if restricted pointer (allow agressive opts) */
-            unsigned long size : 6; /* size of pointer (in bytes) */
-            unsigned long ismocom : 1; /* TRUE if it is a MoCOM pointer (^ or %) */
-            unsigned long islref : 1; /* TRUE if it is this pointer of member function with & ref-qualifier */
-            unsigned long isrref : 1; /* TRUE if it is this pointer of member function with && ref-qualifier */
-            unsigned long unused : 10;/* pad out to 32-bits for following cv_typ_t's */
+            uint_32 ptrtype : 5; /* ordinal specifying pointer type (CV_ptrtype_e) */
+            uint_32 ptrmode : 3; /* ordinal specifying pointer mode (CV_ptrmode_e) */
+            uint_32 isflat32 : 1; /* true if 0:32 pointer */
+            uint_32 isvolatile : 1; /* TRUE if volatile pointer */
+            uint_32 isconst : 1; /* TRUE if const pointer */
+            uint_32 isunaligned : 1; /* TRUE if unaligned pointer */
+            uint_32 isrestrict : 1; /* TRUE if restricted pointer (allow agressive opts) */
+            uint_32 size : 6; /* size of pointer (in bytes) */
+            uint_32 ismocom : 1; /* TRUE if it is a MoCOM pointer (^ or %) */
+            uint_32 islref : 1; /* TRUE if it is this pointer of member function with & ref-qualifier */
+            uint_32 isrref : 1; /* TRUE if it is this pointer of member function with && ref-qualifier */
+            uint_32 unused : 10;/* pad out to 32-bits for following cv_typ_t's */
         };
     };
     union {
@@ -1358,7 +1358,7 @@ typedef struct CV_STRIDED_ARRAY {
     unsigned short  leaf;		/* LF_STRIDED_ARRAY */
     CV_typ_t	    elemtype;
     CV_typ_t	    idxtype;
-    unsigned long   stride;
+    uint_32   stride;
     unsigned char   data[CV_ZEROLEN];
 } CV_STRIDED_ARRAY;
 
@@ -1369,7 +1369,7 @@ typedef struct CV_VECTOR {
     unsigned short  size;
     unsigned short  leaf;		/* LF_VECTOR */
     CV_typ_t	    elemtype;		/* type index of element type */
-    unsigned long   count;		/* number of elements in the vector */
+    uint_32   count;		/* number of elements in the vector */
     unsigned char   data[CV_ZEROLEN];	/* variable length data specifying size in bytes and name */
 } CV_VECTOR;
 
@@ -1379,9 +1379,9 @@ typedef struct CV_MATRIX {
     unsigned short  size;
     unsigned short  leaf;		/* LF_MATRIX */
     CV_typ_t	    elemtype;		/* type index of element type */
-    unsigned long   rows;		/* number of rows */
-    unsigned long   cols;		/* number of columns */
-    unsigned long   majorStride;
+    uint_32   rows;		/* number of rows */
+    uint_32   cols;		/* number of columns */
+    uint_32   majorStride;
     CV_matrixattr_t matattr;		/* attributes */
     unsigned char   data[CV_ZEROLEN];	/* variable length data specifying size in bytes and name */
 } CV_MATRIX;
@@ -1475,7 +1475,7 @@ typedef struct CV_UDT_SRC_LINE {
     unsigned short leaf;	/* LF_UDT_SRC_LINE */
     CV_typ_t	   type;	/* UDT's type index */
     CV_ItemId	   src;		/* index to LF_STRING_ID record where source file name is saved */
-    unsigned long  line;	/* line number */
+    uint_32  line;	/* line number */
 } CV_UDT_SRC_LINE;
 
 typedef struct CV_UDT_MOD_SRC_LINE {
@@ -1483,7 +1483,7 @@ typedef struct CV_UDT_MOD_SRC_LINE {
     unsigned short leaf;	/* LF_UDT_MOD_SRC_LINE */
     CV_typ_t	   type;	/* UDT's type index */
     CV_ItemId	   src;		/* index into string table where source file name is saved */
-    unsigned long  line;	/* line number */
+    uint_32  line;	/* line number */
     unsigned short imod;	/* module that contributes this UDT definition */
 } CV_UDT_MOD_SRC_LINE;
 
@@ -1569,7 +1569,7 @@ typedef struct CV_MFUNCTION_16t {
     CV_funcattr_t   funcattr;	    /* attributes */
     unsigned short  parmcount;	    /* number of parameters */
     CV_typ16_t	    arglist;	    /* type index of argument list */
-    long	    thisadjust;	    /* this adjuster (long because pad required anyway) */
+    int_32	    thisadjust;	    /* this adjuster (long because pad required anyway) */
 } CV_MFUNCTION_16t;
 
 typedef struct CV_MFUNCTION {
@@ -1582,7 +1582,7 @@ typedef struct CV_MFUNCTION {
     CV_funcattr_t   funcattr;	    /* attributes */
     unsigned short  parmcount;	    /* number of parameters */
     CV_typ_t	    arglist;	    /* type index of argument list */
-    long	    thisadjust;	    /* this adjuster (long because pad required anyway) */
+    int_32	    thisadjust;	    /* this adjuster (long because pad required anyway) */
 } CV_MFUNCTION;
 
 
@@ -1621,7 +1621,7 @@ typedef struct CV_ARGLIST_16t {
 typedef struct CV_ARGLIST {
     unsigned short  size;
     unsigned short  leaf;		/* LF_ARGLIST, LF_SUBSTR_LIST */
-    unsigned long   count;		/* number of arguments */
+    uint_32   count;		/* number of arguments */
     CV_typ_t	    arg[CV_ZEROLEN];	/* number of arguments */
 } CV_ARGLIST;
 
@@ -3134,17 +3134,17 @@ typedef struct LABELSYM16 {
 typedef struct PROCSYM {
     unsigned short  reclen;	/* Record length */
     unsigned short  rectyp;	/* S_GPROC16 or S_LPROC16 */
-    unsigned long   pParent;	/* pointer to the parent */
-    unsigned long   pEnd;	/* pointer to this blocks end */
-    unsigned long   pNext;	/* pointer to next symbol */
+    uint_32   pParent;	/* pointer to the parent */
+    uint_32   pEnd;	/* pointer to this blocks end */
+    uint_32   pNext;	/* pointer to next symbol */
 } PROCSYM;
 
 typedef struct PROCSYM16 {
     unsigned short  reclen;	/* Record length */
     unsigned short  rectyp;	/* S_GPROC16 or S_LPROC16 */
-    unsigned long   pParent;	/* pointer to the parent */
-    unsigned long   pEnd;	/* pointer to this blocks end */
-    unsigned long   pNext;	/* pointer to next symbol */
+    uint_32   pParent;	/* pointer to the parent */
+    uint_32   pEnd;	/* pointer to this blocks end */
+    uint_32   pNext;	/* pointer to next symbol */
     unsigned short  len;	/* Proc length */
     unsigned short  DbgStart;	/* Debug start offset */
     unsigned short  DbgEnd;	/* Debug end offset */
@@ -3158,12 +3158,12 @@ typedef struct PROCSYM16 {
 typedef struct PROCSYM32_16t {
     unsigned short  reclen;	/* Record length */
     unsigned short  rectyp;	/* S_GPROC32_16t or S_LPROC32_16t */
-    unsigned long   pParent;	/* pointer to the parent */
-    unsigned long   pEnd;	/* pointer to this blocks end */
-    unsigned long   pNext;	/* pointer to next symbol */
-    unsigned long   len;	/* Proc length */
-    unsigned long   DbgStart;	/* Debug start offset */
-    unsigned long   DbgEnd;	/* Debug end offset */
+    uint_32   pParent;	/* pointer to the parent */
+    uint_32   pEnd;	/* pointer to this blocks end */
+    uint_32   pNext;	/* pointer to next symbol */
+    uint_32   len;	/* Proc length */
+    uint_32   DbgStart;	/* Debug start offset */
+    uint_32   DbgEnd;	/* Debug end offset */
     CV_uoff32_t	    off;
     unsigned short  seg;
     CV_typ16_t	    typind;	/* Type index */
@@ -3174,12 +3174,12 @@ typedef struct PROCSYM32_16t {
 typedef struct PROCSYM32 {
     unsigned short  reclen;	/* Record length */
     unsigned short  rectyp;	/* S_GPROC32, S_LPROC32, S_GPROC32_ID, S_LPROC32_ID, S_LPROC32_DPC or S_LPROC32_DPC_ID */
-    unsigned long   pParent;	/* pointer to the parent */
-    unsigned long   pEnd;	/* pointer to this blocks end */
-    unsigned long   pNext;	/* pointer to next symbol */
-    unsigned long   len;	/* Proc length */
-    unsigned long   DbgStart;	/* Debug start offset */
-    unsigned long   DbgEnd;	/* Debug end offset */
+    uint_32   pParent;	/* pointer to the parent */
+    uint_32   pEnd;	/* pointer to this blocks end */
+    uint_32   pNext;	/* pointer to next symbol */
+    uint_32   len;	/* Proc length */
+    uint_32   DbgStart;	/* Debug start offset */
+    uint_32   DbgEnd;	/* Debug end offset */
     CV_typ_t	    typind;	/* Type index or ID */
     CV_uoff32_t	    off;
     unsigned short  seg;
@@ -3257,19 +3257,19 @@ typedef struct COMPILESYM {
     unsigned short reclen;	/* Record length */
     unsigned short rectyp;	/* S_COMPILE2 */
     union {
-        unsigned long flags;
+        uint_32 flags;
         struct {
-            unsigned long iLanguage : 8; /* language index */
-            unsigned long fEC : 1; /* compiled for E/C */
-            unsigned long fNoDbgInfo : 1; /* not compiled with debug info */
-            unsigned long fLTCG : 1; /* compiled with LTCG */
-            unsigned long fNoDataAlign : 1; /* compiled with -Bzalign */
-            unsigned long fManagedPresent : 1; /* managed code/data present */
-            unsigned long fSecurityChecks : 1; /* compiled with /GS */
-            unsigned long fHotPatch : 1; /* compiled with /hotpatch */
-            unsigned long fCVTCIL : 1; /* converted with CVTCIL */
-            unsigned long fMSILModule : 1; /* MSIL netmodule */
-            unsigned long pad : 15; /* reserved, must be 0 */
+            uint_32 iLanguage : 8; /* language index */
+            uint_32 fEC : 1; /* compiled for E/C */
+            uint_32 fNoDbgInfo : 1; /* not compiled with debug info */
+            uint_32 fLTCG : 1; /* compiled with LTCG */
+            uint_32 fNoDataAlign : 1; /* compiled with -Bzalign */
+            uint_32 fManagedPresent : 1; /* managed code/data present */
+            uint_32 fSecurityChecks : 1; /* compiled with /GS */
+            uint_32 fHotPatch : 1; /* compiled with /hotpatch */
+            uint_32 fCVTCIL : 1; /* converted with CVTCIL */
+            uint_32 fMSILModule : 1; /* MSIL netmodule */
+            uint_32 pad : 15; /* reserved, must be 0 */
         };
     };
     unsigned short machine;	/* target processor */
@@ -3288,22 +3288,22 @@ typedef struct COMPILESYM3 {
     unsigned short  reclen;	/* Record length */
     unsigned short  rectyp;	/* S_COMPILE3 */
     union {
-        unsigned long flags;
+        uint_32 flags;
         struct {
-            unsigned long iLanguage : 8;	/* language index */
-            unsigned long fEC : 1;	/* compiled for E/C */
-            unsigned long fNoDbgInfo : 1;	/* not compiled with debug info */
-            unsigned long fLTCG : 1;	/* compiled with LTCG */
-            unsigned long fNoDataAlign : 1;	/* compiled with -Bzalign */
-            unsigned long fManagedPresent : 1;	/* managed code/data present */
-            unsigned long fSecurityChecks : 1;	/* compiled with /GS */
-            unsigned long fHotPatch : 1;	/* compiled with /hotpatch */
-            unsigned long fCVTCIL : 1;	/* converted with CVTCIL */
-            unsigned long fMSILModule : 1;	/* MSIL netmodule */
-            unsigned long fSdl : 1;	/* compiled with /sdl */
-            unsigned long fPGO : 1;	/* compiled with /ltcg:pgo or pgu */
-            unsigned long fExp : 1;	/* .exp module */
-            unsigned long pad : 12;	/* reserved, must be 0 */
+            uint_32 iLanguage : 8;	/* language index */
+            uint_32 fEC : 1;	/* compiled for E/C */
+            uint_32 fNoDbgInfo : 1;	/* not compiled with debug info */
+            uint_32 fLTCG : 1;	/* compiled with LTCG */
+            uint_32 fNoDataAlign : 1;	/* compiled with -Bzalign */
+            uint_32 fManagedPresent : 1;	/* managed code/data present */
+            uint_32 fSecurityChecks : 1;	/* compiled with /GS */
+            uint_32 fHotPatch : 1;	/* compiled with /hotpatch */
+            uint_32 fCVTCIL : 1;	/* converted with CVTCIL */
+            uint_32 fMSILModule : 1;	/* MSIL netmodule */
+            uint_32 fSdl : 1;	/* compiled with /sdl */
+            uint_32 fPGO : 1;	/* compiled with /ltcg:pgo or pgu */
+            uint_32 fExp : 1;	/* .exp module */
+            uint_32 pad : 12;	/* reserved, must be 0 */
         };
     };
     unsigned short  machine;	/* target processor */
@@ -3336,7 +3336,7 @@ typedef struct ENVBLOCKSYM {
 typedef struct OBJNAMESYM {
     unsigned short reclen;	/* Record length */
     unsigned short rectyp;	/* S_OBJNAME */
-    unsigned long signature;	/* signature */
+    uint_32 signature;	/* signature */
     unsigned char name[1];	/* Length-prefixed name */
 } OBJNAMESYM;
 
@@ -3391,10 +3391,10 @@ typedef struct CV_DebugSLinesFileBlockHeader_t {
 #define CV_LINES_HAVE_COLUMNS 0x0001
 
 typedef struct CV_Line_t {
-    unsigned long   offset;		/* Offset to start of code bytes for line number */
-    unsigned long   linenumStart : 24;	/* line where statement/expression starts */
-    unsigned long   deltaLineEnd : 7;	/* delta to line where statement ends (optional) */
-    unsigned long   fStatement : 1;	/* true if a statement linenumber, else an expression line num */
+    uint_32   offset;		/* Offset to start of code bytes for line number */
+    uint_32   linenumStart : 24;	/* line where statement/expression starts */
+    uint_32   deltaLineEnd : 7;	/* delta to line where statement ends (optional) */
+    uint_32   fStatement : 1;	/* true if a statement linenumber, else an expression line num */
 } CV_Line_t;
 
 typedef unsigned short CV_columnpos_t;	/* byte offset in a source line */

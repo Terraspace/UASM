@@ -213,10 +213,22 @@ static const struct vectorcall_conv vectorcall_tab[] = {
 #endif
 };
 
+/* Adapt legacy conventions to the four-argument System V dispatch. */
+static int sysv_ms32_pcheck(struct dsym *proc, struct dsym *param, int *used, int *vecused)
+{
+    return ms32_pcheck(proc, param, used);
+}
+#if OWFC_SUPPORT
+static int sysv_watc_pcheck(struct dsym *proc, struct dsym *param, int *used, int *vecused)
+{
+    return watc_pcheck(proc, param, used);
+}
+#endif
+
 static const struct sysvcall_conv sysvcall_tab[] = {
-	{ ms32_pcheck, ms32_return },  /* FCT_MSC */
+	{ sysv_ms32_pcheck, ms32_return },  /* FCT_MSC */
 #if OWFC_SUPPORT		
-	{ watc_pcheck, watc_return },  /* FCT_WATCOMC */
+	{ sysv_watc_pcheck, watc_return },  /* FCT_WATCOMC */
 #endif		
 #if SYSV_SUPPORT		
 	{ sysv_pcheck, sysv_return }   /* FCT_WIN64 / SYSTEMV */
@@ -3338,7 +3350,7 @@ static void write_win64_default_prologue_RSP(struct proc_info *info)
 			}
 		}
 
-		if ((info->locallist + resstack) || info->vecused || CurrProc->e.procinfo->xmmsize) {
+		if ((info->locallist || resstack) || info->vecused || CurrProc->e.procinfo->xmmsize) {
 			DebugMsg1(("write_win64_default_prologue_RSP: localsize=%u resstack=%u\n", info->localsize, resstack));
 			if (ModuleInfo.win64_flags & W64F_HABRAN) {
 				if (((info->pushed_reg & 1) && (info->localsize & 0xF)) ||
@@ -4804,6 +4816,7 @@ static ret_code write_generic_prologue(struct proc_info *info)
 			AddLineQueueX("push %r", *regist);
 		}
 	}
+	return NOT_ERROR;
 }
 
 /* Write out UASM internal prologue */

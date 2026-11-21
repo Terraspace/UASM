@@ -16,7 +16,7 @@ OPTION VTABLE:OFF		; [ON/OFF] dictates whether c-style method invocations use th
     .nocref
 	WIN32_LEAN_AND_MEAN equ 1
 	_WIN64 		    equ 1
-        include \wininc\Include\windows.inc
+    include oo_api.inc
     .list
     .cref
 	

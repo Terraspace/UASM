@@ -42,6 +42,9 @@
 #if defined(__UNIX__) || defined(__CYGWIN__) || defined(__DJGPP__) /* avoid for MinGW! */
 
 #include <strings.h>
+#if defined(__UNIX__)
+extern char *strupr(char *);
+#endif
 
 #define _stricmp strcasecmp
 #ifndef __WATCOMC__
@@ -741,7 +744,7 @@ struct module_vars {
     char                *imp_prefix;
     FILE                *curr_file[NUM_FILE_TYPES];  /* ASM, ERR, OBJ and LST */
     char                *curr_fname[NUM_FILE_TYPES];
-    char *              *FNames;         /* array of input files */
+    struct fname_item   *FNames;         /* array of input files */
     unsigned            cnt_fnames;      /* items in FNames array */
     char                *IncludePath;
     struct qdesc        line_queue;      /* line queue */
@@ -926,6 +929,7 @@ extern bool                  gmaskflag;
 /* functions in assemble.c */
 
 struct fixup;
+extern void OutputInterleavedBytes(const unsigned char *, int, struct fixup *);
 
 extern void             OutputByte( unsigned char );
 extern void             OutputBinBytes( unsigned char* pBytes, uint_32 len );

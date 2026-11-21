@@ -11,6 +11,8 @@
 #include <ctype.h>
 
 #include "globals.h"
+struct dsym;
+extern void SymSimd(struct dsym *);
 #include "memalloc.h"
 #include "parser.h"
 #include "segment.h"
