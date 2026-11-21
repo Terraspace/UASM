@@ -981,6 +981,17 @@ static ret_code idata_nofixup( struct code_info *CodeInfo, unsigned CurrOpnd, co
     if( IS_ANY_BRANCH( CodeInfo->token ) ) {
         return( process_branch( CodeInfo, CurrOpnd, opndx ) );
     }
+    /* MOV r/m64, imm32 sign-extends the immediate. Only MOV r64, imm64
+     * can preserve an arbitrary 64-bit constant. Keep the existing signed/
+     * unsigned 32-bit literal range; the CPU sign-extends the encoded bits. */
+    if (CodeInfo->Ofssize == USE64 && CodeInfo->token == T_MOV &&
+        CurrOpnd == OPND2 && (CodeInfo->opnd[OPND1].type & OP_M_ANY) &&
+        OperandSize(CodeInfo->opnd[OPND1].type, CodeInfo) == 8 &&
+        (opndx->value64 > (int_64)UINT_MAX ||
+         opndx->value64 < -(int_64)UINT_MAX)) {
+        return EmitConstError(opndx);
+    }
+
     value = opndx->value;
     CodeInfo->opnd[CurrOpnd].data32l = value;
 
@@ -3448,6 +3459,9 @@ dataInProc:
 	FStoreLine(0); /* must be placed AFTER write_prologue() */
 
 	CodeInfo.token = tokenarray[i].tokval;
+	/* Direct CALL also makes a System V procedure non-leaf. */
+	if (CodeInfo.token == T_CALL && CurrProc && CurrProc->sym.langtype == LANG_SYSVCALL)
+		CurrProc->e.procinfo->isleaf = FALSE;
 	opcodePtr      = tokenarray[i].string_ptr; // Copy a pointer to the mnemonic string for CodeGenV2.
 
 	/* get the instruction's start position in InstrTable[] */
@@ -3773,7 +3787,7 @@ dataInProc:
 							/* first operand register is moved to vexregop */
 							/* handle VEX.NDD */
 							CodeInfo.vexregop = opndx[OPND1].base_reg->bytval + 1;
-							memcpy(&opndx[OPND1], &opndx[CurrOpnd], sizeof(opndx[0]) * 3);
+							memmove(&opndx[OPND1], &opndx[CurrOpnd], sizeof(opndx[0]) * 3);
 							CodeInfo.rm_byte = 0;
 							if (process_register(&CodeInfo, OPND1, opndx) == ERROR)
 								return(ERROR);
@@ -3804,7 +3818,7 @@ dataInProc:
 						CodeInfo.vexconst = opndx[CurrOpnd].value;
 						if(opndx[CurrOpnd].base_reg)
 							CodeInfo.vexregop = opndx[CurrOpnd].base_reg->bytval + 1;
-						memcpy(&opndx[CurrOpnd], &opndx[CurrOpnd + 1], sizeof(opndx[0]) * 2);
+						memmove(&opndx[CurrOpnd], &opndx[CurrOpnd + 1], sizeof(opndx[0]) * 2);
 					}
 					else
 					{

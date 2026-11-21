@@ -10,7 +10,7 @@ option flat:1
 	; Verify opnd immediate size reductions
 	bt eax,400				; Simple case, 400 is greater than signed OR unsigned byte -> ERROR not valid instruction
 
-	; These should fail as they're out of the range of signed OR unsigned byte...
+	; MASM accepts -200 (low byte 38h), but rejects the positive value 300.
 	mov al,-200
 	mov al,300
 	mov cl,-200

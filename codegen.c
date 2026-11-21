@@ -427,7 +427,10 @@ static void output_opc(struct code_info *CodeInfo)
     }
 
   if (CodeInfo->evex_flag == TRUE) {
-	  if (!(vex_flags[CodeInfo->token - VEX_START] & VX_LL))
+	  /* {evex} on an instruction without a VEX form: vex_flags[] has no entry for it */
+	  if (CodeInfo->token < VEX_START)
+		  EmitError(NO_EVEX_FORM);
+	  else if (!(vex_flags[CodeInfo->token - VEX_START] & VX_LL))
 		  EmitError(INVALID_COMBINATION_OF_OPCODE_AND_OPERANDS);
   }
     if (CodeInfo->token == T_VCMPSD || CodeInfo->token == T_VCMPSS){
@@ -957,7 +960,11 @@ static void output_opc(struct code_info *CodeInfo)
               }
               if (CodeInfo->token == T_VCVTPH2PS || CodeInfo->token == T_VCVTPS2PH || CodeInfo->token == T_VCVTPD2UDQ || CodeInfo->token == T_VCVTQQ2PD||
                 CodeInfo->token == T_VCVTPD2DQ || CodeInfo->token == T_VCVTDQ2PD){
-                if ((CodeInfo->reg1 <= 7) || (CodeInfo->reg1 >= 16 && CodeInfo->reg1 <= 23))
+                /* VCVTPS2PH stores use operand 2 in ModRM.reg; operand 1
+                 * is memory. EVEX.R must extend the source vector register. */
+                unsigned int reg = (CodeInfo->token == T_VCVTPS2PH &&
+                    (CodeInfo->opnd[OPND1].type & OP_M_ANY)) ? CodeInfo->reg2 : CodeInfo->reg1;
+                if ((reg & 8) == 0)
                   byte1 |= EVEX_P0RMASK;
                 else
                   byte1 &= ~EVEX_P0RMASK;
@@ -1265,7 +1272,7 @@ static void output_opc(struct code_info *CodeInfo)
             case T_VPMOVZXDQ:
               if((CodeInfo->r1type == OP_XMM && (CodeInfo->r2type == OP_XMM || CodeInfo->mem_type == MT_QWORD || CodeInfo->mem_type == MT_EMPTY))||
                  (CodeInfo->r1type == OP_YMM && (CodeInfo->r2type == OP_XMM || CodeInfo->mem_type == MT_OWORD || CodeInfo->mem_type == MT_EMPTY ))||
-                 (CodeInfo->r1type == OP_ZMM && decoflags && (CodeInfo->r2type == OP_YMM || CodeInfo->mem_type == MT_YMMWORD || CodeInfo->mem_type == MT_EMPTY)))
+                 (CodeInfo->r1type == OP_ZMM && evex && (CodeInfo->r2type == OP_YMM || CodeInfo->mem_type == MT_YMMWORD || CodeInfo->mem_type == MT_EMPTY)))
                  lbyte &= ~EVEX_P1WMASK;  // make sure CodeInfo->evex_p1 W is not set
               else
                 EmitError(INVALID_COMBINATION_OF_OPCODE_AND_OPERANDS);
@@ -1276,7 +1283,7 @@ static void output_opc(struct code_info *CodeInfo)
             case T_VPMOVZXWQ:
               if((CodeInfo->r1type == OP_XMM && (CodeInfo->r2type == OP_XMM || CodeInfo->mem_type == MT_DWORD || CodeInfo->mem_type == MT_EMPTY))||
                  (CodeInfo->r1type == OP_YMM && (CodeInfo->r2type == OP_XMM || CodeInfo->mem_type == MT_QWORD || CodeInfo->mem_type == MT_EMPTY ))||
-                 (CodeInfo->r1type == OP_ZMM && decoflags && (CodeInfo->r2type == OP_XMM || CodeInfo->mem_type == MT_OWORD || CodeInfo->mem_type == MT_EMPTY)))
+                 (CodeInfo->r1type == OP_ZMM && evex && (CodeInfo->r2type == OP_XMM || CodeInfo->mem_type == MT_OWORD || CodeInfo->mem_type == MT_EMPTY)))
                  lbyte &= ~EVEX_P1WMASK;  // make sure CodeInfo->evex_p1 W is not set
               else
                 EmitError(INVALID_COMBINATION_OF_OPCODE_AND_OPERANDS);
@@ -1285,7 +1292,7 @@ static void output_opc(struct code_info *CodeInfo)
             case T_VPMOVZXBQ:
               if((CodeInfo->r1type == OP_XMM && (CodeInfo->r2type == OP_XMM || CodeInfo->mem_type == MT_WORD || CodeInfo->mem_type == MT_EMPTY))||
                  (CodeInfo->r1type == OP_YMM && (CodeInfo->r2type == OP_XMM || CodeInfo->mem_type == MT_DWORD || CodeInfo->mem_type == MT_EMPTY ))||
-                 (CodeInfo->r1type == OP_ZMM && decoflags && (CodeInfo->r2type == OP_XMM || CodeInfo->mem_type == MT_QWORD || CodeInfo->mem_type == MT_EMPTY)))
+                 (CodeInfo->r1type == OP_ZMM && evex && (CodeInfo->r2type == OP_XMM || CodeInfo->mem_type == MT_QWORD || CodeInfo->mem_type == MT_EMPTY)))
                  lbyte &= ~EVEX_P1WMASK;  // make sure CodeInfo->evex_p1 W is not set
               else
                 EmitError(INVALID_COMBINATION_OF_OPCODE_AND_OPERANDS);
@@ -3397,10 +3404,11 @@ ret_code codegen( struct code_info *CodeInfo, uint_32 oldofs )
     }
 
     /* UASM 2.56 - Validate proper usage of VPBROADCASTn as legacy CODEGEN only handles AVX2 (not 512) */
-    if (CodeInfo->token == T_VPBROADCASTB ||
+    /* When EVEX is enabled, GPR source is valid (AVX-512BW/VL). Only reject in legacy mode. */
+    if (!evex && (CodeInfo->token == T_VPBROADCASTB ||
         CodeInfo->token == T_VPBROADCASTW ||
         CodeInfo->token == T_VPBROADCASTD ||
-        CodeInfo->token == T_VPBROADCASTQ) {
+        CodeInfo->token == T_VPBROADCASTQ)) {
         if (CodeInfo->opnd[1].type & OP_R) {
             EmitError(INVALID_INSTRUCTION_OPERANDS);
         }

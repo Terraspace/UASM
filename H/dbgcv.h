@@ -1271,7 +1271,6 @@ typedef struct CV_MODIFIER {
 typedef struct CV_POINTER_16t {
     unsigned short size;
     unsigned short leaf;	    /* LF_POINTER_16t */
-    CV_typ16_t utype;	/* type index of the underlying type */
     union {
         unsigned short attr;
         struct {
@@ -1284,6 +1283,7 @@ typedef struct CV_POINTER_16t {
             unsigned char unused : 4;
         };
     };
+    CV_typ16_t utype;	/* type index of the underlying type */
     union {
         struct {
             CV_typ16_t	    pmclass;	/* index of containing class for pointer to member */

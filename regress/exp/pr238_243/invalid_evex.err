@@ -1,0 +1,2 @@
+..\src\pr238_243\invalid_evex.asm(5) : Error A2302: Not possible to EVEX encode requested instruction
+..\src\pr238_243\invalid_evex.asm(6) : Error A2302: Not possible to EVEX encode requested instruction

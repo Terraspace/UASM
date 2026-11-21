@@ -1,5 +1,7 @@
 ;
-; v2.26 - default to 64-bit fastcall if no .model/language defined
+; PE64 import/invoke test: select UASM's 64-bit fastcall model explicitly.
+.x64
+.model flat, fastcall
 ;
 option  dllimport:<msvcrt>
 exit    proto :dword

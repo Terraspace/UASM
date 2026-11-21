@@ -1,3 +1,0 @@
-..\src\win64\record64.asm(15) : Warning A4305: Stackbase automatically changed to RSP to support WIN64 options
-..\src\win64\record64.asm(393) : Error A2237: Constant value too large: E0E1E20EE0E1E20Eh
-..\src\win64\record64.asm(394) : Error A2237: Constant value too large: E0E1E20EE0E1E20Eh

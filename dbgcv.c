@@ -48,7 +48,14 @@ typedef struct CV_SECTION {
 	uint_32 length;
 } CV_SECTION;
 
+struct cv_forward {
+    struct cv_forward *next;
+    struct asym *sym;
+    uint_32 index;
+};
+
 typedef struct dbgcv {
+    struct cv_forward *forwards;
 
 	union {
 		uint_8* ps;
@@ -205,7 +212,7 @@ uint_32 GetTyperef(struct asym* sym, uint_8 Ofssize)
 				case MT_OWORD:	return ST_64PUINT8;//ST_64PUINT16;
 				case MT_REAL16: return ST_64PUINT8;//ST_64PREAL128;
 				}
-				return ST_PVOID;
+				return ST_64PVOID;
 			}
 			break;
 		case MT_BITS:
@@ -334,13 +341,50 @@ static void cv_write_array_type(struct dbgcv* cv, struct asym* sym,
  * the symbol's mem_type is MT_PTR.
  */
 
+/* A pointer may encounter its target before the symbol-table walk does,
+ * including self-referential structures. Emit a named forward type now and
+ * complete it after the walk, without guessing a void/nullptr pointee. */
+static void cv_forward_type(struct dbgcv *cv, struct asym *sym)
+{
+    bool old = Options.debug_symbols == CV_SIGNATURE_C7;
+    bool isunion = sym->typekind == TYPE_UNION;
+    uint_32 size = isunion ? (old ? sizeof(CV_UNION_16t) : sizeof(CV_UNION))
+                          : (old ? sizeof(CV_STRUCT_16t) : sizeof(CV_STRUCT));
+    uint_8 *tmp;
+    struct cv_forward *f = MemAlloc(sizeof(*f));
+    size = (size + 2 + 1 + sym->name_size + 3) & ~3;
+    cv->pt = checkflush(cv->types, cv->pt, size, cv->param);
+    memset(cv->pt, 0, size);
+    cv->pt_st->size = size - sizeof(uint_16);
+    if (isunion) {
+        cv->pt_un->leaf = old ? LF_UNION_16t : LF_UNION;
+        if (old) { cv->pt_un->property.fwdref = 1; tmp = cv->pt_un->data; }
+        else { cv->t_un->property.fwdref = 1; tmp = cv->t_un->data; }
+    } else {
+        cv->pt_st->leaf = old ? LF_STRUCTURE_16t : LF_STRUCTURE;
+        if (old) { cv->pt_st->property.fwdref = 1; tmp = cv->pt_st->data; }
+        else { cv->t_st->property.fwdref = 1; tmp = cv->t_st->data; }
+    }
+    *(uint_16 *)tmp = 0;
+    tmp = SetPrefixName(tmp + 2, sym->name, sym->name_size);
+    PadBytes(tmp, cv->types->e.seginfo->CodeBuffer);
+    cv->pt += size;
+    sym->cvtyperef = cv->currtype++;
+    f->sym = sym; f->index = sym->cvtyperef;
+    f->next = cv->forwards; cv->forwards = f;
+}
+
 static uint_32 cv_write_ptr_type(struct dbgcv* cv, struct asym* sym)
 {
 	uint_32 attr, type;
 	uint_32 size = sizeof(CV_POINTER);
 	uint_32 leaf = LF_POINTER;
 
-	if (Options.debug_symbols == CV_SIGNATURE_C7) {
+    /* LINK cannot widen Near64 in LF_POINTER_16t. It accepts the 32-bit
+     * type-index LF_POINTER leaf in a C7 stream, retaining the 64-bit kind.
+     * "16t" describes type-index width, not the machine pointer width. */
+
+	if (Options.debug_symbols == CV_SIGNATURE_C7 && sym->Ofssize != USE64) {
 		size = sizeof(CV_POINTER_16t);
 		leaf = LF_POINTER_16t;
 	}
@@ -351,9 +395,6 @@ static uint_32 cv_write_ptr_type(struct dbgcv* cv, struct asym* sym)
 	if ((sym->ptr_memtype == MT_EMPTY && sym->target_type == NULL) || sym->ptr_memtype == MT_PROC)
 		return(GetTyperef(sym, sym->Ofssize));
 
-	cv->pt = checkflush(cv->types, cv->pt, size, cv->param);
-	cv->pt_ptr->size = size - sizeof(uint_16);
-	cv->pt_ptr->leaf = leaf;
 
 	if (sym->Ofssize == USE16)
 		attr = (sym->isfar ? CV_PTR_FAR : CV_PTR_NEAR);
@@ -367,7 +408,12 @@ static uint_32 cv_write_ptr_type(struct dbgcv* cv, struct asym* sym)
 		type = GetTyperef(sym, sym->Ofssize);
 	}
 	else if (sym->target_type) {
-		/* the target's typeref must have been set here */
+        if (!sym->target_type->cvtyperef &&
+            (sym->target_type->typekind == TYPE_STRUCT ||
+             sym->target_type->typekind == TYPE_UNION ||
+             sym->target_type->typekind == TYPE_RECORD))
+            cv_forward_type(cv, sym->target_type);
+        /* The target now has a real type reference, even for cycles. */
 		if (sym->target_type->cvtyperef)
 			type = sym->target_type->cvtyperef;
 		else
@@ -380,7 +426,11 @@ static uint_32 cv_write_ptr_type(struct dbgcv* cv, struct asym* sym)
 		sym->mem_type = tmpmt;
 	}
 
-	if (Options.debug_symbols == CV_SIGNATURE_C7) {
+    cv->pt = checkflush(cv->types, cv->pt, size, cv->param);
+    cv->pt_ptr->size = size - sizeof(uint_16);
+    cv->pt_ptr->leaf = leaf;
+
+	if (Options.debug_symbols == CV_SIGNATURE_C7 && sym->Ofssize != USE64) {
 		cv->pt_ptr->attr = attr;
 		cv->pt_ptr->utype = type;
 		cv->pt_ptr->pmclass = 0;
@@ -1321,6 +1371,7 @@ void cv_write_debug_tables(struct dsym* symbols, struct dsym* types, void* pv)
 	cv.types = types;
 	cv.currtype = 0x1000; /* user-defined types start at 0x1000 */
 	cv.level = 0;
+    cv.forwards = NULL;
 	cv.param = pv;
 #if GENPTRTYPE
 	cv.ptrtype[0] = 0;
@@ -1688,6 +1739,16 @@ void cv_write_debug_tables(struct dsym* symbols, struct dsym* types, void* pv)
 		if (sym->state == SYM_TYPE && sym->typekind != TYPE_TYPEDEF && sym->cvtyperef == 0)
 			cv_write_type(&cv, sym);
 	}
+
+    /* Definitions already emitted while walking need no duplicate. New
+     * forward targets discovered here are consumed by the same work list. */
+    while (cv.forwards) {
+        struct cv_forward *f = cv.forwards;
+        cv.forwards = f->next;
+        if (f->sym->cvtyperef == f->index)
+            cv_write_type(&cv, f->sym);
+        MemFree(f);
+    }
 
 	/* scan symbol table for SYM_TYPE, SYM_INTERNAL */
 

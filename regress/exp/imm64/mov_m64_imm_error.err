@@ -1,0 +1,3 @@
+..\src\imm64\mov_m64_imm_error.asm(4) : Error A2237: Constant value too large: 1122334455667788h
+..\src\imm64\mov_m64_imm_error.asm(5) : Error A2237: Constant value too large: FFFFFFFF00000000h
+..\src\imm64\mov_m64_imm_error.asm(6) : Error A2237: Constant value too large: 100000000h

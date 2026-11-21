@@ -1,0 +1,3 @@
+..\src\systemv_errors\overwritten.asm(5) : Error A2166: Register value overwritten by INVOKE
+..\src\systemv_errors\overwritten.asm(6) : Error A2166: Register value overwritten by INVOKE
+..\src\systemv_errors\overwritten.asm(7) : Error A2146: SYSTEMV parameter TYPE not supported

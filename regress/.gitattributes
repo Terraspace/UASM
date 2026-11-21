@@ -1,0 +1,9 @@
+*.bin -text
+*.BIN -text
+*.obj -text
+*.OBJ -text
+*.o -text
+*.exe -text
+*.EXE -text
+*.lib -text
+*.LIB -text

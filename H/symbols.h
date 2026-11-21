@@ -396,6 +396,8 @@ struct proc_info {
 	unsigned            stackOpCount;
 	unsigned            stackOfs;
 	unsigned            stackAdj;
+	unsigned            stackAlign;
+	unsigned char       stackGPRReads, stackVecReads;
 #endif
 
 #if AMD64_SUPPORT

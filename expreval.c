@@ -120,118 +120,36 @@ static void init_expr( struct expr *opnd )
 	opnd->isptr = FALSE;
 }
 
-static ret_code  GetMask128(struct expr *opnd1, int index, struct asm_tok tokenarray[])
-  {
-    uint_64         dst128Hi = opnd1->hlvalue;
-    uint_64         dst128Lo = opnd1->llvalue;
-	  struct          asym *lbl = NULL;
-    char            buffer[MAX_LINE_LEN];
-    char            buffer1[MAX_LINE_LEN];
-    char            buff[18];
-    char            *ptr;
-    int             i= Token_Count; /* i must remain the start index */
-
-
-      strcpy( buffer,tokenarray->tokpos); 
-    /* if GTEMP is not created yet do it now */
-    if (Parse_Pass == PASS_1){
-      lbl = SymSearch("GMASK");
-      if (lbl == NULL){
-        strcpy(buffer1, ".data");
-        strcpy(tokenarray->tokpos, buffer1);
-        Token_Count = Tokenize(tokenarray->tokpos, 0, tokenarray, TOK_DEFAULT);
-        ParseLine(tokenarray);
-        strcpy(buffer1, "GMASK OWORD 0x");
-        num2hex64(dst128Hi, buff);
-        strcat(buffer1, buff);
-        num2hex64(dst128Lo, buff);
-        strcat(buffer1, buff);
-        strcpy(tokenarray->tokpos, buffer1);
-        Token_Count = Tokenize(tokenarray->tokpos, 0, tokenarray, TOK_DEFAULT);
-        ParseLine(tokenarray);
-        strcpy(buffer1, ".code");
-        strcpy(tokenarray->tokpos, buffer1);
-        Token_Count = Tokenize(tokenarray->tokpos, 0, tokenarray, TOK_DEFAULT);
-        ParseLine(tokenarray);
-        ptr = tokenarray->tokpos;
-        while (*ptr != '\0')*(ptr++) = '\0';
-        ptr = buffer;
-        while (*ptr != ',')ptr++;
-        ptr++;
-        *ptr = '\0';
-        strcat(ptr, "GMASK");
-        AddLineQueue(buffer);
-        strcpy(tokenarray->tokpos, buffer);
-        Token_Count = Tokenize(tokenarray->tokpos, 0, tokenarray, TOK_DEFAULT);
-        tokenarray[Token_Count+1].token = T_FINAL;
-        ParseLine(tokenarray);
-        }
-      else{ /* global variable GMASK exist, reuse it   */
-        num2hex64(dst128Lo, buff);
-        strcpy(buffer1, "mov dword ptr  ");
-        ptr = buffer1 + 14;
-        strcpy(ptr, "GMASK");                  /* mov dword ptr rubi.rc */
-        ptr += 5;
-        strcpy(ptr, ", LOW32(0x");              /* mov dword ptr rubi.rc, LOW32( */
-        ptr += 10;
-        strcat(ptr, buff); /* mov dword ptr rubi.rc, LOW32(dst128Lo */
-        strcat(ptr, ")");
-        strcpy(tokenarray->tokpos, buffer1);
-        Token_Count = Tokenize(tokenarray->tokpos, 0, tokenarray, TOK_DEFAULT);
-        ParseLine(tokenarray);
-        /* second DWORD */
-        ptr = buffer1 + 19;
-        strcpy(ptr, "+4 ,HIGH32(0x");          /* mov dword ptr rubi.rc, HIGH32( */
-        ptr += 13;
-        strcat(ptr, buff); /* mov dword ptr rubi.rc, LOW32(dst128Lo */
-        strcat(ptr, ")");
-        strcpy(tokenarray->tokpos, buffer1);
-        Token_Count = Tokenize(tokenarray->tokpos, 0, tokenarray, TOK_DEFAULT);
-        ParseLine(tokenarray);
-        /* third DWORD */
-        num2hex64(dst128Hi, buff);
-        ptr = buffer1 + 19;
-        strcpy(ptr, "+8, LOW32(0x");          /* mov dword ptr rubi.rc, LOW32( */
-        ptr += 12;
-        strcat(ptr, buff); /* mov dword ptr rubi.rc, LOW32(dst128Lo */
-        strcat(ptr, ")");
-        strcpy(tokenarray->tokpos, buffer1);
-        Token_Count = Tokenize(tokenarray->tokpos, 0, tokenarray, TOK_DEFAULT);
-        ParseLine(tokenarray);
-        /* forth DWORD */
-        ptr = buffer1 + 19;
-        strcpy(ptr, "+8+4, HIGH32(0x");          /* mov dword ptr rubi.rc, HIGH32( */
-        ptr += 15;
-        strcat(ptr, buff); /* mov dword ptr rubi.rc, LOW32(dst128Lo */
-        strcat(ptr, ")");
-        strcpy(tokenarray->tokpos, buffer1);
-        Token_Count = Tokenize(tokenarray->tokpos, 0, tokenarray, TOK_DEFAULT);
-        ParseLine(tokenarray);
-        ptr = tokenarray->tokpos;
-        while (*ptr != '\0')*(ptr++) = '\0';
-        ptr = buffer;
-        while (*ptr != ',')ptr++;
-        ptr++;
-        *ptr = '\0';
-        strcat(ptr, "GMASK");
-        strcpy(tokenarray->tokpos, buffer);
-        Token_Count = Tokenize(tokenarray->tokpos, 0, tokenarray, TOK_DEFAULT);
-        tokenarray[Token_Count+1].token = T_FINAL;
-        ParseLine(tokenarray);
-        } 
-      }   
-    //strcpy(buffer1, "nop");
-    strcpy(tokenarray->tokpos, "por ");
-    strcat(tokenarray->tokpos,tokenarray[1].string_ptr);
-    strcat(tokenarray->tokpos,", ");
-    strcat(tokenarray->tokpos,tokenarray[1].string_ptr);
-    //strcpy(tokenarray->tokpos, buffer1);
-    Token_Count = Tokenize(tokenarray->tokpos, 0, tokenarray, TOK_DEFAULT);
-    tokenarray[Token_Count+1].token = T_FINAL;
-    gmaskflag = TRUE;
-    DebugMsg1(("GetMask128(%s) exit, current ofs=%" I32_SPEC "X\n",  GetCurrOffset() ));
-    return( NOT_ERROR );      
-  }
+/* Materialize an XMM MASK operand as immutable data.  Generated lines use
+ * their own input/token state; never retokenize the expression being evaluated.
+ * Naming by value also lets repeated masks share one constant. */
+static ret_code GetMask128(struct expr *opnd)
+{
+    char name[64];
+    char line[160];
+    struct asym *sym;
+    sprintf(name, "@UASM_MASK_%016" I64_SPEC "X%016" I64_SPEC "X",
+            opnd->hlvalue, opnd->llvalue);
+    sym = SymSearch(name);
+    /* FASTPASS retains isdefined; the pool offset still restarts each pass. */
+    if (sym == NULL || !sym->isdefined ||
+        (sym->segment && sym->offset >= ((struct dsym *)sym->segment)->e.seginfo->current_loc)) {
+        AddLineQueue("_UASM_MASK SEGMENT ALIGN(16) READONLY 'CONST'");
+        sprintf(line, "%s OWORD 0%016" I64_SPEC "X%016" I64_SPEC "Xh",
+                name, opnd->hlvalue, opnd->llvalue);
+        AddLineQueue(line);
+        AddLineQueue("_UASM_MASK ENDS");
+        RunLineQueue();
+        sym = SymSearch(name);
+        if (sym == NULL || !sym->isdefined)
+            return ERROR;
+    }
+    init_expr(opnd);
+    opnd->kind = EXPR_ADDR;
+    opnd->mem_type = MT_OWORD;
+    opnd->sym = sym;
+    return NOT_ERROR;
+}
 
 /*   InitRecordVar is used for inline initialise RECORD to be compatibile with masm, v2.41 
 *    now it can be used as :
@@ -4043,7 +3961,6 @@ static ret_code evaluate( struct expr *opnd1, int *i, struct asm_tok tokenarray[
 {
     ret_code rc = NOT_ERROR;
     char *p;
-    char *p1;
 	char clabel[100];
 	struct asym *labelsym;
 	struct asym *labelsym2;
@@ -4247,18 +4164,13 @@ static ret_code evaluate( struct expr *opnd1, int *i, struct asm_tok tokenarray[
         if (rc != ERROR){
             rc = calculate( opnd1, &opnd2, &tokenarray[curr_operator] );
           }
-        /* here we get the mask 128 v2.45  */
-          p1 = tokenarray[3].string_ptr;
-          if ((*p1 & 0xdf) == 'M') {    
-            if (0 == _memicmp(p1, "MASK", 4)) {
-              if (0 == _memicmp(tokenarray[1].string_ptr, "xmm", 3)) {
-                if (GetMask128(opnd1, 3, tokenarray) != ERROR)
-                  rc = NOT_ERROR;
-                opnd2.kind = EXPR_ADDR;
-                opnd2.mem_type = MT_OWORD;
-              }
-            }
-          }
+        /* Only a complete, direct XMM MASK operand requests materialization. */
+        if (rc != ERROR && curr_operator == 3 && *i == end &&
+            tokenarray[0].token == T_INSTRUCTION &&
+            tokenarray[3].tokval == T_MASK &&
+            tokenarray[1].token == T_REG &&
+            (GetValueSp(tokenarray[1].tokval) & OP_XMM))
+            rc = GetMask128(opnd1);
         if( flags & EXPF_ONEOPND ) /* stop after one operand? */
            break;
     }

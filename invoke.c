@@ -1372,15 +1372,7 @@ static int sysv_fcstart(struct dsym const *proc, int numparams, int start, struc
 				numparams++;
 	}
 
-	/* Perform stack alignment pre operand setup to ensure stack aligned 16 at point of call */
-	/**value = 0;
-	if (proc->e.procinfo->stackAdj % 16 != 0) {
-		AddLineQueueX("sub %r, %u", T_RSP, NUMQUAL 8);
-		*value = 8;
-	}*/
-
-	if (CurrProc)
-		CurrProc->e.procinfo->stackAdj = 0;
+	proc->e.procinfo->stackAdj = 0;
 
 	return(0);	// Return 0=left_to_right, 1=right_to_left
 }
@@ -1388,9 +1380,14 @@ static int sysv_fcstart(struct dsym const *proc, int numparams, int start, struc
 static void sysv_fcend(struct dsym const *proc, int numparams, int value)
 /*************************************************************************/
 {
-	if (proc->e.procinfo->stackAdj != 0)
-		AddLineQueueX("add %r, %d", T_RSP, NUMQUAL 8);
-
+	unsigned align = proc->e.procinfo->stackAlign;
+	unsigned bytes = (proc->e.procinfo->stackOfs + align - 1) & ~(align - 1);
+	if (align > 16) {
+		AddLineQueueX("mov rsp,[rsp+%u]", bytes);
+		return;
+	}
+	if (bytes)
+		AddLineQueueX("add %r, %u", T_RSP, NUMQUAL bytes);
 	proc->e.procinfo->stackAdj = 0;
 	return;
 }
@@ -1442,7 +1439,7 @@ static int sysv_reg( unsigned int reg )
 /* Return a 64bit register equivalent to the supplied */
 static int sysv_regTo64(unsigned int reg)
 {
-	unsigned int resultReg = T_RAX;
+	unsigned int resultReg = reg;
 	if (GetValueSp(reg) & OP_XMM || GetValueSp(reg) & OP_YMM || GetValueSp(reg) & OP_ZMM)
 	{
 		return(reg);
@@ -1504,41 +1501,49 @@ static int sysv_regTo64(unsigned int reg)
 				resultReg = T_RSP;
 				break;
 			case T_R8B:
+			case T_R8W:
 			case T_R8D:
 			case T_R8:
 				resultReg = T_R8;
 				break;
 			case T_R9B:
+			case T_R9W:
 			case T_R9D:
 			case T_R9:
 				resultReg = T_R9;
 				break;
 			case T_R10B:
+			case T_R10W:
 			case T_R10D:
 			case T_R10:
 				resultReg = T_R10;
 				break;
 			case T_R11B:
+			case T_R11W:
 			case T_R11D:
 			case T_R11:
 				resultReg = T_R11;
 				break;
 			case T_R12B:
+			case T_R12W:
 			case T_R12D:
 			case T_R12:
 				resultReg = T_R12;
 				break;
 			case T_R13B:
+			case T_R13W:
 			case T_R13D:
 			case T_R13:
 				resultReg = T_R13;
 				break;
 			case T_R14B:
+			case T_R14W:
 			case T_R14D:
 			case T_R14:
 				resultReg = T_R14;
 				break;
 			case T_R15B:
+			case T_R15W:
 			case T_R15D:
 			case T_R15:
 				resultReg = T_R15;
@@ -1588,14 +1593,51 @@ static int sysv_GetNextVEC(struct proc_info *info, int size)
 		return(sysV64_regsYMM[info->firstVEC++]);
 	if (size == 64)
 		return(sysV64_regsZMM[info->firstVEC++]);
+	return(-1);
+}
+
+/* Fail an overlong expansion instead of writing past the deferred queue. */
+static char *sysv_stack_line(struct proc_info *info)
+{
+	static char overflow[MAX_LINE_LEN];
+	if (info->stackOpCount == sizeof(info->stackOps) / sizeof(info->stackOps[0])) {
+		EmitErr(INVOKE_ARGUMENT_NOT_SUPPORTED);
+		return overflow;
+	}
+	return info->stackOps[info->stackOpCount++];
+}
+
+/* Stack vectors are laid out in source order, but emitted in reverse order.
+ * Padding belongs BEFORE the aligned argument, not inside its value. */
+static void sysv_stack_vector(struct proc_info *info, unsigned size, bool direct, char *value)
+{
+	unsigned pad = (-info->stackOfs) & (size - 1);
+	int off;
+	if (size > info->stackAlign) info->stackAlign = size;
+	if (pad) BuildCodeLine(sysv_stack_line(info), "sub rsp,%u", pad);
+	if (direct) {
+		BuildCodeLine(sysv_stack_line(info), "%s [rsp],%s",
+			size == 16 ? "movdqu" : size == 32 ? "vmovdqu" : "vmovdqu64", value);
+	} else {
+		/* Copy through RAX without destroying any input register (including
+		 * XMM8/YMM8/ZMM8, which may supply another stack argument). */
+		for (off = size - 8; off >= 0; off -= 8) {
+			/* Restore RAX between chunks: it may also address the source. */
+			BuildCodeLine(sysv_stack_line(info), "pop rax");
+			BuildCodeLine(sysv_stack_line(info), "mov [rsp+%u],rax", off + 8);
+			BuildCodeLine(sysv_stack_line(info), "mov rax,qword ptr (%s)+%u", value, off);
+			BuildCodeLine(sysv_stack_line(info), "push rax");
+		}
+	}
+	BuildCodeLine(sysv_stack_line(info), "sub rsp,%u", size);
+	info->stackOfs += pad + size;
 }
 
 /*
 * VARARG parameter for SYSTEMV.
 * the first 6 parameters are held in registers: rdi,rsi,rdx,rcx,r8,r9 for non-float arguments,
-* xmm0->xmm7 for float arguments or vector. If parameter size is > 8, the address of
-* the argument is used instead of the value, unless it's _m128/_m256 then it uses a vector register.
-* structure members are inspected one by one and sloted into available registers where possible else on stack.
+* xmm0->xmm7 for scalar floats and 128-bit vectors. Unnamed wider vectors
+* are stack arguments. General aggregate classification is not implemented.
 */
 static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *param, bool addr, struct expr *opnd, char *paramvalue, uint_8 *regs_used)
 /************************************************************************************************************************************************/
@@ -1609,6 +1651,61 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 
 	/* VARARG parameters have no typing information, so we have to imply the type purely from the operand in invoke */
 	psize = SizeFromMemtype(opnd->mem_type, USE64, opnd->type);
+
+	if (!addr && opnd->mem_type == MT_TYPE && opnd->type &&
+		_stricmp(opnd->type->name, "__m128") &&
+		_stricmp(opnd->type->name, "__m256") &&
+		_stricmp(opnd->type->name, "__m512")) {
+		EmitErr(INVOKE_ARGUMENT_NOT_SUPPORTED, index + 1);
+		return(1);
+	}
+
+	if (!addr && (psize > 8) && psize != 16 && psize != 32 && psize != 64) {
+		EmitErr(INVOKE_ARGUMENT_NOT_SUPPORTED, index + 1);
+		return(1);
+	}
+
+	if (!addr && opnd->kind != EXPR_CONST &&
+		(psize == 1 || psize == 2 || (opnd->kind == EXPR_REG && !opnd->indirect &&
+		 SizeFromRegister(opnd->base_reg->tokval) <= 2))) {
+		const char *extend = (opnd->mem_type == MT_SBYTE || opnd->mem_type == MT_SWORD) ? "movsx" : "movzx";
+		reg = sysv_GetNextGPR(info, 4);
+		if (reg != -1) {
+			AddLineQueueX("%s %r,%s", extend, reg, paramvalue);
+			*regs_used |= 1 << sysv_reg(reg);
+		} else {
+			BuildCodeLine(sysv_stack_line(info), "xchg rax,[rsp]");
+			BuildCodeLine(sysv_stack_line(info), "%s eax,%s", extend, paramvalue);
+			BuildCodeLine(sysv_stack_line(info), "push rax");
+			info->stackOfs += 8;
+		}
+		return(1);
+	}
+
+	/* Default argument promotions: typed float operands become doubles;
+	 * floating memory operands use the SSE register bank, not INTEGER. */
+	if (!addr && opnd->kind != EXPR_FLOAT &&
+		(opnd->mem_type == MT_REAL4 || opnd->mem_type == MT_REAL8)) {
+		reg = sysv_GetNextVEC(info, 16);
+		if (reg != -1) {
+			AddLineQueueX("%s %r,%s", psize == 4 ? "cvtss2sd" : "movsd", reg, paramvalue);
+			info->vecused |= 1 << sysv_reg(reg);
+			info->vararg_vecs++;
+		} else if (psize == 8 && !(opnd->kind == EXPR_REG && !opnd->indirect)) {
+			BuildCodeLine(sysv_stack_line(info), "push %s", paramvalue);
+			info->stackOfs += 8;
+		} else {
+			/* Save the scratch vector below the resulting eightbyte argument. */
+			BuildCodeLine(sysv_stack_line(info), "add rsp,16");
+			BuildCodeLine(sysv_stack_line(info), "movdqu xmm8,[rsp]");
+			BuildCodeLine(sysv_stack_line(info), "movsd [rsp+16],xmm8");
+			BuildCodeLine(sysv_stack_line(info), "%s xmm8,%s", psize == 4 ? "cvtss2sd" : "movsd", paramvalue);
+			BuildCodeLine(sysv_stack_line(info), "movdqu [rsp],xmm8");
+			BuildCodeLine(sysv_stack_line(info), "sub rsp,24");
+			info->stackOfs += 8;
+		}
+		return(1);
+	}
 
 	/* ******************************************************************************************************************** */
 	/* CONST */
@@ -1633,12 +1730,12 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 		{
 			if ( (opnd->value64 > H_LONG_MAX || opnd->value64 < H_LONG_MIN) ) 
 			{
-				BuildCodeLine(info->stackOps[info->stackOpCount++], "mov %r ptr [%r+4], %r ( %s )", T_DWORD, T_RSP, T_HIGH32, paramvalue);
-				BuildCodeLine(info->stackOps[info->stackOpCount++], "mov %r ptr [%r], %r ( %s )", T_DWORD, T_RSP, T_LOW32, paramvalue);
-				BuildCodeLine(info->stackOps[info->stackOpCount++], "sub rsp,8");
+				BuildCodeLine(sysv_stack_line(info), "mov %r ptr [%r+4], %r ( %s )", T_DWORD, T_RSP, T_HIGH32, paramvalue);
+				BuildCodeLine(sysv_stack_line(info), "mov %r ptr [%r], %r ( %s )", T_DWORD, T_RSP, T_LOW32, paramvalue);
+				BuildCodeLine(sysv_stack_line(info), "sub rsp,8");
 			}
 			else
-				sprintf(info->stackOps[info->stackOpCount++], "push %s", paramvalue);
+				sprintf(sysv_stack_line(info), "push %s", paramvalue);
 			info->stackOfs += 8;
 			info->stackAdj += 8; // ?
 
@@ -1650,7 +1747,7 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 	/* ******************************************************************************************************************** */
 	if (opnd->kind == EXPR_FLOAT)
 	{
-		if (psize == 0) psize = 4;		 // If no size specified, assume float.
+		psize = 8; /* Variadic floating literals are doubles. */
 		reg = sysv_GetNextVEC(info, 16); // float or double will always go to xmm, so request size = 16.
 		if (reg != -1)
 		{
@@ -1685,9 +1782,10 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 		/* No free Vector Register, value goes to stack */
 		else
 		{
-			sprintf(info->stackOps[info->stackOpCount++], "push %s", paramvalue);
+			BuildCodeLine(sysv_stack_line(info), "xchg rax,[rsp]");
+			BuildCodeLine(sysv_stack_line(info), "mov rax,real8 ptr %s", opnd->float_tok->string_ptr);
+			BuildCodeLine(sysv_stack_line(info), "push rax");
 			info->stackOfs += 8;
-			info->stackAdj += 8; // ?
 		}
 		return(1);
 	}
@@ -1704,9 +1802,9 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 		else if (GetValueSp(reg) & OP_XMM)
 			reg = sysv_GetNextVEC(info, 16);
 		else if (GetValueSp(reg) & OP_YMM)
-			reg = sysv_GetNextVEC(info, 32);
+			reg = -1;
 		else if (GetValueSp(reg) & OP_ZMM)
-			reg = sysv_GetNextVEC(info, 64);
+			reg = -1;
 		if (reg != -1)
 		{
 			if (GetValueSp(opnd->base_reg->tokval) & OP_R)
@@ -1732,67 +1830,37 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 			{
 				if (regsize == 8)
 				{
-					sprintf(info->stackOps[info->stackOpCount++], "push %s", paramvalue);
+					sprintf(sysv_stack_line(info), "push %s", paramvalue);
 				}
 				else if (regsize == 4)
 				{
-					sprintf(info->stackOps[info->stackOpCount++], "push %s", paramvalue);
-					BuildCodeLine(info->stackOps[info->stackOpCount++], "movsxd %r, %s", sysv_regTo64(reg), paramvalue);
+						BuildCodeLine(sysv_stack_line(info), "mov [%r], %s", T_RSP, paramvalue);
+						BuildCodeLine(sysv_stack_line(info), "sub %r, 8", T_RSP);
 				}
 				else if (regsize == 2)
 				{
-					sprintf(info->stackOps[info->stackOpCount++], "push %s", paramvalue);
-					BuildCodeLine(info->stackOps[info->stackOpCount++], "movsx %r, %s", sysv_regTo64(reg), paramvalue);
+						BuildCodeLine(sysv_stack_line(info), "mov [%r], %s", T_RSP, paramvalue);
+						BuildCodeLine(sysv_stack_line(info), "sub %r, 8", T_RSP);
 				}
 				else if (regsize == 1)
 				{
-					sprintf(info->stackOps[info->stackOpCount++], "push %s", paramvalue);
-					BuildCodeLine(info->stackOps[info->stackOpCount++], "movsx %r, %s", sysv_regTo64(reg), paramvalue);
+						BuildCodeLine(sysv_stack_line(info), "mov [%r], %s", T_RSP, paramvalue);
+						BuildCodeLine(sysv_stack_line(info), "sub %r, 8", T_RSP);
 				}	
 				info->stackOfs += 8;
 				info->stackAdj += 8; // ?
 			}
 			else if (GetValueSp(reg) & OP_XMM)
 			{
-				BuildCodeLine(info->stackOps[info->stackOpCount++], "%s xmmword ptr [%r], %s", MOVE_ALIGNED_INT(), T_RSP, paramvalue);
-				if (info->stackOfs % 16 != 0)
-				{
-					BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 24", T_RSP);
-					info->stackOfs += 24;
-				}
-				else
-				{
-					BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 16", T_RSP);
-					info->stackOfs += 16;
-				}
+				sysv_stack_vector(info, 16, TRUE, paramvalue);
 			}
 			else if (GetValueSp(reg) & OP_YMM)
 			{
-				BuildCodeLine(info->stackOps[info->stackOpCount++], "%s ymmword ptr [%r], %s", MOVE_UNALIGNED_INT(), T_RSP, paramvalue);
-				if (info->stackOfs % 16 != 0)
-				{
-					BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 40", T_RSP);
-					info->stackOfs += 40;
-				}
-				else
-				{
-					BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 32", T_RSP);
-					info->stackOfs += 32;
-				}
+				sysv_stack_vector(info, 32, TRUE, paramvalue);
 			}
 			else if (GetValueSp(reg) & OP_ZMM)
 			{
-				BuildCodeLine(info->stackOps[info->stackOpCount++], "%s zmmword ptr [%r], %s", MOVE_UNALIGNED_INT(), T_RSP, paramvalue);
-				if (info->stackOfs % 16 != 0)
-				{
-					BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 72", T_RSP);
-					info->stackOfs += 72;
-				}
-				else
-				{
-					BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 64", T_RSP);
-					info->stackOfs += 64;
-				}
+				sysv_stack_vector(info, 64, TRUE, paramvalue);
 			}
 		}
 		return(1);
@@ -1815,31 +1883,34 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 		{
 			if (psize == 8)
 			{
-				sprintf(info->stackOps[info->stackOpCount++], "push %s", paramvalue);
+				sprintf(sysv_stack_line(info), "push %s", paramvalue);
 				info->stackOfs += 8;
 				info->stackAdj += 8; // ?
 			}
 			else if (psize == 4)
 			{
-				BuildCodeLine(info->stackOps[info->stackOpCount++], "push rax");
-				BuildCodeLine(info->stackOps[info->stackOpCount++], "movsxd rax, eax");
-				BuildCodeLine(info->stackOps[info->stackOpCount++], "mov eax, %s", paramvalue);
+				BuildCodeLine(sysv_stack_line(info), "xchg rax,[rsp]");
+				BuildCodeLine(sysv_stack_line(info), "movsxd rax, eax");
+				BuildCodeLine(sysv_stack_line(info), "mov eax, %s", paramvalue);
+				BuildCodeLine(sysv_stack_line(info), "push rax");
 				info->stackOfs += 8;
 				info->stackAdj += 8; // ?
 			}
 			else if (psize == 2)
 			{
-				BuildCodeLine(info->stackOps[info->stackOpCount++], "push rax");
-				BuildCodeLine(info->stackOps[info->stackOpCount++], "movsx rax, ax");
-				BuildCodeLine(info->stackOps[info->stackOpCount++], "mov ax, %s", paramvalue);
+				BuildCodeLine(sysv_stack_line(info), "xchg rax,[rsp]");
+				BuildCodeLine(sysv_stack_line(info), "movsx rax, ax");
+				BuildCodeLine(sysv_stack_line(info), "mov ax, %s", paramvalue);
+				BuildCodeLine(sysv_stack_line(info), "push rax");
 				info->stackOfs += 8;
 				info->stackAdj += 8; // ?
 			}
 			else if (psize == 1)
 			{
-				BuildCodeLine(info->stackOps[info->stackOpCount++], "push rax");
-				BuildCodeLine(info->stackOps[info->stackOpCount++], "movsx rax, al");
-				BuildCodeLine(info->stackOps[info->stackOpCount++], "mov al, %s", paramvalue);
+				BuildCodeLine(sysv_stack_line(info), "xchg rax,[rsp]");
+				BuildCodeLine(sysv_stack_line(info), "movsx rax, al");
+				BuildCodeLine(sysv_stack_line(info), "mov al, %s", paramvalue);
+				BuildCodeLine(sysv_stack_line(info), "push rax");
 				info->stackOfs += 8;
 				info->stackAdj += 8; // ?
 			}
@@ -1868,31 +1939,34 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 		{
 			if (psize == 8)
 			{
-				sprintf(info->stackOps[info->stackOpCount++], "push %s", paramvalue);
+				sprintf(sysv_stack_line(info), "push %s", paramvalue);
 				info->stackOfs += 8;
 				info->stackAdj += 8; // ?
 			}
 			else if (psize == 4)
 			{
-				BuildCodeLine(info->stackOps[info->stackOpCount++], "push rax");
-				BuildCodeLine(info->stackOps[info->stackOpCount++], "movsxd rax, eax");
-				BuildCodeLine(info->stackOps[info->stackOpCount++], "mov eax, %s", paramvalue);
+				BuildCodeLine(sysv_stack_line(info), "xchg rax,[rsp]");
+				BuildCodeLine(sysv_stack_line(info), "movsxd rax, eax");
+				BuildCodeLine(sysv_stack_line(info), "mov eax, %s", paramvalue);
+				BuildCodeLine(sysv_stack_line(info), "push rax");
 				info->stackOfs += 8;
 				info->stackAdj += 8; // ?
 			}
 			else if (psize == 2)
 			{
-				BuildCodeLine(info->stackOps[info->stackOpCount++], "push rax");
-				BuildCodeLine(info->stackOps[info->stackOpCount++], "movsx rax, ax");
-				BuildCodeLine(info->stackOps[info->stackOpCount++], "mov ax, %s", paramvalue);
+				BuildCodeLine(sysv_stack_line(info), "xchg rax,[rsp]");
+				BuildCodeLine(sysv_stack_line(info), "movsx rax, ax");
+				BuildCodeLine(sysv_stack_line(info), "mov ax, %s", paramvalue);
+				BuildCodeLine(sysv_stack_line(info), "push rax");
 				info->stackOfs += 8;
 				info->stackAdj += 8; // ?
 			}
 			else if (psize == 1)
 			{
-				BuildCodeLine(info->stackOps[info->stackOpCount++], "push rax");
-				BuildCodeLine(info->stackOps[info->stackOpCount++], "movsx rax, al");
-				BuildCodeLine(info->stackOps[info->stackOpCount++], "mov al, %s", paramvalue);
+				BuildCodeLine(sysv_stack_line(info), "xchg rax,[rsp]");
+				BuildCodeLine(sysv_stack_line(info), "movsx rax, al");
+				BuildCodeLine(sysv_stack_line(info), "mov al, %s", paramvalue);
+				BuildCodeLine(sysv_stack_line(info), "push rax");
 				info->stackOfs += 8;
 				info->stackAdj += 8; // ?
 			}
@@ -1916,13 +1990,7 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 		/* No free Vector Register, value goes to stack */
 		else
 		{
-			if (info->stackOfs % 16 != 0)
-				BuildCodeLine(info->stackOps[info->stackOpCount++], "%s xmmword ptr [%r+%u], xmm8", MOVE_ALIGNED_INT(), T_RSP, NUMQUAL info->stackAdj);
-			else
-				BuildCodeLine(info->stackOps[info->stackOpCount++], "%s xmmword ptr [%r], xmm8", MOVE_ALIGNED_INT(), T_RSP);
-			BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 16", T_RSP);
-			info->stackOfs += 16;
-			BuildCodeLine(info->stackOps[info->stackOpCount++], "%s xmm8, xmmword ptr %s", MOVE_ALIGNED_INT(), paramvalue);
+			sysv_stack_vector(info, 16, FALSE, paramvalue);
 		}
 		return(1);
 	}
@@ -1931,7 +1999,7 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 	/* ******************************************************************************************************************** */
 	if ( opnd->sym && (opnd->sym->mem_type == MT_TYPE || opnd->kind == EXPR_ADDR) && opnd->sym->type && _stricmp(opnd->sym->type->name, "__m256") == 0)
 	{
-		reg = sysv_GetNextVEC(info, 32);
+		reg = -1;
 		if (reg != -1)
 		{
 			AddLineQueueX("%s %r, ymmword ptr %s", MOVE_ALIGNED_INT(), reg, paramvalue);
@@ -1943,13 +2011,7 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 		/* No free Vector Register, value goes to stack */
 		else
 		{
-			if (info->stackOfs % 16 != 0)
-				BuildCodeLine(info->stackOps[info->stackOpCount++], "%s ymmword ptr [%r+%u], ymm8", MOVE_UNALIGNED_INT(), T_RSP, NUMQUAL info->stackAdj);
-			else
-				BuildCodeLine(info->stackOps[info->stackOpCount++], "%s ymmword ptr [%r], ymm8", MOVE_UNALIGNED_INT(), T_RSP);
-			BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 32", T_RSP);
-			info->stackOfs += 32;
-			BuildCodeLine(info->stackOps[info->stackOpCount++], "%s ymm8, ymmword ptr %s", MOVE_UNALIGNED_INT(), paramvalue);
+			sysv_stack_vector(info, 32, FALSE, paramvalue);
 		}
 		return(1);
 	}
@@ -1958,7 +2020,7 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 	/* ******************************************************************************************************************** */
 	if ( opnd->sym && (opnd->sym->mem_type == MT_TYPE || opnd->kind == EXPR_ADDR) && opnd->sym->type && _stricmp(opnd->sym->type->name, "__m512") == 0)
 	{
-		reg = sysv_GetNextVEC(info, 64);
+		reg = -1;
 		if (reg != -1)
 		{
 			AddLineQueueX("%s %r, zmmword ptr %s", MOVE_ALIGNED_INT(), reg, paramvalue);
@@ -1970,13 +2032,7 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 		/* No free Vector Register, value goes to stack */
 		else
 		{
-			if (info->stackOfs % 16 != 0)
-				BuildCodeLine(info->stackOps[info->stackOpCount++], "%s zmmword ptr [%r+%u], zmm8", MOVE_UNALIGNED_INT(), T_RSP, NUMQUAL info->stackAdj);
-			else
-				BuildCodeLine(info->stackOps[info->stackOpCount++], "%s zmmword ptr [%r], zmm8", MOVE_UNALIGNED_INT(), T_RSP);
-			BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 64", T_RSP);
-			info->stackOfs += 64;
-			BuildCodeLine(info->stackOps[info->stackOpCount++], "%s zmm8, zmmword ptr %s", MOVE_UNALIGNED_INT(), paramvalue);
+			sysv_stack_vector(info, 64, FALSE, paramvalue);
 		}
 		return(1);
 	}
@@ -1996,13 +2052,14 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 				EmitErr(INVOKE_ARGUMENT_TYPE_MISMATCH, index + 1);
 
 			/* Mark register as written */
-			*regs_used |= (1 << reg);
+			*regs_used |= (1 << sysv_reg(reg));
 		}
 		/* No free GPR Register, value goes to stack */
 		else
 		{
-			BuildCodeLine(info->stackOps[info->stackOpCount++], "push rax", paramvalue);
-			BuildCodeLine(info->stackOps[info->stackOpCount++], "lea rax, %s", paramvalue);
+			BuildCodeLine(sysv_stack_line(info), "xchg rax,[rsp]");
+			BuildCodeLine(sysv_stack_line(info), "lea rax, %s", paramvalue);
+			BuildCodeLine(sysv_stack_line(info), "push rax");
 			info->stackOfs += 8;
 			info->stackAdj += 8; // ?
 		}
@@ -2015,11 +2072,10 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 /*
 * parameter for SYSTEMV.
 * the first 6 parameters are held in registers: rdi,rsi,rdx,rcx,r8,r9 for non-float arguments,
-* xmm0->xmm7 for float arguments or vector. If parameter size is > 8, the address of
-* the argument is used instead of the value, unless it's _m128/_m256 then it uses a vector register.
-* structure members are inspected one by one and sloted into available registers where possible else on stack.
+* xmm0->xmm7 for scalar floats and 128-bit vectors. Unnamed wider vectors
+* are stack arguments. General aggregate classification is not implemented.
 */
-static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bool addr, struct expr *opnd, char *paramvalue, uint_8 *regs_used)
+static int sysv_param_impl(struct dsym const *proc, int index, struct dsym *param, bool addr, struct expr *opnd, char *paramvalue, uint_8 *regs_used)
 /************************************************************************************************************************************************/
 {
 	uint_32 psize;
@@ -2030,6 +2086,7 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 	int regsize;
 	struct proc_info *info = proc->e.procinfo;
 	bool destroyed = FALSE;
+
 
 	DebugMsg1(("sysv_param(%s, index=%u, param.memtype=%Xh, addr=%u) enter\n", proc->sym.name, index, param->sym.mem_type, addr));
 
@@ -2053,7 +2110,7 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 		if (GetValueSp(reg) & OP_R)
 		{
 			base = sysv_reg(reg);
-			if (base <= 6 && *regs_used & (1 << base))
+			if (base >= 0 && base <= 6 && *regs_used & (1 << base))
 				destroyed = TRUE;
 		}
 	}
@@ -2061,8 +2118,8 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 		reg2 = sysv_regTo64(opnd->idx_reg->tokval);
 		if (GetValueSp(reg2) & OP_R) 
 		{
-			base = sysv_reg(reg);
-			if (base <= 6 && *regs_used & (1 << base))
+			base = sysv_reg(reg2);
+			if (base >= 0 && base <= 6 && *regs_used & (1 << base))
 				destroyed = TRUE;
 		}
 	}
@@ -2470,16 +2527,15 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 
 			if (opnd->kind == EXPR_FLOAT)
 			{
-				*regs_used |= (1 << 6);
-				BuildCodeLine(info->stackOps[info->stackOpCount++], "push %r", T_RAX);
-				BuildCodeLine(info->stackOps[info->stackOpCount++], "mov %r, %s", T_EAX, paramvalue);
+				BuildCodeLine(sysv_stack_line(info), "xchg rax,[rsp]");
+				BuildCodeLine(sysv_stack_line(info), "mov %r, %s", T_EAX, paramvalue);
+				BuildCodeLine(sysv_stack_line(info), "push rax");
 				info->stackOfs += 8;
 				info->stackAdj += 8; // ?
 				return(1);
 			}
 			if (opnd->kind == EXPR_CONST)
 			{
-				*regs_used |= (1 << 6);
 				AddLineQueueX("mov %r, %s.0", T_EAX, paramvalue);
 				AddLineQueueX("%s %s, %r", MOVE_SIMD_DWORD(), param->sym.string_ptr, T_EAX);
 				return(1);
@@ -2489,8 +2545,8 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 				reg = opnd->base_reg->tokval;
 				if (GetValueSp(reg) & OP_XMM)
 				{
-					BuildCodeLine(info->stackOps[info->stackOpCount++], "%s [%r], %s", MOVE_SINGLE(), T_RSP, paramvalue);
-					BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 8", T_RSP);
+					BuildCodeLine(sysv_stack_line(info), "%s [%r], %s", MOVE_SINGLE(), T_RSP, paramvalue);
+					BuildCodeLine(sysv_stack_line(info), "sub %r, 8", T_RSP);
 					info->stackOfs += 8;
 					info->stackAdj += 8; // ?
 					return(1);
@@ -2503,10 +2559,9 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 			}
 			if (opnd->kind == EXPR_REG && opnd->indirect == TRUE)
 			{
-				*regs_used |= (1 << 6);
-				BuildCodeLine(info->stackOps[info->stackOpCount++], "mov [%r], eax", T_RSP);
-				BuildCodeLine(info->stackOps[info->stackOpCount++], "mov eax, dword ptr %s", paramvalue);
-				BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 8", T_RSP);
+				BuildCodeLine(sysv_stack_line(info), "xchg rax,[rsp]");
+				BuildCodeLine(sysv_stack_line(info), "mov eax, dword ptr %s", paramvalue);
+				BuildCodeLine(sysv_stack_line(info), "push rax");
 				info->stackOfs += 8;
 				info->stackAdj += 8; // ?
 				return(1);
@@ -2515,10 +2570,9 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 			{
 				if (psize == 4)
 				{
-					*regs_used |= (1 << 6);
-					BuildCodeLine(info->stackOps[info->stackOpCount++], "mov [%r], eax", T_RSP);
-					BuildCodeLine(info->stackOps[info->stackOpCount++], "mov eax, dword ptr %s", paramvalue);
-					BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 8", T_RSP);
+						BuildCodeLine(sysv_stack_line(info), "xchg rax,[rsp]");
+					BuildCodeLine(sysv_stack_line(info), "mov eax, dword ptr %s", paramvalue);
+					BuildCodeLine(sysv_stack_line(info), "push rax");
 					info->stackOfs += 8;
 					info->stackAdj += 8; // ?
 					return(1);
@@ -2541,18 +2595,18 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 
 			if (opnd->kind == EXPR_FLOAT)
 			{
-				*regs_used |= (1 << 6);
-				BuildCodeLine(info->stackOps[info->stackOpCount++], "push %r", T_RAX);
-				BuildCodeLine(info->stackOps[info->stackOpCount++], "mov %r, %r ptr %s", T_RAX, T_REAL8, paramvalue);
+				BuildCodeLine(sysv_stack_line(info), "xchg rax,[rsp]");
+				BuildCodeLine(sysv_stack_line(info), "mov %r, %r ptr %s", T_RAX, T_REAL8, paramvalue);
+				BuildCodeLine(sysv_stack_line(info), "push rax");
 				info->stackOfs += 8;
 				info->stackAdj += 8; // ?
 				return(1);
 			}
 			if (opnd->kind == EXPR_CONST)
 			{
-				*regs_used |= (1 << 6);
-				BuildCodeLine(info->stackOps[info->stackOpCount++], "push %r", T_RAX);
-				BuildCodeLine(info->stackOps[info->stackOpCount++], "mov %r, %r ptr %s.0", T_RAX, T_REAL8, paramvalue);
+				BuildCodeLine(sysv_stack_line(info), "xchg rax,[rsp]");
+				BuildCodeLine(sysv_stack_line(info), "mov %r, %r ptr %s.0", T_RAX, T_REAL8, paramvalue);
+				BuildCodeLine(sysv_stack_line(info), "push rax");
 				info->stackOfs += 8;
 				info->stackAdj += 8; // ?
 				return(1);
@@ -2562,8 +2616,8 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 				reg = opnd->base_reg->tokval;
 				if (GetValueSp(reg) & OP_XMM)
 				{
-					BuildCodeLine(info->stackOps[info->stackOpCount++], "%s [%r], %s", MOVE_DOUBLE(), T_RSP, paramvalue);
-					BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 8", T_RSP);
+					BuildCodeLine(sysv_stack_line(info), "%s [%r], %s", MOVE_DOUBLE(), T_RSP, paramvalue);
+					BuildCodeLine(sysv_stack_line(info), "sub %r, 8", T_RSP);
 					info->stackOfs += 8;
 					info->stackAdj += 8; // ?
 					return(1);
@@ -2576,10 +2630,9 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 			}
 			if (opnd->kind == EXPR_REG && opnd->indirect == TRUE)
 			{
-				*regs_used |= (1 << 6);
-				BuildCodeLine(info->stackOps[info->stackOpCount++], "mov [%r], rax", T_RSP);
-				BuildCodeLine(info->stackOps[info->stackOpCount++], "mov rax, qword ptr %s", paramvalue);
-				BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 8", T_RSP);
+				BuildCodeLine(sysv_stack_line(info), "xchg rax,[rsp]");
+				BuildCodeLine(sysv_stack_line(info), "mov rax, qword ptr %s", paramvalue);
+				BuildCodeLine(sysv_stack_line(info), "push rax");
 				info->stackOfs += 8;
 				info->stackAdj += 8; // ?
 				return(1);
@@ -2588,10 +2641,9 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 			{
 				if (psize == 8)
 				{
-					*regs_used |= (1 << 6);
-					BuildCodeLine(info->stackOps[info->stackOpCount++], "mov [%r], rax", T_RSP);
-					BuildCodeLine(info->stackOps[info->stackOpCount++], "mov rax, qword ptr %s", paramvalue);
-					BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 8", T_RSP);
+						BuildCodeLine(sysv_stack_line(info), "xchg rax,[rsp]");
+					BuildCodeLine(sysv_stack_line(info), "mov rax, qword ptr %s", paramvalue);
+					BuildCodeLine(sysv_stack_line(info), "push rax");
 					info->stackOfs += 8;
 					info->stackAdj += 8; // ?
 					return(1);
@@ -2604,77 +2656,14 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 			}
 			return(1);
 		}
-		/* XMMWORD or __M128 type */
-		/* ******************************************************************************************************************** */
-		if (param->sym.mem_type == MT_OWORD || (param->sym.mem_type == MT_TYPE && _stricmp(param->sym.type->name, "__m128") == 0))
-		{
-			if (opnd->kind == EXPR_REG)
-			{
-				if (info->stackOfs % 16 != 0)
-					BuildCodeLine(info->stackOps[info->stackOpCount++], "%s xmmword ptr [%r+%u], %s", MOVE_ALIGNED_INT(), T_RSP, NUMQUAL info->stackAdj, paramvalue);
-				else
-					BuildCodeLine(info->stackOps[info->stackOpCount++], "%s xmmword ptr [%r], %s", MOVE_ALIGNED_INT(), T_RSP, paramvalue);
-				BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 16", T_RSP);
-				info->stackOfs += 16;
+		if (param->sym.mem_type == MT_OWORD || param->sym.mem_type == MT_YMMWORD ||
+			param->sym.mem_type == MT_ZMMWORD || param->sym.mem_type == MT_TYPE) {
+			unsigned size = SizeFromMemtype(param->sym.mem_type, USE64, param->sym.type);
+			if (size != 16 && size != 32 && size != 64) {
+				EmitErr(INVOKE_ARGUMENT_NOT_SUPPORTED, index + 1);
+				return(1);
 			}
-			else
-			{
-				if (info->stackOfs % 16 != 0)
-					BuildCodeLine(info->stackOps[info->stackOpCount++], "%s xmmword ptr [%r+%u], xmm8", MOVE_ALIGNED_INT(), T_RSP, NUMQUAL info->stackAdj);
-				else
-					BuildCodeLine(info->stackOps[info->stackOpCount++], "%s xmmword ptr [%r], xmm8", MOVE_ALIGNED_INT(), T_RSP);
-				BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 16", T_RSP);
-				info->stackOfs += 16;
-				BuildCodeLine(info->stackOps[info->stackOpCount++], "%s xmm8, xmmword ptr %s", MOVE_ALIGNED_INT(), paramvalue);
-			}
-			return(1);
-		}
-
-		/* YMMWORD or __M256 type */
-		/* ******************************************************************************************************************** */
-		if (param->sym.mem_type == MT_YMMWORD || (param->sym.mem_type == MT_TYPE && _stricmp(param->sym.type->name, "__m256") == 0))
-		{
-			if (opnd->kind == EXPR_REG)
-			{
-				if (info->stackOfs % 16 != 0)
-					BuildCodeLine(info->stackOps[info->stackOpCount++], "%s ymmword ptr [%r+%u], %s", MOVE_UNALIGNED_INT(), T_RSP, NUMQUAL info->stackAdj, paramvalue);
-				else
-					BuildCodeLine(info->stackOps[info->stackOpCount++], "%s ymmword ptr [%r], %s", MOVE_UNALIGNED_INT(), T_RSP, paramvalue);
-				BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 32", T_RSP);
-				info->stackOfs += 32;
-			}
-			else
-			{
-				if (info->stackOfs % 16 != 0)
-					BuildCodeLine(info->stackOps[info->stackOpCount++], "%s ymmword ptr [%r+%u], ymm8", MOVE_UNALIGNED_INT(), T_RSP, NUMQUAL info->stackAdj);
-				else
-					BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 32", T_RSP);
-				info->stackOfs += 32;
-				BuildCodeLine(info->stackOps[info->stackOpCount++], "%s ymm8, ymmword ptr %s", MOVE_UNALIGNED_INT(), paramvalue);
-			}
-			return(1);
-		}
-		
-		/* ZMMWORD or __M512 type */
-		/* ******************************************************************************************************************** */
-		if (param->sym.mem_type == MT_OWORD || (param->sym.mem_type == MT_TYPE && _stricmp(param->sym.type->name, "__m512") == 0))
-		{
-			if (opnd->kind == EXPR_REG)
-			{
-				if (info->stackOfs % 16 != 0)
-					BuildCodeLine(info->stackOps[info->stackOpCount++], "%s zmmword ptr [%r+%u], %s", MOVE_UNALIGNED_INT(), T_RSP, NUMQUAL info->stackAdj, paramvalue);
-				else
-					BuildCodeLine(info->stackOps[info->stackOpCount++], "%s zmmword ptr [%r], %s", MOVE_UNALIGNED_INT(), T_RSP, paramvalue);
-				BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 64", T_RSP);
-				info->stackOfs += 64;
-			}
-			else
-			{
-				BuildCodeLine(info->stackOps[info->stackOpCount++], "%s zmmword ptr [%r+%u], zmm8", MOVE_UNALIGNED_INT(), T_RSP, NUMQUAL info->stackAdj);
-				BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 64", T_RSP);
-				info->stackOfs += 64;
-				BuildCodeLine(info->stackOps[info->stackOpCount++], "%s zmm8, zmmword ptr %s", MOVE_UNALIGNED_INT(), paramvalue);
-			}
+			sysv_stack_vector(info, size, opnd->kind == EXPR_REG && !opnd->indirect, paramvalue);
 			return(1);
 		}
 		/* Integer type argument (byte/word/dword/qword) signed or unsigned */
@@ -2701,12 +2690,12 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 				/* We can't push a 64bit immediate, so split it into 2 dwords */
 				if ((opnd->value64 > H_LONG_MAX || opnd->value64 < H_LONG_MIN))
 				{
-					BuildCodeLine(info->stackOps[info->stackOpCount++], "mov %r ptr [%r+4], %r ( %s )", T_DWORD, T_RSP, T_HIGH32, paramvalue);
-					BuildCodeLine(info->stackOps[info->stackOpCount++], "mov %r ptr [%r], %r ( %s )", T_DWORD, T_RSP, T_LOW32, paramvalue);
-					//BuildCodeLine(info->stackOps[info->stackOpCount++], "sub rsp,8");
+					BuildCodeLine(sysv_stack_line(info), "mov %r ptr [%r+4], %r ( %s )", T_DWORD, T_RSP, T_HIGH32, paramvalue);
+					BuildCodeLine(sysv_stack_line(info), "mov %r ptr [%r], %r ( %s )", T_DWORD, T_RSP, T_LOW32, paramvalue);
+					BuildCodeLine(sysv_stack_line(info), "sub rsp,8");
 				}
 				else
-					BuildCodeLine(info->stackOps[info->stackOpCount++], "push %s", paramvalue);
+					BuildCodeLine(sysv_stack_line(info), "push %s", paramvalue);
 				info->stackOfs += 8;
 				info->stackAdj += 8; // ?
 				return(1);
@@ -2731,65 +2720,65 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 				{
 					if (regsize == 8)
 					{
-						sprintf(info->stackOps[info->stackOpCount++], "push %s", paramvalue);
+						sprintf(sysv_stack_line(info), "push %s", paramvalue);
 					}
 					else if (regsize == 4)
 					{
-						sprintf(info->stackOps[info->stackOpCount++], "push %s", paramvalue);
-						BuildCodeLine(info->stackOps[info->stackOpCount++], "movsxd %r, %s", sysv_regTo64(reg), paramvalue);
+						BuildCodeLine(sysv_stack_line(info), "mov [%r], %s", T_RSP, paramvalue);
+						BuildCodeLine(sysv_stack_line(info), "sub %r, 8", T_RSP);
 					}
 					else if (regsize == 2)
 					{
-						sprintf(info->stackOps[info->stackOpCount++], "push %s", paramvalue);
-						BuildCodeLine(info->stackOps[info->stackOpCount++], "movsx %r, %s", sysv_regTo64(reg), paramvalue);
+						BuildCodeLine(sysv_stack_line(info), "mov [%r], %s", T_RSP, paramvalue);
+						BuildCodeLine(sysv_stack_line(info), "sub %r, 8", T_RSP);
 					}
 					else if (regsize == 1)
 					{
-						sprintf(info->stackOps[info->stackOpCount++], "push %s", paramvalue);
-						BuildCodeLine(info->stackOps[info->stackOpCount++], "movsx %r, %s", sysv_regTo64(reg), paramvalue);
+						BuildCodeLine(sysv_stack_line(info), "mov [%r], %s", T_RSP, paramvalue);
+						BuildCodeLine(sysv_stack_line(info), "sub %r, 8", T_RSP);
 					}
 					info->stackOfs += 8;
 					info->stackAdj += 8; // ?
 				}
 				else if (GetValueSp(reg) & OP_XMM)
 				{
-					BuildCodeLine(info->stackOps[info->stackOpCount++], "%s xmmword ptr [%r], %s", MOVE_ALIGNED_INT(), T_RSP, paramvalue);
+					BuildCodeLine(sysv_stack_line(info), "%s xmmword ptr [%r], %s", MOVE_ALIGNED_INT(), T_RSP, paramvalue);
 					if (info->stackOfs % 16 != 0)
 					{
-						BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 24", T_RSP);
+						BuildCodeLine(sysv_stack_line(info), "sub %r, 24", T_RSP);
 						info->stackOfs += 24;
 					}
 					else
 					{
-						BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 16", T_RSP);
+						BuildCodeLine(sysv_stack_line(info), "sub %r, 16", T_RSP);
 						info->stackOfs += 16;
 					}
 				}
 				else if (GetValueSp(reg) & OP_YMM)
 				{
-					BuildCodeLine(info->stackOps[info->stackOpCount++], "%s ymmword ptr [%r], %s", MOVE_UNALIGNED_INT(), T_RSP, paramvalue);
+					BuildCodeLine(sysv_stack_line(info), "%s ymmword ptr [%r], %s", MOVE_UNALIGNED_INT(), T_RSP, paramvalue);
 					if (info->stackOfs % 16 != 0)
 					{
-						BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 40", T_RSP);
+						BuildCodeLine(sysv_stack_line(info), "sub %r, 40", T_RSP);
 						info->stackOfs += 40;
 					}
 					else
 					{
-						BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 32", T_RSP);
+						BuildCodeLine(sysv_stack_line(info), "sub %r, 32", T_RSP);
 						info->stackOfs += 32;
 					}
 				}
 				else if (GetValueSp(reg) & OP_ZMM)
 				{
-					BuildCodeLine(info->stackOps[info->stackOpCount++], "%s zmmword ptr [%r], %s", MOVE_UNALIGNED_INT(), T_RSP, paramvalue);
+					BuildCodeLine(sysv_stack_line(info), "%s zmmword ptr [%r], %s", MOVE_UNALIGNED_INT(), T_RSP, paramvalue);
 					if (info->stackOfs % 16 != 0)
 					{
-						BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 72", T_RSP);
+						BuildCodeLine(sysv_stack_line(info), "sub %r, 72", T_RSP);
 						info->stackOfs += 72;
 					}
 					else
 					{
-						BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 64", T_RSP);
+						BuildCodeLine(sysv_stack_line(info), "sub %r, 64", T_RSP);
 						info->stackOfs += 64;
 					}
 				}
@@ -2816,31 +2805,34 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 
 				if (psize == 8)
 				{
-					sprintf(info->stackOps[info->stackOpCount++], "push %s", paramvalue);
+					sprintf(sysv_stack_line(info), "push %s", paramvalue);
 					info->stackOfs += 8;
 					info->stackAdj += 8; // ?
 				}
 				else if (psize == 4)
 				{
-					BuildCodeLine(info->stackOps[info->stackOpCount++], "push rax");
-					BuildCodeLine(info->stackOps[info->stackOpCount++], "movsxd rax, eax");
-					BuildCodeLine(info->stackOps[info->stackOpCount++], "mov eax, %s", paramvalue);
+					BuildCodeLine(sysv_stack_line(info), "xchg rax,[rsp]");
+					BuildCodeLine(sysv_stack_line(info), "movsxd rax, eax");
+					BuildCodeLine(sysv_stack_line(info), "mov eax, %s", paramvalue);
+					BuildCodeLine(sysv_stack_line(info), "push rax");
 					info->stackOfs += 8;
 					info->stackAdj += 8; // ?
 				}
 				else if (psize == 2)
 				{
-					BuildCodeLine(info->stackOps[info->stackOpCount++], "push rax");
-					BuildCodeLine(info->stackOps[info->stackOpCount++], "movsx rax, ax");
-					BuildCodeLine(info->stackOps[info->stackOpCount++], "mov ax, %s", paramvalue);
+					BuildCodeLine(sysv_stack_line(info), "xchg rax,[rsp]");
+					BuildCodeLine(sysv_stack_line(info), "movsx rax, ax");
+					BuildCodeLine(sysv_stack_line(info), "mov ax, %s", paramvalue);
+					BuildCodeLine(sysv_stack_line(info), "push rax");
 					info->stackOfs += 8;
 					info->stackAdj += 8; // ?
 				}
 				else if (psize == 1)
 				{
-					BuildCodeLine(info->stackOps[info->stackOpCount++], "push rax");
-					BuildCodeLine(info->stackOps[info->stackOpCount++], "movsx rax, al");
-					BuildCodeLine(info->stackOps[info->stackOpCount++], "mov al, %s", paramvalue);
+					BuildCodeLine(sysv_stack_line(info), "xchg rax,[rsp]");
+					BuildCodeLine(sysv_stack_line(info), "movsx rax, al");
+					BuildCodeLine(sysv_stack_line(info), "mov al, %s", paramvalue);
+					BuildCodeLine(sysv_stack_line(info), "push rax");
 					info->stackOfs += 8;
 					info->stackAdj += 8; // ?
 				}
@@ -2857,31 +2849,34 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 				if (psize == 0) psize = 8;			// If no size specified, assume qword.
 				if (psize == 8)
 				{
-					sprintf(info->stackOps[info->stackOpCount++], "push %s", paramvalue);
+					sprintf(sysv_stack_line(info), "push %s", paramvalue);
 					info->stackOfs += 8;
 					info->stackAdj += 8; // ?
 				}
 				else if (psize == 4)
 				{
-					BuildCodeLine(info->stackOps[info->stackOpCount++], "push rax");
-					BuildCodeLine(info->stackOps[info->stackOpCount++], "movsxd rax, eax");
-					BuildCodeLine(info->stackOps[info->stackOpCount++], "mov eax, %s", paramvalue);
+					BuildCodeLine(sysv_stack_line(info), "xchg rax,[rsp]");
+					BuildCodeLine(sysv_stack_line(info), "movsxd rax, eax");
+					BuildCodeLine(sysv_stack_line(info), "mov eax, %s", paramvalue);
+					BuildCodeLine(sysv_stack_line(info), "push rax");
 					info->stackOfs += 8;
 					info->stackAdj += 8; // ?
 				}
 				else if (psize == 2)
 				{
-					BuildCodeLine(info->stackOps[info->stackOpCount++], "push rax");
-					BuildCodeLine(info->stackOps[info->stackOpCount++], "movsx rax, ax");
-					BuildCodeLine(info->stackOps[info->stackOpCount++], "mov ax, %s", paramvalue);
+					BuildCodeLine(sysv_stack_line(info), "xchg rax,[rsp]");
+					BuildCodeLine(sysv_stack_line(info), "movsx rax, ax");
+					BuildCodeLine(sysv_stack_line(info), "mov ax, %s", paramvalue);
+					BuildCodeLine(sysv_stack_line(info), "push rax");
 					info->stackOfs += 8;
 					info->stackAdj += 8; // ?
 				}
 				else if (psize == 1)
 				{
-					BuildCodeLine(info->stackOps[info->stackOpCount++], "push rax");
-					BuildCodeLine(info->stackOps[info->stackOpCount++], "movsx rax, al");
-					BuildCodeLine(info->stackOps[info->stackOpCount++], "mov al, %s", paramvalue);
+					BuildCodeLine(sysv_stack_line(info), "xchg rax,[rsp]");
+					BuildCodeLine(sysv_stack_line(info), "movsx rax, al");
+					BuildCodeLine(sysv_stack_line(info), "mov al, %s", paramvalue);
+					BuildCodeLine(sysv_stack_line(info), "push rax");
 					info->stackOfs += 8;
 					info->stackAdj += 8; // ?
 				}
@@ -2890,13 +2885,13 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 
 			if (addr || psize > 8)
 			{
-				BuildCodeLine(info->stackOps[info->stackOpCount++], "push %r", T_RAX);
-				BuildCodeLine(info->stackOps[info->stackOpCount++], "lea %r, %s", T_RAX, paramvalue);
+				BuildCodeLine(sysv_stack_line(info), "xchg rax,[rsp]");
+				BuildCodeLine(sysv_stack_line(info), "lea %r, %s", T_RAX, paramvalue);
+				BuildCodeLine(sysv_stack_line(info), "push rax");
 				info->stackOfs += 8;
 				info->stackAdj += 8; // ?
 
 				/* Mark temp register rax as written */
-				*regs_used |= (1 << 6);
 
 				return(1);
 			}
@@ -2906,6 +2901,37 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 
 	return(1);
 
+}
+
+/* Deferred stack copies must not read a register overwritten while setting
+ * up later register arguments. Report the same diagnostic as other INVOKEs. */
+static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bool addr,
+	struct expr *opnd, char *value, uint_8 *regs_used)
+{
+	struct proc_info *info = proc->e.procinfo;
+	unsigned before = info->stackOpCount;
+	int result = sysv_param_impl(proc, index, param, addr, opnd, value, regs_used);
+	struct asm_tok *inputs[2];
+	int j, reg, bit;
+	inputs[0] = opnd->base_reg;
+	inputs[1] = opnd->idx_reg;
+	if (info->stackOpCount != before) {
+		for (j = 0; j < 2; j++) {
+			if (!inputs[j]) continue;
+			reg = sysv_regTo64(inputs[j]->tokval);
+			if (reg == T_RSP) {
+				/* RSP changes while the deferred outgoing area is built. */
+				EmitErr(INVOKE_ARGUMENT_NOT_SUPPORTED, index + 1);
+				continue;
+			}
+			bit = sysv_reg(reg);
+			if (GetValueSp(reg) & (OP_XMM | OP_YMM | OP_ZMM)) {
+				if (bit >= 0 && bit < 8) info->stackVecReads |= 1 << bit;
+			} else if (bit >= 0 && bit <= 6)
+				info->stackGPRReads |= 1 << bit;
+		}
+	}
+	return result;
 }
 
 #endif
@@ -4388,6 +4414,8 @@ ret_code InvokeDirective(int i, struct asm_tok tokenarray[])
 			*(info->stackOps[j]) = NULLC;
 		info->stackOpCount = 0;
 		info->stackOfs = 0;
+		info->stackAlign = 16;
+		info->stackGPRReads = info->stackVecReads = 0;
 	}
 
 	memset(info->vregs, 0, 6); /* reset vregs EVERY pass */
@@ -4520,7 +4548,7 @@ ret_code InvokeDirective(int i, struct asm_tok tokenarray[])
 	{
 		unsigned char sGPR = proc->e.procinfo->firstGPR;
 		unsigned char sVEC = proc->e.procinfo->firstVEC;
-		proc->e.procinfo->vararg_vecs = 0;
+		proc->e.procinfo->vararg_vecs = proc->e.procinfo->firstVEC;
 		for (numParam = 0; curr && (curr->sym.is_vararg == FALSE); curr = curr->nextparam, numParam++)
 		{
 			if (PushInvokeParam(i, tokenarray, proc, curr, numParam, &r0flags) == ERROR)
@@ -4537,16 +4565,24 @@ ret_code InvokeDirective(int i, struct asm_tok tokenarray[])
 				PushInvokeParam(i, tokenarray, proc, curr, j, &r0flags);
 		}
 
-		/* Reverse Write out all Stack based operations */
-		if (proc->e.procinfo->stackAdj % 16 != 0) {
-			BuildCodeLine(proc->e.procinfo->stackOps[proc->e.procinfo->stackOpCount++], "sub %r, 8", T_RSP);
-		}
 		if (proc->sym.langtype == LANG_SYSVCALL)
 		{
-			for (j = proc->e.procinfo->stackOpCount; j >= 0; j--)
-			{
-				AddLineQueueX(proc->e.procinfo->stackOps[j]);
+			if ((info->stackGPRReads & r0flags) || (info->stackVecReads & info->vecused))
+				EmitErr(REGISTER_VALUE_OVERWRITTEN_BY_INVOKE);
+			unsigned align = info->stackAlign;
+			unsigned pad = (-info->stackOfs) & (align - 1);
+			if (align > 16) {
+				/* Keep the original RSP above the argument area and preserve R11. */
+				AddLineQueueX("push r11");
+				AddLineQueueX("lea r11,[rsp+8]");
+				AddLineQueueX("sub rsp,8");
+				AddLineQueueX("and rsp,-%u", align);
+				AddLineQueueX("mov [rsp],r11");
+				AddLineQueueX("mov r11,[r11-8]");
 			}
+			if (pad) AddLineQueueX("sub rsp,%u", pad);
+			for (j = (int)info->stackOpCount - 1; j >= 0; j--)
+				AddLineQueueX(info->stackOps[j]);
 
 			// SYSTEMV Varargs requires a count of vector registers used in vararg in rax.
 			if (proc->e.procinfo->has_vararg)
@@ -4702,4 +4738,3 @@ ret_code InvokeDirective(int i, struct asm_tok tokenarray[])
 
 	return(NOT_ERROR);
 }
-

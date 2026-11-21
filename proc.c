@@ -1222,6 +1222,10 @@ static ret_code ParseParams(struct dsym *proc, int i, struct asm_tok tokenarray[
 					if (paranode->sym.state == SYM_TMACRO) /* register param */
 						;
 					else {
+						if (proc->sym.langtype == LANG_SYSVCALL && paranode->sym.total_size >= 16) {
+							unsigned align = paranode->sym.total_size > 64 ? 64 : paranode->sym.total_size;
+							offset = 16 + ROUND_UP(offset - 16, align);
+						}
 						paranode->sym.offset = offset;
 						proc->e.procinfo->stackparam = TRUE;
 						offset += ROUND_UP(paranode->sym.total_size, CurrWordSize);
@@ -4304,7 +4308,7 @@ static int sysv_pcheck(struct dsym *proc, struct dsym *paranode, int *used, int 
 		proc->e.procinfo->firstVEC = *vecused;
 		return(1);
 	}
-	if (paranode->sym.mem_type == MT_TYPE)
+	if (paranode->sym.mem_type == MT_TYPE || size > CurrWordSize)
 	{
 		/* Unsupported argument type */
 		EmitErr(INVOKE_ARGUMENT_NOT_SUPPORTED);
@@ -4362,6 +4366,23 @@ static void sysv_return(struct dsym *proc, char *buffer)
 /* ========================================================================================================= */
 /* sysv default prologue when PROC FRAME and OPTION FRAME:AUTO is set */
 /* ========================================================================================================= */
+static int sysv_frame_size(struct proc_info *info)
+{
+	int frame = !info->fpo && GetRegNo(info->basereg) != 4 &&
+		(info->parasize != 0 || info->locallist != NULL);
+	int pad = (8 - frame * 8 - info->pushed_reg * 8 - info->localsize) & 15;
+	uint_16 *regs;
+	int count, vectors = 0;
+	if (info->regslist)
+		for (regs = info->regslist, count = *regs++; count; count--, regs++)
+			if (GetValueSp(*regs) & (OP_XMM | OP_YMM | OP_ZMM)) vectors++;
+	/* Values in the red zone cannot survive CALL. Vector saves use allocated
+	 * storage; their slots must never overwrite the return address. */
+	if (ModuleInfo.redzone && info->isleaf && !vectors && info->localsize <= 128)
+		return 0;
+	return info->localsize + ((info->localsize || !info->isleaf || vectors) ? pad : 0);
+}
+
 static void write_sysv_default_prologue_RBP(struct proc_info *info)
 /****************************************************************/
 {
@@ -4370,19 +4391,15 @@ static void write_sysv_default_prologue_RBP(struct proc_info *info)
 	int                 cnt;
 	int                 cntxmm;
 	int                 stackadj = 0;
-	int                 resstack = ((ModuleInfo.win64_flags & W64F_AUTOSTACKSP) ? sym_ReservedStack->value : 0);
 
 	info->pushed_reg = 0;
 
-	//if (info->stackAdj % 16 != 0) stackadj = 8;
 
 	/* Only setup a stack-frame for RBP if there are locals or parameters */
-	stackadj += 8;
 	if (!info->fpo && GetRegNo(info->basereg) != 4 && (info->parasize != 0 || info->locallist != NULL))
 	{
 		AddLineQueueX("push %r", info->basereg);
 		AddLineQueueX("mov %r, %r", info->basereg, T_RSP);
-		stackadj -= 8;
 	}
 	/* after the "push rbp", the stack is xmmword aligned (except if we didn't push rbp) */
 
@@ -4408,82 +4425,33 @@ static void write_sysv_default_prologue_RBP(struct proc_info *info)
 		}
 	}
 
-	/* Ensure RSP is aligned 16 */
-	/*	gprOdd = (info->pushed_reg & 1);
-	if (stackadj == 0 && gprOdd) stackadj += 8;
-	else if (stackadj == 8 && !gprOdd && info->pushed_reg>0) stackadj -= 8;
-	if (info->localsize == 8 && stackadj == 8)
-	stackadj = 0;
-	*/
-
-	if (info->fpo)
-	{
-		if (info->pushed_reg % 2 == 0 && info->pushed_reg > 0)
-			stackadj += 8;
-		else if (info->pushed_reg % 2 == 0)
-			stackadj += 0;
-	}
-	else
-	{
-		if (info->pushed_reg % 2 == 0)
-			stackadj += 0;
-		else
-			stackadj += 8;
-	}
-
-	/* Allocate space for local variables */
-	if ((info->localsize + resstack) > 0)
-	{
-		DebugMsg1(("write_sysv_default_prologue_RBP: localsize=%u\n", info->localsize));
-		/* SUB  RSP, localsize */
-		if (ModuleInfo.redzone == 1 && (info->localsize + resstack) < 128 && resstack == 0)
-			;
-		else
-		{
-			// localsize includes the saved xmms, restack valid and a multiple of 16 or 0.
-			if (Options.frameflags)
-			{
-				AddLineQueueX("lea %r, [%r-%d]", T_RSP, T_RSP, NUMQUAL(info->localsize + stackadj + resstack));
-			}
-			else
-			{
-				AddLineQueueX("sub %r, %d", T_RSP, NUMQUAL(info->localsize + stackadj + resstack));
-			}
-		}
-	}
-	/* No locals, still account for stackadj but only if not a leaf */
-	else if (stackadj > 0 && !info->isleaf)
-	{
+	stackadj = sysv_frame_size(info);
+	if (stackadj) {
 		if (Options.frameflags)
-		{
-			AddLineQueueX("lea %r, [%r-%d]", T_RSP, T_RSP, NUMQUAL(stackadj + resstack));
-		}
+			AddLineQueueX("lea %r, [%r-%d]", T_RSP, T_RSP, NUMQUAL stackadj);
 		else
-		{
-			AddLineQueueX("sub %r, %d", T_RSP, NUMQUAL(stackadj + resstack));
-		}
-		info->stackAdj = stackadj;
+			AddLineQueueX("sub %r, %d", T_RSP, NUMQUAL stackadj);
 	}
 
 	/* save USED vector registers */
 	if (cntxmm)
 	{
 		regist = info->regslist;
-		i = (info->localsize + resstack - cntxmm * 16) & ~(16 - 1);
+		i = stackadj - cntxmm * 16;
 		if (regist)
 		{
 			for (cnt = *regist++; cnt; cnt--, regist++)
 			{
 				if (GetValueSp(*regist) & OP_XMM) {
-					AddLineQueueX("%s [%r+%u], %r", MOVE_ALIGNED_INT(), T_RSP, NUMQUAL i, *regist);
+					AddLineQueueX("%s [%r+%u], %r", MOVE_UNALIGNED_INT(), T_RSP, NUMQUAL i, *regist);
 					i += 16;
 				}
 				else if (GetValueSp(*regist) & OP_YMM) {
-					AddLineQueueX("%s [%r+%u], %r", MOVE_UNALIGNED_INT(), T_RSP, NUMQUAL i, *regist);
+					AddLineQueueX("%s [%r+%u], %r", "vmovdqu", T_RSP, NUMQUAL i, *regist);
 					i += 32;
 				}
 				else if (GetValueSp(*regist) & OP_ZMM) {
-					AddLineQueueX("%s [%r+%u+%s], %r", MOVE_UNALIGNED_INT(), T_RSP, NUMQUAL i, *regist);
+					AddLineQueueX("%s [%r+%u], %r", "vmovdqu64", T_RSP, NUMQUAL i, *regist);
 					i += 64;
 				}
 			}
@@ -4498,28 +4466,7 @@ static void write_sysv_default_prologue_RBP(struct proc_info *info)
 static void write_sysv_default_epilogue_RBP(struct proc_info *info)
 /****************************************************************/
 {
-	int  resstack = ((ModuleInfo.win64_flags & W64F_AUTOSTACKSP) ? sym_ReservedStack->value : 0);
-	int  stackadj = 8;
-
-	if (!info->fpo && GetRegNo(info->basereg) != 4 && (info->parasize != 0 || info->locallist != NULL))
-	{
-		stackadj -= 8;
-	}
-
-	if (info->fpo)
-	{
-		if (info->pushed_reg % 2 == 0 && info->pushed_reg != 0)
-			stackadj += 8;
-		else if (info->pushed_reg != 0)
-			stackadj += 0;
-	}
-	else
-	{
-		if (info->pushed_reg % 2 == 0 && info->pushed_reg != 0)
-			stackadj += 0;
-		else if (info->pushed_reg != 0)
-			stackadj += 8;
-	}
+	int stackadj = sysv_frame_size(info);
 
 	/* Restore USED vector registers */
 	if (info->regslist)
@@ -4540,52 +4487,33 @@ static void write_sysv_default_epilogue_RBP(struct proc_info *info)
 
 		if (i)
 		{
-			i = (info->localsize - i * 16) & ~(16 - 1);
+			i = stackadj - i * 16;
 			for (regs = info->regslist, cnt = *regs++; cnt; cnt--, regs++)
 			{
 				if (GetValueSp(*regs) & OP_XMM)
 				{
-					AddLineQueueX("%s %r, [%r + %u]", MOVE_ALIGNED_INT(), *regs, stackreg[ModuleInfo.Ofssize], NUMQUAL i);
+					AddLineQueueX("%s %r, [%r + %u]", MOVE_UNALIGNED_INT(), *regs, stackreg[ModuleInfo.Ofssize], NUMQUAL i);
 					i += 16;
 				}
 				if (GetValueSp(*regs) & OP_YMM)
 				{
-					AddLineQueueX("%s %r, [%r + %u]", MOVE_UNALIGNED_INT(), *regs, stackreg[ModuleInfo.Ofssize], NUMQUAL i);
+					AddLineQueueX("%s %r, [%r + %u]", "vmovdqu", *regs, stackreg[ModuleInfo.Ofssize], NUMQUAL i);
 					i += 32;
 				}
 				if (GetValueSp(*regs) & OP_ZMM)
 				{
-					AddLineQueueX("%s %r, [%r + %u]", MOVE_UNALIGNED_INT(), *regs, stackreg[ModuleInfo.Ofssize], NUMQUAL i);
+					AddLineQueueX("%s %r, [%r + %u]", "vmovdqu64", *regs, stackreg[ModuleInfo.Ofssize], NUMQUAL i);
 					i += 64;
 				}
 			}
 		}
 	}
 
-	/* No Sub RSP, use RedZone optimisation */
-	if (ModuleInfo.redzone == 1 && (info->localsize + resstack < 128) && resstack == 0)
-		;
-	else if (info->localsize > 0)
-	{
+	if (stackadj) {
 		if (Options.frameflags)
-		{
-			AddLineQueueX("lea %r, [%r+%d]", stackreg[ModuleInfo.Ofssize], stackreg[ModuleInfo.Ofssize], NUMQUAL info->localsize + stackadj);
-		}
+			AddLineQueueX("lea %r, [%r+%d]", T_RSP, T_RSP, NUMQUAL stackadj);
 		else
-		{
-			AddLineQueueX("add %r, %d", stackreg[ModuleInfo.Ofssize], NUMQUAL info->localsize + stackadj);
-		}
-	}
-	else if (stackadj > 0 && !info->isleaf)
-	{
-		if (Options.frameflags)
-		{
-			AddLineQueueX("lea %r, [%r+%d]", stackreg[ModuleInfo.Ofssize], stackreg[ModuleInfo.Ofssize], NUMQUAL info->localsize + stackadj);
-		}
-		else
-		{
-			AddLineQueueX("add %r, %d", stackreg[ModuleInfo.Ofssize], NUMQUAL info->localsize + stackadj);
-		}
+			AddLineQueueX("add %r, %d", T_RSP, NUMQUAL stackadj);
 	}
 
 	pop_register(CurrProc->e.procinfo->regslist);

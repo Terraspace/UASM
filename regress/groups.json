@@ -1,0 +1,190 @@
+{
+  "plain_bin": [
+    "-q",
+    "-bin"
+  ],
+  "pe64_bin": [
+    "-q",
+    "-bin",
+    "-Fo",
+    "{stem}.exe"
+  ],
+  "win64": [
+    "-c",
+    "-q",
+    "-win64",
+    "-Zp8"
+  ],
+  "flat": [
+    "-q",
+    "-bin"
+  ],
+  "coff": [
+    "-q",
+    "-coff"
+  ],
+  "coffdbg": [
+    "-q",
+    "-coff",
+    "-Zi"
+  ],
+  "oo": [
+    "-q",
+    "-win64",
+    "-Zp8",
+    "-Zi",
+    "-Zd",
+    "-Zf"
+  ],
+  "literals": [
+    "-q",
+    "-win64",
+    "-Zp8"
+  ],
+  "literalerr": [
+    "-q",
+    "-win64",
+    "-Zp8",
+    "-Zi",
+    "-Zd",
+    "-Zf"
+  ],
+  "linux64": [
+    "-q",
+    "-elf64"
+  ],
+  "cinvoke": [
+    "-q",
+    "-coff"
+  ],
+  "mz": [
+    "-q",
+    "-mz"
+  ],
+  "flat16": [
+    "-q",
+    "-bin"
+  ],
+  "avxerr": [
+    "-q",
+    "-bin"
+  ],
+  "invoke64err": [
+    "-q",
+    "-win64",
+    "-Zp8"
+  ],
+  "vcall": [
+    "-c",
+    "-win64",
+    "-Zp8"
+  ],
+  "codegenv2": [
+    "-c",
+    "-bin"
+  ],
+  "codegenv2error": [
+    "-c",
+    "-bin"
+  ],
+  "codeview8_32": [
+    "-c",
+    "-coff",
+    "-Zi8",
+    "-Zd",
+    "-Zf"
+  ],
+  "codeview8_64": [
+    "-c",
+    "-win64",
+    "-Zi8",
+    "-Zd",
+    "-Zf"
+  ],
+  "pr241": [
+    "-q",
+    "-bin"
+  ],
+  "evex_encoding": [
+    "-q",
+    "-bin"
+  ],
+  "imm64": [
+    "-q",
+    "-bin"
+  ],
+  "imm8": [
+    "-q",
+    "-bin"
+  ],
+  "pr238_243": [
+    "-q",
+    "-bin"
+  ],
+  "record_masks": [
+    "-q",
+    "-bin"
+  ],
+  "cvptr32": [
+    "-q",
+    "-coff",
+    "-Zi"
+  ],
+  "cvptr64": [
+    "-q",
+    "-win64",
+    "-Zi"
+  ],
+  "cvptr8": [
+    "-q",
+    "-win64",
+    "-Zi8"
+  ],
+  "borland_register": [
+    "-q",
+    "-coff"
+  ],
+  "dllimp": [
+    "-q",
+    "-coff"
+  ],
+  "elf": [
+    "-q",
+    "-elf"
+  ],
+  "elf64": [
+    "-q",
+    "-elf64"
+  ],
+  "extern": [
+    "-q",
+    "-coff"
+  ],
+  "pe": [
+    "-q",
+    "-pe"
+  ],
+  "safeseh": [
+    "-q",
+    "-coff",
+    "-safeseh"
+  ],
+  "systemv": [
+    "-q",
+    "-elf64"
+  ],
+  "zg": [
+    "-q",
+    "-bin",
+    "-Zg"
+  ],
+  "zne": [
+    "-q",
+    "-coff",
+    "-Zne"
+  ],
+  "systemv_errors": [
+    "-q",
+    "-elf64"
+  ]
+}

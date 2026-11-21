@@ -1,0 +1,110 @@
+System V review and regression coverage -- 2026-11-21
+====================================================
+
+Result: 562 passed, 0 failed, 0 incomplete. The installed x64/Release/UASM.exe
+was rebuilt from the reviewed C sources. No CodeGen/CodeGenV2 changes were needed.
+
+Reference: AMD64 psABI, register/stack argument classification, stack alignment,
+variadic AL and the red zone:
+https://gitlab.com/x86-psABIs/x86-64-ABI/-/blob/master/x86-64-ABI/low-level-sys-info.tex
+
+Existing coverage
+-----------------
+sysv1.asm contains extensive PROC examples, but most overflow/vararg calls and
+several parameter cases were commented out. Its red-zone example had no locals.
+The four linux64 samples exercise useful applications, not boundary conditions.
+The original examples remain; new self-checking sources cover the missing cases.
+
+Fixes
+-----
+invoke.c:
+- Restore the full outgoing stack area, including padding, instead of ADD RSP,8.
+  Reset callee call state without corrupting the caller's frame state.
+- Allocate space before storing a full-width immediate; give byte/word/dword
+  register arguments eightbyte stack slots without illegal PUSH forms.
+- Preserve RAX during deferred memory/float/address copies so another argument
+  can still read its original value.
+- Lay out spilled vectors and padding consistently; copy memory vectors without
+  clobbering XMM8/YMM8/ZMM8. RAX-based vector memory sources are preserved
+  between chunks, with dedicated indirect-source checks. Realign the outgoing area to 32/64 bytes where needed
+  and restore the exact pre-call RSP afterward, preserving R11 during setup.
+- Include named vector arguments in variadic AL; route floating variables to SSE
+  registers; promote floating literals/REAL4 to double and small integers to int.
+  Unnamed 256/512-bit vectors go on the stack even when vector registers are free.
+- Correct index-register overwrite checks and R8W..R15W alias handling; diagnose
+  deferred reads that later register setup would overwrite. Diagnose deferred
+  RSP-based operands rather than silently reading them after RSP has changed.
+- Bound the deferred line queue and report an error instead of overwriting it.
+
+proc.c:
+- Share frame-size calculation between prologue and epilogue, accounting for the
+  frame pointer, saved GPRs, locals and alignment.
+- Use the red zone only for leaf procedures, up to the 128-byte boundary. Vector
+  saves use allocated storage. Save/restore slots no longer overlap local data.
+- Generate appropriate unaligned XMM/YMM/ZMM save/restore instructions.
+- Align incoming vector stack parameters consistently with the caller's layout.
+- Diagnose unsupported large scalar/aggregate parameter types.
+
+parser.c: direct CALL, as well as INVOKE, makes a System V procedure non-leaf.
+H/symbols.h: per-call alignment and deferred register-read tracking.
+
+New positive sources in src/systemv
+----------------------------------
+integer_args.asm     13 checks: 0..12 integer arguments and caller stack balance.
+frames_redzone.asm   98 checks: 0/8/16/120/128/136-byte locals; 0..3 saved GPRs;
+                    red-zone on/off; leaf/non-leaf; direct CALL; call alignment.
+scalar_stack.asm     12 checks: integer widths, 64-bit immediate, deferred RAX
+                    preservation with memory/float operands, recursive calls.
+floating_args.asm    8 checks: REAL4/REAL8 with 1/8/9/10 arguments.
+variadic_args.asm   12 checks: named+unnamed vector counts; literals, variables,
+                    float/integer promotions, overflow, unnamed wide vectors.
+vector_args.asm     19 checks: 128/256/512-bit memory layout, mixed integer/vector
+                    overflow, 32/64-byte stack alignment, XMM/YMM preservation.
+vector512.asm        2 additional cases with actual AVX-512 instructions.
+stack_cleanup.asm   Minimal original nine-integer reproducer.
+
+162 ABI checks executed successfully in the six combined
+run_tests entry points. Generated ELF code was linked with LLVM ld.lld, extracted
+and executed on this Windows host through a GCC sysv_abi bridge. This validates
+native instruction/ABI behavior, not Linux process startup or OS services.
+The host lacks AVX-512: vector512.asm was assembled and its ZMM store/load and
+stack restoration were disassembled, but those instructions were not executed.
+64-byte memory-argument alignment/copying was executed without AVX-512 instructions.
+
+New negative sources in src/systemv_errors
+-----------------------------------------
+aggregate.asm       Unsupported named/variadic by-value general structures.
+real10.asm          Unsupported x87 long-double parameter.
+rsp_frame.asm       Existing ELF64 rejection of OPTION STACKBASE:RSP.
+overwritten.asm     Index-register and deferred-source overwrite diagnostics;
+                    unsupported deferred RSP operand.
+queue_capacity.asm  Deferred operation queue capacity diagnostic.
+
+These are explicit limits, not a claim of full C/C++ psABI support: arbitrary
+aggregate classification, __int128/x87 argument lowering, automatic va_list
+construction, RSP-based ELF64 automatic frames and arbitrary register-shuffle
+scheduling are not implemented. OWORD/XMMWORD are treated as vector arguments.
+Manual assembly remains available for ABI forms outside INVOKE/PROC automation.
+
+Baselines
+---------
+Added EXPs for sysv1 and all new tests. The only changed pre-existing EXP is
+linux64/Lin64_4.o: ThreadProc's direct CALL now has an 8-byte stack adjustment
+and matching restoration. Other instruction differences are address/offset
+changes derived from those two inserted instructions. OO EXPs are untouched.
+The pending test/systemv_stack_cleanup.asm was moved into the normal src suite.
+No regression comparator exclusions were added or widened.
+
+Optional verification on Linux
+------------------------------
+From the suite directory, for each of integer_args, frames_redzone, scalar_stack,
+floating_args, variadic_args and vector_args:
+
+  uasm -q -elf64 -Fo=/tmp/abi.o src/systemv/integer_args.asm
+  cc -no-pie validation/systemv_driver.c /tmp/abi.o -o /tmp/abi-check
+  /tmp/abi-check
+
+Change the ASM filename for each case; success is exit 0. vector_args requires
+AVX2. Run vector512 only on an AVX-512-capable machine. sysv1 and stack_cleanup
+are assembly fixtures, not standalone runtime programs with run_tests.
+The normal Go regression runner continues to require only UASM and its EXPs.

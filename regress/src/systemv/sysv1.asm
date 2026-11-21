@@ -4,7 +4,7 @@ option casemap:none
 option stackbase:rbp
 option literals:on
 
-include misc/xmmtypes.inc
+; SIMD types (__m128/__m256) are built into UASM.
 
 .data
 
