@@ -251,9 +251,9 @@ ret_code AlignDirective( int i, struct asm_tok tokenarray[] )
         return( EmitError( MUST_BE_IN_SEGMENT_BLOCK ) );
     }
     if( align_value > seg_align ) {
-        if (( Parse_Pass == PASS_1 )&&                   //We need 32 0r 64 bit for VEX and EVEX
-          (ModuleInfo.flat_grp->sym.isdefined == FALSE)) //No warning if "FLAT"
-		if ( Parse_Pass == PASS_1 && ModuleInfo.Ofssize != USE64 )
+        /* Non-flat models need not have a FLAT group. */
+        if ( Parse_Pass == PASS_1 && ModuleInfo.Ofssize != USE64 &&
+             (ModuleInfo.flat_grp == NULL || !ModuleInfo.flat_grp->sym.isdefined) )
             EmitWarn( 1, ALIGN_TOO_HIGH, myltoa( align_value, buffer, 10, FALSE, FALSE ) );
         //return( ERROR ); /* v2.0: don't exit */
     }

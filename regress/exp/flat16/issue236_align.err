@@ -1,0 +1,2 @@
+..\src\flat16\issue236_align.asm(4) : Warning A4130: Incompatible with segment alignment: 128
+..\src\flat16\issue236_align.asm(7) : Warning A4130: Incompatible with segment alignment: 128
