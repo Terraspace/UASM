@@ -41,14 +41,6 @@
 #define NUMQUAL
 #endif
 
-/* STACKPROBE: emit a conditional "call __chkstk" inside the prologue
-* if stack space that is to be allocated exceeds 1000h bytes.
-* this is currently implemented for 64-bit only,
-* if OPTION FRAME:AUTO is set and the procedure has the FRAME attribute.
-* it's not active by default because, in a few cases, the listing might get messed.
-*/
-#define STACKPROBE 0
-
 extern struct asym *ProcCur;
 
 extern const char szDgroup[];
@@ -267,16 +259,10 @@ int_32 StackAdjHigh;
 static const char * const fmtstk0[] = {
 	"sub %r, %d",
 	"%r %d",
-#if STACKPROBE
-	"mov %r, %d",
-#endif
 };
 static const char * const fmtstk1[] = {
 	"sub %r, %d + %s",
 	"%r %d + %s",
-#if STACKPROBE
-	"mov %r, %d + %s",
-#endif
 };
 
 static const char * const fmtstk2[] = {
@@ -2128,6 +2114,8 @@ ret_code CopyPrototype(struct dsym *proc, struct dsym *src)
 	return(NOT_ERROR);
 }
 
+static void finish_stack_probe(struct dsym *proc);
+
 /* close a PROC */
 static void ProcFini(struct dsym *proc)
 /***************************************/
@@ -2181,6 +2169,8 @@ static void ProcFini(struct dsym *proc)
 		}
 #endif
 	}
+
+	finish_stack_probe(proc);
 
 	/* create the .pdata and .xdata stuff */
 	if (proc->e.procinfo->isframe)
@@ -3012,9 +3002,166 @@ static int win64_SaveRegParams_RBP(struct proc_info *info)
 	return saved;
 }
 
-/* ========================================================================================================= */
-/* win64 default prologue when PROC FRAME and OPTION FRAME:AUTO is set                                       */
-/* ========================================================================================================= */
+/* Probe before changing RSP. R11 is volatile in both Win64 conventions;
+ * MOV leaves flags intact, including FRAMEPRESERVEFLAGS callers. The helper
+ * keeps large allocations from overflowing the one-byte unwind prolog size.
+ *
+ * Retain a stable helper identity while INVOKE and local layout converge.
+ * Records are created at prologue entry even if no allocation is known yet. */
+struct stack_probe_helper {
+    struct stack_probe_helper *next;
+    struct dsym *proc;
+    unsigned id, size, reserved;
+    bool uses_r11, emit;
+};
+static struct stack_probe_helper *stack_probe_helpers;
+
+static struct stack_probe_helper *get_stack_probe(struct dsym *proc)
+{
+    struct stack_probe_helper *helper;
+    uint_16 *reg;
+    unsigned count, id = 1;
+    for (helper = stack_probe_helpers; helper; helper = helper->next) {
+        if (helper->proc == proc) return helper;
+        ++id;
+    }
+    helper = LclAlloc(sizeof(*helper));
+    memset(helper, 0, sizeof(*helper));
+    helper->proc = proc;
+    helper->id = id;
+    helper->next = stack_probe_helpers;
+    stack_probe_helpers = helper;
+    reg = proc->e.procinfo->regslist;
+    if (reg)
+        for (count = *reg++; count; --count, ++reg)
+            if (*reg == T_R11) helper->uses_r11 = TRUE;
+    return helper;
+}
+
+static bool stack_probe_enabled(void)
+{
+    return !ModuleInfo.no_stackprobe && ModuleInfo.Ofssize == USE64 &&
+        !(CurrProc->e.procinfo->isframe && !ModuleInfo.frame_auto) &&
+        (CurrProc->sym.langtype == LANG_FASTCALL || CurrProc->sym.langtype == LANG_VECTORCALL);
+}
+
+/* Finish pass-one sizing after INVOKE has discovered the outgoing area.
+ * Defining helpers here avoids introducing new symbols/sections in pass two. */
+static void finish_stack_probe(struct dsym *proc)
+{
+    struct stack_probe_helper *helper;
+    if (Parse_Pass != PASS_1) return;
+    for (helper = stack_probe_helpers; helper; helper = helper->next) {
+        if (helper->proc != proc) continue;
+        helper->size += proc->e.procinfo->ReservedStack - helper->reserved;
+        if (helper->size > 3 * 4096 || (helper->uses_r11 && helper->size >= 4096))
+            helper->emit = TRUE;
+        break;
+    }
+}
+
+static void win64_stack_probe(unsigned size)
+{
+    unsigned offset;
+    struct stack_probe_helper *helper;
+    if (!stack_probe_enabled()) return;
+    helper = get_stack_probe(CurrProc);
+    helper->size = size;
+    helper->reserved = (ModuleInfo.win64_flags & W64F_AUTOSTACKSP) ? sym_ReservedStack->value : 0;
+    if (size < 4096) return;
+    /* Explicit USES R11 must also work with the generic RBP prologue, which
+     * saves USES after allocating locals. The helper preserves all GPRs. */
+    if (size <= 3 * 4096 && !helper->uses_r11) {
+        for (offset = 4096; offset <= size; offset += 4096)
+            AddLineQueueX("mov r11b, byte ptr [rsp-%u]", NUMQUAL offset);
+        if (size & 4095)
+            AddLineQueueX("mov r11b, byte ptr [rsp-%u]", NUMQUAL size);
+    } else {
+        helper->emit = TRUE;
+        AddLineQueueX("call @__uasm_stack_probe_%x", NUMQUAL helper->id);
+    }
+}
+
+/* A private, dependency-free probe with a real frame for exception unwinding.
+ * A helper per large frame avoids using an input register, preserving
+ * even explicitly saved volatile registers (USES R11). All registers and flags
+ * are preserved; the caller still performs and describes its own allocation.
+ */
+void EmitStackProbe(void)
+{
+    unsigned oldprologue, oldepilogue, oldframe, oldlines, oldradix, oldlang, oldfctype;
+    bool oldstate;
+    struct stack_probe_helper *helper;
+    for (helper = stack_probe_helpers; helper && !helper->emit; helper = helper->next)
+        ;
+    if (!helper) return;
+    oldprologue = ModuleInfo.prologuemode;
+    oldepilogue = ModuleInfo.epiloguemode;
+    oldframe = ModuleInfo.frame_auto;
+    oldlines = Options.line_numbers;
+    oldradix = ModuleInfo.radix;
+    oldlang = ModuleInfo.langtype;
+    oldfctype = ModuleInfo.fctype;
+    ModuleInfo.langtype = LANG_FASTCALL;
+    ModuleInfo.fctype = FCT_WIN64;
+    ModuleInfo.radix = 10;
+    oldstate = UseSavedState;
+    ModuleInfo.prologuemode = PEM_NONE;
+    ModuleInfo.epiloguemode = PEM_NONE;
+    ModuleInfo.frame_auto = FALSE;
+    Options.line_numbers = FALSE;
+    UseSavedState = FALSE;
+    AddLineQueue("_UASM_STACKPROBE SEGMENT ALIGN(10h) 'CODE' USE64");
+    for (helper = stack_probe_helpers; helper; helper = helper->next) {
+        if (!helper->emit) continue;
+        AddLineQueueX("@__uasm_stack_probe_%x PROC PRIVATE FRAME", NUMQUAL helper->id);
+        AddLineQueue("push rbp");
+        AddLineQueue(".pushreg rbp");
+        AddLineQueue("pushfq");
+        AddLineQueue(".allocstack 8h");
+        AddLineQueue("lea rsp,[rsp-18h]");
+        AddLineQueue(".allocstack 18h");
+        AddLineQueue("lea rbp,[rsp+20h]");
+        AddLineQueue(".setframe rbp,20h");
+        AddLineQueue(".endprolog");
+        AddLineQueue("mov [rbp-10h],r10");
+        AddLineQueue("mov [rbp-18h],r11");
+        AddLineQueueX("mov r10d,%u", NUMQUAL helper->size);
+        AddLineQueue("lea r11,[rbp+10h]");
+        AddLineQueueX("@__uasm_probe_page_%x:", NUMQUAL helper->id);
+        AddLineQueue("cmp r10,1000h");
+        AddLineQueueX("jb @__uasm_probe_tail_%x", NUMQUAL helper->id);
+        AddLineQueue("sub r11,1000h");
+        AddLineQueue("test byte ptr [r11],0");
+        AddLineQueue("sub r10,1000h");
+        AddLineQueueX("jmp @__uasm_probe_page_%x", NUMQUAL helper->id);
+        AddLineQueueX("@__uasm_probe_tail_%x:", NUMQUAL helper->id);
+        AddLineQueue("test r10,r10");
+        AddLineQueueX("jz @__uasm_probe_done_%x", NUMQUAL helper->id);
+        AddLineQueue("sub r11,r10");
+        AddLineQueue("test byte ptr [r11],0");
+        AddLineQueueX("@__uasm_probe_done_%x:", NUMQUAL helper->id);
+        AddLineQueue("mov r10,[rbp-10h]");
+        AddLineQueue("mov r11,[rbp-18h]");
+        AddLineQueue("push qword ptr [rbp-8h]");
+        AddLineQueue("popfq");
+        AddLineQueue("lea rsp,[rbp]");
+        AddLineQueue("pop rbp");
+        AddLineQueue("ret");
+        AddLineQueueX("@__uasm_stack_probe_%x ENDP", NUMQUAL helper->id);
+    }
+    AddLineQueue("_UASM_STACKPROBE ENDS");
+    RunLineQueue();
+    ModuleInfo.prologuemode = oldprologue;
+    ModuleInfo.epiloguemode = oldepilogue;
+    ModuleInfo.frame_auto = oldframe;
+    Options.line_numbers = oldlines;
+    ModuleInfo.radix = oldradix;
+    ModuleInfo.langtype = oldlang;
+    ModuleInfo.fctype = oldfctype;
+    UseSavedState = oldstate;
+}
+
 static void write_win64_default_prologue_RBP(struct proc_info *info)
 /****************************************************************/
 {
@@ -3127,18 +3274,10 @@ static void write_win64_default_prologue_RBP(struct proc_info *info)
 			* .ALLOCSTACK localsize
 			*/
 			ppfmt = (resstack ? fmtstk1 : fmtstk0);
-			#if STACKPROBE
-			if (info->localsize + stackadj + resstack > 0x1000) {
-				AddLineQueueX(*(ppfmt + 2), T_RAX, NUMQUAL info->localsize + stackadj, sym_ReservedStack->name);
-				AddLineQueue("externdef __chkstk:PROC");
-				AddLineQueue("call __chkstk");
-				AddLineQueueX("mov %r, %r", T_RSP, T_RAX);
-			}
-			else
-			#endif
 			if (info->localsize + stackadj + resstack > 0)
 			{
 				subAmt = info->localsize + stackadj + sym_ReservedStack->value;
+				win64_stack_probe(info->localsize + stackadj + resstack);
 				
 				if (Options.frameflags)
 				{
@@ -3159,6 +3298,7 @@ static void write_win64_default_prologue_RBP(struct proc_info *info)
 		else if (stackadj + info->localsize > 0 && ModuleInfo.frame_auto)
 		{
 			subAmt = info->localsize + stackadj;
+			win64_stack_probe(subAmt);
 
 			if (Options.frameflags)
 			{
@@ -3368,17 +3508,9 @@ static void write_win64_default_prologue_RSP(struct proc_info *info)
 			*/
 
 			ppfmt = (resstack ? fmtstk1 : fmtstk0);
-#if STACKPROBE
-			if (info->localsize + resstack > 0x1000) {
-				AddLineQueueX(*(ppfmt + 2), T_RAX, NUMQUAL info->localsize, sym_ReservedStack->name);
-				AddLineQueue("externdef __chkstk:PROC");
-				AddLineQueue("call __chkstk");
-				AddLineQueueX("mov %r, %r", T_RSP, T_RAX);
-			}
-			else
-#endif
-				stackSize = info->localsize + info->vsize + info->xmmsize;
+			stackSize = info->localsize + info->vsize + info->xmmsize;
 			if ((stackSize & 7) != 0) stackSize = (stackSize + 7)&(-8);
+			win64_stack_probe(stackSize + resstack);
 
 			if (Options.frameflags)
 			{
@@ -4765,6 +4897,7 @@ static ret_code write_generic_prologue(struct proc_info *info)
 			AddLineQueueX("mov %r, %r", info->basereg, stackreg[ModuleInfo.Ofssize]);
 		}
 	}
+	win64_stack_probe(info->localsize + resstack);
 	if (resstack)
 	{
 		/* in this case, push the USES registers BEFORE the stack space is reserved */
@@ -4829,6 +4962,7 @@ static ret_code write_default_prologue(void)
 	bool                OldState = FALSE;
 
 	info = CurrProc->e.procinfo;
+	if (stack_probe_enabled()) get_stack_probe(CurrProc);
 
 	if (ModuleInfo.Ofssize == USE64 && ModuleInfo.fctype == FCT_WIN64 && (ModuleInfo.win64_flags & W64F_AUTOSTACKSP))
 		resstack = sym_ReservedStack->value;
@@ -5516,6 +5650,8 @@ void ProcInit(void)
 	procidx = 1;
 	ProcStatus = 0;
 	/* v2.09: reset prolog and epilog mode */
+	ModuleInfo.no_stackprobe = FALSE;
+	if (Parse_Pass == PASS_1) stack_probe_helpers = NULL;
 	ModuleInfo.prologuemode = PEM_DEFAULT;
 	ModuleInfo.epiloguemode = PEM_DEFAULT;
 	/* v2.06: no forward references in INVOKE if -Zne is set */

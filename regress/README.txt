@@ -497,3 +497,48 @@ UASM's wider RECORD capability rather than copying MASM's differing output.
 issue230_errors: nonconstant, excess-field and malformed-expression diagnostics.
 UASM retains its excess-field error even though tested ML accepts that form.
 Windows MSVC and Linux GCC 16.2: 584 passed, 0 failed, 0 incomplete.
+
+Issue #104: automatic Win64 stack probes (v2.60)
+----------------------------------------------
+OPTION STACKPROBE:ON is the default; OFF is an explicit opt-out for code that
+provides its own stack-growth guarantee. This covers UASM-generated Win64
+FASTCALL/VECTORCALL fixed frames, not 32-bit, System V, manual/custom prologues,
+or dynamic user-written stack adjustments. A large frame need not crash if
+its pages are already committed; probing prevents skipping the guard page.
+
+The final allocation includes locals, alignment, vector saves and reserved
+outgoing INVOKE arguments. From 4096 bytes, every intervening 4KB page and
+the final destination are read before RSP is lowered. Small probes use R11
+(volatile under Win64) and preserve flags. Larger frames, and explicit USES
+R11, call private per-procedure helpers with no CRT or external dependency.
+Helpers preserve every GPR and flags, use no incoming shadow space, and carry
+their own unwind records. The caller still describes its actual allocation.
+OPTION FRAMEPRESERVEFLAGS:ON therefore retains its prologue behaviour.
+Helper names/section @__uasm_stack_probe_* / _UASM_STACKPROBE are internal.
+Stable helper identities accommodate frame-size changes across assembly passes.
+
+stackprobe fixtures cover RBP/RSP boundaries through 1 MiB, WIN64:1-15,
+vectorcall/save areas, generic USES R11, ON/OFF, manual prologue exclusion,
+late outgoing argument sizes, NOSCOPED and non-default radix at module end.
+Existing EXP files are unchanged. New expectations were checked by decoding
+the actual allocation and every probe destination/helper size for 49 frames.
+
+Additional Windows runtime validation (x64 Native Tools command prompt,
+from the repository root; requires the Windows SDK and MSVC):
+  x64\Release\UASM.exe -q -win64 -Fo=regress\results\stackprobe_runtime.obj regress\src\stackprobe\runtime.asm
+  cl /nologo /W4 /O2 /MT regress\validation\stackprobe_driver.c regress\results\stackprobe_runtime.obj /Foregress\results\stackprobe_driver.obj /Feregress\results\stackprobe_driver.exe /link /stack:4194304,4096
+  regress\results\stackprobe_driver.exe
+It uses fresh threads with 4KB initial commit and 4MB reserve, grows 1 MiB
+frames under each WIN64 mode, checks GPR/XMM argument and flags preservation,
+and calls RtlVirtualUnwind at helper prologue/body/epilogue boundaries.
+
+Required follow-up in the v2.60 Win64 ABI review
+---------------------------------------------
+Include stack probing when checking WIN64:1-15 (including the existing
+8-14 normalization to 11), RBP/RSP, vectorcall, all USES combinations, frame
+alignment, outgoing argument/home space, FRAMEPRESERVEFLAGS and unwind data.
+These targeted probe checks do not replace the planned complete ABI review.
+Keep the manual/custom-prologue and dynamic-allocation boundaries explicit.
+
+Validation: Windows MSVC, Linux GCC 13, GCC 16.2 and Clang 23 each passed
+592 cases, 0 failed, 0 incomplete; Go tests and Windows runtime checks passed.

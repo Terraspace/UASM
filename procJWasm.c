@@ -41,13 +41,6 @@
 #define NUMQUAL
 #endif
 
-/* STACKPROBE: emit a conditional "call __chkstk" inside the prologue
- * if stack space that is to be allocated exceeds 1000h bytes.
- * this is currently implemented for 64-bit only,
- * if OPTION FRAME:AUTO is set and the procedure has the FRAME attribute.
- * it's not active by default because, in a few cases, the listing might get messed.
- */
-#define STACKPROBE 0
 
 extern const char szDgroup[];
 extern uint_32 list_pos;  /* current LST file position */
@@ -255,16 +248,10 @@ int_32 StackAdjHigh;
 static const char * const fmtstk0[] = {
     "sub %r, %d",
     "%r %d",
-#if STACKPROBE
-    "mov %r, %d",
-#endif
 };
 static const char * const fmtstk1[] = {
     "sub %r, %d + %s",
     "%r %d + %s",
-#if STACKPROBE
-    "mov %r, %d + %s",
-#endif
 };
 #endif
 
@@ -2851,14 +2838,6 @@ static void write_win64_default_prologue( struct proc_info *info )
          * .ALLOCSTACK localsize
          */
         ppfmt = ( resstack ? fmtstk1 : fmtstk0 );
-#if STACKPROBE
-        if ( info->localsize + resstack > 0x1000 ) {
-            AddLineQueueX( *(ppfmt+2), T_RAX, NUMQUAL info->localsize, sym_ReservedStack->name );
-            AddLineQueue(  "externdef __chkstk:PROC" );
-            AddLineQueue(  "call __chkstk" );
-            AddLineQueueX( "mov %r, %r", T_RSP, T_RAX );
-        } else
-#endif
             AddLineQueueX( *(ppfmt+0), T_RSP, NUMQUAL info->localsize, sym_ReservedStack->name );
         AddLineQueueX( *(ppfmt+1), T_DOT_ALLOCSTACK, NUMQUAL info->localsize, sym_ReservedStack->name );
 
@@ -2975,14 +2954,6 @@ static void write_win64_default_prologue_RBP( struct proc_info *info )
          * .ALLOCSTACK localsize
          */
         ppfmt = ( resstack ? fmtstk1 : fmtstk0 );
-#if STACKPROBE
-        if ( info->localsize + resstack > 0x1000 ) {
-            AddLineQueueX( *(ppfmt+2), T_RAX, NUMQUAL info->localsize + stackadj, sym_ReservedStack->name );
-            AddLineQueue(  "externdef __chkstk:PROC" );
-            AddLineQueue(  "call __chkstk" );
-            AddLineQueueX( "mov %r, %r", T_RSP, T_RAX );
-        } else
-#endif
         AddLineQueueX( *(ppfmt+0), T_RSP, NUMQUAL info->localsize + stackadj, sym_ReservedStack->name );
         AddLineQueueX( *(ppfmt+1), T_DOT_ALLOCSTACK, NUMQUAL info->localsize + stackadj, sym_ReservedStack->name );
 
@@ -3170,15 +3141,6 @@ static void write_win64_default_prologue_RSP(struct proc_info *info)
 			*/
 
 			ppfmt = (resstack ? fmtstk1 : fmtstk0);
-#if STACKPROBE
-			if (info->localsize + resstack > 0x1000) {
-				AddLineQueueX(*(ppfmt + 2), T_RAX, NUMQUAL info->localsize, sym_ReservedStack->name);
-				AddLineQueue("externdef __chkstk:PROC");
-				AddLineQueue("call __chkstk");
-				AddLineQueueX("mov %r, %r", T_RSP, T_RAX);
-			}
-			else
-#endif
 				stackSize = info->localsize + info->vsize + info->xmmsize;
 			if ((stackSize & 7) != 0) stackSize = (stackSize + 7)&(-8);
 

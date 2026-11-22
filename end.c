@@ -277,6 +277,8 @@ ret_code EndDirective( int i, struct asm_tok tokenarray[] )
         return( EmitError( OPERAND_MUST_BE_RELOCATABLE ) );
     }
 
+    EmitStackProbe();
+
     /* close open segments */
     SegmentModuleExit();
 

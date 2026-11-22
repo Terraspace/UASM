@@ -230,6 +230,30 @@ OPTFUNC(SetVTable)
 	return(NOT_ERROR);
 }
 
+/* OPTION STACKPROBE:ON(default) | OFF */
+OPTFUNC(SetStackProbe)
+{
+    int i = *pi;
+    if (tokenarray[i].token == T_ID) {
+        if (0 == _stricmp(tokenarray[i].string_ptr, "ON")) {
+            ModuleInfo.no_stackprobe = FALSE;
+        }
+        else if (0 == _stricmp(tokenarray[i].string_ptr, "OFF")) {
+            ModuleInfo.no_stackprobe = TRUE;
+        }
+        else {
+            return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].tokpos));
+        }
+        DebugMsg1(("SetStackProbe(%s) ok\n", tokenarray[i].string_ptr));
+        i++;
+    }
+    else {
+        return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].tokpos));
+    }
+    *pi = i;
+    return(NOT_ERROR);
+}
+
 /* OPTION FRAMEPRESERVEFLAGS:ON | OFF(default) */
 OPTFUNC(SetFPS)
 {
@@ -1351,6 +1375,7 @@ static const struct asm_option optiontab[] = {
   { "LITERALS",         SetLiterals },   /* LITERALS:ON or OFF */
   { "VTABLE",           SetVTable },     /* VTABLE:ON or OFF */
   { "HLCALL",           SetHLCall },     /* HLCALL:ON or OFF */
+  { "STACKPROBE", SetStackProbe },
   { "FRAMEPRESERVEFLAGS", SetFPS }       /* FRAMEPRESERVEFLAGS:ON or OFF */
 };
 
