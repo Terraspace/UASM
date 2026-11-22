@@ -1,0 +1,3 @@
+../src/plain_bin/issue230_errors.asm(6) : Error A2065: Constant expected
+../src/plain_bin/issue230_errors.asm(7) : Error A2045: Syntax error
+../src/plain_bin/issue230_errors.asm(8) : Error A2210: Syntax error: ,2

@@ -480,3 +480,20 @@ Four plain_bin/issue221 fixtures independently specify UTF-16LE bytes for
 named/unnamed ASCII and Unicode, mixed initializers, a surrogate pair, DUP,
 WORD type/size assertions, 300 Unicode characters, and literals-off controls.
 Windows MSVC and Linux GCC 16.2: 581 passed, 0 failed, 0 incomplete.
+
+Issue #230: inline scalar RECORD expressions (v2.60)
+--------------------------------------------------
+Scalar RECORD literals up to 64 bits are evaluated as operands, with scoped
+initializer tokens, rather than rewriting the current instruction and exiting
+expression evaluation. Parentheses, HIGH/LOW, arithmetic/bitwise operations,
+nested literals, omitted/default fields and character constants now compose.
+The existing 128-bit RECORD expansion path remains unchanged.
+issue230_expr: 83 bytes independently extracted from Microsoft ML output;
+includes all five reported forms, defaults, braces, EQU, data expressions,
+and negative/overflow field expressions. Inline fields are shifted and ORed
+without individual masking, matching measured MASM behaviour.
+issue230_wide: independently calculated 64-bit constant expressions; preserves
+UASM's wider RECORD capability rather than copying MASM's differing output.
+issue230_errors: nonconstant, excess-field and malformed-expression diagnostics.
+UASM retains its excess-field error even though tested ML accepts that form.
+Windows MSVC and Linux GCC 16.2: 584 passed, 0 failed, 0 incomplete.

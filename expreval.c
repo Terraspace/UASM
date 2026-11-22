@@ -120,6 +120,66 @@ static void init_expr( struct expr *opnd )
 	opnd->isptr = FALSE;
 }
 
+/* Evaluate a scalar RECORD literal without rewriting the containing line.
+ * Appended tokens/string storage are scoped so recursive field expressions
+ * cannot replace the caller's operators or initializer tokens. */
+static ret_code RecordConstant(struct expr *result, struct asm_tok tokens[],
+    int literal, const struct dsym *record, uint_8 flags)
+{
+    int saved_count = Token_Count;
+    char *saved_end = StringBufferEnd;
+    int i, end, rc = NOT_ERROR;
+    uint_64 value = 0;
+    struct sfield *field;
+    struct expr item;
+    if (tokens[literal].string_delim != '<' && tokens[literal].string_delim != '{')
+        return EmitError(MISSING_ANGLE_BRACKET_OR_BRACE_IN_LITERAL);
+    i = saved_count + 1;
+    end = Tokenize(tokens[literal].string_ptr, i, tokens, TOK_RESCAN);
+    Token_Count = end;
+    for (field = record->e.structinfo->head; field; field = field->next) {
+        if (tokens[i].token == T_COMMA || tokens[i].token == T_FINAL) {
+            init_expr(&item);
+            item.kind = EXPR_CONST;
+            if (field->ivalue && field->ivalue[0]) {
+                int j = Token_Count + 1;
+                char *default_end = StringBufferEnd;
+                int count = Tokenize(field->ivalue, j, tokens, TOK_RESCAN);
+                Token_Count = count;
+                rc = EvalOperand(&j, tokens, count, &item, flags);
+                if (rc == NOT_ERROR && j != count)
+                    rc = EmitError(SYNTAX_ERROR);
+                Token_Count = end;
+                StringBufferEnd = default_end;
+            }
+        } else
+            rc = EvalOperand(&i, tokens, end, &item, flags);
+        if (rc == ERROR) break;
+        if (item.kind != EXPR_CONST) {
+            rc = EmitError(CONSTANT_EXPECTED);
+            break;
+        }
+        /* Like MASM inline literals, shift and OR the field expressions.
+         * Do not truncate each field: signed values and overflow bits are
+         * preserved; the consuming instruction validates its operand width. */
+        value |= item.llvalue << field->sym.offset;
+        if (tokens[i].token == T_COMMA && field->next)
+            i++;
+        else if (tokens[i].token != T_FINAL) {
+            rc = EmitError(SYNTAX_ERROR);
+            break;
+        }
+    }
+    Token_Count = saved_count;
+    StringBufferEnd = saved_end;
+    if (rc == NOT_ERROR) {
+        init_expr(result);
+        result->kind = EXPR_CONST;
+        result->llvalue = value;
+    }
+    return rc;
+}
+
 /* Materialize an XMM MASK operand as immutable data.  Generated lines use
  * their own input/token state; never retokenize the expression being evaluated.
  * Naming by value also lets repeated masks share one constant. */
@@ -1137,6 +1197,12 @@ static ret_code get_operand( struct expr *opnd, int *idx, struct asm_tok tokenar
             //if ( tokenarray[i-1].token != T_DOT && tokenarray[i+1].token != T_DOT )
             /* v2.06: the default value for RECORD types is the mask value */
             if ( sym->typekind == TYPE_RECORD ) {
+                if (sym->total_size <= 8 && tokenarray[i+1].token == T_STRING) {
+                    if (RecordConstant(opnd, tokenarray, i+1, (struct dsym *)sym, flags) == ERROR)
+                        return ERROR;
+                    (*idx)++; /* consume the literal as part of this operand */
+                    break;
+                }
 #if AMD64_SUPPORT
                 opnd->llvalue = GetRecordMask( (struct dsym *)sym );
 #else
