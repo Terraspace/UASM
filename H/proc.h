@@ -56,6 +56,10 @@ extern ret_code         CopyPrototype( struct dsym *, struct dsym * );
 extern ret_code         RetInstr( int, struct asm_tok[], int );   /* handle RET/IRET within procedures */
 extern void             write_prologue( struct asm_tok[] );
 extern void             ProcInit( void );
+extern bool Win64UnifiedFrame(const struct dsym *);
+extern void Win64VectorLayout(struct dsym *);
+extern bool Win64VectorPointer(struct dsym *, struct asym *);
+extern bool Win64VectorOffset(struct dsym *, struct asym *, int *);
 extern void             EmitStackProbe( void );
 
 extern void             ProcCheckOpen( void );

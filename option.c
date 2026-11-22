@@ -1051,7 +1051,7 @@ OPTFUNC(SetWin64)
       }
 
 
-    /* OPTION win64:11 can work only with OPTION STACKBASE:RSP */
+    /* Smart modes retain their historic defaults but honour an explicit stack base. */
     if (opndx.llvalue & W64F_SMART || opndx.llvalue > 7) 
 	{  
         /* In this case STACKBASESUPP must be set */
@@ -1060,11 +1060,11 @@ OPTFUNC(SetWin64)
         #endif
 		/* ensure that W64F_SAVEREGPARAMS and W64F_AUTOSTACKSP options are also set */
 		if(opndx.llvalue != 15)
-			opndx.llvalue = 11;        /* All values will be forced to 11 (except 15) and implies stackbase RSP */
+			opndx.llvalue = 11;        /* Preserve the existing 8-14 aliases of mode 11. */
 		ModuleInfo.frame_auto = 1; /* frame auto must also be implied for all stackbase rsp options */
       
-		/* ensure that basereg is RSP */
-		if (ModuleInfo.basereg[ModuleInfo.Ofssize] != T_RSP)
+		/* Keep the historic RSP default unless STACKBASE was specified. */
+		if (!ModuleInfo.stackbase_explicit && ModuleInfo.basereg[ModuleInfo.Ofssize] != T_RSP)
 		{
             EmitWarn(2, STACKBASE_CHANGED);
 
@@ -1214,6 +1214,7 @@ OPTFUNC( SetStackBase )
         return( EmitError( MUST_BE_INDEX_OR_BASE_REGISTER ) );
     }
     ModuleInfo.basereg[ModuleInfo.Ofssize] = tokenarray[i].tokval;
+    ModuleInfo.stackbase_explicit = TRUE;
     
 	/* Setup everything for stackbase RSP based stack */
 	if (ModuleInfo.basereg[ModuleInfo.Ofssize] == T_RSP)
@@ -1232,11 +1233,6 @@ OPTFUNC( SetStackBase )
 			ModuleInfo.g.ProcStatus->predefined = TRUE;
 			ModuleInfo.g.ProcStatus->sfunc_ptr = UpdateProcStatus;
 		}
-	}
-	else if (ModuleInfo.basereg[ModuleInfo.Ofssize] == T_RBP)
-	{
-		if (ModuleInfo.win64_flags > 7) 
-			ModuleInfo.win64_flags = 7; /* implicit selection of RBP as the stackbase will force win64 value back down to 7 if > */
 	}
 	else if (ModuleInfo.basereg[ModuleInfo.Ofssize] == T_ESP)
 	{

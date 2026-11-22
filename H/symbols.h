@@ -369,7 +369,16 @@ struct seg_info {
 
 /* PROC item */
 
+struct win64_vector_param {
+    unsigned size, width, members, count, data, temp, offsets[4];
+    int home;
+    unsigned char regs[4];
+    bool scalar, vector, aggregate, indirect;
+};
+
 struct proc_info {
+    struct win64_vector_param *vector_layout;
+    unsigned vector_count;
     uint_16             *regslist;      /* PROC: list of registers to be saved */
     struct dsym         *paralist;      /* list of parameters */
     struct dsym         *locallist;     /* PROC: list of local variables */

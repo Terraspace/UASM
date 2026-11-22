@@ -542,3 +542,117 @@ Keep the manual/custom-prologue and dynamic-allocation boundaries explicit.
 
 Validation: Windows MSVC, Linux GCC 13, GCC 16.2 and Clang 23 each passed
 592 cases, 0 failed, 0 incomplete; Go tests and Windows runtime checks passed.
+
+Smart Win64 unwind conformance (v2.60)
+-------------------------------------
+Home-slot selection, named-parameter homing, pushed registers and frame sizes
+are preserved. Smart USES saves now occur after allocation, with SAVE_NONVOL
+records describing the completed frame. Home-slot restores precede stack
+deallocation and POPs so Windows can unwind through the epilogue correctly.
+This fixes WIN64:11/15 and the existing 8-14 aliases; it does not change modes.
+
+win64/unwind_smart.asm contains 145 frames: modes 11/15, flags on/off, zero
+through eight nonvolatile GPR saves, unused/sparse/all four named parameters,
+mixed XMM6 saves, outgoing calls, zero/small/4KB/64KB local frames and an unused
+vectorcall HVA. The ordinary suite compares their code and unwind records.
+The 4KB/64KB cases also exercise inline/helper stack probes.
+
+For actual Windows unwind conformance, from an x64 Native Tools command prompt
+at the repository root:
+  regress\validation\win64_unwind.cmd
+An optional first argument selects another UASM executable. Build products go
+under regress/results/win64-unwind. Requires MSVC and the Windows SDK, no extra
+libraries, environment-specific includes or Python. Run without a debugger.
+The driver single-steps actual frames and applies RtlVirtualUnwind to a COPY
+of the context at each instruction boundary, checking the return address,
+stack pointer, every nonvolatile GPR and XMM6-XMM15. It returns nonzero on a
+failure; the pre-fix assembler fails this check. Nested helper unwinding is
+covered separately by stackprobe_driver.c. This is targeted unwind coverage,
+not a claim that every Win64 ABI combination has been validated.
+
+Validated: 145 frames / 3499 instruction boundaries, zero unwind failures;
+existing fresh-thread stackprobe/register/flags/helper-unwind checks pass.
+The three changed existing EXPs (stackprobe/modes, stackprobe/runtime,
+vcall/vectorcall) were checked for unchanged frame allocations, register
+saves and effective home addresses; only save/restore ordering, corresponding
+encodings, unwind records and dependent object offsets change.
+
+The separate XMM alignment reproducer has subsequently been promoted to
+win64/xmm_frame_alignment.asm; see the alignment fix below.
+
+Full Windows regression after this fix: 593 passed, 0 failed, 0 incomplete.
+
+Win64 RSP frame alignment (v2.60)
+--------------------------------
+The final allocation now pads the complete frame to 16-byte alignment using
+entry RSP (8 mod 16), the actual pushed-register count, locals, vector save
+areas and reserved outgoing call space. XMM saves no longer bypass padding.
+Padding goes above existing locals; home-slot selection and smart allocation
+remain intact. Probing, parameter offsets, epilogues and unwind records use
+the adjusted allocation. XMM saves retain aligned moves; existing YMM saves
+retain unaligned moves. No 32/64-byte stack-alignment guarantee is added.
+
+The unwind matrix now includes XMM6 for all zero-through-eight GPR/home-slot
+combinations, including even pushes with all incoming homes occupied. It also
+checks body RSP alignment, named parameter values, local storage and call-site
+alignment. Windows runtime: 145 frames, 4691 instruction-boundary checks,
+zero unwind or parameter/local/call-alignment failures. Existing fresh-thread
+stackprobe/register/flags/helper-unwind checks pass. The scalar review matrix
+still passes 83/84 cases; its known mode 4/RSP stack-argument failure is next.
+
+The vectorcall EXP changes only two previously misaligned frame allocations
+(16 -> 8 and 32 -> 24 bytes), corresponding incoming-home references, and
+unwind allocation sizes. This does not validate/fix vectorcall classification.
+Follow-up order: mode 4/RSP arguments, variadic float duplication, vectorcall.
+
+Full Windows regression after alignment fix: 594 passed, 0 failed, 0 incomplete.
+Go tests pass.
+
+Win64 mode/base and vectorcall conformance (v2.60 follow-up)
+----------------------------------------------------------
+Explicit RBP now retains smart modes 11/15 (and the 8-14 aliases), including
+selective homing, free-home USES saves and automatic outgoing call space.
+Default smart RSP behaviour is retained when STACKBASE was not specified.
+Mode 4/RSP incoming stack offsets and temporary INVOKE adjustments are fixed.
+Variadic FP arguments are duplicated in both register classes; REAL4 tail
+arguments are promoted to REAL8. Fixed FP arguments supplied as GPR bit
+patterns are handled too.
+
+Vectorcall uses one signature classification shared by PROC and INVOKE. It
+supports RBP/RSP, nested/array HFA/HVA, correct MSVC name decoration, fallback
+pointer arguments, callee-owned homes/backing storage and incoming-argument
+forwarding. Vector backing pointers are appropriately aligned without
+requiring a more-aligned stack. Vector storage is released in modes without
+automatic outgoing allocation too. VARARG vectorcall and overwritten source
+registers are diagnosed.
+
+Referential semantics are preserved: an indirectly passed memory aggregate
+uses the original storage, not a C/C++-style temporary copy. Callee writes may
+change the source object. Copy explicitly if isolation is required. Register
+arguments that need an address receive an aligned temporary.
+
+New validation commands, from an x64 Native Tools Command Prompt:
+  regress\validation\win64_scalar.cmd
+  regress\validation\win64_vector.cmd
+Both accept an optional assembler path. The vector command requires an AVX
+CPU/OS; ordinary regression assembly does not execute those instructions.
+MSVC independently supplies callers/callees; normal symbol names link without
+aliases. No SDK include paths or Python are embedded in the ASM fixtures.
+
+Coverage: 30 scalar mode/base pairs, 30 variadic combinations; 3168 vector
+interop checks plus 108 edge/all-mode checks. The expanded unwind command
+checks 285 frames / 9455 instruction boundaries, including RBP and used vector
+parameters. All runtime checks pass, including the existing stackprobe check.
+
+Mode bits: 1=homing, 2=automatic INVOKE area, 4=local alignment; 8-14 remain
+aliases of 11 (homing+automatic area+smart), while 15 includes local alignment.
+All support explicit RBP/RSP. Named register parameters need homing enabled;
+without it, use their incoming registers. Unused homes remain available to
+smart allocation. Custom prologues/manual stack adjustments are not covered
+by the automatic-frame guarantees.
+
+Final validation for this follow-up: Windows MSVC and Linux GCC 13,
+GCC 16.2 and Clang 23 each passed 599 cases, 0 failed, 0 incomplete.
+Go tests and the installed Windows runtime validation commands passed.
+Corrected vectorcall decoration changes symbol names compared with older
+UASM objects; rebuild affected callers and callees together.

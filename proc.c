@@ -276,6 +276,16 @@ static const char * const fmtstk3[] = {
 #define ROUND_UP( i, r ) (((i)+((r)-1)) & ~((r)-1))
 
 /* Declare proc functions */
+/* RBP smart/vector frames use the same allocation/home layout as RSP, with
+ * an additional saved frame pointer and a bounded, unwindable frame offset. */
+bool Win64UnifiedFrame(const struct dsym *proc)
+{
+    return ModuleInfo.Ofssize == USE64 && ModuleInfo.frame_auto &&
+        proc->e.procinfo->basereg == T_RBP &&
+        (proc->sym.langtype == LANG_VECTORCALL ||
+         (proc->sym.langtype == LANG_FASTCALL && (ModuleInfo.win64_flags & W64F_SMART)));
+}
+
 static void SetLocalOffsets_RSP(struct proc_info *info);
 static void SetLocalOffsets_RBP(struct proc_info *info);
 static void pop_register(uint_16 *regist);
@@ -864,6 +874,7 @@ static ret_code ParseParams(struct dsym *proc, int i, struct asm_tok tokenarray[
 		else {
 			i++;
 			if ((tokenarray[i].token == T_RES_ID) && (tokenarray[i].tokval == T_VARARG)) {
+                if (proc->sym.langtype == LANG_VECTORCALL) return EmitErr(SYNTAX_ERROR_EX, "VARARG with VECTORCALL");
 				switch (proc->sym.langtype) {
 				case LANG_NONE:
 				case LANG_BASIC:
@@ -1000,29 +1011,10 @@ static ret_code ParseParams(struct dsym *proc, int i, struct asm_tok tokenarray[
 			}
 			paranode->sym.isdefined = TRUE;
 			paranode->sym.mem_type = ti.mem_type;
-			if (ti.mem_type == MT_TYPE) {
-				paranode->sym.type = ti.symtype;
-				/* this is where vectors are intercepted  and writen to the proc */
-				if (proc->sym.langtype == LANG_VECTORCALL) {
-					proc->e.procinfo->vecregsize[cntParam] = ti.symtype->max_mbr_size;
-					proc->e.procinfo->vecregs[cntParam] = ti.size / ti.symtype->max_mbr_size;
-					proc->e.procinfo->vsize += ti.size;
-					ti.size = MT_QWORD;
-				}
-			}
-			else {
-				paranode->sym.target_type = ti.symtype;
-				/* this is where vectors are intercepted  and writen to the proc */
-				if (proc->sym.langtype == LANG_VECTORCALL) {
-					if (ti.mem_type == MT_REAL4 || ti.mem_type == MT_REAL8 ||
-						ti.mem_type == MT_OWORD || ti.mem_type == MT_YMMWORD || ti.mem_type == MT_ZMMWORD) {
-						proc->e.procinfo->vecregsize[cntParam] = ti.size;
-						proc->e.procinfo->vecregs[cntParam] = 1;
-						if (ti.size >= 16) proc->e.procinfo->vsize += ti.size;
-						ti.size = MT_QWORD;
-					}
-				}
-			}
+            if (ti.mem_type == MT_TYPE)
+                paranode->sym.type = ti.symtype;
+            else
+                paranode->sym.target_type = ti.symtype;
 
 			/* v2.05: moved BEFORE fastcall_tab() */
 			paranode->sym.isfar = ti.is_far;
@@ -1048,7 +1040,7 @@ static ret_code ParseParams(struct dsym *proc, int i, struct asm_tok tokenarray[
 			}
 
 			paranode->sym.total_length = 1; /* v2.04: added */
-			paranode->sym.total_size = ti.size;
+			paranode->sym.total_size = (proc->sym.langtype == LANG_VECTORCALL && CurrWordSize == 8 && (ti.mem_type == MT_TYPE || ti.size > 8)) ? 8 : ti.size;
 
 			if (paranode->sym.is_vararg == FALSE)
 			{
@@ -1229,7 +1221,7 @@ static ret_code ParseParams(struct dsym *proc, int i, struct asm_tok tokenarray[
 						offset += ROUND_UP(paranode->sym.total_size, CurrWordSize);
 						/* set isparam var for W64F_SMART */
 						//if (ModuleInfo.win64_flags & W64F_SMART) 
-						if(ModuleInfo.basereg[ModuleInfo.Ofssize] == T_RSP)
+						if(ModuleInfo.basereg[ModuleInfo.Ofssize] == T_RSP || Win64UnifiedFrame(proc))
 							paranode->sym.isparam = TRUE;
 					}
 			}
@@ -2087,6 +2079,9 @@ ret_code CopyPrototype(struct dsym *proc, struct dsym *src)
 	if (src->sym.isproc == FALSE)
 		return(ERROR);
 	memcpy(proc->e.procinfo, src->e.procinfo, sizeof(struct proc_info));
+    /* Spill locations belong to this procedure, not the prototype. */
+    proc->e.procinfo->vector_layout = NULL;
+    proc->e.procinfo->vector_count = 0;
 	proc->sym.mem_type = src->sym.mem_type;
 	proc->sym.langtype = src->sym.langtype;
 #if MANGLERSUPP
@@ -2154,7 +2149,7 @@ static void ProcFini(struct dsym *proc)
 		proc->e.procinfo->ReservedStack = sym_ReservedStack->value;
 		DebugMsg1(("ProcFini(%s): localsize=%u ReservedStack=%u\n", proc->sym.name, proc->e.procinfo->localsize, proc->e.procinfo->ReservedStack));
 #if STACKBASESUPP
-		if (proc->e.procinfo->fpo) {
+		if (proc->e.procinfo->fpo || Win64UnifiedFrame(proc)) {
 			if (proc->e.procinfo->ReservedStack > 0)
 			{
 				for (curr = proc->e.procinfo->locallist; curr; curr = curr->nextlocal) {
@@ -2189,7 +2184,7 @@ static void ProcFini(struct dsym *proc)
 	if (Parse_Pass == PASS_1) {
 		/* in case the procedure is empty, init addresses of local variables ( for proper listing ) */
 		if (ProcStatus & PRST_PROLOGUE_NOT_DONE) {
-			if (ModuleInfo.basereg[USE64] == T_RSP) {
+			if (ModuleInfo.basereg[USE64] == T_RSP || Win64UnifiedFrame(proc)) {
 				SetLocalOffsets_RSP(CurrProc->e.procinfo);
 			}
 			else if (proc->sym.langtype == LANG_SYSVCALL) {
@@ -2725,6 +2720,193 @@ static ret_code write_userdef_prologue(struct asm_tok tokenarray[])
 /* ========================================================================================================= */
 /* OPTION WIN64:1 - save up to 4 register parameters for WIN64 fastcall */
 /* ========================================================================================================= */
+/* Flatten genuine homogeneous aggregates, including arrays/nested structs.
+ * Size alone does not make an integer struct a SIMD vector or an HFA. */
+static unsigned win64_VectorKind(const struct asym *type, unsigned *width)
+{
+    if (!type) return 0;
+    while (type->type) type = type->type;
+    if (!strncmp(type->name, "__m128", 6)) *width = 16;
+    else if (!strncmp(type->name, "__m256", 6)) *width = 32;
+    else if (!strncmp(type->name, "__m512", 6)) *width = 64;
+    else return 0;
+    if (type->total_size != *width) return 0;
+    return 256 + *width + (type->name[6] == 'd' ? 128 : type->name[6] == 'i' ? 512 : 0);
+}
+
+static bool win64_VectorMembers(enum memtype mt, const struct asym *type,
+    unsigned base, unsigned depth, unsigned *kind, unsigned *width,
+    unsigned *count, unsigned offsets[4])
+{
+    unsigned k = 0, w = 0, n, size;
+    const struct sfield *f;
+    if (depth > 16) return FALSE;
+    if (mt == MT_REAL4) { k = 4; w = 4; }
+    else if (mt == MT_REAL8) { k = 8; w = 8; }
+    else if (mt == MT_OWORD || mt == MT_YMMWORD || mt == MT_ZMMWORD) {
+        w = SizeFromMemtype(mt, USE64, NULL); k = 256 + w;
+    } else if (mt == MT_TYPE && type) {
+        while (type->type) type = type->type;
+        k = win64_VectorKind(type, &w);
+        if (!k) {
+            if (type->typekind != TYPE_STRUCT) return FALSE;
+            for (f = ((const struct dsym *)type)->e.structinfo->head; f; f = f->next) {
+                size = SizeFromMemtype(f->sym.mem_type, USE64, f->sym.type);
+                for (n = 0; n < (f->sym.total_length ? f->sym.total_length : 1); n++)
+                    if (!win64_VectorMembers(f->sym.mem_type, f->sym.type,
+                        base + f->sym.offset + n * size, depth + 1, kind, width, count, offsets)) return FALSE;
+            }
+            return *count != 0;
+        }
+    } else return FALSE;
+    if (*count == 4 || (*kind && *kind != k)) return FALSE;
+    *kind = k; *width = w;
+    offsets[(*count)++] = base;
+    return TRUE;
+}
+
+/* One immutable signature classification shared by INVOKE and PROC. Register
+ * availability is decided across the whole signature, not by an INVOKE in
+ * the same source module. The per-callee home offsets are filled separately. */
+void Win64VectorLayout(struct dsym *proc)
+{
+    struct proc_info *info = proc->e.procinfo;
+    struct dsym *p, *t;
+    struct win64_vector_param *v;
+    unsigned count = 0, i, j, used = 0, available, k;
+    for (p = info->paralist; p; p = p->nextparam) count++;
+    if (info->vector_layout && info->vector_count == count) return;
+    info->vector_count = count;
+    if (!count) return;
+    info->vector_layout = LclAlloc(count * sizeof(*v));
+    memset(info->vector_layout, 0, count * sizeof(*v));
+    for (p = info->paralist, i = 0; p; p = p->nextparam, i++) {
+        v = &info->vector_layout[i];
+        v->home = -1;
+        v->size = SizeFromMemtype(p->sym.mem_type, USE64, p->sym.type);
+        v->width = v->size;
+        t = p->sym.mem_type == MT_TYPE ? (struct dsym *)p->sym.type : NULL;
+        while (t && t->sym.type) t = (struct dsym *)t->sym.type;
+        v->scalar = p->sym.mem_type == MT_REAL4 || p->sym.mem_type == MT_REAL8;
+        v->vector = p->sym.mem_type == MT_OWORD || p->sym.mem_type == MT_YMMWORD || p->sym.mem_type == MT_ZMMWORD;
+        if (t) {
+            unsigned kind = 0;
+            v->vector = win64_VectorKind(&t->sym, &v->width) != 0;
+            if (!v->vector && win64_VectorMembers(MT_TYPE, &t->sym, 0, 0,
+                &kind, &v->width, &v->members, v->offsets))
+                v->aggregate = TRUE;
+        }
+        if ((v->scalar || v->vector) && i < 6) {
+            v->count = 1;
+            v->regs[0] = i;
+            used |= 1 << i;
+        }
+        v->indirect = !v->scalar && (v->vector || v->aggregate ||
+            (v->size != 1 && v->size != 2 && v->size != 4 && v->size != 8));
+    }
+    for (i = 0; i < count; i++) {
+        v = &info->vector_layout[i];
+        if (!v->aggregate) continue;
+        available = 0;
+        for (j = 0; j < 6; j++) if (!(used & (1 << j))) available++;
+        if (available < v->members) continue; /* All or nothing, by reference. */
+        for (j = 0, k = 0; j < 6 && k < v->members; j++)
+            if (!(used & (1 << j))) { v->regs[k++] = j; used |= 1 << j; }
+        v->count = v->members;
+    }
+}
+
+/* Only a used parameter needs a spill/backing store. Homes beyond the four
+ * mandatory Win64 slots are kept in our own frame, never in caller locals. */
+static void win64_VectorPrepare(struct proc_info *info)
+{
+    struct dsym *p;
+    struct win64_vector_param *v;
+    unsigned i, size = 0;
+    Win64VectorLayout(CurrProc);
+    info->home_taken = 0;
+    memset(info->home_used, 0, sizeof(info->home_used));
+    for (p = info->paralist, i = 0; p; p = p->nextparam, i++) {
+        v = &info->vector_layout[i];
+        v->home = -1;
+        if (!p->sym.used || !(ModuleInfo.win64_flags & W64F_SAVEREGPARAMS)) continue;
+        if (v->count && (!v->scalar || i >= 4)) {
+            size = ROUND_UP(size, 8);
+            v->home = size;
+            size += 8;
+            if (!v->scalar) {
+                size = ROUND_UP(size, 16);
+                v->data = size;
+                size += v->size + (v->width >= 16 ? v->width - 1 : 0);
+            }
+        } else if (i < 4) {
+            if (v->scalar && v->count)
+                AddLineQueueX("%s [%r+%u], %r", v->size == 4 ? MOVE_SINGLE() : MOVE_DOUBLE(), T_RSP, 8 + i * 8, T_XMM0 + i);
+            else
+                AddLineQueueX("mov [%r+%u], %r", T_RSP, 8 + i * 8, ms64_regs[i]);
+            info->home_used[i] = 1;
+            info->home_taken++;
+        }
+    }
+    info->vsize = ROUND_UP(size, 16);
+    info->vecused = info->vsize != 0;
+}
+
+static void win64_VectorSave(struct proc_info *info, unsigned resstack)
+{
+    struct win64_vector_param *v;
+    unsigned i, j, base = info->localsize + info->xmmsize + resstack;
+    for (i = 0; i < info->vector_count; i++) {
+        v = &info->vector_layout[i];
+        if (v->home < 0) continue;
+        if (!v->scalar) {
+            AddLineQueueX("lea rax, [rsp+%u]", NUMQUAL base + v->data + (v->width >= 16 ? v->width - 1 : 0));
+            if (v->width >= 16) AddLineQueueX("and rax, -%u", NUMQUAL v->width);
+            AddLineQueueX("mov [rsp+%u], rax", NUMQUAL base + v->home);
+        }
+        for (j = 0; j < v->count; j++) {
+            unsigned offset = base + (v->scalar ? v->home : v->data) + (v->aggregate ? v->offsets[j] : j * v->width);
+            if (v->width <= 8)
+                AddLineQueueX("%s [rsp+%u], %r", v->width == 4 ? MOVE_SINGLE() : MOVE_DOUBLE(), NUMQUAL offset, T_XMM0 + v->regs[j]);
+            else
+                AddLineQueueX("%s [rax+%u], %r", v->width == 64 ? "vmovdqu64" : v->width == 32 ? "vmovdqu" : MOVE_UNALIGNED_FLOAT(),
+                    NUMQUAL (v->aggregate ? v->offsets[j] : j * v->width), (v->width == 64 ? T_ZMM0 : v->width == 32 ? T_YMM0 : T_XMM0) + v->regs[j]);
+        }
+    }
+}
+
+bool Win64VectorPointer(struct dsym *proc, struct asym *sym)
+{
+    struct dsym *p;
+    unsigned i;
+    struct win64_vector_param *v;
+    if (!proc || proc->sym.langtype != LANG_VECTORCALL || ModuleInfo.Ofssize != USE64) return FALSE;
+    Win64VectorLayout(proc);
+    for (p = proc->e.procinfo->paralist, i = 0; p; p = p->nextparam, i++)
+        if (&p->sym == sym) {
+            v = &proc->e.procinfo->vector_layout[i];
+            return v->indirect || ((v->vector || v->aggregate) && v->count);
+        }
+    return FALSE;
+}
+
+bool Win64VectorOffset(struct dsym *proc, struct asym *sym, int *offset)
+{
+    struct dsym *p;
+    unsigned i;
+    struct proc_info *info = proc->e.procinfo;
+    if (proc->sym.langtype != LANG_VECTORCALL || !info->vector_layout) return FALSE;
+    for (p = info->paralist, i = 0; p; p = p->nextparam, i++)
+        if (&p->sym == sym && info->vector_layout[i].home >= 0) {
+            *offset = info->localsize + info->xmmsize + info->vector_layout[i].home;
+            if (ModuleInfo.win64_flags & W64F_AUTOSTACKSP) *offset += sym_ReservedStack->value;
+            if (Win64UnifiedFrame(proc)) *offset -= info->frameofs;
+            else *offset += (int)StackAdj;
+            return TRUE;
+        }
+    return FALSE;
+}
+
 static void win64_SaveRegParams_RSP(struct proc_info *info)
 /*******************************************************/
 {
@@ -2828,15 +3010,14 @@ static void win64_SaveRegParams_RSP(struct proc_info *info)
 }
 
 /* ========================================================================================================= */
-/* WIN64 Store USED registers into free shadow spaces                                                        */
+/* WIN64 Select USED registers for free shadow spaces                                                       */
 /* ========================================================================================================= */
-static void win64_StoreRegHome(struct proc_info *info)
+static void win64_SelectRegHome(struct proc_info *info)
 /*******************************************************/
 {
 	int			       i = 0;
 	int			       cnt;
 	int            grcount = 0;
-	int			       sizestd = 0;
 	int            freeshadow = 4;
 	uint_16        *regist;
 	info->stored_reg = 0;
@@ -2891,12 +3072,9 @@ static void win64_StoreRegHome(struct proc_info *info)
 				continue;
 			}
 			else {
-				sizestd += 8;
 				if (i < 4)
 				{
 					if (info->home_used[i] == 0) {
-						AddLineQueueX("mov [%r+%u], %r", T_RSP, NUMQUAL sizestd, *regist);
-						AddLineQueueX("%r %r, %u", T_DOT_SAVEREG, *regist, NUMQUAL sizestd);
 						info->stored_reg++;
 					}
 					else {
@@ -2907,6 +3085,36 @@ static void win64_StoreRegHome(struct proc_info *info)
 		}/* end for */
 	}
 	return;
+}
+
+/* Save/restore the selected incoming home slots with RSP at its final frame
+ * position. Keep SAVE_NONVOL after allocation in unwind-code order as well:
+ * Windows must recover the register before undoing that allocation. */
+static void win64_RegHome(struct proc_info *info, unsigned allocation, bool restore)
+{
+	uint_16 *regs;
+	int count, slot = 0, saved = 0;
+	unsigned offset;
+	if (!info->regslist || !info->stored_reg)
+		return;
+	regs = info->regslist;
+	for (count = *regs++; count && saved < info->stored_reg; count--, regs++) {
+		if (GetValueSp(*regs) & (OP_XMM | OP_YMM | OP_ZMM))
+			continue;
+		while (slot < 4 && info->home_used[slot])
+			slot++;
+		if (slot == 4)
+			break;
+		offset = allocation + (info->pushed_reg + Win64UnifiedFrame(CurrProc)) * 8 + (++slot) * 8;
+		if (restore)
+			AddLineQueueX("mov %r, [%r+%u]", *regs, T_RSP, NUMQUAL offset);
+		else {
+			AddLineQueueX("mov [%r+%u], %r", T_RSP, NUMQUAL offset, *regs);
+			if ((1 << GetRegNo(*regs)) & win64_nvgpr)
+				AddLineQueueX("%r %r, %u", T_DOT_SAVEREG, *regs, NUMQUAL offset);
+		}
+		saved++;
+	}
 }
 
 /* ========================================================================================================= */
@@ -3415,6 +3623,9 @@ static void write_win64_default_prologue_RSP(struct proc_info *info)
 	int                 j;
 	int                 cnt;
 	int                 stackSize;
+	unsigned            alignment;
+    unsigned            allocation = 0;
+    bool frame = Win64UnifiedFrame(CurrProc);
 	int                 resstack = ((ModuleInfo.win64_flags & W64F_AUTOSTACKSP) ? sym_ReservedStack->value : 0);
 	int pushed = 0;
 
@@ -3428,14 +3639,20 @@ static void write_win64_default_prologue_RSP(struct proc_info *info)
 	info->vecused = 0;
 	XYZMMsize = 16;
 
-	if (ModuleInfo.win64_flags & W64F_SAVEREGPARAMS)
+	if (CurrProc->sym.langtype == LANG_VECTORCALL)
+        win64_VectorPrepare(info);
+    else if (ModuleInfo.win64_flags & W64F_SAVEREGPARAMS)
 		win64_SaveRegParams_RSP(info);
 
 	if (ModuleInfo.win64_flags & W64F_SMART)
-		win64_StoreRegHome(info);
+		win64_SelectRegHome(info);
 
 #if STACKBASESUPP
 
+    if (frame) {
+        AddLineQueueX("push rbp");
+        AddLineQueueX(".pushreg rbp");
+    }
 	info->pushed_reg = 0; /*count of pushed registers */
 	if (info->regslist != 0)
 		pushed = *(info->regslist);
@@ -3490,18 +3707,8 @@ static void write_win64_default_prologue_RSP(struct proc_info *info)
 			}
 		}
 
-		if ((info->locallist || resstack) || info->vecused || CurrProc->e.procinfo->xmmsize) {
+		if ((info->locallist || resstack) || info->vecused || CurrProc->e.procinfo->xmmsize || !info->isleaf) {
 			DebugMsg1(("write_win64_default_prologue_RSP: localsize=%u resstack=%u\n", info->localsize, resstack));
-			if (ModuleInfo.win64_flags & W64F_HABRAN) {
-				if (((info->pushed_reg & 1) && (info->localsize & 0xF)) ||
-					((!(info->pushed_reg & 1)) && (!(info->localsize & 0xF))) && (!(info->pushed_reg & 1)) && (!(cntxmm)))
-				{
-					info->localsize += 8;
-					if (CurrProc->sym.langtype == LANG_VECTORCALL) {
-						vectstart = 0;
-					}
-				}
-			}
 			/*
 			* SUB  RSP, localsize
 			* .ALLOCSTACK localsize
@@ -3510,8 +3717,16 @@ static void write_win64_default_prologue_RSP(struct proc_info *info)
 			ppfmt = (resstack ? fmtstk1 : fmtstk0);
 			stackSize = info->localsize + info->vsize + info->xmmsize;
 			if ((stackSize & 7) != 0) stackSize = (stackSize + 7)&(-8);
-			win64_stack_probe(stackSize + resstack);
+			/* Entry RSP is 8 mod 16. Include the actual pushes and every
+			 * allocated area; XMM saves must not suppress frame padding.
+			 * Pad above the locals so their existing offsets stay valid. */
+			alignment = (8 - (info->pushed_reg + frame) * 8 - stackSize - resstack) & 15;
+			info->localsize += alignment;
+			stackSize += alignment;
+			allocation = stackSize + resstack;
+			win64_stack_probe(allocation);
 
+            if (allocation) {
 			if (Options.frameflags)
 			{
 				if(resstack)
@@ -3524,6 +3739,10 @@ static void write_win64_default_prologue_RSP(struct proc_info *info)
 				AddLineQueueX(*(ppfmt + 0), T_RSP, NUMQUAL stackSize, sym_ReservedStack->name);
 			}
 			AddLineQueueX(*(ppfmt + 1), T_DOT_ALLOCSTACK, NUMQUAL stackSize, sym_ReservedStack->name);
+            }
+
+			if (ModuleInfo.win64_flags & W64F_SMART)
+				win64_RegHome(info, stackSize + resstack, FALSE);
 
 			/* save xmm registers */
 			if (cntxmm) {
@@ -3577,148 +3796,13 @@ static void write_win64_default_prologue_RSP(struct proc_info *info)
 					}
 				}
 			}
-			/* For VECTORCALL save vectors in the space provided */
-			if (CurrProc->sym.langtype == LANG_VECTORCALL) {
-				vectstart = info->localsize + info->xmmsize & ~(16 - 1);
-				if (info->vecused) {
-					if (info->vecregs) {
-						for (n = 0, m = 0, xsize = 0; n < 6; n++) {
-							xreg = info->vecregs[n];
-							if (xreg == 1 && info->vecregsize[n] < 16)
-								continue;//REAL4, FLOAT and REAL8 are stored in homespace
-							else if (xreg)
-							{
-								AddLineQueueX("lea %r,[%r + %d]", T_RAX, T_RSP, vectstart + xsize);
-								stackSize = info->localsize + resstack + info->vsize + info->xmmsize + 8 + info->pushed_reg * 8 + n * 8;
-								if ((stackSize & 7) != 0) stackSize = (stackSize + 7)&(-8);
-								AddLineQueueX("mov [%r + %d], %r", T_RSP, stackSize, T_RAX);
-								xsize += info->vecregsize[n] * xreg;
-							}
-							else if (info->vregs[n] != 0 && xreg == 0 && n < 4) /* JPH */
-							{
-								struct dsym *pp = info->paralist;
-								int j = 0;
-								for (j = 0; j < n; j++)
-								{
-									if (pp) pp = pp->nextparam;
-								}
-								if (pp)
-								{
-									if (pp->sym.ttype)
-									{
-										if (pp->sym.ttype->e.structinfo->isHFA == 1 || pp->sym.ttype->e.structinfo->isHVA == 1 || pp->sym.ttype->e.structinfo->stype == MM128 || pp->sym.ttype->e.structinfo->stype == MM256)
-										{
-											stackSize = info->localsize + resstack + info->vsize + info->xmmsize + 8 + info->pushed_reg * 8 + n * 8;
-											if ((stackSize & 7) != 0) stackSize = (stackSize + 7)&(-8);
-											AddLineQueueX("mov [%r + %d], %r", T_RSP, stackSize, ms64_regs[n]);
-											//xsize += 8;
-											xsize += info->vecregsize[n] * xreg;
-										}
-									}
-								}
-							}
-						}
-						/* set available registers to zero including the ones that are greater than 1 */
-						for (i = 0; i < 6; i++) {
-							if (info->vecregs[i] == 1) xyused[i] = 1;
-							else if ((info->vecregs[i] >= 1) && (xyused[i] != 1))
-								xyused[i] = 0;
-						}
-						for (n = 0, m = 0; n < 6; n++) {
-							xreg = info->vecregs[n];       // it can be 0, 1, 2 or 4 eg: 0, 4, 0, 2, 0, 0
-							xsize = info->vecregsize[n];   // xmm = 16, ymm = 32 or zmm = 64
-							m += xreg;
-							if (m > 6) break;              // max 6 AVX registers
-							if (xreg == 1 && info->vecregsize[n] < 16)
-								continue;                    //REAL4, FLOAT and REAL8 are stored in homespace
-							else if (xreg) {
-								switch (xsize) {
-								case 4:
-									//if (xreg == 2){
-									//  /* this can only happen if there is 2 real4 */
-									//  AddLineQueueX("vmovsd qword ptr [rsp+%d],%r", vsize + vectstart, T_XMM0 + n);
-									//  vsize += 8;
-									//  }
-									//else{
-									for (i = 0, j = 0; i < xreg; i++) {
-										while (xyused[j] != 0) j++;
-										AddLineQueueX("%s dword ptr [rsp+%d],%r", MOVE_SINGLE(), vsize + vectstart, T_XMM0 + j);
-										xyused[j] = 1;
-										vsize += 4;
-									}
-									//}
-									break;
-								case 8:
-									if (xreg <= 3) {
-										for (i = 0, j = 0; i < xreg; i++) {
-											while (xyused[j] != 0) j++;
-											AddLineQueueX("%s qword ptr [rsp+%d],%r", MOVE_DOUBLE(), vsize + vectstart, T_XMM0 + j);
-											xyused[j] = 1;
-											vsize += 8;
-										}
-									}
-									/* this can only happen if there is 8 real8 */
-									else {
-										AddLineQueueX("vmovups ymmword ptr [rsp+%d],%r", vsize + vectstart, T_YMM0 + n);
-										vsize += 64;
-										xyused[n] = 1;
-									}
-									break;
-								case 16:
-									if (xreg == 1) {
-										AddLineQueueX("%s oword ptr [rsp+%d],%r", MOVE_UNALIGNED_FLOAT(), vsize + vectstart, T_XMM0 + n);
-										xyused[n] = 1;
-										vsize += 16;
-									}
-									else {
-										for (i = 0, j = 0; i < xreg; i++) {
-											while (xyused[j] != 0) j++;
-											AddLineQueueX("%s oword ptr [rsp+%d],%r", MOVE_UNALIGNED_FLOAT(), vsize + vectstart, T_XMM0 + j);
-											xyused[j] = 1;
-											vsize += 16;
-										}
-									}
-									break;
-								case 32:
-									if (xreg == 1) {
-										AddLineQueueX("vmovups ymmword ptr [rsp+%d],%r", vsize + vectstart, T_YMM0 + n);
-										xyused[n] = 1;
-										vsize += 32;
-									}
-									else {
-										for (i = 0, j = 0; i < xreg; i++) {
-											while (xyused[j] != 0) j++;
-											AddLineQueueX("vmovups ymmword ptr [rsp+%d],%r", vsize + vectstart, T_YMM0 + j);
-											xyused[j] = 1;
-											vsize += 32;
-										}
-									}
-									break;
-								case 64:
-									if (xreg == 1) {
-										AddLineQueueX("vmovups zmmword ptr [rsp+%d],%r", vsize + vectstart + xsize, T_ZMM0 + n);
-										xyused[n] = 1;
-										vsize += 64;
-									}
-									else {
-										for (i = 0, j = 0; i < xreg; i++) {
-											while (xyused[j] != 0) j++;
-											AddLineQueueX("vmovups zmmword ptr [rsp+%d],%r", vsize + vectstart + xsize, T_ZMM0 + j);
-											xyused[j] = 1;
-											vsize += 64;
-										}
-									}
-									break;
-								}
-							}
-						}
-					}
-				}
-			}
-		}
+            if (CurrProc->sym.langtype == LANG_VECTORCALL)
+                win64_VectorSave(info, resstack);
+        }
 		else if (info->localsize > 0)
 		{
 			stackSize = info->localsize;
+            allocation = stackSize;
 			if (Options.frameflags)
 			{
 				AddLineQueueX("lea %r, [%r-%d]", stackreg[ModuleInfo.Ofssize], stackreg[ModuleInfo.Ofssize], stackSize);
@@ -3727,8 +3811,18 @@ static void write_win64_default_prologue_RSP(struct proc_info *info)
 			{
 				AddLineQueueX("sub %r, %d", stackreg[ModuleInfo.Ofssize], stackSize);
 			}
+			if (ModuleInfo.win64_flags & W64F_SMART)
+				win64_RegHome(info, stackSize, FALSE);
 		}
+		else if (ModuleInfo.win64_flags & W64F_SMART)
+			win64_RegHome(info, 0, FALSE);
 
+        if (frame) {
+            info->frameofs = ROUND_UP(allocation / 2, 16);
+            if (info->frameofs > 128) info->frameofs = 128;
+            AddLineQueueX("lea rbp, [rsp+%u]", NUMQUAL info->frameofs);
+            AddLineQueueX(".setframe rbp, %u", NUMQUAL info->frameofs);
+        }
 		AddLineQueueX("%r", T_DOT_ENDPROLOG);
 
 		/* v2.11: linequeue is now run in write_default_prologue() */
@@ -3955,6 +4049,15 @@ static void write_win64_default_epilogue_RSP(struct proc_info *info)
 	int  stackSize;
 	int  resstack = ((ModuleInfo.win64_flags & W64F_AUTOSTACKSP) ? sym_ReservedStack->value : 0);
 
+    if (Win64UnifiedFrame(CurrProc)) {
+        uint_16 *reg = info->regslist;
+        int n, restore = info->stored_reg != 0;
+        if (reg) for (n = *reg++; n; n--, reg++)
+            if (GetValueSp(*reg) & (OP_XMM | OP_YMM | OP_ZMM)) restore = TRUE;
+        /* Only memory restores need the body RSP before the final epilogue. */
+        if (restore) AddLineQueueX("lea rsp, [rbp-%d]", info->frameofs);
+    }
+
 	/* restore non-volatile xmm registers */
 	if (info->regslist) {
 		uint_16 *regs;
@@ -4005,6 +4108,24 @@ static void write_win64_default_epilogue_RSP(struct proc_info *info)
 		}
 	}
 
+	/* Restore home-slot registers before the deallocation/pop/ret suffix.
+	 * A MOV after the POPs prevents Windows from recognising the epilogue. */
+	stackSize = info->localsize + info->vsize + info->xmmsize;
+	if (ModuleInfo.fctype == FCT_WIN64 && (ModuleInfo.win64_flags & W64F_AUTOSTACKSP)) {
+		anysize = info->localsize + resstack + info->xmmsize;
+		if (info->vecused) anysize += info->vsize;
+		stackSize = anysize ? ((info->localsize + info->vsize + info->xmmsize + 7) & ~7) + resstack : 0;
+	}
+	if (ModuleInfo.win64_flags & W64F_SMART)
+		win64_RegHome(info, stackSize, TRUE);
+
+    if (Win64UnifiedFrame(CurrProc)) {
+        AddLineQueueX("lea rsp, [rbp+%d]", stackSize - info->frameofs);
+        pop_register(info->regslist);
+        AddLineQueueX("pop rbp");
+        return;
+    }
+
 	if (ModuleInfo.fctype == FCT_WIN64 && (ModuleInfo.win64_flags & W64F_AUTOSTACKSP)) {
 		anysize = info->localsize + sym_ReservedStack->value + info->xmmsize;
 		if (info->vecused) anysize += info->vsize;
@@ -4023,9 +4144,9 @@ static void write_win64_default_epilogue_RSP(struct proc_info *info)
 			}
 		}
 	}
-	else if (info->localsize > 0)
+	else if (stackSize > 0)
 	{
-		stackSize = info->localsize;
+		stackSize = info->localsize + info->vsize + info->xmmsize;
 		if (Options.frameflags)
 		{
 			AddLineQueueX("lea %r, [%r+%d]", stackreg[ModuleInfo.Ofssize], stackreg[ModuleInfo.Ofssize], stackSize);
@@ -4038,35 +4159,6 @@ static void write_win64_default_epilogue_RSP(struct proc_info *info)
 	pop_register(CurrProc->e.procinfo->regslist); //make sure we pop before correcting RSP.
 
 #if STACKBASESUPP
-	if (ModuleInfo.win64_flags & W64F_SMART) {
-		/* restore non-volatile registers from shadow space */
-		if (info->regslist) {
-			uint_16 *regist = info->regslist;
-			int cnt;
-			if (ModuleInfo.win64_flags) {
-				int i = 0;
-				int gprzize = 0;
-				for (cnt = *regist++; cnt; cnt--, regist++)
-				{
-					if ((GetValueSp(*regist) & OP_XMM) || (GetValueSp(*regist) & OP_YMM) || (GetValueSp(*regist) & OP_ZMM))
-						continue;
-					else {
-						gprzize += 8;
-						if (gprzize <= 0x20)
-						{
-							if (info->home_used[i] == 0) {
-								AddLineQueueX("mov %r, [%r+%u]", *regist, stackreg[ModuleInfo.Ofssize], NUMQUAL gprzize);
-							}
-							else {
-								cnt++; regist--;
-							}
-							i++;
-						}
-					}
-				}
-			}
-		}
-	}
 	if (GetRegNo(info->basereg) != 4 && (info->parasize != 0 || info->locallist != NULL))
 		AddLineQueueX("pop %r", info->basereg);
 #else
@@ -4969,7 +5061,7 @@ static ret_code write_default_prologue(void)
 
 	if (ModuleInfo.Ofssize == USE64)
 	{
-		if (ModuleInfo.basereg[USE64] == T_RSP)
+		if (ModuleInfo.basereg[USE64] == T_RSP || Win64UnifiedFrame(CurrProc))
 			write_win64_default_prologue_RSP(info);
 		else if ((ModuleInfo.basereg[USE64] == T_RBP) && CurrProc->sym.langtype == LANG_FASTCALL && info->isframe)
 			write_win64_default_prologue_RBP(info);
@@ -5155,7 +5247,7 @@ void write_prologue(struct asm_tok tokenarray[])
 
 	if (ModuleInfo.Ofssize == USE64)
 	{
-		if (ModuleInfo.basereg[USE64] == T_RSP)
+		if (ModuleInfo.basereg[USE64] == T_RSP || Win64UnifiedFrame(CurrProc))
 		{
 			if (Parse_Pass == PASS_1)
 				SetLocalOffsets_RSP(CurrProc->e.procinfo);
@@ -5410,7 +5502,7 @@ static void write_default_epilogue(void)
 
 	if (ModuleInfo.Ofssize == USE64)
 	{
-		if (ModuleInfo.basereg[USE64] == T_RSP && (CurrProc->sym.langtype == LANG_FASTCALL || CurrProc->sym.langtype == LANG_VECTORCALL))
+		if ((ModuleInfo.basereg[USE64] == T_RSP || Win64UnifiedFrame(CurrProc)) && (CurrProc->sym.langtype == LANG_FASTCALL || CurrProc->sym.langtype == LANG_VECTORCALL))
 			write_win64_default_epilogue_RSP(info);
 		else if (ModuleInfo.basereg[USE64] == T_RBP && CurrProc->sym.langtype == LANG_FASTCALL && info->isframe)
 			write_win64_default_epilogue_RBP(info); /* UASM win64:N style epilogue */
@@ -5651,6 +5743,7 @@ void ProcInit(void)
 	ProcStatus = 0;
 	/* v2.09: reset prolog and epilog mode */
 	ModuleInfo.no_stackprobe = FALSE;
+    ModuleInfo.stackbase_explicit = FALSE;
 	if (Parse_Pass == PASS_1) stack_probe_helpers = NULL;
 	ModuleInfo.prologuemode = PEM_DEFAULT;
 	ModuleInfo.epiloguemode = PEM_DEFAULT;

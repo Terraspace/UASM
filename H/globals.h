@@ -825,6 +825,7 @@ struct module_info {
     unsigned            EndDirFound:1;
 #if AMD64_SUPPORT
     unsigned            no_stackprobe:1; /* OPTION STACKPROBE:OFF; default ON */
+    unsigned            stackbase_explicit:1; /* honour explicit RBP/RSP with every Win64 mode */
     unsigned            frame_auto:1;    /* win64 only */
 #endif
     unsigned            NoSignExtend:1;  /* option nosignextend */

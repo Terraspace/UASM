@@ -1,0 +1,2 @@
+..\src\win64\vectorcall_source_error.asm(13) : Error A2166: Register value overwritten by INVOKE
+..\src\win64\vectorcall_source_error.asm(14) : Error A2166: Register value overwritten by INVOKE

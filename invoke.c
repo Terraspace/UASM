@@ -444,6 +444,25 @@ static int ms64_fcstart(struct dsym const *proc, int numparams, int start, struc
 	else if (numparams & 1)
 		numparams++;
 
+    if (proc->sym.langtype == LANG_VECTORCALL) {
+        unsigned i, bytes = numparams * 8;
+        int argtoken = start;
+        Win64VectorLayout((struct dsym *)proc);
+        for (i = 0; i < proc->e.procinfo->vector_count; i++) {
+            struct win64_vector_param *v = &proc->e.procinfo->vector_layout[i];
+            bool register_source = FALSE;
+            if (tokenarray[argtoken].token == T_COMMA) argtoken++;
+            for (; tokenarray[argtoken].token != T_COMMA && tokenarray[argtoken].token != T_FINAL; argtoken++)
+                if (tokenarray[argtoken].token == T_REG &&
+                    (GetValueSp(tokenarray[argtoken].tokval) & (OP_XMM | OP_YMM | OP_ZMM)))
+                    register_source = TRUE;
+            if (v->vector && !v->count && register_source) {
+                v->temp = bytes;
+                bytes += v->size + v->size - 1;
+            }
+        }
+        numparams = ((bytes + 15) & ~15) / 8;
+    }
 	*value = numparams;
 
 	if (ModuleInfo.win64_flags & W64F_AUTOSTACKSP) 
@@ -451,8 +470,11 @@ static int ms64_fcstart(struct dsym const *proc, int numparams, int start, struc
 		if ((numparams * sizeof(uint_64)) > sym_ReservedStack->value)
 			sym_ReservedStack->value = numparams * sizeof(uint_64);
 	}
-	else
-		AddLineQueueX("sub %r, %d", T_RSP, numparams * sizeof(uint_64));
+	else {
+        AddLineQueueX("sub %r, %d", T_RSP, numparams * sizeof(uint_64));
+        if (CurrProc && CurrProc->e.procinfo->basereg == T_RSP)
+            AddLineQueueX("@StackBase = @StackBase + %u", NUMQUAL numparams * 8);
+    }
 
 	/* since Win64 fastcall doesn't push, it's a better/faster strategy to handle the arguments from left to right. */
 	return(0);
@@ -462,8 +484,11 @@ static void ms64_fcend(struct dsym const *proc, int numparams, int value)
 /*************************************************************************/
 {
 	/* use <value>, which has been set by ms64_fcstart() */
-	if (!(ModuleInfo.win64_flags & W64F_AUTOSTACKSP))
-		AddLineQueueX(" add %r, %d", T_RSP, value * 8);
+	if (!(ModuleInfo.win64_flags & W64F_AUTOSTACKSP)) {
+        if (CurrProc && CurrProc->e.procinfo->basereg == T_RSP)
+            AddLineQueueX("@StackBase = @StackBase - %u", NUMQUAL value * 8);
+        AddLineQueueX(" add %r, %d", T_RSP, value * 8);
+    }
 	return;
 }
 
@@ -483,7 +508,7 @@ static void ms64_fcend(struct dsym const *proc, int numparams, int value)
 * UASM 2.49 For structs that are not 1/2/4/8 bytes in size the address is used too, else they're passed
 * in registers.
 */
-static int ms64_param(struct dsym const *proc, int index, struct dsym *param, bool addr, struct expr *opnd, char *paramvalue, uint_8 *regs_used)
+static int ms64_param_impl(struct dsym const *proc, int index, struct dsym *param, bool addr, struct expr *opnd, char *paramvalue, uint_8 *regs_used)
 /************************************************************************************************************************************************/
 {
 	uint_32 size;
@@ -1352,6 +1377,147 @@ vcall:
 
 vcalldone:
 	return(1);
+}
+
+static int win64_vector_param(struct dsym const *proc, int index, struct dsym *param,
+    bool addr, struct expr *opnd, char *paramvalue, uint_8 *regs_used)
+{
+    struct win64_vector_param *v;
+    struct dsym ordinary = *proc, typed = *param;
+    unsigned j, width;
+    bool source_pointer = FALSE;
+    int dst, src, reg, n;
+    struct asm_tok *read_regs[2];
+    Win64VectorLayout((struct dsym *)proc);
+    if ((unsigned)index >= proc->e.procinfo->vector_count) return 0;
+    v = &proc->e.procinfo->vector_layout[index];
+    /* Read positional vector inputs before HFA/HVA expansion can overwrite
+     * their source registers. Both passes use the same signature layout. */
+    if ((v->aggregate && v->count) ? !vcallpass : vcallpass) return 1;
+    read_regs[0] = opnd->base_reg;
+    read_regs[1] = opnd->idx_reg;
+    for (j = 0; j < 2; j++) if (read_regs[j]) {
+        reg = read_regs[j]->tokval;
+        n = GetRegNo(reg);
+        if ((GetValueSp(reg) & OP_R) &&
+            (((REGPAR_WIN64 & (1 << n)) && (*regs_used & (1 << (GetParmIndex(n) + RPAR_START)))) ||
+             ((*regs_used & R0_USED) && (GetValueSp(reg) & OP_A)))) {
+            EmitErr(REGISTER_VALUE_OVERWRITTEN_BY_INVOKE);
+            return 1;
+        }
+        if ((GetValueSp(reg) & (OP_XMM | OP_YMM | OP_ZMM)) && n < 6 && proc->e.procinfo->xyzused[n]) {
+            EmitErr(REGISTER_VALUE_OVERWRITTEN_BY_INVOKE);
+            return 1;
+        }
+    }
+    ordinary.sym.langtype = LANG_FASTCALL;
+    /* Named vectorcall aggregates denote their pointer home. Forward the
+     * pointee, not the bytes containing that pointer. */
+    source_pointer = !addr && opnd->sym && Win64VectorPointer(CurrProc, opnd->sym);
+    if (!v->count) {
+        if (v->indirect) {
+            if (v->vector && opnd->kind == EXPR_REG && !opnd->indirect &&
+                (GetValueSp(opnd->base_reg->tokval) & (OP_XMM | OP_YMM | OP_ZMM))) {
+                AddLineQueueX("lea rax, [rsp+%u]", NUMQUAL v->temp + v->size - 1);
+                AddLineQueueX("and rax, -%u", NUMQUAL v->size);
+                AddLineQueueX("%s [rax], %s", v->size == 64 ? "vmovdqu64" : v->size == 32 ? "vmovups" : MOVE_UNALIGNED_FLOAT(), paramvalue);
+                AddLineQueueX("mov [rsp+%u], rax", NUMQUAL index * 8);
+                *regs_used |= R0_USED;
+                return 1;
+            }
+            typed.sym.mem_type = MT_QWORD;
+            typed.sym.type = NULL;
+            return ms64_param_impl(&ordinary, index, &typed, !source_pointer, opnd, paramvalue, regs_used);
+        }
+        return ms64_param_impl(&ordinary, index, param, addr, opnd, paramvalue, regs_used);
+    }
+    if (addr) { EmitErr(INVOKE_ARGUMENT_TYPE_MISMATCH, index + 1); return 1; }
+    width = v->width;
+    if (source_pointer && !v->scalar) {
+        AddLineQueueX("mov rax, %s", paramvalue);
+        *regs_used |= R0_USED;
+        paramvalue = "rax";
+    }
+    for (j = 0; j < v->count; j++) {
+        dst = (width == 64 ? T_ZMM0 : width == 32 ? T_YMM0 : T_XMM0) + v->regs[j];
+        if (opnd->kind == EXPR_REG && !opnd->indirect) {
+            src = opnd->base_reg->tokval;
+            if (v->count != 1) { EmitErr(INVOKE_ARGUMENT_TYPE_MISMATCH, index + 1); return 1; }
+            if ((GetValueSp(src) & (OP_XMM | OP_YMM | OP_ZMM))) {
+                if (dst == src) continue; /* No write: later arguments may still read it. */
+                if (dst != src)
+                    AddLineQueueX("%s %r, %s", width > 16 ? "vmovups" : MOVE_ALIGNED_FLOAT(), dst, paramvalue);
+            } else if (v->scalar)
+                AddLineQueueX("%s %r, %s", width == 4 ? MOVE_SIMD_DWORD() : MOVE_SIMD_QWORD(), dst, paramvalue);
+            else
+                EmitErr(INVOKE_ARGUMENT_TYPE_MISMATCH, index + 1);
+        } else if (opnd->kind == EXPR_FLOAT || opnd->kind == EXPR_CONST) {
+            if (!v->scalar) { EmitErr(INVOKE_ARGUMENT_TYPE_MISMATCH, index + 1); return 1; }
+            if (width == 4) AddLineQueueX("mov eax, %s", paramvalue);
+            else AddLineQueueX("mov rax, real8 ptr %s", paramvalue);
+            AddLineQueueX("%s %r, %r", width == 4 ? MOVE_SIMD_DWORD() : MOVE_SIMD_QWORD(), dst, width == 4 ? T_EAX : T_RAX);
+            *regs_used |= R0_USED;
+        } else if (v->scalar)
+            AddLineQueueX("%s %r, %s", width == 4 ? MOVE_SINGLE() : MOVE_DOUBLE(), dst, paramvalue);
+        else
+            AddLineQueueX("%s %r, %r ptr [%s+%u]", width == 4 ? MOVE_SINGLE() : width == 8 ? MOVE_DOUBLE() :
+                width == 16 ? MOVE_UNALIGNED_FLOAT() : width == 32 ? "vmovups" : "vmovdqu64", dst, width == 4 ? T_DWORD : width == 8 ? T_QWORD : width == 16 ? T_OWORD : width == 32 ? T_YMMWORD : T_ZMMWORD, paramvalue, NUMQUAL (v->aggregate ? v->offsets[j] : j * width));
+        proc->e.procinfo->xyzused[v->regs[j]] = 1;
+    }
+    return 1;
+}
+
+/* Win64 variadic calls duplicate every floating register argument, including
+ * fixed parameters, into its positional GPR. Classify before lowering so
+ * early returns in the ordinary argument emitter cannot omit the copy. */
+static int ms64_param(struct dsym const *proc, int index, struct dsym *param,
+    bool addr, struct expr *opnd, char *paramvalue, uint_8 *regs_used)
+{
+    struct dsym typed;
+    bool floating, promote;
+    int result, size, xmm;
+    if (proc->sym.langtype == LANG_VECTORCALL)
+        return win64_vector_param(proc, index, param, addr, opnd, paramvalue, regs_used);
+    if (proc->sym.langtype != LANG_FASTCALL || !proc->e.procinfo->has_vararg || addr)
+        return ms64_param_impl(proc, index, param, addr, opnd, paramvalue, regs_used);
+    floating = param->sym.mem_type == MT_REAL4 || param->sym.mem_type == MT_REAL8;
+    if (param->sym.is_vararg)
+        floating = opnd->mem_type == MT_REAL4 || opnd->mem_type == MT_REAL8 ||
+            opnd->kind == EXPR_FLOAT || (opnd->kind == EXPR_REG && !opnd->indirect &&
+            (GetValueSp(opnd->base_reg->tokval) & OP_XMM));
+    if (!floating)
+        return ms64_param_impl(proc, index, param, addr, opnd, paramvalue, regs_used);
+    typed = *param;
+    promote = param->sym.is_vararg && opnd->mem_type == MT_REAL4 && opnd->kind != EXPR_FLOAT;
+    if (param->sym.is_vararg) {
+        typed.sym.mem_type = MT_REAL8;
+        typed.sym.is_vararg = FALSE;
+    }
+    size = typed.sym.mem_type == MT_REAL4 ? 4 : 8;
+    if (!promote && index < 4 && opnd->kind == EXPR_REG && !opnd->indirect &&
+        (GetValueSp(opnd->base_reg->tokval) & OP_R)) {
+        /* A typed FP parameter may be supplied as raw bits in a GPR. Use
+         * the ordinary emitter for its size/overwrite checks, then mirror it. */
+        typed.sym.mem_type = size == 4 ? MT_DWORD : MT_QWORD;
+        result = ms64_param_impl(proc, index, &typed, FALSE, opnd, paramvalue, regs_used);
+        if (result) AddLineQueueX("%s %r, %r", size == 4 ? MOVE_SIMD_DWORD() : MOVE_SIMD_QWORD(),
+            T_XMM0 + index, ms64_regs[index + (size == 4 ? 8 : 12)]);
+        return result;
+    }
+    if (promote) {
+        xmm = T_XMM0 + (index < 4 ? index : 4);
+        AddLineQueueX("cvtss2sd %r, %s", xmm, paramvalue);
+        if (index >= 4)
+            AddLineQueueX("movsd qword ptr [rsp+%u], %r", NUMQUAL index * 8, xmm);
+        result = 1;
+    } else
+        result = ms64_param_impl(proc, index, &typed, addr, opnd, paramvalue, regs_used);
+    if (index < 4 && result) {
+        AddLineQueueX("%s %r, %r", size == 4 ? MOVE_SIMD_DWORD() : MOVE_SIMD_QWORD(),
+            ms64_regs[index + (size == 4 ? 8 : 12)], T_XMM0 + index);
+        *regs_used |= 1 << (index + RPAR_START);
+    }
+    return result;
 }
 
 #endif
@@ -3720,7 +3886,7 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 				return(NOT_ERROR);
 		}
 		else if (proc->sym.langtype == LANG_VECTORCALL) {
-			if (opnd.kind == EXPR_REG && reqParam > 5) {
+			if (ModuleInfo.fctype != FCT_WIN64 && opnd.kind == EXPR_REG && reqParam > 5) {
 				if ((GetValueSp(reg) & OP_XMM) || (GetValueSp(reg) & OP_YMM) || (GetValueSp(reg) & OP_ZMM))
 					EmitErr(INVOKE_ARGUMENT_TYPE_MISMATCH, reqParam);
 			}
@@ -4429,7 +4595,7 @@ ret_code InvokeDirective(int i, struct asm_tok tokenarray[])
 	if (Parse_Pass == PASS_1)
 		memset(info->delregsused, 0, 3);
 
-	info->vsize = 0;
+	if (proc->sym.langtype != LANG_VECTORCALL) info->vsize = 0;
 
 	/* get the number of parameters */
 	for (curr = info->paralist, numParam = 0; curr; curr = curr->nextparam, numParam++)
@@ -4607,7 +4773,7 @@ ret_code InvokeDirective(int i, struct asm_tok tokenarray[])
 	if (sym->langtype == LANG_VECTORCALL)
 	{
 		vcallpass = 1;
-		info->vsize = 0;
+		if (ModuleInfo.fctype != FCT_WIN64) info->vsize = 0;
 		curr = info->paralist;
 		parmpos = i;
 

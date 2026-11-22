@@ -1,0 +1,2 @@
+..\src\win64\vectorcall_vararg_error.asm(3) : Error A2210: Syntax error: VARARG with VECTORCALL
+..\src\win64\vectorcall_vararg_error.asm(5) : Error A2210: Syntax error: VARARG with VECTORCALL
