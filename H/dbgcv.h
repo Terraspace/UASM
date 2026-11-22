@@ -2660,6 +2660,7 @@ typedef enum CV_HREG_e {
     CV_AMD64_R13D = 365,
     CV_AMD64_R14D = 366,
     CV_AMD64_R15D = 367,
+    CV_AMD64_ZMM0 = 726, /* Microsoft DIA cvconst.h: full AVX-512 registers. */
     CV_AMD64_YMM0 = 368,
     CV_AMD64_YMM1 = 369,
     CV_AMD64_YMM2 = 370,

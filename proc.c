@@ -2080,6 +2080,7 @@ ret_code CopyPrototype(struct dsym *proc, struct dsym *src)
 		return(ERROR);
 	memcpy(proc->e.procinfo, src->e.procinfo, sizeof(struct proc_info));
     /* Spill locations belong to this procedure, not the prototype. */
+    proc->e.procinfo->debug_locations = NULL;
     proc->e.procinfo->vector_layout = NULL;
     proc->e.procinfo->vector_count = 0;
 	proc->sym.mem_type = src->sym.mem_type;
@@ -2110,6 +2111,7 @@ ret_code CopyPrototype(struct dsym *proc, struct dsym *src)
 }
 
 static void finish_stack_probe(struct dsym *proc);
+static void capture_cv_locations(struct dsym *proc);
 
 /* close a PROC */
 static void ProcFini(struct dsym *proc)
@@ -2165,6 +2167,7 @@ static void ProcFini(struct dsym *proc)
 #endif
 	}
 
+    capture_cv_locations(proc);
 	finish_stack_probe(proc);
 
 	/* create the .pdata and .xdata stuff */
@@ -2905,6 +2908,88 @@ bool Win64VectorOffset(struct dsym *proc, struct asym *sym, int *offset)
             return TRUE;
         }
     return FALSE;
+}
+
+/* This is also the address used by expression evaluation. Keep debug locations
+ * in sync with generated operands instead of exporting the raw symbol offset. */
+int Win64StackOffset(struct dsym *proc, struct asym *sym, int adjustment)
+{
+    int offset;
+    struct proc_info *info = proc->e.procinfo;
+    if (Win64VectorOffset(proc, sym, &offset))
+        return offset - (info->basereg == T_RSP ? (int)StackAdj : 0) + adjustment;
+    if (ModuleInfo.win64_flags && sym->isparam) {
+        offset = info->pushed_reg * 8 + sym->offset + info->localsize + info->xmmsize - 8;
+        if (proc->sym.langtype == LANG_VECTORCALL) offset += info->vsize;
+        if (Win64UnifiedFrame(proc)) offset += 8 - info->frameofs;
+        offset = (offset + 7) & ~7;
+        return offset + (info->basereg == T_RSP ? adjustment : 0);
+    }
+    return sym->offset + adjustment - (Win64UnifiedFrame(proc) ? info->frameofs : 0);
+}
+
+static void capture_cv_locations(struct dsym *proc)
+{
+    struct proc_info *info = proc->e.procinfo;
+    struct cv_local_location *loc, **tail = &info->debug_locations;
+    struct dsym *p;
+    unsigned list, index;
+    bool homed;
+    if (!Options.debug_symbols || ModuleInfo.prologuemode != PEM_DEFAULT || ModuleInfo.Ofssize != USE64 || ModuleInfo.fctype != FCT_WIN64 ||
+        (proc->sym.langtype != LANG_FASTCALL && proc->sym.langtype != LANG_VECTORCALL)) return;
+    if (proc->sym.langtype == LANG_VECTORCALL) Win64VectorLayout(proc);
+    for (list = 0; list < 2; list++)
+        for (index = 0, p = list ? info->locallist : info->paralist; p; p = p->nextparam, index++) {
+            if (!*tail) { *tail = LclAlloc(sizeof(**tail)); memset(*tail, 0, sizeof(**tail)); }
+            loc = *tail;
+            loc->sym = &p->sym;
+            loc->offset = Win64StackOffset(proc, &p->sym, 0);
+            loc->reg = info->basereg;
+            loc->in_register = loc->reference = FALSE;
+            loc->pieces = 0;
+            if (!list && !p->sym.is_vararg) {
+                homed = (ModuleInfo.win64_flags & W64F_SAVEREGPARAMS) &&
+                    (!(ModuleInfo.win64_flags & W64F_SMART) || p->sym.used);
+                if (proc->sym.langtype == LANG_VECTORCALL) {
+                    struct win64_vector_param *v = &info->vector_layout[index];
+                    homed = (ModuleInfo.win64_flags & W64F_SAVEREGPARAMS) && p->sym.used;
+                    if (v->indirect) loc->reference = TRUE;
+                    if (v->home >= 0 && !v->scalar) {
+                        if (v->width <= 16) {
+                            loc->offset = info->localsize + info->xmmsize + v->data;
+                            if (ModuleInfo.win64_flags & W64F_AUTOSTACKSP) loc->offset += info->ReservedStack;
+                            if (v->width == 16) loc->offset = (loc->offset + 15) & ~15;
+                            if (Win64UnifiedFrame(proc)) loc->offset -= info->frameofs;
+                            loc->reference = FALSE;
+                        }
+                    }
+                    if (!homed && v->count > 1) {
+                        unsigned part;
+                        loc->reference = FALSE;
+                        loc->pieces = v->count;
+                        for (part = 0; part < v->count; part++) {
+                            loc->piece_regs[part] = (v->width > 32 ? T_ZMM0 : v->width > 16 ? T_YMM0 : T_XMM0) + v->regs[part];
+                            loc->piece_offsets[part] = v->offsets[part];
+                        }
+                    } else if (!homed && v->count == 1) {
+                        loc->reference = FALSE;
+                        loc->reg = (v->width > 32 ? T_ZMM0 : v->width > 16 ? T_YMM0 : T_XMM0) + v->regs[0];
+                        loc->in_register = TRUE;
+                    } else if (!homed && !v->count && index < 4) {
+                        loc->reg = ms64_regs[index];
+                        loc->in_register = TRUE;
+                    }
+                } else if (!homed && index < 4) {
+                    loc->reg = (p->sym.mem_type == MT_REAL4 || p->sym.mem_type == MT_REAL8) ? T_XMM0 + index : ms64_regs[index];
+                    loc->in_register = TRUE;
+                }
+            }
+            if (!list && proc->sym.langtype == LANG_FASTCALL && p->sym.mem_type == MT_TYPE) {
+                unsigned size = SizeFromMemtype(p->sym.mem_type, USE64, p->sym.type);
+                loc->reference = size != 1 && size != 2 && size != 4 && size != 8;
+            }
+            tail = &loc->next;
+        }
 }
 
 static void win64_SaveRegParams_RSP(struct proc_info *info)

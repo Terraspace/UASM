@@ -59,6 +59,7 @@ extern void             ProcInit( void );
 extern bool Win64UnifiedFrame(const struct dsym *);
 extern void Win64VectorLayout(struct dsym *);
 extern bool Win64VectorPointer(struct dsym *, struct asym *);
+extern int Win64StackOffset(struct dsym *, struct asym *, int);
 extern bool Win64VectorOffset(struct dsym *, struct asym *, int *);
 extern void             EmitStackProbe( void );
 

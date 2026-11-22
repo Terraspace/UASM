@@ -1277,23 +1277,7 @@ static ret_code get_operand( struct expr *opnd, int *idx, struct asm_tok tokenar
                     if (Win64VectorPointer(CurrProc, sym)) opnd->mem_type = MT_QWORD;
 #if STACKBASESUPP
                   
-                    if (Win64VectorOffset(CurrProc, sym, &cnt))
-                        opnd->llvalue = cnt;
-                    else if (ModuleInfo.win64_flags && sym->isparam){
-                      opnd->llvalue = sym->offset;// +StackAdj;
-                      cnt = CurrProc->e.procinfo->pushed_reg;
-                      cnt = cnt * 8;
-                      cnt += sym->offset + CurrProc->e.procinfo->localsize + CurrProc->e.procinfo->xmmsize; //pointing to RSP
-                      if (CurrProc->sym.langtype == LANG_VECTORCALL)
-                        cnt += CurrProc->e.procinfo->vsize ;     //pointing abowe RSP to the shadow space off RCX RDX R8 R9                      
-                      //else 
-                        cnt -= 8;
-                        if (Win64UnifiedFrame(CurrProc)) cnt += 8 - CurrProc->e.procinfo->frameofs;
-                        if ((cnt & 7) != 0) cnt = (cnt + 7)&(-8);
-                      opnd->llvalue = cnt + (CurrProc->e.procinfo->basereg == T_RSP ? (int)StackAdj : 0);
-                    }
-                    else 
-                      opnd->llvalue = (int_64)(sym->offset + (int)StackAdj - (Win64UnifiedFrame(CurrProc) ? CurrProc->e.procinfo->frameofs : 0));
+                    opnd->llvalue = Win64StackOffset(CurrProc, sym, (int)StackAdj);
 #else
                     opnd->llvalue = sym->offset;
 #endif

@@ -16,3 +16,4 @@ src/codeview8_64/*.asm -text
 src/cvptr8/*.asm -text
 
 src/cv8_issue235/*.asm -text
+src/cvlocals8/*.asm -text

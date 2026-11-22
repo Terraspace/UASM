@@ -197,5 +197,7 @@
   "hll_collision": ["-q", "-coff"],
   "hll_collision_cv8": ["-q", "-coff", "-Zi8"],
   "elf64_rela": ["-q", "-elf64"],
-  "stackprobe": ["-q", "-win64"]
+  "stackprobe": ["-q", "-win64"],
+  "cvlocals8": ["-c", "-win64", "-Zi8"],
+  "cvlocals4": ["-c", "-win64", "-Zi"]
 }

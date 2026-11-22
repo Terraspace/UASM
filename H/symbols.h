@@ -376,7 +376,19 @@ struct win64_vector_param {
     bool scalar, vector, aggregate, indirect;
 };
 
+/* Final body locations, captured while this procedure's frame options are active. */
+struct cv_local_location {
+    struct cv_local_location *next;
+    struct asym *sym;
+    int offset;
+    uint_16 reg;
+    bool in_register, reference;
+    unsigned pieces, piece_offsets[4];
+    uint_16 piece_regs[4];
+};
+
 struct proc_info {
+    struct cv_local_location *debug_locations;
     struct win64_vector_param *vector_layout;
     unsigned vector_count;
     uint_16             *regslist;      /* PROC: list of registers to be saved */

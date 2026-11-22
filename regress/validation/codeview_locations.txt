@@ -1,0 +1,24 @@
+CodeView live-location validation
+================================
+From an x64 Native Tools Command Prompt with the Visual Studio DIA SDK:
+  regress\validation\codeview_locations.cmd [path-to-UASM.exe]
+Requires Windows x64 and AVX for the indirect/vector fixture.
+
+The driver links the regression fixtures, reads their PDBs through Microsoft
+DIA, launches each executable under the Windows debug API and checks actual
+register/memory values at intentional INT 3 checkpoints. It verifies both
+stop counts and value-check counts; no COM registration or VS GUI is needed.
+
+Coverage: WIN64 modes 1..15 on RBP and RSP with CV8 and legacy CodeView;
+smart and ordinary homes, register and stack arguments, outgoing call space,
+integer/float/pointer/vector locals, vectorcall and split-register HFA values,
+and indirectly passed structures and dynamically aligned 256-bit vectors.
+
+The standard Go suite compares the OBJ output; this optional Windows check
+also verifies the linked symbols against a live process (73 stops/682 checks).
+
+Scope: automatic UASM prologues. Parameter locations describe their actual
+register/home storage, not a saved historical value. An unhomed volatile
+register parameter cannot retain its original value after that register is
+clobbered. CV8 supports the split-register HFA records; legacy CodeView omits
+that unsupported split location rather than describing an uninitialised home.

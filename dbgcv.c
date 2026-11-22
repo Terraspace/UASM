@@ -618,14 +618,14 @@ static void cv_write_type_procedure(struct dbgcv* cv, struct asym* sym, int cnt)
 
 	if (Options.debug_symbols == CV_SIGNATURE_C7) {
 		cv->pt_pr->rvtype = ST_VOID;
-		cv->pt_pr->calltype = 0;
+		cv->pt_pr->calltype = sym->langtype == LANG_VECTORCALL ? 0x18 : 0;
 		cv->pt_pr->funcattr.all = 0;
 		cv->pt_pr->parmcount = cnt;
 		cv->pt_pr->arglist = ++cv->currtype;
 	}
 	else {
 		cv->t_pr->rvtype = ST_VOID;
-		cv->t_pr->calltype = 0;
+		cv->t_pr->calltype = sym->langtype == LANG_VECTORCALL ? 0x18 : 0;
 		cv->t_pr->funcattr.all = 0;
 		cv->t_pr->parmcount = cnt;
 		cv->t_pr->arglist = ++cv->currtype;
@@ -658,10 +658,7 @@ static void cv_write_type_procedure(struct dbgcv* cv, struct asym* sym, int cnt)
 			*p_16++ = param->sym.ext_idx1;
 		}
 		else {
-			if (ModuleInfo.defOfssize == USE64) /*...*/
-				p_32[--cnt] = param->sym.ext_idx1;
-			else
-				*p_32++ = param->sym.ext_idx1;
+            *p_32++ = param->sym.ext_idx1;
 		}
 	}
 	cv->pt += size;
@@ -844,6 +841,12 @@ static const uint_8 reg64[] = { 0, 2, 3, 1, 7, 6, 4, 5 };
 
 uint_16 cv_get_x64_regno(uint_16 regno)
 {
+    if (GetValueSp(regno) & OP_XMM) {
+        unsigned n = GetRegNo(regno);
+        return n < 8 ? CV_AMD64_XMM0 + n : CV_AMD64_XMM8 + n - 8;
+    }
+    if (GetValueSp(regno) & OP_ZMM) return CV_AMD64_ZMM0 + GetRegNo(regno);
+    if (GetValueSp(regno) & OP_YMM) return CV_AMD64_YMM0 + GetRegNo(regno);
 	if (regno >= T_RAX && regno <= T_RDI)
 		return(reg64[regno - T_RAX] + CV_AMD64_RAX);
 	if (regno >= T_R8 && regno <= T_R15)
@@ -851,6 +854,51 @@ uint_16 cv_get_x64_regno(uint_16 regno)
 	/* it's a 32-bit register r8d-r15d */
 	return(regno - T_R8D + CV_AMD64_R8D);
 
+}
+
+/* A homogeneous aggregate can occupy several SIMD registers. CV8 describes
+ * each member explicitly; do not advertise an uninitialised stack home. */
+static void cv_write_pieces(struct dbgcv *cv, struct asym *proc,
+                           struct asym *sym, struct cv_local_location *loc)
+{
+    unsigned n, start, chunk, end = proc->total_size;
+    unsigned len = 10 + sym->name_size + 1;
+    struct fixup *fixup;
+    uint_8 *p;
+    if (Options.debug_symbols != CV_SIGNATURE_C13) return;
+    cv->ps = checkflush(cv->symbols, cv->ps, len, cv->param);
+    p = cv->ps;
+    *(uint_16 *)(p + 0) = len - 2;
+    *(uint_16 *)(p + 2) = S_LOCAL;
+    *(uint_32 *)(p + 4) = sym->ext_idx1;
+    *(uint_16 *)(p + 8) = 1; /* parameter */
+    memcpy(p + 10, sym->name, sym->name_size + 1);
+    cv->ps += len;
+    cv->section->length += len;
+    for (n = 0; n < loc->pieces; n++)
+        for (start = ((struct dsym *)proc)->e.procinfo->size_prolog; start < end; start += chunk) {
+            chunk = end - start;
+            if (chunk > 0xf000) chunk = 0xf000;
+            cv->ps = checkflush(cv->symbols, cv->ps, 20, cv->param);
+            p = cv->ps;
+            memset(p, 0, 20);
+            *(uint_16 *)(p + 0) = 18;
+            *(uint_16 *)(p + 2) = S_DEFRANGE_SUBFIELD_REGISTER;
+            *(uint_16 *)(p + 4) = cv_get_x64_regno(loc->piece_regs[n]);
+            *(uint_32 *)(p + 8) = loc->piece_offsets[n];
+            *(uint_32 *)(p + 12) = start;
+            *(uint_16 *)(p + 18) = chunk;
+            cv->symbols->e.seginfo->current_loc = cv->symbols->e.seginfo->start_loc +
+                (p - cv->symbols->e.seginfo->CodeBuffer) + 12;
+            fixup = CreateFixup(proc, FIX_OFF32_SECREL, OPTJ_NONE);
+            fixup->locofs = cv->symbols->e.seginfo->current_loc;
+            store_fixup(fixup, cv->symbols, (int_32 *)(p + 12));
+            fixup = CreateFixup(proc, FIX_SEG, OPTJ_NONE);
+            fixup->locofs = cv->symbols->e.seginfo->current_loc + 4;
+            store_fixup(fixup, cv->symbols, (int_32 *)(p + 12));
+            cv->ps += 20;
+            cv->section->length += 20;
+        }
 }
 
 /* write a symbol
@@ -945,14 +993,9 @@ static void cv_write_symbol(struct dbgcv* cv, struct asym* sym)
 		locals[0] = proc->e.procinfo->paralist;
 		locals[1] = proc->e.procinfo->locallist;
 		for (i = 0; i < 2; i++) {
-			if (ModuleInfo.defOfssize == USE64 && i == 0) {
-				for (j = 0, lcl = locals[0]; lcl; q = lcl, lcl = lcl->nextparam)
-					j++;
-			}
 			cnt[i] = 0;
 			for (lcl = locals[i]; lcl; lcl = lcl->nextparam) {
-				if (!(ModuleInfo.defOfssize == USE64 && i == 0))
-					q = lcl;
+                q = lcl;
 				cnt[i]++;
 				typeref = (q->sym.mem_type == MT_PTR ? cv_write_ptr_type(cv, &q->sym) : GetTyperef(&q->sym, Ofssize));
 				if (q->sym.isarray) {
@@ -960,9 +1003,6 @@ static void cv_write_symbol(struct dbgcv* cv, struct asym* sym)
 					typeref = cv->currtype - 1;
 				}
 				q->sym.ext_idx1 = typeref;
-				if (ModuleInfo.defOfssize == USE64 && i == 0) {
-					for (k = 1, j--, q = locals[0]; j > k; k++, q = q->nextparam);
-				}
 			}
 		}
 
@@ -1006,7 +1046,7 @@ static void cv_write_symbol(struct dbgcv* cv, struct asym* sym)
 				p->flags.bAll = 0;
 				if (sym->mem_type == MT_FAR)
 					p->flags.CV_PFLAG_FAR = 1;
-				if (proc->e.procinfo->fpo)
+				if (Ofssize == USE64 ? !proc->e.procinfo->fpo : proc->e.procinfo->fpo)
 					p->flags.CV_PFLAG_NOFPO = 1;
 				ofs = offsetof(PROCSYM32_16t, off);
 			}
@@ -1017,8 +1057,13 @@ static void cv_write_symbol(struct dbgcv* cv, struct asym* sym)
 				cv->s_p32->flags.bAll = 0;
 				if (sym->mem_type == MT_FAR)
 					cv->s_p32->flags.CV_PFLAG_FAR = 1;
-				if (proc->e.procinfo->fpo)
+				if (Ofssize == USE64 ? !proc->e.procinfo->fpo : proc->e.procinfo->fpo)
 					cv->s_p32->flags.CV_PFLAG_NOFPO = 1;
+                if (Options.debug_symbols == CV_SIGNATURE_C13) {
+                    struct cv_local_location *location;
+                    for (location = proc->e.procinfo->debug_locations; location; location = location->next)
+                        if (location->pieces) { cv->s_p32->flags.bAll |= 0x80; break; }
+                }
 				ofs = offsetof(PROCSYM32, off);
 			}
 			rlctype = FIX_PTR32;
@@ -1158,15 +1203,28 @@ static void cv_write_symbol(struct dbgcv* cv, struct asym* sym)
 
 	/* scan local symbols again */
 		for (i = 0; i < 2; i++) {
-			if (ModuleInfo.defOfssize == USE64 && i == 0) {
-				for (j = 0, q = locals[0]; q; lcl = q, q = q->nextparam)
-					j++;
-			}
 			for (q = locals[i]; q; q = q->nextparam) {
-				if (!(ModuleInfo.defOfssize == USE64 && i == 0))
-					lcl = q;
+                struct cv_local_location *location;
+                lcl = q;
+                for (location = proc->e.procinfo->debug_locations; location; location = location->next)
+                    if (location->sym == &lcl->sym) break;
+                if (location && location->pieces) {
+                    cv_write_pieces(cv, sym, &lcl->sym, location);
+                    lcl->sym.ext_idx1 = 0;
+                    continue;
+                }
+                if (location && location->reference) {
+                    cv->pt = checkflush(cv->types, cv->pt, sizeof(CV_POINTER), cv->param);
+                    memset(cv->pt, 0, sizeof(CV_POINTER));
+                    cv->t_ptr->len = sizeof(CV_POINTER) - sizeof(uint_16);
+                    cv->t_ptr->leaf = LF_POINTER;
+                    cv->t_ptr->utype = lcl->sym.ext_idx1;
+                    cv->t_ptr->attr = CV_PTR_64 | (1 << 5) | (8 << 13); /* 64-bit lvalue reference */
+                    cv->pt += sizeof(CV_POINTER);
+                    lcl->sym.ext_idx1 = cv->currtype++;
+                }
 				/* FASTCALL register argument? */
-				if (lcl->sym.state == SYM_TMACRO) {
+				if (lcl->sym.state == SYM_TMACRO || (location && location->in_register)) {
 					len = sizeof(REGSYM) - 1;
 					leaf = S_REGISTER;
 					if (Options.debug_symbols == CV_SIGNATURE_C7) {
@@ -1178,11 +1236,11 @@ static void cv_write_symbol(struct dbgcv* cv, struct asym* sym)
 					cv->ps_reg->rectyp = leaf;
 					if (Options.debug_symbols == CV_SIGNATURE_C7) {
 						cv->ps_reg->typind = lcl->sym.ext_idx1;
-						cv->ps_reg->reg = cv_get_register(&lcl->sym);
+						cv->ps_reg->reg = location && location->in_register ? cv_get_x64_regno(location->reg) : cv_get_register(&lcl->sym);
 					}
 					else {
 						cv->s_reg->typind = lcl->sym.ext_idx1;
-						cv->s_reg->reg = cv_get_register(&lcl->sym);
+						cv->s_reg->reg = location && location->in_register ? cv_get_x64_regno(location->reg) : cv_get_register(&lcl->sym);
 					}
 				}
 				else if (Ofssize == USE16) {
@@ -1211,12 +1269,12 @@ static void cv_write_symbol(struct dbgcv* cv, struct asym* sym)
 						else
 							size = GetRegNo(proc->e.procinfo->basereg) + CV_REG_EAX;
 						if (Options.debug_symbols == CV_SIGNATURE_C7) {
-							cv->ps_rr32->off = lcl->sym.offset;
+							cv->ps_rr32->off = location ? location->offset : lcl->sym.offset;
 							cv->ps_rr32->typind = lcl->sym.ext_idx1;
 							cv->ps_rr32->reg = size;
 						}
 						else {
-							cv->s_rr32->off = lcl->sym.offset;
+							cv->s_rr32->off = location ? location->offset : lcl->sym.offset;
 							cv->s_rr32->typind = lcl->sym.ext_idx1;
 							cv->s_rr32->reg = size;
 						}
@@ -1247,8 +1305,6 @@ static void cv_write_symbol(struct dbgcv* cv, struct asym* sym)
 				if (Options.debug_symbols == CV_SIGNATURE_C13)
 					cv->section->length += len + lcl->sym.name_size + 1;
 
-				if (ModuleInfo.defOfssize == USE64 && i == 0)
-					for (k = 1, j--, lcl = locals[0]; j > k; k++, lcl = lcl->nextparam);
 			}
 		}
 
