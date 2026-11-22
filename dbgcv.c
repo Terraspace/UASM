@@ -876,6 +876,11 @@ static void cv_write_symbol(struct dbgcv* cv, struct asym* sym)
 	int		leaf;
 	uint_16	typeref;
 
+	/* These labels have no source-level name. Keep COFF relocation anchors
+	 * when required, but do not create debugger-visible CV8 label records. */
+	if (Options.debug_symbols == CV_SIGNATURE_C13 && sym->generated_label)
+		return;
+
 	Ofssize = GetSymOfssize(sym);
 	len = GetCVStructLen(sym, Ofssize);
 	cv->ps = checkflush(cv->symbols, cv->ps, 1 + sym->name_size + len, cv->param);

@@ -557,7 +557,7 @@ static ret_code data_item( int *start_pos, struct asm_tok tokenarray[], struct a
     enum fixup_types    fixup_type;
     struct fixup        *fixup;
     struct expr         opndx;
-    uint_16 buff[256];
+    uint_16 buff[MAX_STRING_LEN];
     DebugMsg1(("data_item( idx=%u [%s], label=%s, no_of_bytes=%" I32_SPEC "u, type=%s, dup=%" I32_SPEC "Xh, inside_struct=%u, is_float=%u ) enter\n",
                *start_pos, tokenarray[*start_pos].tokpos, sym ? sym->name : "NULL",
                no_of_bytes, type_sym ? type_sym->name : "NULL",
@@ -788,35 +788,26 @@ next_item:  /* <--- continue scan if a comma has been detected */
             }
             /* a string is only regarded as an array if item size is 1 */
             /* else it is regarded as ONE item */
-            if( no_of_bytes != 1 ) 
-			{
-				if (Options.masm51_compat || Options.strict_masm_compat || !Options.literal_strings)
-				{
-					if (string_len > no_of_bytes)
-						return(EmitError(INITIALIZER_OUT_OF_RANGE));
-				}
-				else
-				{
-                if (string_len > no_of_bytes && sym && sym->mem_type != MT_WORD)
-						return(EmitError(INITIALIZER_OUT_OF_RANGE));
-                /* if characters are not single byte, 2 bytes are used for 1 size v2.38 */
-                 p = pchar;
-                 half = FALSE; 
-                  for (j = 0; j < string_len; j++,p++){
-                    if ((unsigned char)*p > 0x7F){
-                       half = TRUE; 
-                       break;
-                      }
-                  }
-                 if (half){
-                   memset( &buff, 0, string_len * 2 );
-                  j = UTF8toWideChar(pchar, string_len, NULL,(unsigned short *) &buff, string_len);
-                    opndx.quoted_string->stringlen = j;
-                    string_len = j;
-                    sym->mem_type = MT_BYTE;      /* each byte must be stored without zeros between */
-                                     /* total has to be devided by 2 for the length */
-                  }
-			   }
+            half = FALSE;
+            if (no_of_bytes != 1) {
+                if (Options.masm51_compat || Options.strict_masm_compat ||
+                    !Options.literal_strings || no_of_bytes != 2) {
+                    if (string_len > no_of_bytes)
+                        return(EmitError(INITIALIZER_OUT_OF_RANGE));
+                } else {
+                    for (j = 0; j < string_len; j++) {
+                        if (pchar[j] > 0x7f) {
+                            half = TRUE;
+                            break;
+                        }
+                    }
+                    if (half) {
+                        /* Convert this initializer without changing its token or
+                         * the declared type of a named DW array. */
+                        string_len = UTF8toWideChar(pchar, string_len, NULL,
+                            buff, sizeof(buff) / sizeof(buff[0]));
+                    }
+                }
             }
 
             if( sym && Parse_Pass == PASS_1 && string_len > 0 ) {
@@ -846,40 +837,20 @@ next_item:  /* <--- continue scan if a comma has been detected */
 
             if( !inside_struct ) 
 			{
-                /* anything bigger than a byte must be stored in little-endian format -- LSB first */
-				if (Options.masm51_compat || Options.strict_masm_compat || !Options.literal_strings)
-				{
-					if (string_len > 1 && no_of_bytes > 1)
-						pchar = little_endian( (const char *)pchar, string_len );
-					OutputDataBytes( pchar, string_len );
-					if ( no_of_bytes > string_len )
-						FillDataBytes(0, no_of_bytes - string_len);
-				}
-				else
-				{
-					if (string_len > 1 && no_of_bytes > 1 && sym && sym->mem_type == MT_WORD)
-					{
-						OutputInterleavedDataBytes(pchar, string_len);
-					}
-					else
-					{
-						if (string_len > 1 && no_of_bytes > 1)
-						{
-							if (half)   /* no need for little_endian, already converted, v2.38 */
-								OutputDataBytes((uint_8*)&buff, j * 2);
-						}
-                        else 
-						{
-							if(no_of_bytes > 1)
-								pchar = little_endian((const char *)pchar, string_len);
-							OutputDataBytes(pchar, string_len);
-                        }
-					}
-					if (no_of_bytes > string_len)
-						FillDataBytes(0, no_of_bytes - string_len);
-				}
+                if (Options.literal_strings && !Options.masm51_compat &&
+                    !Options.strict_masm_compat && no_of_bytes == 2) {
+                    if (half)
+                        OutputDataBytes((uint_8 *)buff, string_len * 2);
+                    else
+                        OutputInterleavedDataBytes(pchar, string_len);
+                } else {
+                    if (string_len > 1 && no_of_bytes > 1)
+                        pchar = little_endian((const char *)pchar, string_len);
+                    OutputDataBytes(pchar, string_len);
+                    if (no_of_bytes > string_len)
+                        FillDataBytes(0, no_of_bytes - string_len);
+                }
 
-				
             }
         } else {
             /* it's NOT a string */

@@ -1404,6 +1404,10 @@ ret_code idata_fixup( struct code_info *CodeInfo, unsigned CurrOpnd, struct expr
     //DebugMsg1(("idata_fixup: calling CreateFixup(%s, %u)\n", opndx->sym->name, fixup_type ));
     CodeInfo->opnd[CurrOpnd].InsFixup = CreateFixup( opndx->sym, fixup_type, fixup_option );
 
+    if (CodeInfo->Ofssize == USE64 && fixup_type == FIX_OFF32 &&
+        (size == 8 || (CodeInfo->token == T_PUSH && !CodeInfo->prefix.opsiz)))
+        CodeInfo->opnd[CurrOpnd].InsFixup->signed32 = TRUE;
+
     if ( opndx->instr == T_LROFFSET )
         CodeInfo->opnd[CurrOpnd].InsFixup->loader_resolved = TRUE;
 
@@ -1957,6 +1961,9 @@ static ret_code memory_operand( struct code_info *CodeInfo, unsigned CurrOpnd, s
     /* set frame type/data in fixup if one was created */
     if ( CodeInfo->opnd[CurrOpnd].InsFixup ) 
 	{
+        if (CodeInfo->Ofssize == USE64 && !CodeInfo->prefix.adrsiz &&
+            CodeInfo->opnd[CurrOpnd].InsFixup->type == FIX_OFF32)
+            CodeInfo->opnd[CurrOpnd].InsFixup->signed32 = TRUE;
         CodeInfo->opnd[CurrOpnd].InsFixup->frame_type = Frame_Type;
         CodeInfo->opnd[CurrOpnd].InsFixup->frame_datum = Frame_Datum;
     }

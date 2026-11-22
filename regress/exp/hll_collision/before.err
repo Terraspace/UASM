@@ -1,0 +1,3 @@
+..\src\hll_collision\before.asm(11) : Error A2056: Symbol already defined: @C0001
+ my(3)[before.asm]: Macro called from
+  ..\src\hll_collision\before.asm(11): Main line code

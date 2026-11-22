@@ -180,6 +180,7 @@ struct asym {
                     fwdref:1,     /* symbol was forward referenced */
                     included:1,   /* COFF: static symbol added to public queue. ELF:symbol added to symbol table (SYM_INTERNAL) */
                     isparam:1;    /* symbol is local parametar above rsp */
+    unsigned char   generated_label; /* anonymous or assembler-generated HLL code label */
     union {
         /* for SYM_INTERNAL (data labels, memtype != NEAR|FAR), SYM_STRUCT_FIELD */
         uint_32         first_size;   /* size of 1st initializer's dimension in bytes */

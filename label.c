@@ -78,6 +78,7 @@ struct asym *CreateLabel( const char *name, enum memtype mem_type, struct qualif
     struct asym         *sym;
     uint_32             addr;
     char                buffer[20];
+    bool                generated_label = FALSE;
 
     DebugMsg1(("CreateLabel(%s, memtype=%Xh, %" I32_SPEC "Xh, %u) enter\n", name, mem_type, ti, bLocal));
 
@@ -101,7 +102,14 @@ struct asym *CreateLabel( const char *name, enum memtype mem_type, struct qualif
     if( name[0] == '@' && name[1] == '@' && name[2] == NULLC ) {
         sprintf( buffer, "L&_%04u", ++ModuleInfo.g.anonymous_label );
         name = buffer;
+        generated_label = TRUE;
     }
+
+    /* HLL labels are parsed from the internal line queue. Do not hide
+     * user labels merely because their names resemble generated labels. */
+    if ( ModuleInfo.GeneratedCode && name[0] == '@' && name[1] == 'C' &&
+         strlen(name) >= 6 && strspn(name + 2, "0123456789ABCDEF") == strlen(name + 2) )
+        generated_label = TRUE;
 
     sym = ( bLocal ? SymLookupLocal( name ) : SymLookup( name ) );
     /* v2.11: SymLookup...() cannot fail */
@@ -176,6 +184,7 @@ struct asym *CreateLabel( const char *name, enum memtype mem_type, struct qualif
         addr = sym->offset;
     }
 
+    sym->generated_label = generated_label;
     sym->isdefined = TRUE;
     /* v2.05: the label may be "data" - due to the way struct initialization
      * is handled. Then fields first_size and first_length must not be

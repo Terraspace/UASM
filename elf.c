@@ -1137,21 +1137,9 @@ static void write_relocs64( struct dsym *curr )
     for ( fixup = curr->e.seginfo->FixupList.head; fixup; fixup = fixup->nextrlc ) {
         unsigned symidx = fixup->sym->ext_idx;
         reloc64.r_offset = fixup->locofs;
-        /* v2.07: addend wasn't handled correctly.
-         * Also note the type cast for fixup.offset -
-         * r_addend has type int_64, while fixup.offset has type uint_32!
-         */
-        //reloc64.r_addend = fixup->offset;
-        /* the following line depends on what's done in store_fixup().
-         * if the inline addend is set to 0 there, the fixup->offset
-         * must be used in the calculation ( it's 32-bit only!!! ).
-         */
-        //reloc64.r_addend = (int_32)fixup->offset - fixup->addbytes;
-        /*
-         * if the inline addend is not touched in store_fixup(),
-         * we just have to use the addbytes field.
-         */
-        reloc64.r_addend = - fixup->addbytes;
+        /* ELF64 RELA uses only the explicit addend; PC-relative forms
+         * additionally account for bytes from the displacement to instruction end. */
+        reloc64.r_addend = fixup->elf_addend - fixup->addbytes;
         DebugMsg(("write_relocs64(): reloc loc=%X type=%u idx=%u sym=%s ofs=%X addbyt=%u\n",
                   fixup->locofs, fixup->type, fixup->sym->ext_idx, fixup->sym->name, fixup->offset, fixup->addbytes ));
         switch ( fixup->type ) {
@@ -1163,7 +1151,7 @@ static void write_relocs64( struct dsym *curr )
                 symidx = fixup->sym->segment->ext_idx;
             }
 #endif
-            reloc64.r_addend += *(int_32*)(curr->e.seginfo->CodeBuffer + fixup->locofs);
+            /* The complete addend is captured before emission in store_fixup(). */
             elftype = R_X86_64_PC32;
             break;
         case FIX_OFF64:        elftype = R_X86_64_64;          break;
@@ -1174,7 +1162,7 @@ static void write_relocs64( struct dsym *curr )
         case FIX_PLT64:		   elftype = R_X86_64_JUMP_SLOT;   break;
         case FIX_OFF32_IMGREL: elftype = R_X86_64_RELATIVE;    break;
         case FIX_GOTPCREL64:   elftype = R_X86_64_GOTPCREL;    break;
-        case FIX_OFF32:        elftype = R_X86_64_32;          break;
+        case FIX_OFF32:        elftype = fixup->signed32 ? R_X86_64_32S : R_X86_64_32; break;
         //case FIX_???:        elftype = R_X86_64_32S;         break;
         case FIX_OFF16:        elftype = R_X86_64_16;          break;
         case FIX_RELOFF16:     elftype = R_X86_64_PC16;        break;

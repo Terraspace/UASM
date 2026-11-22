@@ -99,6 +99,7 @@ struct fixup *CreateFixup( struct asym *sym, enum fixup_types type, enum fixup_o
      */
     fixup->locofs = GetCurrOffset();
     fixup->offset = 0;
+    fixup->elf_addend = 0;
     fixup->type = type;
     fixup->option = option;
     fixup->flags = 0;
@@ -214,15 +215,7 @@ void store_fixup( struct fixup *fixup, struct dsym *seg, int_32 *pdata )
              */
 #if AMD64_SUPPORT
             if ( ModuleInfo.defOfssize == USE64 ) {
-#if 0
-                /* this won't work currently because fixup.offset may have to
-                 * save *(int_64) pdata, but it is 32-bit only!
-                 */
-                if ( fixup->type == FIX_OFF64 )
-                    *(int_64 *)pdata = 0;
-                else
-                    *pdata = 0;
-#endif
+                /* Full-width addend capture and field clearing follow below. */
             } else
 #endif
             if ( fixup->type == FIX_RELOFF32 )
@@ -263,6 +256,19 @@ void store_fixup( struct fixup *fixup, struct dsym *seg, int_32 *pdata )
             return( NOT_ERROR );
         }
 #endif
+    }
+    if ( Options.output_format == OFORMAT_ELF && ModuleInfo.defOfssize == USE64 ) {
+        unsigned width = 4;
+        fixup->elf_addend = (int_32)*pdata;
+        switch (fixup->type) {
+        case FIX_OFF64:
+            width = 8;
+            memcpy(&fixup->elf_addend, pdata, 8);
+            break;
+        case FIX_OFF16: case FIX_RELOFF16: width = 2; break;
+        case FIX_OFF8: case FIX_RELOFF8: width = 1; break;
+        }
+        memset(pdata, 0, width);
     }
     if( seg->e.seginfo->FixupList.head == NULL ) {
         seg->e.seginfo->FixupList.tail = seg->e.seginfo->FixupList.head = fixup;

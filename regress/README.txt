@@ -428,3 +428,55 @@ comparison rules and self-contained SDK fixture changes. The cross-platform
 text/path rules described there supersede the original migration's exact
 Windows path and line-ending policy. No instruction/data bytes are ignored.
 Debug builds emit internal listing additions only with the debug-output option.
+
+Issue #235: CV8 generated labels (v2.60)
+--------------------------------------
+Generated anonymous/HLL code labels no longer create source-level CV8 label
+records. Required COFF relocation targets, including $$000000 and anonymous
+labels used by data relocations, remain. Named user labels are unaffected.
+Three cv8_issue235 fixtures cover the original anonymous and macro/HLL examples
+and user labels, macro-defined labels, and an anonymous address relocation.
+Code bytes and C13 line tables were checked unchanged against 2.59; Microsoft
+LINK accepted all three objects with /DEBUG and produced PDBs. ML64 also keeps
+the $$000000 line anchor but omits the anonymous debug label.
+Windows MSVC and Linux GCC 16.2: 569 passed, 0 failed, 0 incomplete.
+The source-name collision with explicit @C0001 is separate and unchanged.
+
+HLL generated-name collisions (v2.60)
+-----------------------------------
+Microsoft ML 14.51 and UASM both reject explicit @C0001 definitions colliding
+with the first .IF-generated label. Checked definitions before/after the HLL
+macro and a forward reference, with debug output enabled and disabled. ML
+reports A2005 and UASM A2056. No assembler change is needed for compatibility.
+Six negative fixtures in hll_collision and hll_collision_cv8 preserve these
+diagnostics and require no object output. ML64 does not support .IF, so the
+MASM comparison uses ML /coff with .386 / .model flat.
+
+Issue #212: ELF64 RELA addends (v2.60)
+-----------------------------------
+Capture explicit addends before clearing relocated fields, including full-width
+64-bit constants. PC-relative addends account for trailing immediate bytes.
+Use R_X86_64_32S for sign-extended 64-bit addressing displacements; retain
+R_X86_64_32 for unsigned 32-bit address constants/data. ELF32 is unchanged.
+elf64_rela/forms covers positive/negative indexed and RIP-relative offsets,
+base+scaled-index addressing, trailing imm8/imm32, nonzero symbol offsets,
+32-bit constants, and positive/negative 64-bit addends beyond 32 bits. All 15
+relocations and text/data bytes independently match GNU as after resolving
+symbol-relative versus section-relative targets. GNU ld-linked code/data
+also match byte for byte at identical section addresses.
+elf64_rela/runtime is a standalone Linux syscall check of the original bug:
+link with ld -e _start and run; success is exit 0 (previous build exits 1).
+elf642 and Lin64_4 EXP changes were independently verified to contain only
+zeroed PC32 relocation fields; relocation addends and other bytes unchanged.
+
+Issue #221: unnamed DW string initializers (v2.60)
+------------------------------------------------
+DW literal string emission now depends on element width rather than a label.
+UTF-8 conversion no longer dereferences an unnamed symbol, changes a named
+array's WORD type, or rewrites the token length used by DUP. The temporary
+conversion buffer is sized to MAX_STRING_LEN and its capacity is passed to
+the converter. Non-word strings retain ordinary packed-integer emission.
+Four plain_bin/issue221 fixtures independently specify UTF-16LE bytes for
+named/unnamed ASCII and Unicode, mixed initializers, a surrogate pair, DUP,
+WORD type/size assertions, 300 Unicode characters, and literals-off controls.
+Windows MSVC and Linux GCC 16.2: 581 passed, 0 failed, 0 incomplete.

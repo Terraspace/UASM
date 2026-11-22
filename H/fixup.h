@@ -108,6 +108,7 @@ struct fixup {
 #ifdef TRMEM
     uint_16              marker;
 #endif
+    int_64               elf_addend;    /* full ELF64 RELA addend */
     uint_32              offset;        /* symbol's offset */
     uint_32              locofs;        /* location of fixup */
     enum fixup_types     type;
@@ -120,6 +121,7 @@ struct fixup {
              * the result <end of instruction> - <fixup location> is stored here. */
             uint_8        addbytes;
 #endif
+            unsigned char signed32:1;              /* sign-extended disp32/imm32 */
             unsigned char loader_resolved:1;        /* operator LROFFSET */
             unsigned char orgoccured:1;             /* v2.04 ORG occured behind this fix */
         };

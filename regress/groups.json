@@ -188,5 +188,13 @@
     "-elf64"
   ],
   "pr240": ["-q", "-bin", "-Fl"],
-  "pr240_locals": ["-q", "-coff", "-Fl"]
+  "pr240_locals": ["-q", "-coff", "-Fl"],
+  "cv8_issue235": [
+    "-q",
+    "-win64",
+    "-Zi8"
+  ],
+  "hll_collision": ["-q", "-coff"],
+  "hll_collision_cv8": ["-q", "-coff", "-Zi8"],
+  "elf64_rela": ["-q", "-elf64"]
 }
