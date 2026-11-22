@@ -278,14 +278,23 @@ static const char * const fmtstk3[] = {
 /* Declare proc functions */
 /* RBP smart/vector frames use the same allocation/home layout as RSP, with
  * an additional saved frame pointer and a bounded, unwindable frame offset. */
+/* A hand-written RBP prologue owns its stack layout. FRAME only requests
+ * unwind information; it does not opt back into automatic frame placement. */
+static bool Win64ManualRbpFrame(const struct dsym *proc)
+{
+    return ModuleInfo.Ofssize == USE64 && ModuleInfo.fctype == FCT_WIN64 &&
+        ModuleInfo.prologuemode == PEM_NONE && proc->e.procinfo->basereg == T_RBP;
+}
+
 bool Win64UnifiedFrame(const struct dsym *proc)
 {
-    return ModuleInfo.Ofssize == USE64 && ModuleInfo.frame_auto &&
+    return ModuleInfo.Ofssize == USE64 && ModuleInfo.frame_auto && !Win64ManualRbpFrame(proc) &&
         proc->e.procinfo->basereg == T_RBP &&
         (proc->sym.langtype == LANG_VECTORCALL ||
          (proc->sym.langtype == LANG_FASTCALL && (ModuleInfo.win64_flags & W64F_SMART)));
 }
 
+static void SetLocalOffsets(struct proc_info *info);
 static void SetLocalOffsets_RSP(struct proc_info *info);
 static void SetLocalOffsets_RBP(struct proc_info *info);
 static void pop_register(uint_16 *regist);
@@ -2187,7 +2196,10 @@ static void ProcFini(struct dsym *proc)
 	if (Parse_Pass == PASS_1) {
 		/* in case the procedure is empty, init addresses of local variables ( for proper listing ) */
 		if (ProcStatus & PRST_PROLOGUE_NOT_DONE) {
-			if (ModuleInfo.basereg[USE64] == T_RSP || Win64UnifiedFrame(proc)) {
+			if (Win64ManualRbpFrame(proc)) {
+                proc->e.procinfo->localsize = 0;
+                SetLocalOffsets(proc->e.procinfo);
+            } else if (ModuleInfo.basereg[USE64] == T_RSP || Win64UnifiedFrame(proc)) {
 				SetLocalOffsets_RSP(CurrProc->e.procinfo);
 			}
 			else if (proc->sym.langtype == LANG_SYSVCALL) {
@@ -2916,6 +2928,7 @@ int Win64StackOffset(struct dsym *proc, struct asym *sym, int adjustment)
 {
     int offset;
     struct proc_info *info = proc->e.procinfo;
+    if (Win64ManualRbpFrame(proc)) return sym->offset;
     if (Win64VectorOffset(proc, sym, &offset))
         return offset - (info->basereg == T_RSP ? (int)StackAdj : 0) + adjustment;
     if (ModuleInfo.win64_flags && sym->isparam) {
@@ -5202,7 +5215,7 @@ static void SetLocalOffsets(struct proc_info *info)
 	int		rspalign = FALSE;
 	int		align = CurrWordSize;
 
-	if (info->isframe || (ModuleInfo.fctype == FCT_WIN64 && (ModuleInfo.win64_flags & W64F_AUTOSTACKSP))) {
+	if (!Win64ManualRbpFrame(CurrProc) && (info->isframe || (ModuleInfo.fctype == FCT_WIN64 && (ModuleInfo.win64_flags & W64F_AUTOSTACKSP)))) {
 		rspalign = TRUE;
 		if (ModuleInfo.win64_flags & W64F_STACKALIGN16)
 			align = 16;
@@ -5332,7 +5345,10 @@ void write_prologue(struct asm_tok tokenarray[])
 
 	if (ModuleInfo.Ofssize == USE64)
 	{
-		if (ModuleInfo.basereg[USE64] == T_RSP || Win64UnifiedFrame(CurrProc))
+        if (Win64ManualRbpFrame(CurrProc)) {
+            CurrProc->e.procinfo->localsize = 0;
+            SetLocalOffsets(CurrProc->e.procinfo);
+        } else if (ModuleInfo.basereg[USE64] == T_RSP || Win64UnifiedFrame(CurrProc))
 		{
 			if (Parse_Pass == PASS_1)
 				SetLocalOffsets_RSP(CurrProc->e.procinfo);
