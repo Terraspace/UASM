@@ -1,0 +1,6 @@
+..\src\new_instructions\d03_gfni_broadcast_err.asm(6) : Error A2018: mismatch in the number of broadcasting elements
+..\src\new_instructions\d03_gfni_broadcast_err.asm(6) : Error A2023: Broadcast decorators not allowed for this instruction
+..\src\new_instructions\d03_gfni_broadcast_err.asm(7) : Error A2018: mismatch in the number of broadcasting elements
+..\src\new_instructions\d03_gfni_broadcast_err.asm(7) : Error A2023: Broadcast decorators not allowed for this instruction
+..\src\new_instructions\d03_gfni_broadcast_err.asm(8) : Error A2018: mismatch in the number of broadcasting elements
+..\src\new_instructions\d03_gfni_broadcast_err.asm(8) : Error A2023: Broadcast decorators not allowed for this instruction
