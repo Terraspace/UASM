@@ -213,6 +213,10 @@ enum op_type {
 #define EVEX_K       (1<<10)	/* {kN} mask register is mandatory */
 #define EVEX_VSIB    (1<<11)	/* EVEX instruction uses VSIB and may require V' extension */
 
+#define EVEX_FP16 (1<<12) /* Explicit AVX-512 FP16 tuple/operand policy. */
+#define EVEX_MAP5 (1<<13)
+#define EVEX_MAP6 (1<<14)
+
 /* Required ASO/OSO flags */
 #define OP_SIZE_OVERRIDE   0x66
 #define ADDR_SIZE_OVERRIDE 0x67
@@ -367,6 +371,8 @@ struct Instr_Def {
 	unsigned short    cpu;              /* Minimum CPU supported */
 	unsigned int      hash;
 	struct Instr_Def* next;
+	unsigned char tuple_bytes; /* Explicit full memory operand size; zero uses legacy policy. */
+	unsigned char broadcast_bytes; /* Scalar broadcast size. */
 };
 
 /* Public data */

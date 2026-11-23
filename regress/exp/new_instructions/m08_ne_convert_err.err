@@ -1,0 +1,9 @@
+..\src\new_instructions\m08_ne_convert_err.asm(6) : Error A2049: Invalid instruction operands
+..\src\new_instructions\m08_ne_convert_err.asm(7) : Error A2049: Invalid instruction operands
+..\src\new_instructions\m08_ne_convert_err.asm(8) : Error A2049: Invalid instruction operands
+..\src\new_instructions\m08_ne_convert_err.asm(9) : Error A2049: Invalid instruction operands
+..\src\new_instructions\m08_ne_convert_err.asm(10) : Error A2049: Invalid instruction operands
+..\src\new_instructions\m08_ne_convert_err.asm(11) : Error A2302: Not possible to EVEX encode requested instruction
+..\src\new_instructions\m08_ne_convert_err.asm(12) : Error A2302: Not possible to EVEX encode requested instruction
+..\src\new_instructions\m08_ne_convert_err.asm(13) : Error A2049: Invalid instruction operands
+..\src\new_instructions\m08_ne_convert_err.asm(14) : Error A2302: Not possible to EVEX encode requested instruction

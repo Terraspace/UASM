@@ -137,6 +137,10 @@ void get_broads(struct line_status *p) {
       broadflags = 0x30;             /*  ZLLBVAAA  */
       p->input += 4;                 /*  00110000  */
     }
+    else if (_memicmp(p->input, "1to32", 5) == 0){
+      broadflags = 0x50;
+      p->input += 5;
+    }
     else if (_memicmp(p->input, "1to16", 5) == 0){
       broadflags = 0x40;             /*  ZLLBVAAA  */
       p->input += 5;                 /*  01000000  */
@@ -1293,13 +1297,15 @@ int Tokenize( char *line, unsigned int start, struct asm_tok tokenarray[], unsig
           }
 		  else if (*p.input == 'v' || *p.input == 'V') {
             /* Implement ml64 BCST for broadcast */
-            for (p1 = p.input; *p1 != 0; p1++) {     /* start from the beginning of string */
+            /* BCST is an operand token, not part of a mnemonic or symbol. */
+            for (p1 = p.input; *p1 && !isspace(*p1); p1++)
+              ;
+            for (; *p1 != 0; p1++) {
               if (*p1 == ';')
                 break;
-              if (*p1 == 'b' || *p1 == 'B') {        /* found  'b' */
-                if ((_memicmp(p1, "bcst", 4) == 0))  /* found "bcst" ? */
-                  break;                             /* found "bcst" */
-              }                                      /* if it was {kn} or {z} search till end */
+              if ((*p1 == 'b' || *p1 == 'B') && isspace(p1[-1]) &&
+                  _memicmp(p1, "bcst", 4) == 0 && isspace(p1[4]))
+                break;
             }
             if (*p1 != 0 && *p1 != ';') {                        /* if 'bcst' present p1 is pointing to "bcst" */
               input1 = p1 + 4;                     /* skip "bcst" and save location in input1 */

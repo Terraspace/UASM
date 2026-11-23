@@ -4093,6 +4093,12 @@ dataInProc:
         }
     }
 
+    /* Only the FP16 family currently supports a 32-element broadcast. */
+    if (broadflags == 0x50 && (CodeInfoV2.token < T_VADDPH || CodeInfoV2.token > T_VUCOMISH)) {
+        temp = EmitError(MISMATCH_IN_THE_NUMBER_OF_BROADCASTING_ELEMENTS);
+        goto nopor;
+    }
+
     /* SSE GFNI cannot encode EVEX decorators or XMM16..31. */
     if (CodeInfoV2.token >= T_GF2P8MULB && CodeInfoV2.token <= T_GF2P8AFFINEINVQB) {
         if (evexflag || decoflags || broadflags || CodeInfoV2.evex_sae) {
@@ -4131,7 +4137,7 @@ dataInProc:
 		temp = CodeGenV2(opcodePtr, &CodeInfoV2, oldofs, opndCount, opndxV2);
 		if (temp == EMPTY) {
 			/* These mnemonics are implemented exclusively by CodeGenV2. */
-			if (CodeInfoV2.token >= T_VPDPBSSD && CodeInfoV2.token <= T_VPSHUFBITQMB)
+			if (CodeInfoV2.token >= T_VADDPH && CodeInfoV2.token <= T_VPSHUFBITQMB)
 				temp = EmitError(INVALID_INSTRUCTION_OPERANDS);
 			else
 				temp = codegen(&CodeInfo, oldofs);

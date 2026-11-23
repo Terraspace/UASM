@@ -1,0 +1,30 @@
+AVX-512 FP16 regression validation
+
+Scope: 106 base AVX-512 FP16 mnemonics, 128/256/512-bit and scalar forms.
+VCVT2PS2PHX is AVX10.2 and remains deferred; it is not base AVX-512 FP16.
+
+Encoding metadata was cross-checked against Intel XED commit
+0bcb6237345c5066726dcc08b3d87928df3b5b26:
+https://github.com/intelxed/xed/blob/0bcb6237345c5066726dcc08b3d87928df3b5b26/datafiles/avx512-fp16/avx512-fp16-isa.xed.txt
+
+The fourteen positive m11_* fixtures cover 3,762 forms. Expected BIN files
+were obtained independently from LLVM 22.1.3 for compare, complex, FMA,
+moves, packed and scalar groups, and GNU binutils 2.42 for conversion groups.
+LLVM 22 rejects legal VCVTSI2SH/VCVTUSI2SH embedded-rounding forms; GNU as
+accepts them and its bytes agree with the XED instruction patterns.
+
+Reference procedure: convert the straight-line ASM instruction bodies to
+Intel-syntax assembler source with .intel_syntax noprefix and .text; use
+.code32 for the _32 fixtures. Assemble with clang -target x86_64-linux-gnu
+(or GNU as --64), then extract .text with objcopy -O binary --only-section=.text.
+No expected bytes are copied from UASM output.
+
+Coverage: all mnemonic/operand forms represented by the base XED table,
+low/high registers, masks/zeroing, source widths, explicit memory sizes,
+compressed-displacement boundaries and nonmultiples, scalar broadcasts,
+all supported rounding controls and SAE, and 32-bit addressing.
+The three error fixtures cover 28 invalid forms, including widths, mask
+restrictions, immediate ranges, memory rounding and invalid broadcasts.
+
+InstrTableFP16.h is checked-in encoding metadata; no XED, LLVM or binutils
+installation is needed to build UASM or run the regression suite.

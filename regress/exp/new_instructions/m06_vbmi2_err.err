@@ -1,0 +1,38 @@
+..\src\new_instructions\m06_vbmi2_err.asm(6) : Error A2049: Invalid instruction operands
+..\src\new_instructions\m06_vbmi2_err.asm(7) : Error A2301: {z} mask not permitted when first operand is memory
+..\src\new_instructions\m06_vbmi2_err.asm(8) : Error A2049: Invalid instruction operands
+..\src\new_instructions\m06_vbmi2_err.asm(9) : Error A2049: Invalid instruction operands
+..\src\new_instructions\m06_vbmi2_err.asm(10) : Error A2301: {z} mask not permitted when first operand is memory
+..\src\new_instructions\m06_vbmi2_err.asm(11) : Error A2049: Invalid instruction operands
+..\src\new_instructions\m06_vbmi2_err.asm(12) : Error A2049: Invalid instruction operands
+..\src\new_instructions\m06_vbmi2_err.asm(13) : Error A2018: mismatch in the number of broadcasting elements
+..\src\new_instructions\m06_vbmi2_err.asm(13) : Error A2023: Broadcast decorators not allowed for this instruction
+..\src\new_instructions\m06_vbmi2_err.asm(14) : Error A2049: Invalid instruction operands
+..\src\new_instructions\m06_vbmi2_err.asm(15) : Error A2018: mismatch in the number of broadcasting elements
+..\src\new_instructions\m06_vbmi2_err.asm(15) : Error A2023: Broadcast decorators not allowed for this instruction
+..\src\new_instructions\m06_vbmi2_err.asm(16) : Error A2049: Invalid instruction operands
+..\src\new_instructions\m06_vbmi2_err.asm(17) : Error A2049: Invalid instruction operands
+..\src\new_instructions\m06_vbmi2_err.asm(18) : Error A2049: Invalid instruction operands
+..\src\new_instructions\m06_vbmi2_err.asm(19) : Error A2049: Invalid instruction operands
+..\src\new_instructions\m06_vbmi2_err.asm(20) : Error A2049: Invalid instruction operands
+..\src\new_instructions\m06_vbmi2_err.asm(21) : Error A2018: mismatch in the number of broadcasting elements
+..\src\new_instructions\m06_vbmi2_err.asm(21) : Error A2023: Broadcast decorators not allowed for this instruction
+..\src\new_instructions\m06_vbmi2_err.asm(22) : Error A2049: Invalid instruction operands
+..\src\new_instructions\m06_vbmi2_err.asm(23) : Error A2049: Invalid instruction operands
+..\src\new_instructions\m06_vbmi2_err.asm(24) : Error A2049: Invalid instruction operands
+..\src\new_instructions\m06_vbmi2_err.asm(25) : Error A2049: Invalid instruction operands
+..\src\new_instructions\m06_vbmi2_err.asm(26) : Error A2049: Invalid instruction operands
+..\src\new_instructions\m06_vbmi2_err.asm(27) : Error A2049: Invalid instruction operands
+..\src\new_instructions\m06_vbmi2_err.asm(28) : Error A2018: mismatch in the number of broadcasting elements
+..\src\new_instructions\m06_vbmi2_err.asm(28) : Error A2023: Broadcast decorators not allowed for this instruction
+..\src\new_instructions\m06_vbmi2_err.asm(29) : Error A2049: Invalid instruction operands
+..\src\new_instructions\m06_vbmi2_err.asm(30) : Error A2049: Invalid instruction operands
+..\src\new_instructions\m06_vbmi2_err.asm(31) : Error A2049: Invalid instruction operands
+..\src\new_instructions\m06_vbmi2_err.asm(32) : Error A2049: Invalid instruction operands
+..\src\new_instructions\m06_vbmi2_err.asm(33) : Error A2018: mismatch in the number of broadcasting elements
+..\src\new_instructions\m06_vbmi2_err.asm(33) : Error A2023: Broadcast decorators not allowed for this instruction
+..\src\new_instructions\m06_vbmi2_err.asm(34) : Error A2049: Invalid instruction operands
+..\src\new_instructions\m06_vbmi2_err.asm(35) : Error A2049: Invalid instruction operands
+..\src\new_instructions\m06_vbmi2_err.asm(36) : Error A2049: Invalid instruction operands
+..\src\new_instructions\m06_vbmi2_err.asm(37) : Error A2018: mismatch in the number of broadcasting elements
+..\src\new_instructions\m06_vbmi2_err.asm(37) : Error A2023: Broadcast decorators not allowed for this instruction

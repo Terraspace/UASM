@@ -376,6 +376,20 @@ struct Instr_Def* LookupInstruction(struct Instr_Def* instr, bool memReg, unsign
 			pInstruction->operand_types[3] == instr->operand_types[3] &&
 			(pInstruction->validModes & encodeMode) != 0)
 		{
+			if ((pInstruction->evexflags & EVEX_FP16) && pInstruction->memOpnd != NO_MEM) {
+				int ms = OperandSize(CodeInfo->opnd[pInstruction->memOpnd].type, CodeInfo);
+				if (broadflags) {
+					if (!pInstruction->broadcast_bytes || pInstruction->op_elements != (1 << (broadflags >> 4)))
+						goto nextInstr;
+				} else if (ms && ms != pInstruction->tuple_bytes)
+					goto nextInstr;
+			}
+
+			/* Narrowing BF16 memory sources use VL from the source, not destination. */
+			if (CodeInfo->token == T_VCVTNEPS2BF16 && broadflags &&
+				pInstruction->op_elements != (1 << (broadflags >> 4)))
+				goto nextInstr;
+
 			/* If the instruction only supports absolute or displacement only addressing
 			and we have a register in the memory expression, this is not a match */
 			if (memReg && ((pInstruction->flags & NO_MEM_REG) != 0))
@@ -864,8 +878,8 @@ void BuildEVEX(bool* needEvex, unsigned char* evexBytes, struct Instr_Def* instr
 	/* BYTE0: EVEX prefix is always 4 bytes and the first byte is always 0x62.
 
 	 BYTE1:
-	 | 7 | 6 | 5 | 4  | 3 | 2 | 1-0 |
-	 | R | X | B | R’ | 0 | 0 |  m  |
+	 | 7 | 6 | 5 | 4  | 3 | 2-0 |
+	 | R | X | B | R’ | 0 | mmm |
 
 	BYTE2:
 	 | 7 | 6-3      | 2 | 1-0 |
@@ -903,6 +917,8 @@ void BuildEVEX(bool* needEvex, unsigned char* evexBytes, struct Instr_Def* instr
 	   {1to4}  == 0x20
 	   {1to8}  == 0x30
 	   {1to16} == 0x40 */
+	if (instr->op_elements == 32 && broadflags != 0x50 && broadflags != 0)
+		EmitError(MISMATCH_IN_THE_NUMBER_OF_BROADCASTING_ELEMENTS);
 	if (instr->op_elements == 16 && broadflags != 0x40 && broadflags != 0)
 		EmitError(MISMATCH_IN_THE_NUMBER_OF_BROADCASTING_ELEMENTS);
 	if (instr->op_elements == 8 && broadflags != 0x30 && broadflags != 0)
@@ -974,6 +990,16 @@ void BuildEVEX(bool* needEvex, unsigned char* evexBytes, struct Instr_Def* instr
 
 	EVEXnl = ~EVEXnl;
 
+	if ((instr->evexflags & EVEX_FP16) && EVEXz && !EVEXaaa)
+		EmitError(EVEX_DECORATOR_NOT_ALLOWED);
+
+	/* FP16 entries declare the legal register rounding/SAE forms explicitly. */
+	if ((instr->evexflags & EVEX_FP16) && CodeInfo->evex_sae) {
+		if (instr->memOpnd != NO_MEM ||
+			(CodeInfo->evex_sae == 0x10 ? !(instr->evexflags & EVEX_SAE) : !(instr->evexflags & EVEX_RND)))
+			EmitError(EVEX_DECORATOR_NOT_ALLOWED);
+	}
+
 	/* {static rounding} */
 	if (CodeInfo->evex_sae != 0)
 	{
@@ -1038,7 +1064,7 @@ void BuildEVEX(bool* needEvex, unsigned char* evexBytes, struct Instr_Def* instr
 	else if ((instr->vexflags & VEX_F2) != 0)
 		EVEXpp = 0x03;
 
-	/* EVEX.mm field */
+	/* EVEX.mmm field (FP16 adds maps 5 and 6). */
 	if ((instr->vexflags & VEX_0F) != 0)
 		EVEXmm = 1;
 	else if ((instr->vexflags & VEX_0F38) != 0)
@@ -1047,6 +1073,9 @@ void BuildEVEX(bool* needEvex, unsigned char* evexBytes, struct Instr_Def* instr
 		EVEXmm = 3;
 
 
+
+	if (instr->evexflags & EVEX_MAP5) EVEXmm = 5;
+	if (instr->evexflags & EVEX_MAP6) EVEXmm = 6;
 
 	if (instr->op_dir == REG_DST)
 	{
@@ -1156,7 +1185,7 @@ void BuildEVEX(bool* needEvex, unsigned char* evexBytes, struct Instr_Def* instr
 		EVEXx = 0;
 
 	evexBytes[0] = 0x62;
-	evexBytes[1] = ((EVEXr & 0x1) << 7) | ((EVEXx & 0x1) << 6) | ((EVEXb & 0x1) << 5) | ((EVEXnr & 0x1) << 4) | (EVEXmm & 0x3);
+	evexBytes[1] = ((EVEXr & 0x1) << 7) | ((EVEXx & 0x1) << 6) | ((EVEXb & 0x1) << 5) | ((EVEXnr & 0x1) << 4) | (EVEXmm & 0x7);
 	evexBytes[2] = ((EVEXw & 0x1) << 7) | ((EVEXvvvv & 0xf) << 3) | (0x04) | (EVEXpp & 0x3);
 	evexBytes[3] = ((EVEXz & 0x1) << 7) | ((EVEXnl & 0x1) << 6) | ((EVEXl & 0x1) << 5) | ((EVEXbr & 0x1) << 4) | ((EVEXnv & 0x1) << 3) | (EVEXaaa & 0x7);
 
@@ -1170,6 +1199,9 @@ bool CompDisp(struct expr* memOpnd, struct Instr_Def* instr, struct code_info* C
 {
 	int_32 elements = (broadflags == 0 && (instr->evexflags & EVEX_BRD) != 0) ? 1 : instr->op_elements;
 	int_32 elemSize = (instr->op_size / elements);
+	if (instr->tuple_bytes)
+		elemSize = broadflags ? instr->broadcast_bytes : instr->tuple_bytes;
+	if (!elemSize) return FALSE;
 	if (CodeInfo->evex_flag)
 	{
 		/* Memory displacement is between -8n and +8n. */
@@ -1591,6 +1623,25 @@ ret_code CodeGenV2(const char* instr, struct code_info* CodeInfo, uint_32 oldofs
 	instrToMatch.mnemonic = instr;		    /* Instruction mnemonic string */
 	instrToMatch.operand_count = opCount;	/* Number of operands */
 
+	/* FP16 memory operands retain the evaluated address/type even when the
+	 * legacy parser classified a base register while processing an immediate. */
+	if (CodeInfo->token >= T_VADDPH && CodeInfo->token <= T_VUCOMISH) {
+		for (i = 0; i < opCount; i++) {
+			if (opExpr[i].indirect || opExpr[i].kind == EXPR_ADDR) {
+				unsigned ms = SizeFromMemtype(opExpr[i].mem_type, CodeInfo->Ofssize, opExpr[i].sym);
+				switch (ms) {
+				case 2: CodeInfo->opnd[i].type = OP_M16; break;
+				case 4: CodeInfo->opnd[i].type = OP_M32; break;
+				case 8: CodeInfo->opnd[i].type = OP_M64; break;
+				case 16: CodeInfo->opnd[i].type = OP_M128; break;
+				case 32: CodeInfo->opnd[i].type = OP_M256; break;
+				case 64: CodeInfo->opnd[i].type = OP_M512; break;
+				default: CodeInfo->opnd[i].type = OP_M; break;
+				}
+			}
+		}
+	}
+
 	/* Translate to CodeGenV2 operand types */
 	for (i = 0; i < opCount; i++)
 	{
@@ -1618,6 +1669,21 @@ ret_code CodeGenV2(const char* instr, struct code_info* CodeInfo, uint_32 oldofs
 		opCount == 3 && opExpr[2].kind == EXPR_CONST &&
 		(int_64)CodeInfo->opnd[2].data64 >= -128 && (int_64)CodeInfo->opnd[2].data64 <= 255)
 		instrToMatch.operand_types[2] = IMM8;
+
+	/* VBMI2 immediate shifts accept the full imm8 range. */
+	if ((CodeInfo->token == T_VPSHLDD || CodeInfo->token == T_VPSHLDQ || CodeInfo->token == T_VPSHLDW || CodeInfo->token == T_VPSHRDD || CodeInfo->token == T_VPSHRDQ || CodeInfo->token == T_VPSHRDW) &&
+		opCount == 4 && opExpr[3].kind == EXPR_CONST &&
+		(int_64)CodeInfo->opnd[3].data64 >= -128 && (int_64)CodeInfo->opnd[3].data64 <= 255)
+		instrToMatch.operand_types[3] = IMM8;
+
+	if (CodeInfo->token == T_VSM3RNDS2 && opCount == 4 && opExpr[3].kind == EXPR_CONST &&
+		(int_64)CodeInfo->opnd[3].data64 >= -128 && (int_64)CodeInfo->opnd[3].data64 <= 255)
+		instrToMatch.operand_types[3] = IMM8;
+
+	if (CodeInfo->token >= T_VADDPH && CodeInfo->token <= T_VUCOMISH && opCount >= 3 &&
+		opExpr[opCount-1].kind == EXPR_CONST &&
+		(int_64)CodeInfo->opnd[opCount-1].data64 >= -128 && (int_64)CodeInfo->opnd[opCount-1].data64 <= 255)
+		instrToMatch.operand_types[opCount-1] = IMM8;
 
 	/* Determine encoding model for x16/x32 or x64 */
 	switch (CodeInfo->Ofssize)
@@ -1650,6 +1716,25 @@ ret_code CodeGenV2(const char* instr, struct code_info* CodeInfo, uint_32 oldofs
 		matchedInstr = LookupInstruction(&instrToMatch, hasMemReg, encodeMode, srcRegNo, dstRegNo, CodeInfo);
 	}
 
+	if (matchedInstr && (matchedInstr->evexflags & EVEX_FP16) && matchedInstr->memOpnd != NO_MEM) {
+		unsigned mi = matchedInstr->memOpnd;
+		unsigned expected = broadflags ? matchedInstr->broadcast_bytes : matchedInstr->tuple_bytes;
+		if (opExpr[mi].explicit && SizeFromMemtype(opExpr[mi].mem_type, CodeInfo->Ofssize, opExpr[mi].sym) != expected)
+			return EmitError(INVALID_INSTRUCTION_OPERANDS);
+	}
+
+	/* These conversions/crypto forms have fixed memory widths. Do not let
+	 * the generic M_ANY fallback silently accept a wrong explicit PTR size. */
+	if (matchedInstr && CodeInfo->token >= T_VBCSTNEBF162PS && CodeInfo->token <= T_VSM4RNDS4 &&
+		matchedInstr->memOpnd != NO_MEM) {
+		unsigned mi = matchedInstr->memOpnd;
+		unsigned expected = broadflags ? 4 : matchedInstr->op_size;
+		if (CodeInfo->token == T_VBCSTNEBF162PS || CodeInfo->token == T_VBCSTNESH2PS)
+			expected = 2;
+		if (opExpr[mi].explicit && SizeFromMemtype(opExpr[mi].mem_type, CodeInfo->Ofssize, opExpr[mi].sym) != expected)
+			return EmitError(INVALID_INSTRUCTION_OPERANDS);
+	}
+
 	/* If we have an absolute memory addressing mode but the disp is 32bit or less, fallback to using a non abs mode */
 	if (matchedInstr && matchedInstr->memOpnd != NO_MEM && CodeInfo->Ofssize == USE64 && CodeInfo->token != T_MOVABS && (int)matchedInstr->group < SSE0 && !hasMemReg)
 	{
@@ -1674,6 +1759,7 @@ ret_code CodeGenV2(const char* instr, struct code_info* CodeInfo, uint_32 oldofs
 		 -> Fixup now
 		----------------------------------------------------------*/
 		PromoteBroadcast(matchedInstr, CodeInfo);
+		if (matchedInstr->evexflags & EVEX_FP16) CodeInfo->evex_flag = TRUE;
 
 		/*----------------------------------------------------------
 		 Add line number debugging info.
