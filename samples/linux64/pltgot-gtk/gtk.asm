@@ -1,9 +1,11 @@
 include api.inc
 include gtk4.inc
+
 on_activate proto SYSTEMV app:ptr,userData:ptr
 on_clicked proto SYSTEMV button:ptr,pLabel:ptr
 refresh_display proto SYSTEMV pLabel:ptr
 on_smoke proto SYSTEMV app:ptr
+
 .data
 app_id db "org.uasm.PltGotDemo",0
 window_title db "UASM - Linux PIE / SO / DWARF",0
@@ -21,7 +23,9 @@ smoke_total real8 2.5
 display_label dq 0
 click_button dq 0
 smoke_failure dd 0
+
 .code
+
 refresh_display proc SYSTEMV uses rbx pLabel:ptr
  LOCAL buffer[160]:byte,events:qword
  lea rbx,sample_model
@@ -119,4 +123,5 @@ main proc SYSTEMV argc:dword,argv:ptr
 done:
  ret
 main endp
+
 end

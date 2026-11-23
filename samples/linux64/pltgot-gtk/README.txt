@@ -100,17 +100,6 @@ The assembler emits both .debug_frame and allocated, PIC-safe .eh_frame for
 automatic System V frames with -Zi/-Zd. The linker creates .eh_frame_hdr.
 This sample verifies stack unwinding, not C++ exception handlers or cleanups.
 
-LEGACY SAMPLE REVIEW
-
-The original D:/HJWasm/Samples/Linux64 files are left unchanged.
-Lin64_1 is a raw _start/syscall example: its old plain gcc link command conflicts
-with GCC's normal startup objects. Raw entrypoints need a no-CRT link strategy.
-Lin64_2 is the closest conceptual basis for this project. Here main returns
-through the C runtime rather than issuing SYS_EXIT from a CRT-started program.
-Lin64_3 demonstrates the OO/macrolib extensions; Lin64_4 demonstrates sockets
-and threading. Those deserve separate modern Linux/PIC audits rather than
-being silently assumed compatible with the new shared-library example.
-
 REFERENCES
 
 GTK4 application/callback lifecycle:
