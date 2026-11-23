@@ -9,7 +9,11 @@ run([asm,'-q','-elf64','-Zi','-Fo=unwind.o',str(here/'dwarf_unwind.asm')])
 run(['gcc','-no-pie','-Wl,-z,noexecstack','unwind.o','-o','dwarf-unwind'])
 run([str(out/'dwarf-unwind')])
 frames=run(['readelf','--debug-dump=frames','unwind.o'],capture_output=True).stdout
-assert '.debug_frame' in frames and frames.count(' FDE ')==5
+assert '.debug_frame' in frames and '.eh_frame' in frames
+assert frames.split('Contents of the .eh_frame section:')[0].count(' FDE ')==5
+assert frames.split('Contents of the .eh_frame section:')[1].count(' FDE ')==5
+rels=run(['readelf','-rW','unwind.o'],capture_output=True).stdout
+assert rels.split("Relocation section '.rela.eh_frame'")[1].count('R_X86_64_PC32')==5
 assert 'DW_CFA_remember_state' in frames and 'DW_CFA_restore_state' in frames
 (out/'unwind-frames.txt').write_text(frames)
 verifier=next((shutil.which(n) for n in ['llvm-dwarfdump-23','llvm-dwarfdump','llvm-dwarfdump-18'] if shutil.which(n)),None)
@@ -70,6 +74,11 @@ end
 for extra in [[], ['-DPRESERVEFLAGS=1'], ['-Zd']]:
  flags=['-Zd'] if extra==['-Zd'] else ['-Zi']+extra
  run([asm,'-q','-elf64',*flags,'-Fo=unwind.o',str(here/'dwarf_unwind.asm')])
- run(['gcc','-no-pie','-Wl,-z,noexecstack','unwind.o','-o','dwarf-unwind'])
- print('Unwind variant: '+str(flags),flush=True)
- run(['gdb','-q','-batch','-x',str(out/'unwind.gdb'),str(out/'dwarf-unwind')])
+ for mode in ['-no-pie','-pie']:
+  run(['gcc',mode,'-Wl,-z,text,-z,noexecstack,--fatal-warnings','unwind.o','-o','dwarf-unwind'])
+  # Force GDB to use allocated EH CFI, rather than its .debug_frame preference.
+  run(['objcopy','--remove-section=.debug_frame','dwarf-unwind'])
+  linked=run(['readelf','-SW','dwarf-unwind'],capture_output=True).stdout
+  assert '.eh_frame_hdr' in linked and '.debug_frame' not in linked
+  print('EH unwind variant: '+str(flags)+' '+mode,flush=True)
+  run(['gdb','-q','-batch','-x',str(out/'unwind.gdb'),str(out/'dwarf-unwind')])

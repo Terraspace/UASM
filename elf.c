@@ -412,6 +412,7 @@ static uint_32 set_symtab64( struct elfmod *em, uint_32 entries, struct localnam
         else
             stt = STT_FUNC;
         p64->st_info = ELF64_ST_INFO( STB_LOCAL, stt );
+        p64->st_other = localscurr->sym->elf_visibility;
         p64->st_value = localscurr->sym->offset;
 #if 1 /* v2.07: changed - to make MT_ABS obsolete */
         if ( curr )
@@ -448,14 +449,18 @@ static uint_32 set_symtab64( struct elfmod *em, uint_32 entries, struct localnam
 #if OWELFIMPORT
             p64->st_info = ( IsWeak( curr->sym ) ? ELF64_ST_INFO( STB_WEAK, STT_IMPORT ) : ELF64_ST_INFO( STB_GLOBAL, STT_IMPORT ) );
 #else
-            /* todo: set STT_FUNC for prototypes??? */
-            p64->st_info = ( IsWeak( curr->sym ) ? ELF64_ST_INFO( STB_WEAK, STT_NOTYPE ) : ELF64_ST_INFO( STB_GLOBAL, STT_NOTYPE ) );
+            /* Keep legacy objects unchanged unless PIC was requested. */
+            stt = ModuleInfo.elf_pic && curr->sym.isproc ? STT_FUNC : STT_NOTYPE;
+            p64->st_info = ELF64_ST_INFO(IsWeak(curr->sym) ? STB_WEAK : STB_GLOBAL, stt);
 #endif
             p64->st_value = curr->sym.offset; /* is always 0 */
             p64->st_shndx = SHN_UNDEF;
         }
 
         strsize += len + 1;
+        if (curr->sym.elf_visibility == 3)
+            EmitErr(NOT_SUPPORTED, "PROTECTED visibility requires a definition in this module");
+        p64->st_other = curr->sym.elf_visibility;
         DebugMsg(("set_symtab64, EXTERNAL: symbol %s, info=%X, shndx=%X, value=%" I64_SPEC "X\n", buffer, p64->st_info, p64->st_shndx, p64->st_value));
         p64++;
     }
@@ -495,6 +500,7 @@ static uint_32 set_symtab64( struct elfmod *em, uint_32 entries, struct localnam
 
         p64->st_name = strsize;
         p64->st_info = ELF64_ST_INFO( STB_GLOBAL, stt );
+        p64->st_other = sym->elf_visibility;
         p64->st_value = sym->offset;
 #if 1 /* v2.07: changed - to make MT_ABS obsolete */
         if ( sym->state == SYM_INTERNAL )
@@ -981,7 +987,10 @@ static int elf_write_section_table64( struct module_info *modinfo, struct elfmod
         if ( curr->e.seginfo->characteristics == ??? ) {
         }
 #endif
-        if (dwarf_section(curr)) { shdr64.sh_type = SHT_PROGBITS; shdr64.sh_flags = 0; }
+        if (dwarf_section(curr)) {
+            shdr64.sh_type = SHT_PROGBITS;
+            shdr64.sh_flags = dwarf_eh_frame(curr) ? SHF_ALLOC : 0;
+        }
         shdr64.sh_addr = 0;
         /* v2.12: the sh_offset field holds the file position, even for SHT_NOBITS */
         //if ( shdr64.sh_type != SHT_NOBITS ) {
@@ -1154,7 +1163,8 @@ static void write_relocs64( struct dsym *curr )
             }
 #endif
             /* The complete addend is captured before emission in store_fixup(). */
-            elftype = R_X86_64_PC32;
+            elftype = fixup->elf_got ? R_X86_64_GOTPCREL :
+                fixup->elf_plt ? R_X86_64_PLT32 : R_X86_64_PC32;
             break;
         case FIX_OFF64:        elftype = R_X86_64_64;          break;
         //case FIX_???:        elftype = R_X86_64_GOT32;       break;

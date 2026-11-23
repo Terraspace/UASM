@@ -17,7 +17,11 @@ including instruction-boundary prologue/epilogue changes, USES saves, frameless
 procedures, red-zone frames and generated outgoing stack-argument adjustments.
 Both -Zi and -Zd include it. Multiple return paths restore their body CFI state.
 The records use final encoded instruction offsets, not assumed opcode lengths.
-This is debugger unwind information, not runtime .eh_frame exception support.
+The same CFI is also emitted in allocated, read-only .eh_frame, using PC-relative
+32-bit relocations for PIE/shared-library linkage. The linker generates
+.eh_frame_hdr. Both sections are emitted with -Zi or -Zd; builds without these
+switches do not generate automatic CFI. This supplies stack-unwind metadata,
+not language-specific exception handlers or cleanup/personality routines.
 Custom/manual prologues and arbitrary user-written stack/frame manipulation
 are outside the automatic-frame contract. XMM save records describe the low
 128 bits; full YMM/ZMM reconstruction and macro information are not implemented.

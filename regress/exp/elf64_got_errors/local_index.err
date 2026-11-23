@@ -1,0 +1,1 @@
+../src/elf64_got_errors/local_index.asm(8) : Error A2072: Not supported: PIC absolute/indexed symbol reference requires GOT(symbol, temporary)

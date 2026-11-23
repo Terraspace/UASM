@@ -1,0 +1,1 @@
+../src/elf64_got_errors/size_mismatch.asm(5) : Error A2048: Operands must be the same size: 4 - 8

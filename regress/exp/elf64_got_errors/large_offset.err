@@ -1,0 +1,1 @@
+../src/elf64_got_errors/large_offset.asm(5) : Error A2072: Not supported: GOT displacement must fit signed 32 bits

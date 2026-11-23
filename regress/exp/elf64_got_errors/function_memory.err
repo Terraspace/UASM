@@ -1,0 +1,1 @@
+../src/elf64_got_errors/function_memory.asm(5) : Error A2072: Not supported: GOT memory operand needs a data declaration; use LEA for function addresses

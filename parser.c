@@ -37,6 +37,13 @@
 #include "codegen.h"
 #include "codegenv2.h"
 #include "dwarf.h"
+#include "lqueue.h"
+
+/* A generated GOT pointer load retains the normal RELOFF32 machinery. */
+static bool elf_got_expanding;
+static struct asym *elf_got_load_symbol;
+
+
 #include "expreval.h"
 #include "fixup.h"
 #include "types.h"
@@ -1951,8 +1958,13 @@ static ret_code memory_operand( struct code_info *CodeInfo, unsigned CurrOpnd, s
          * However, CMPSD and MOVSD are also SSE2 opcodes, so the fixups must be generated
          * anyways.
          */
+        if (ModuleInfo.elf_pic && Options.output_format == OFORMAT_ELF &&
+            CodeInfo->Ofssize == USE64 && fixup_type != FIX_RELOFF32)
+            return EmitErr(NOT_SUPPORTED, "PIC absolute/indexed symbol reference requires GOT(symbol, temporary)");
         if (CodeInfo->token != T_XLAT && CodeInfo->token != T_XLATB) {
             CodeInfo->opnd[CurrOpnd].InsFixup = CreateFixup(sym, fixup_type, OPTJ_NONE);
+            if (sym && sym == elf_got_load_symbol)
+                CodeInfo->opnd[CurrOpnd].InsFixup->elf_got = TRUE;
         }
     }
 
@@ -3079,6 +3091,196 @@ static struct asym *IsType( const char *name )
  * - for data items and data directives: call data_dir()
  * - for other directives: call directive[]()
  * - for instructions: fill CodeInfo and call codegen() */
+static bool ElfNeedsGot(const struct asym *sym)
+{
+    return sym && !sym->isequate &&
+        (sym->state == SYM_EXTERNAL || (sym->ispublic && sym->elf_visibility == 0));
+}
+
+/* These forms have no implicit GP operands beyond those checked below. */
+static bool ElfGotOperation(enum special_token token)
+{
+    switch (token) {
+    case T_CALL: case T_JMP:
+    case T_MOV: case T_MOVZX: case T_MOVSX: case T_MOVSXD:
+    case T_ADD: case T_ADC: case T_SUB: case T_SBB:
+    case T_AND: case T_OR: case T_XOR: case T_CMP: case T_TEST:
+    case T_INC: case T_DEC: case T_NEG: case T_NOT: case T_XCHG:
+    case T_MOVSS: case T_MOVSD: case T_MOVAPS: case T_MOVUPS:
+    case T_MOVAPD: case T_MOVUPD: case T_MOVDQA: case T_MOVDQU:
+    case T_VMOVSS: case T_VMOVSD: case T_VMOVAPS: case T_VMOVUPS:
+    case T_VMOVAPD: case T_VMOVUPD: case T_VMOVDQA: case T_VMOVDQU:
+        return TRUE;
+    }
+    return FALSE;
+}
+
+/* Return EMPTY for an ordinary instruction, otherwise consume the instruction.
+ * GOT(expr, reg64) must occupy an entire operand. No hidden register clobbers. */
+static ret_code ElfGotInstruction(int inst, int first, struct asm_tok tok[])
+{
+    static const char *gp[] = {"rax","rcx","rdx","rbx","rsp","rbp","rsi","rdi",
+                              "r8","r9","r10","r11","r12","r13","r14","r15"};
+    struct expr expr[MAX_OPND + 1];
+    int starts[MAX_OPND + 1], ends[MAX_OPND + 1];
+    int n = 0, i = inst + 1, j, k, depth, end, comma, selected = -1;
+    int scratch = -1, scratch_token = 0, helper = -1, width, errors;
+    bool address = FALSE, got;
+    const char *sizeword = NULL;
+    struct asym *sym;
+    enum special_token mnemonic = tok[inst].tokval;
+    char line[MAX_LINE_LEN], replacement[128];
+    size_t prefix, suffix;
+    int_64 displacement;
+
+    if (elf_got_expanding) return EMPTY;
+    /* Recognise explicit GOT even outside PIC mode, for a useful diagnostic. */
+    for (j = i; j + 1 < Token_Count; j++)
+        if (tok[j].token == T_ID && !_stricmp(tok[j].string_ptr, "GOT") && tok[j+1].token == T_OP_BRACKET)
+            helper = j;
+    if (!ModuleInfo.elf_pic || Options.output_format != OFORMAT_ELF || ModuleInfo.Ofssize != USE64) {
+        if (helper >= 0) return EmitErr(NOT_SUPPORTED, "GOT requires ELF64 and OPTION ELFPIC:1");
+        return EMPTY;
+    }
+    memset(expr, 0, sizeof(expr));
+    while (i < Token_Count && n < MAX_OPND + 1) {
+        starts[n] = i;
+        depth = 0;
+        for (end = i; end < Token_Count; end++) {
+            if (tok[end].token == T_OP_BRACKET || tok[end].token == T_OP_SQ_BRACKET) depth++;
+            if (tok[end].token == T_CL_BRACKET || tok[end].token == T_CL_SQ_BRACKET) depth--;
+            if (depth == 0 && tok[end].token == T_COMMA) break;
+        }
+        ends[n] = end;
+        if (helper >= i && helper < end) {
+            if (selected >= 0 || helper != i || tok[end-1].token != T_CL_BRACKET)
+                return EmitErr(NOT_SUPPORTED, "GOT must be one complete operand");
+            comma = i + 2;
+            while (comma < end && tok[comma].token != T_COMMA) comma++;
+            if (comma + 3 != end || tok[comma+1].token != T_REG ||
+                !(GetValueSp(tok[comma+1].tokval) & OP_R64))
+                return EmitErr(NOT_SUPPORTED, "GOT expects (symbol expression, 64-bit GP temporary)");
+            scratch_token = tok[comma+1].tokval;
+            scratch = GetRegNo(scratch_token);
+            k = i + 2;
+            if (EvalOperand(&k, tok, comma, &expr[n], 0) == ERROR) return ERROR;
+            if (k != comma) return EmitError(INVALID_INSTRUCTION_OPERANDS);
+            selected = n;
+        } else {
+            k = i;
+            if (EvalOperand(&k, tok, end, &expr[n], 0) == ERROR) return ERROR;
+            if (k != end) return EMPTY; /* normal parser owns unusual operand syntax */
+        }
+        n++;
+        i = end + 1;
+    }
+    if (i < Token_Count) return EmitError(INVALID_INSTRUCTION_OPERANDS);
+    if (IS_ANY_BRANCH(mnemonic) && helper < 0) {
+        /* A direct code target belongs to PLT handling. An imported pointer
+         * variable instead needs a GOT address load before the indirect call. */
+        if (n == 1 && ElfNeedsGot(expr[0].sym) &&
+            (expr[0].indirect || (expr[0].mem_type != MT_EMPTY && expr[0].mem_type != MT_NEAR && expr[0].mem_type != MT_FAR)))
+            return EmitErr(NOT_SUPPORTED, "PIC indirect branch requires GOT(symbol, temporary)");
+        return EMPTY;
+    }
+    if (helper < 0) {
+        for (j = 0; j < n; j++) {
+            if (ElfNeedsGot(expr[j].sym) ||
+                (expr[j].kind == EXPR_ADDR && (expr[j].instr == T_OFFSET ||
+                  (mnemonic == T_MOV && !expr[j].indirect && (expr[j].mem_type == MT_NEAR || expr[j].mem_type == MT_FAR))) &&
+                 expr[j].sym && expr[j].sym->state == SYM_INTERNAL && !expr[j].sym->isequate)) {
+                if (selected >= 0) return EmitErr(NOT_SUPPORTED, "multiple symbolic PIC operands");
+                selected = j;
+            }
+        }
+        if (selected < 0) return EMPTY;
+        address = mnemonic == T_LEA || (mnemonic == T_MOV && (expr[selected].instr == T_OFFSET ||
+            (!expr[selected].indirect && (expr[selected].mem_type == MT_NEAR || expr[selected].mem_type == MT_FAR))));
+        if (selected != 1 || n != 2 || expr[0].kind != EXPR_REG || !expr[0].base_reg ||
+            !(GetValueSp(expr[0].base_reg->tokval) & (address ? OP_R64 : (OP_R32 | OP_R64))) ||
+            (!address && mnemonic != T_MOV && mnemonic != T_MOVZX && mnemonic != T_MOVSX && mnemonic != T_MOVSXD))
+            return EmitErr(NOT_SUPPORTED, "PIC access requires explicit GOT(symbol, temporary)");
+        scratch_token = expr[0].base_reg->tokval;
+        scratch = GetRegNo(scratch_token);
+    }
+    if (scratch < 0 || scratch > 15 || scratch == 4 || scratch == 5)
+        return EmitErr(NOT_SUPPORTED, "GOT temporary/destination must not be RSP or RBP");
+    if (address && first != inst)
+        return EmitErr(NOT_SUPPORTED, "prefix is invalid on a PIC address load");
+    if (decoflags || broadflags || evexflag)
+        return EmitErr(NOT_SUPPORTED, "decorated GOT expansion is not supported");
+    if (!address && !ElfGotOperation(mnemonic))
+        return EmitErr(NOT_SUPPORTED, "instruction is not supported with GOT expansion");
+    sym = expr[selected].sym;
+    if (!sym || expr[selected].kind != EXPR_ADDR || expr[selected].base_reg || expr[selected].idx_reg ||
+        expr[selected].override || expr[selected].is_abs || sym->isequate ||
+        (expr[selected].instr != EMPTY && !(address && expr[selected].instr == T_OFFSET)))
+        return EmitErr(NOT_SUPPORTED, "GOT expects a symbol plus optional constant displacement");
+    displacement = expr[selected].value64;
+    if (displacement < INT_MIN || displacement > INT_MAX)
+        return EmitErr(NOT_SUPPORTED, "GOT displacement must fit signed 32 bits");
+    if (helper >= 0) {
+        for (j = 0; j < n; j++)
+            if (j != selected && expr[j].kind == EXPR_ADDR && expr[j].sym && !expr[j].sym->isequate)
+                return EmitErr(NOT_SUPPORTED, "GOT expansion cannot combine two symbolic operands");
+        for (j = 0; j < n; j++) {
+            struct asm_tok *reg;
+            if (j == selected) continue;
+            for (k = 0; k < 2; k++) {
+                reg = k ? expr[j].idx_reg : expr[j].base_reg;
+                if (reg && (GetValueSp(reg->tokval) & (OP_R8 | OP_R16 | OP_R32 | OP_R64))) {
+                    int number = GetRegNo(reg->tokval);
+                    if (reg->tokval >= T_AH && reg->tokval <= T_BH) number -= 4;
+                    if (number == scratch) return EmitErr(NOT_SUPPORTED, "GOT temporary conflicts with another operand");
+                }
+            }
+        }
+        for (j = inst+1; j < Token_Count; j++) {
+            if (j >= starts[selected] && j < ends[selected]) continue;
+            if (tok[j].token == T_REG && (GetValueSp(tok[j].tokval) & (OP_R8 | OP_R16 | OP_R32 | OP_R64))) {
+                k = GetRegNo(tok[j].tokval);
+                if (tok[j].tokval >= T_AH && tok[j].tokval <= T_BH) k -= 4;
+                if (k == scratch) return EmitErr(NOT_SUPPORTED, "GOT temporary conflicts with another operand");
+            }
+        }
+    }
+    if (!address) {
+        if (helper >= 0 && (expr[selected].mem_type == MT_NEAR || expr[selected].mem_type == MT_FAR))
+            return EmitErr(NOT_SUPPORTED, "GOT memory operand needs a data declaration; use LEA for function addresses");
+        width = SizeFromMemtype(expr[selected].mem_type, USE64, expr[selected].type);
+        switch (width) {
+        case 1: sizeword="byte"; break; case 2: sizeword="word"; break;
+        case 4: sizeword="dword"; break; case 8: sizeword="qword"; break;
+        case 16: sizeword="xmmword"; break; case 32: sizeword="ymmword"; break;
+        case 64: sizeword="zmmword"; break;
+        default: return EmitErr(NOT_SUPPORTED, "GOT memory operand needs a declared scalar/vector type");
+        }
+        BuildCodeLine(replacement, "%s ptr [%s+%q]", sizeword, gp[scratch], displacement);
+        prefix = tok[starts[selected]].tokpos - tok[first].tokpos;
+        suffix = strlen(tok[ends[selected]].tokpos);
+        if (prefix + strlen(replacement) + suffix >= sizeof(line)) return EmitError(LINE_TOO_LONG);
+        memcpy(line, tok[first].tokpos, prefix);
+        strcpy(line+prefix,replacement);
+        strcat(line,tok[ends[selected]].tokpos);
+    }
+    got = ElfNeedsGot(sym) || helper >= 0;
+    errors = ModuleInfo.g.error_count;
+    elf_got_expanding = TRUE;
+    elf_got_load_symbol = got ? sym : NULL;
+    if (got) AddLineQueueX("mov %s, qword ptr [%s]", gp[scratch], sym->name);
+    else AddLineQueueX("lea %s, [%s]", gp[scratch], sym->name);
+    RunLineQueue();
+    elf_got_load_symbol = NULL;
+    if (ModuleInfo.g.error_count == errors) {
+        if (address) {
+            if (displacement) AddLineQueueX("lea %s, [%s+%q]", gp[scratch], gp[scratch], displacement);
+        } else AddLineQueue(line);
+        RunLineQueue();
+    }
+    elf_got_expanding = FALSE;
+    return ModuleInfo.g.error_count == errors ? NOT_ERROR : ERROR;
+}
+
 ret_code ParseLine(struct asm_tok tokenarray[]) {
 	int                i;
 	int                j;
@@ -3465,6 +3667,12 @@ dataInProc:
 	}
 
 	FStoreLine(0); /* must be placed AFTER write_prologue() */
+
+    temp = ElfGotInstruction(i, i - (CodeInfo.prefix.ins != EMPTY), tokenarray);
+    if (temp != EMPTY) {
+        decoflags = broadflags = evexflag = 0;
+        return temp;
+    }
 
 	CodeInfo.token = tokenarray[i].tokval;
 	/* Direct CALL also makes a System V procedure non-leaf. */

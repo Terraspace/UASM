@@ -1,0 +1,1 @@
+../src/elf64_got_errors/indirect_call.asm(5) : Error A2072: Not supported: PIC indirect branch requires GOT(symbol, temporary)

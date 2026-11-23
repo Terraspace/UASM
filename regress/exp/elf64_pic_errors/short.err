@@ -1,0 +1,1 @@
+../src/elf64_pic_errors/short.asm(5) : Error A2072: Not supported: PIC external branch requires a near 64-bit call or jump

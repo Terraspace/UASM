@@ -1,0 +1,1 @@
+../src/elf64_got_errors/implicit_registers.asm(5) : Error A2072: Not supported: instruction is not supported with GOT expansion

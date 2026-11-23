@@ -1,0 +1,1 @@
+../src/elf64_got_errors/segment.asm(5) : Error A2072: Not supported: GOT expects a symbol plus optional constant displacement

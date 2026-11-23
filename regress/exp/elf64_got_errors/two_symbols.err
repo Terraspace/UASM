@@ -1,0 +1,1 @@
+../src/elf64_got_errors/two_symbols.asm(5) : Error A2072: Not supported: GOT expansion cannot combine two symbolic operands

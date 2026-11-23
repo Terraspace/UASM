@@ -1,0 +1,1 @@
+../src/elf64_got_errors/prefix_address.asm(5) : Error A2072: Not supported: prefix is invalid on a PIC address load

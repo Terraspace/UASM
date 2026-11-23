@@ -1,0 +1,1 @@
+../src/elf64_got_errors/alias_conflict.asm(6) : Error A2072: Not supported: GOT temporary conflicts with another operand

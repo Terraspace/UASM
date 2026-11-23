@@ -1,0 +1,1 @@
+../src/elf64_got_errors/no_pic.asm(6) : Error A2072: Not supported: GOT requires ELF64 and OPTION ELFPIC:1

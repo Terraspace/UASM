@@ -1,0 +1,45 @@
+ELF64 PIC stage 1: PLT calls and symbol visibility
+
+OPTION ELFPIC:0|1 (default 0), ELF64 output only.
+Select 1 before code to use PLT32 for direct CALL/JMP to default-visible
+PUBLIC definitions and external functions. Ordinary local branches remain
+direct. INVOKE benefits through its generated CALL. The subsequent GOT stage adds explicit GOT(symbol, temporary) operands and
+safe transparent loads; see elf64-got.txt for its supported forms and limits.
+
+Declare the symbol PUBLIC, EXTERN or PROTO first, then use:
+  OPTION ELFVISIBILITY:name:DEFAULT
+  OPTION ELFVISIBILITY:name:HIDDEN
+  OPTION ELFVISIBILITY:name:PROTECTED
+Declare visibility before use. Conflicting repeated declarations are errors.
+HIDDEN is not externally exported; PROTECTED is exported but internal calls
+bind locally. PROTECTED must be defined in the current assembly module in
+this initial implementation. An undefined HIDDEN reference uses PC32 and must
+be supplied by the final static link, not another shared library.
+Visibility does not itself enable ELFPIC or create a PUBLIC declaration.
+Default output stays unchanged when neither new option is used.
+
+Short/far/16- or 32-bit override branches and conditional branches to symbols
+requiring the new external/interposable handling are rejected. Use ordinary
+local conditional control flow followed by a near CALL/JMP instead.
+
+Fixtures cover PLT32 versus PC32, positive addends, local displacements,
+same-file default exports, hidden/protected visibility, late PUBLIC,
+forward PROTO definitions, weak externals, cross-section calls, indirect
+branches, INVOKE and invalid declarations/branches/formats.
+Existing non-PIC expectations have not been changed.
+
+Independent checks (from repository root):
+  python regress/validation/elf64-pic.py --asm x64/Release/UASM.exe
+Linux:
+  python3 regress/validation/elf64-pic.py --asm <built-uasm> --runtime
+
+The Python helper uses only the standard library. Object assertions decode
+ELF64 relocation/symbol records and independently calculated instruction bytes.
+Linux adds a GNU assembler relocation oracle and compiler/linker/loader tests:
+PIE + SO, same-object interposition with LD_PRELOAD, hidden/protected binding,
+static PIE resolution, eager/lazy loading and no TEXTREL (-z text).
+GNU bfd is required by the intended test environment; lld is optional and its
+absence is explicitly reported. Test outputs use a temporary directory.
+
+GOT_TEMPORARY was superseded by the explicit per-use GOT(symbol, temporary)
+syntax. See elf64-got.txt and elf64-got.py for implementation and validation.

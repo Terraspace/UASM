@@ -1,0 +1,2 @@
+../src/elf64_pic_format_errors/non_elf.asm(2) : Error A2072: Not supported: ELFPIC requires ELF64 output
+../src/elf64_pic_format_errors/non_elf.asm(4) : Error A2072: Not supported: ELFVISIBILITY requires ELF64 output

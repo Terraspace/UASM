@@ -1,0 +1,1 @@
+../src/elf64_got_errors/store.asm(5) : Error A2072: Not supported: PIC access requires explicit GOT(symbol, temporary)

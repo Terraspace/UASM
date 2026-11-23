@@ -1,0 +1,1 @@
+../src/elf64_got_errors/frame_temp.asm(5) : Error A2072: Not supported: GOT temporary/destination must not be RSP or RBP

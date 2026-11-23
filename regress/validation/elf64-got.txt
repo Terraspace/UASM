@@ -1,0 +1,62 @@
+ELF64 GOT stage: explicit operands and transparent address/value loads
+
+Enable OPTION ELFPIC:1 with -elf64. No GOT_TEMPORARY option is used.
+
+Examples:
+  extern counter:dword, real_value:real8
+  mov eax,counter                 ; address through GOT, then DWORD load
+  lea rax,counter                 ; address through GOT
+  mov rax,OFFSET counter+4        ; address through GOT, then LEA +4
+  mov GOT(counter,r11),eax        ; explicit R11 clobber, DWORD store
+  lock inc GOT(counter,r11)       ; LOCK applies to the INC
+  movsd xmm0,GOT(real_value,r10)   ; explicit R10 clobber
+
+GOT(symbol-expression, temporary) occupies one complete instruction operand.
+The expression can include constant offsets or a typed structure field.
+Offsets apply to the actual data access, never to the GOT slot. The pointer
+load uses R_X86_64_GOTPCREL; ordinary relative-fixup/addend handling is retained.
+Memory size comes from the declared symbol/field. Declare its type before use.
+For an explicit type conversion or indexed access, first load the address with
+LEA into a chosen register, then use ordinary typed/indexed register addressing.
+
+The temporary must be a 64-bit GP register other than RSP/RBP. RSP/RBP are
+excluded to avoid transient stack/frame-base corruption. The helper clobbers
+that register explicitly; it does not save/restore it. Usual ABI preservation
+rules still apply when choosing a nonvolatile register. Conflicts with other
+operands (including partial-register aliases and System V named register
+parameters) are errors.
+
+Transparent value loads: MOV/MOVZX/MOVSX/MOVSXD into a 32/64-bit GP destination,
+using the corresponding 64-bit destination as the address temporary. Narrow
+8/16-bit destinations need an explicit temporary to preserve their upper bits.
+Transparent address loads: LEA, MOV OFFSET, and MOV with a bare code label into
+a 64-bit GP destination. Bare code labels retain UASM's existing address-valued
+semantics; bracketed memory operands remain memory accesses. Local/hidden/
+protected definitions use direct RIP-relative addressing where appropriate.
+A local MOV OFFSET is lowered to RIP-relative LEA in PIC mode.
+
+Explicit operations supported in this stage:
+  MOV/MOVZX/MOVSX/MOVSXD; ADD/ADC/SUB/SBB/AND/OR/XOR/CMP/TEST;
+  INC/DEC/NEG/NOT/XCHG; SSE/AVX MOVSS/MOVSD/MOVAPS/MOVUPS/
+  MOVAPD/MOVUPD/MOVDQA/MOVDQU; indirect CALL/JMP through a declared
+  pointer variable (e.g. CALL GOT(callback,r11)).
+Use LEA for a function address, rather than treating a code symbol as data.
+
+Unsupported instructions, decorations, multiple symbolic operands, indexed or
+segment-overridden GOT expressions, invalid sizes and register conflicts fail
+with diagnostics. This deliberately bounded expansion avoids hidden implicit
+register effects. Normal undeclared/invalid assembly is not made valid by GOT.
+Direct calls still use the preceding PLT implementation. Existing non-PIC
+instruction behaviour and EXP files are unchanged.
+
+Verification:
+  python regress/validation/elf64-got.py --asm <uasm> --clang <clang>
+  python3 regress/validation/elf64-got.py --asm <uasm> --runtime
+
+The optional object/runtime validation requires Python 3; the ordinary Go suite
+does not. Handwritten GNU/LLVM assembly oracles check full instruction bytes,
+relocation offsets/types/symbols/addends. Linux runtime checks exercise PIE + SO,
+LD_PRELOAD interposition of data and functions, function pointer identity,
+constant offsets, SSE loads, stores, atomic increments, carry preservation,
+register preservation, INVOKE ADDR and indirect calls/tail jumps. Link checks
+require no TEXTREL or COPY relocations. Core fixtures remain self-contained.

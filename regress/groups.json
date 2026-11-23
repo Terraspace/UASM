@@ -200,5 +200,10 @@
   "elf64_rela": ["-q", "-elf64"],
   "stackprobe": ["-q", "-win64"],
   "cvlocals8": ["-c", "-win64", "-Zi8"],
-  "cvlocals4": ["-c", "-win64", "-Zi"]
+  "cvlocals4": ["-c", "-win64", "-Zi"],
+  "elf64_pic_calls": ["-q", "-elf64"],
+  "elf64_pic_errors": ["-q", "-elf64"],
+  "elf64_pic_format_errors": ["-q", "-win64"],
+  "elf64_got": ["-q", "-elf64"],
+  "elf64_got_errors": ["-q", "-elf64"]
 }

@@ -9,5 +9,6 @@ void dwarf_body(struct dsym *proc);
 void dwarf_epilogue(struct dsym *proc, unsigned first, unsigned last);
 void dwarf_line(unsigned file, uint_32 line);
 void dwarf_write(void);
+bool dwarf_eh_frame(const struct dsym *seg);
 bool dwarf_section(const struct dsym *seg);
 #endif

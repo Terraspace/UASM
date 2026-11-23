@@ -121,6 +121,8 @@ struct fixup {
              * the result <end of instruction> - <fixup location> is stored here. */
             uint_8        addbytes;
 #endif
+            unsigned char elf_got:1;               /* RELOFF32 pointer load through GOT */
+            unsigned char elf_plt:1;               /* RELOFF32 branch may bind via PLT */
             unsigned char signed32:1;              /* sign-extended disp32/imm32 */
             unsigned char loader_resolved:1;        /* operator LROFFSET */
             unsigned char orgoccured:1;             /* v2.04 ORG occured behind this fix */

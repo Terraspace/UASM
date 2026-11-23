@@ -20,10 +20,10 @@
 #include "expreval.h"
 #if ELF_SUPPORT && AMD64_SUPPORT
 struct dwrow { struct dwrow *next; struct dsym *seg; unsigned file; uint_32 line, offset; };
-struct dwrel { struct dwrel *next; struct dsym *target; unsigned offset, width; };
+struct dwrel { struct dwrel *next; struct dsym *target; unsigned offset, width; bool pcrel; };
 struct dwbuf { uint_8 *p; unsigned size, cap; struct dwrel *rel; struct dsym *seg; };
 static struct dwrow *rows, **tail;
-enum { DW_SECTIONS = 6 };
+enum { DW_SECTIONS = 7 };
 static struct dsym *sections[DW_SECTIONS];
 struct dwframe { struct dwframe *next; struct dsym *proc; unsigned body; bool automatic; };
 struct dwepi { struct dwepi *next; struct dsym *proc; unsigned first,last; };
@@ -73,6 +73,10 @@ bool dwarf_section(const struct dsym *seg)
     for (i = 0; i < DW_SECTIONS; i++) if (sections[i] == seg) return TRUE;
     return FALSE;
 }
+bool dwarf_eh_frame(const struct dsym *seg)
+{
+    return sections[6] && sections[6] == seg;
+}
 static void bytes(struct dwbuf *b, const void *p, unsigned n)
 {
     if (b->size + n > b->cap) {
@@ -108,12 +112,17 @@ static void patch32(struct dwbuf *b, unsigned at, unsigned v)
 static void address(struct dwbuf *b, struct dsym *seg, unsigned offset, unsigned width)
 {
     struct dwrel *r = MemAlloc(sizeof(*r));
-    r->target = seg; r->offset = b->size; r->width = width; r->next = b->rel; b->rel = r;
+    r->pcrel = FALSE; r->target = seg; r->offset = b->size; r->width = width; r->next = b->rel; b->rel = r;
     num(b, offset, width);
 }
 static void publish(struct dwbuf *b)
 {
     struct dwrel *r, *next;
+    /* Linkers consume .eh_frame relocations while walking records in order. */
+    if (dwarf_eh_frame(b->seg)) {
+        r = b->rel; b->rel = NULL;
+        while (r) {next = r->next; r->next = b->rel; b->rel = r; r = next;}
+    }
     b->seg->e.seginfo->CodeBuffer = LclAlloc(b->size);
     memcpy(b->seg->e.seginfo->CodeBuffer, b->p, b->size);
     b->seg->sym.max_offset = b->size;
@@ -121,7 +130,7 @@ static void publish(struct dwbuf *b)
     for (r = b->rel; r; r = next) {
         struct fixup *f;
         b->seg->e.seginfo->current_loc = r->offset;
-        f = CreateFixup(&r->target->sym, r->width == 8 ? FIX_OFF64 : FIX_OFF32, OPTJ_NONE);
+        f = CreateFixup(&r->target->sym, r->pcrel ? FIX_RELOFF32 : (r->width == 8 ? FIX_OFF64 : FIX_OFF32), OPTJ_NONE);
         f->locofs = r->offset; f->addbytes = 0;
         store_fixup(f, b->seg, (int_32 *)(b->seg->e.seginfo->CodeBuffer + r->offset));
         next = r->next; MemFree(r);
@@ -304,21 +313,32 @@ void dwarf_cfi_instruction(unsigned token, const struct expr *ops)
             cfi_event(0x08,dwreg(a),0);
     }
 }
-static void write_cfi(struct dwbuf *b)
+static void write_cfi(struct dwbuf *b, bool eh)
 {
     struct dwcfi *f;
     unsigned start;
     /* DWARF4 CIE, 8-byte addresses, code alignment 1, data alignment -8,
      * RIP return column 16, initial CFA RSP+8 and RIP at CFA-8. */
-    num(b,0,4);num(b,0xffffffff,4);num(b,4,1);num(b,0,1);num(b,8,1);num(b,0,1);
-    uleb(b,1);sleb(b,-8);uleb(b,16);num(b,0x0c,1);uleb(b,7);uleb(b,8);
+    num(b,0,4);num(b,eh ? 0 : 0xffffffff,4);
+    if(eh) {num(b,1,1);str(b,"zR");}
+    else {num(b,4,1);num(b,0,1);num(b,8,1);num(b,0,1);}
+    uleb(b,1);sleb(b,-8);uleb(b,16);
+    /* zR: FDE start addresses use DW_EH_PE_pcrel | DW_EH_PE_sdata4.
+     * Section-relative code symbols avoid interposition and dynamic relocations. */
+    if(eh) {uleb(b,1);num(b,0x1b,1);}
+    num(b,0x0c,1);uleb(b,7);uleb(b,8);
     num(b,0x90,1);uleb(b,1);
     while(b->size%8) num(b,0,1);
     patch32(b,0,b->size-4);
     for(f=cfi_frames;f;f=f->next) {
         struct dwcfi_event *e;unsigned pc=f->proc->sym.offset;
-        start=b->size;num(b,0,4);address(b,b->seg,0,4);
-        address(b,(struct dsym *)f->proc->sym.segment,pc,8);num(b,f->proc->sym.total_size,8);
+        start=b->size;num(b,0,4);
+        if(eh) num(b,start+4,4); /* backward distance from CIE pointer to CIE */
+        else address(b,b->seg,0,4);
+        address(b,(struct dsym *)f->proc->sym.segment,pc,eh ? 4 : 8);
+        b->rel->pcrel=eh;
+        num(b,f->proc->sym.total_size,eh ? 4 : 8);
+        if(eh) uleb(b,0); /* empty FDE augmentation */
         for(e=f->events;e;e=e->next) {
             if(e->pc>pc) {num(b,4,1);num(b,e->pc-pc,4);pc=e->pc;} /* advance_loc4 */
             num(b,e->op,1);
@@ -385,7 +405,7 @@ static void global_symbols(struct dwbuf *info)
 
 void dwarf_write(void)
 {
-    static const char *names[] = { ".debug_abbrev", ".debug_info", ".debug_line", ".debug_ranges", ".debug_loc", ".debug_frame" };
+    static const char *names[] = { ".debug_abbrev", ".debug_info", ".debug_line", ".debug_ranges", ".debug_loc", ".debug_frame", ".eh_frame" };
     /* Abbreviations: CU(name, producer, comp_dir, language, stmt_list, ranges);
      * subprogram(name, low_pc, high_pc length, external). */
     static const uint_8 abbrev[] = {1,0x11,1, 3,8, 0x25,8, 0x1b,8, 0x13,5, 0x10,0x17, 0x55,0x17, 0,0,
@@ -418,6 +438,7 @@ void dwarf_write(void)
         sections[i] = b[i].seg = (struct dsym *)CreateIntSegment(names[i], "", 0, USE64, TRUE);
         if (!sections[i]) return;
         sections[i]->e.seginfo->segtype = SEGTYPE_DATA;
+        if (i == 6) sections[i]->e.seginfo->alignment = 3;
     }
     bytes(&b[0], abbrev, sizeof(abbrev));
     num(&b[2], 0, 4); num(&b[2], 4, 2); header = b[2].size; num(&b[2], 0, 4);
@@ -466,7 +487,8 @@ void dwarf_write(void)
     }
     if(Options.debug_symbols) { global_symbols(&b[1]);write_types(&b[1]); }
     num(&b[1],0,1); patch32(&b[1],0,b[1].size-4);
-    write_cfi(&b[5]);
+    write_cfi(&b[5], FALSE);
+    write_cfi(&b[6], TRUE);
     for (i=0;i<DW_SECTIONS;i++) publish(&b[i]);
     while (rows) { row = rows->next; MemFree(rows); rows = row; }
     tail = &rows;
@@ -481,5 +503,6 @@ void dwarf_epilogue(struct dsym *proc,unsigned first,unsigned last) {}
 void dwarf_init(void) {}
 void dwarf_line(unsigned file, uint_32 line) {}
 bool dwarf_section(const struct dsym *seg) { return FALSE; }
+bool dwarf_eh_frame(const struct dsym *seg) { return FALSE; }
 void dwarf_write(void) {}
 #endif

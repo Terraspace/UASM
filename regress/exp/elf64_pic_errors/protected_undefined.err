@@ -1,0 +1,1 @@
+../src/elf64_pic_errors/protected_undefined.asm : Error A2072: Not supported: PROTECTED visibility requires a definition in this module

@@ -1,0 +1,7 @@
+*.asm text eol=lf
+*.inc text eol=lf
+Makefile text eol=lf
+*.py text eol=lf
+*.txt text eol=lf
+.gitignore text eol=lf
+.gitattributes text eol=lf

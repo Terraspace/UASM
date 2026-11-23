@@ -1,0 +1,1 @@
+../src/elf64_pic_errors/visibility_conflict.asm(5) : Error A2072: Not supported: conflicting ELF visibility declarations

@@ -1,0 +1,1 @@
+../src/elf64_got_errors/vector_temp.asm(5) : Error A2072: Not supported: GOT expects (symbol expression, 64-bit GP temporary)

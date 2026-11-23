@@ -160,6 +160,8 @@ struct asym {
 	struct asym     *segment;       /* used by SYM_INTERNAL, SYM_EXTERNAL */
     enum sym_state  state;
     enum memtype    mem_type;
+    unsigned char elf_visibility_set; /* reject conflicting visibility declarations */
+    unsigned char elf_visibility; /* ELF STV_DEFAULT=0, HIDDEN=2, PROTECTED=3 */
     bool sysv_home; /* register parameter with an opt-in callee-owned spill */
     unsigned char   used:1,       /* symbol has been referenced */
                     isdefined:1,  /* symbol is "defined" in this pass */

@@ -199,6 +199,25 @@ ret_code process_branch( struct code_info *CodeInfo, unsigned CurrOpnd, const st
               GetCurrOffset(), sym->name, opndx->explicit, opndx->mem_type, opndx->Ofssize, CodeInfo->mem_type,
               sym->state, sym->mem_type, sym->offset, sym->segment ? sym->segment->name : "NULL" ));
 
+    /* Keep interposable definitions relocatable even within this section.
+     * Preserve RELOFF32 mechanics (field size/addend/backpatching); only the
+     * ELF relocation's binding intent differs. Hidden undefined references
+     * remain PC32 and must be supplied by the final static link. */
+    if (ModuleInfo.elf_pic && Options.output_format == OFORMAT_ELF &&
+        CodeInfo->Ofssize == USE64 &&
+        ((sym->state == SYM_EXTERNAL) ||
+         (sym->ispublic && sym->elf_visibility == 0))) {
+        if (CodeInfo->token != T_CALL && CodeInfo->token != T_JMP)
+            return EmitErr(NOT_SUPPORTED, "PIC conditional branch to an interposable/external symbol");
+        if (opndx->instr == T_SHORT || CodeInfo->mem_type == MT_FAR ||
+            CodeInfo->isfar || (opndx->Ofssize != USE_EMPTY && opndx->Ofssize != USE64))
+            return EmitErr(NOT_SUPPORTED, "PIC external branch requires a near 64-bit call or jump");
+        CodeInfo->opnd[OPND1].type = OP_I32;
+        CodeInfo->opnd[OPND1].InsFixup = CreateFixup(sym, FIX_RELOFF32, OPTJ_EXPLICIT);
+        CodeInfo->opnd[OPND1].InsFixup->elf_plt = sym->elf_visibility == 0;
+        return NOT_ERROR;
+    }
+
     state = sym->state;
     addr = GetCurrOffset(); /* for SYM_UNDEFINED, will force distance to SHORT */
 

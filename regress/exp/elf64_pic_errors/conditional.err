@@ -1,0 +1,1 @@
+../src/elf64_pic_errors/conditional.asm(5) : Error A2072: Not supported: PIC conditional branch to an interposable/external symbol
