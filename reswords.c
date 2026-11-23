@@ -833,6 +833,18 @@ VX_LL|VX_L,      /* VPMULTISHIFTQB */
   VX_NND,           /* PEXT          */
   VX_NND,           /* RORX          */
   
+    VX_L, /* VPDPBSSD */
+    VX_L, /* VPDPBSSDS */
+    VX_L, /* VPDPBSUD */
+    VX_L, /* VPDPBSUDS */
+    VX_L, /* VPDPBUUD */
+    VX_L, /* VPDPBUUDS */
+    VX_L, /* VPDPWSUD */
+    VX_L, /* VPDPWSUDS */
+    VX_L, /* VPDPWUSD */
+    VX_L, /* VPDPWUSDS */
+    VX_L, /* VPDPWUUD */
+    VX_L, /* VPDPWUUDS */
     VX_LL | VX_L, /* VPOPCNTD */
     VX_LL | VX_L, /* VPOPCNTQ */
     VX_LL | VX_L, /* VPOPCNTB */

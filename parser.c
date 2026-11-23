@@ -4131,7 +4131,7 @@ dataInProc:
 		temp = CodeGenV2(opcodePtr, &CodeInfoV2, oldofs, opndCount, opndxV2);
 		if (temp == EMPTY) {
 			/* These mnemonics are implemented exclusively by CodeGenV2. */
-			if (CodeInfoV2.token >= T_VPOPCNTD && CodeInfoV2.token <= T_VPSHUFBITQMB)
+			if (CodeInfoV2.token >= T_VPDPBSSD && CodeInfoV2.token <= T_VPSHUFBITQMB)
 				temp = EmitError(INVALID_INSTRUCTION_OPERANDS);
 			else
 				temp = codegen(&CodeInfo, oldofs);
