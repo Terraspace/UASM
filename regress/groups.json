@@ -1,4 +1,5 @@
 {
+  "new_instructions": ["-q", "-bin"],
   "plain_bin": [
     "-q",
     "-bin"

@@ -1222,14 +1222,13 @@ static void output_opc(struct code_info *CodeInfo)
               }
              if ((CodeInfo->token >= T_BEXTR)&&(CodeInfo->token <= T_SHRX)||(CodeInfo->token == T_BZHI)){
               c = CodeInfo->reg3;
-              lbyte &= 0x80;
+              /* BMI operand width is independent of the assembler build.
+               * W=0 for r32, W=1 for r64 (including the accumulator). */
+              lbyte = (CodeInfo->opnd[OPND1].type & OP_R64) ? 0x80 : 0;
               c = (c << 3);
               c = ~c;
               c &= EVEX_P1VVVV;
               lbyte |= c;
-#if AMD64_SUPPORT
-              lbyte |=0x80;
-#endif
                if (ins->byte1_info == F_660F) lbyte |= 0x1;
                else if (ins->byte1_info == F_F30F38) lbyte |= 0x02;//SARX
                else if (ins->byte1_info == F_660F38) lbyte |= 0x01;//SHLX
@@ -2707,7 +2706,8 @@ static void output_data(struct code_info *CodeInfo, enum operand_type determinan
           return;
       }
       if ((CodeInfo->token >= T_BEXTR) && (CodeInfo->token <= T_SHRX) || (CodeInfo->token == T_BZHI)) {
-        if (CodeInfo->opnd[OPND2].data32l == 0) return;
+        /* Operand 2 may require an encoded zero displacement (EBP/RBP/R13).
+         * Let the normal ModRM displacement sizing handle memory operands. */
         if ((index == 0) || (index == 2))
           return;
       }
