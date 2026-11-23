@@ -2638,6 +2638,7 @@ static void output_opc(struct code_info *CodeInfo)
              }
 				  }
 				  break;
+			  case T_VPERMT2B:
 			  case T_VMOVUPD:
 			  case T_VMOVAPD:
 			  case T_VMOVUPS:

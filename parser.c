@@ -4093,14 +4093,34 @@ dataInProc:
         }
     }
 
+    /* VPERMT2B is a full-vector, three-operand VBMI instruction. */
+    if (CodeInfoV2.token == T_VPERMT2B) {
+        if (broadflags) {
+            temp = EmitError(BROADCAST_DECORATORS_NOT_ALLOWED_FOR_THIS_INSTRUCTION);
+            goto nopor;
+        }
+        if (opndCount != 3 ||
+            CodeInfoV2.opnd[0].type != CodeInfoV2.opnd[1].type ||
+            ((CodeInfoV2.opnd[2].type & (OP_XMM | OP_YMM | OP_ZMM)) &&
+             CodeInfoV2.opnd[0].type != CodeInfoV2.opnd[2].type)) {
+            temp = EmitError(INVALID_INSTRUCTION_OPERANDS);
+            goto nopor;
+        }
+    }
+
     /* *********************************************************** */
 	/* Use the V2 CodeGen, else fallback to the standard CodeGen   */
 	/* *********************************************************** */
 	if (ModuleInfo.Ofssize == USE32 || ModuleInfo.Ofssize == USE64)
 	{
 		temp = CodeGenV2(opcodePtr, &CodeInfoV2, oldofs, opndCount, opndxV2);
-		if (temp == EMPTY)
-			temp = codegen(&CodeInfo, oldofs);
+		if (temp == EMPTY) {
+			/* These mnemonics are implemented exclusively by CodeGenV2. */
+			if (CodeInfoV2.token >= T_VPOPCNTD && CodeInfoV2.token <= T_VPSHUFBITQMB)
+				temp = EmitError(INVALID_INSTRUCTION_OPERANDS);
+			else
+				temp = codegen(&CodeInfo, oldofs);
+		}
 	}
 	else
 		temp = codegen(&CodeInfo, oldofs);

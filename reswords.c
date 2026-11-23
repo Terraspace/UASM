@@ -737,6 +737,7 @@ VX_LL|VX_L,             /* VSHUFF32X4  */
 VX_LL|VX_L,             /* VSHUFF64X2  */
 VX_LL|VX_L,             /* VSHUFI32X4  */
 VX_LL|VX_L,             /* VSHUFI64X2  */
+VX_LL|VX_L,             /* VPERMT2B    */
 VX_LL|VX_L,             /* VPERMT2W    */
 VX_LL|VX_L,             /* VPERMT2D    */
 VX_LL|VX_L,             /* VPERMT2Q    */
@@ -832,6 +833,11 @@ VX_LL|VX_L,      /* VPMULTISHIFTQB */
   VX_NND,           /* PEXT          */
   VX_NND,           /* RORX          */
   
+    VX_LL | VX_L, /* VPOPCNTD */
+    VX_LL | VX_L, /* VPOPCNTQ */
+    VX_LL | VX_L, /* VPOPCNTB */
+    VX_LL | VX_L, /* VPOPCNTW */
+    VX_LL | VX_L, /* VPSHUFBITQMB */
     VX_LL | VX_L,
     VX_LL | VX_L,
     VX_LL | VX_L,

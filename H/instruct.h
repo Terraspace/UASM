@@ -1860,6 +1860,7 @@ insx(VSHUFI64X2, vshufi64x2,    OpCls( XMM,      XMM_M128,  I8_U ), F_660F3A, 1,
 //VPERMW,VPERMB,VPERMI2B,VPERMI2W,VPERMI2D,VPERMI2Q,VPERMI2PS,VPERMI2PD
 //VPERMT2B.VPERMT2W,VPERMT2D,VPERMT2Q,VPERMT2PS,VPERMT2PD,VPEXPANDD,VPEXPANDQ
 
+insx(VPERMT2B, vpermt2b,        OpCls( XMM,    XMM_M128,  NONE ), F_660F38, 1,  no_WDS,0x7D,     0x00,     P_686|P_AVX,IZSZ|BSIZE|FVM,RWF_EVEX|RWF_VEX)
 insx(VPERMT2W, vpermt2w,        OpCls( XMM,    XMM_M128,  NONE ), F_660F38, 1,  no_WDS,0x7D,     0x00,     P_686|P_AVX,W1|IZSZ|WSIZE|FVM,RWF_EVEX|RWF_VEX)
 insx(VPERMT2D, vpermt2d,        OpCls( XMM,    XMM_M128,  NONE ), F_660F38, 1,  no_WDS,0x7E,     0x00,     P_686|P_AVX,IZSZ|DSIZE|FV,RWF_EVEX|RWF_VEX)
 insx(VPERMT2Q, vpermt2q,        OpCls( XMM,    XMM_M128,  NONE ), F_660F38, 1,  no_WDS,0x7E,     0x00,     P_686|P_AVX,W1|IZSZ|QSIZE|FV,RWF_EVEX|RWF_VEX)
@@ -1985,6 +1986,11 @@ insx(PDEP,  pdep,             OpCls( R,        R,        R_MS ), F_F20F38,1,  no
 insx(PEXT,  pext,             OpCls( R,        R,        R_MS ), F_F30F38,1,  no_WDS, 0xF5,    0x00,      P_686|P_AVX, 0, RWF_VEX)
 insx(RORX, rorx,              OpCls( R,        R_MS,     I8_U ), F_F20F3A,1,  no_WDS, 0xF0,    0x00,      P_686|P_AVX, 0, RWF_VEX)
 
+insx(VPOPCNTD, vpopcntd, OpCls(K, K, NONE), F_0F, 1, 0, 0x99, 0x00, P_686 | P_AVX, 2, RWF_VEX)
+insx(VPOPCNTQ, vpopcntq, OpCls(K, K, NONE), F_0F, 1, 0, 0x99, 0x00, P_686 | P_AVX, 2, RWF_VEX)
+insx(VPOPCNTB, vpopcntb, OpCls(K, K, NONE), F_0F, 1, 0, 0x99, 0x00, P_686 | P_AVX, 2, RWF_VEX)
+insx(VPOPCNTW, vpopcntw, OpCls(K, K, NONE), F_0F, 1, 0, 0x99, 0x00, P_686 | P_AVX, 2, RWF_VEX)
+insx(VPSHUFBITQMB, vpshufbitqmb, OpCls(K, K, NONE), F_0F, 1, 0, 0x99, 0x00, P_686 | P_AVX, 2, RWF_VEX)
 insx(VPDPBUSDS, vpdpbusds, OpCls(K, K, NONE), F_0F, 1, 0, 0x99, 0x00, P_686 | P_AVX, 2, RWF_VEX)
 insx(VPDPBUSD, vpdpbusd, OpCls(K, K, NONE), F_0F, 1, 0, 0x99, 0x00, P_686 | P_AVX, 2, RWF_VEX)
 insx(VPDPWSSDS, vpdpwssds, OpCls(K, K, NONE), F_0F, 1, 0, 0x99, 0x00, P_686 | P_AVX, 2, RWF_VEX)
