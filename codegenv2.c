@@ -1613,6 +1613,12 @@ ret_code CodeGenV2(const char* instr, struct code_info* CodeInfo, uint_32 oldofs
 		(int_64)CodeInfo->opnd[3].data64 <= 255)
 		instrToMatch.operand_types[3] = IMM8;
 
+	/* SSE GFNI affine controls are unsigned imm8 as well as signed byte literals. */
+	if ((CodeInfo->token == T_GF2P8AFFINEQB || CodeInfo->token == T_GF2P8AFFINEINVQB) &&
+		opCount == 3 && opExpr[2].kind == EXPR_CONST &&
+		(int_64)CodeInfo->opnd[2].data64 >= -128 && (int_64)CodeInfo->opnd[2].data64 <= 255)
+		instrToMatch.operand_types[2] = IMM8;
+
 	/* Determine encoding model for x16/x32 or x64 */
 	switch (CodeInfo->Ofssize)
 	{

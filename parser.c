@@ -4093,6 +4093,21 @@ dataInProc:
         }
     }
 
+    /* SSE GFNI cannot encode EVEX decorators or XMM16..31. */
+    if (CodeInfoV2.token >= T_GF2P8MULB && CodeInfoV2.token <= T_GF2P8AFFINEINVQB) {
+        if (evexflag || decoflags || broadflags || CodeInfoV2.evex_sae) {
+            temp = EmitError(EVEX_DECORATOR_NOT_ALLOWED);
+            goto nopor;
+        }
+        for (i = 0; i < 2 && i < opndCount; i++) {
+            if (CodeInfoV2.opnd[i].type == OP_XMM && opndxV2[i].base_reg &&
+                opndxV2[i].base_reg->tokval > T_XMM15) {
+                temp = EmitError(INVALID_INSTRUCTION_OPERANDS);
+                goto nopor;
+            }
+        }
+    }
+
     /* VPERMT2B is a full-vector, three-operand VBMI instruction. */
     if (CodeInfoV2.token == T_VPERMT2B) {
         if (broadflags) {
