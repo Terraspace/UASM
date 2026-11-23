@@ -160,6 +160,7 @@ struct asym {
 	struct asym     *segment;       /* used by SYM_INTERNAL, SYM_EXTERNAL */
     enum sym_state  state;
     enum memtype    mem_type;
+    bool sysv_home; /* register parameter with an opt-in callee-owned spill */
     unsigned char   used:1,       /* symbol has been referenced */
                     isdefined:1,  /* symbol is "defined" in this pass */
                     scoped:1,     /* symbol is local label or SYM_STACK */

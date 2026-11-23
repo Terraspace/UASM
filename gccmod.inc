@@ -16,6 +16,7 @@ $(OUTD)/context.o  \
 $(OUTD)/cpumodel.o \
 $(OUTD)/data.o     \
 $(OUTD)/dbgcv.o    \
+$(OUTD)/dwarf.o    \
 $(OUTD)/directiv.o \
 $(OUTD)/elf.o      \
 $(OUTD)/end.o      \

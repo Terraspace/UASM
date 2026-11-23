@@ -46,6 +46,9 @@
     <ClCompile Include="..\..\dbgcv.c">
       <Filter>Sources</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\dwarf.c">
+      <Filter>Sources</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\directiv.c">
       <Filter>Sources</Filter>
     </ClCompile>
@@ -238,6 +241,9 @@
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="..\..\H\dbgcv.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\H\dwarf.h">
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="..\..\H\dbgdw.h">

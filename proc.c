@@ -26,6 +26,7 @@
 #include "condasm.h"
 #include "macro.h"
 #include "proc.h"
+#include "dwarf.h"
 #include "fastpass.h"
 #include "listing.h"
 #include "posndir.h"
@@ -1756,6 +1757,18 @@ ret_code ParseProc(struct dsym *proc, int i, struct asm_tok tokenarray[], bool I
 			/* do proceed if the parameter scan returns an error */
 			;//return( ERROR );
 	}
+
+    if (IsPROC && proc->sym.langtype == LANG_SYSVCALL && ModuleInfo.Ofssize == USE64 && ModuleInfo.sysvhome) {
+        struct dsym *param;
+        if (ModuleInfo.prologuemode != PEM_DEFAULT || ModuleInfo.epiloguemode != PEM_DEFAULT || proc->e.procinfo->basereg != T_RBP)
+            return EmitErr(NOT_SUPPORTED, "SYSVHOME:1 requires automatic RBP prologue and epilogue");
+        for (param = proc->e.procinfo->paralist; param; param = param->nextparam) {
+            if (param->sym.state == SYM_TMACRO && !param->sym.is_vararg) {
+                param->sym.sysv_home = TRUE;
+                param->sym.state = SYM_STACK;
+            }
+        }
+    }
 
 	/* v2.11: isdefined and isproc now set here */
 	proc->sym.isdefined = TRUE;
@@ -4767,6 +4780,21 @@ static void write_sysv_default_prologue_RBP(struct proc_info *info)
 			AddLineQueueX("sub %r, %d", T_RSP, NUMQUAL stackadj);
 	}
 
+    /* Save incoming values before user code (and any nested calls) runs. */
+    {
+        struct dsym *param;
+        for (param = info->paralist; param; param = param->nextparam) {
+            const char *move;
+            if (!param->sym.sysv_home || !param->sym.used) continue;
+            move = param->sym.mem_type == MT_REAL4 ? "movss" :
+                param->sym.mem_type == MT_REAL8 ? "movsd" :
+                (GetValueSp(param->sym.tokval) & OP_ZMM) ? "vmovdqu64" :
+                (GetValueSp(param->sym.tokval) & OP_YMM) ? "vmovdqu" :
+                (GetValueSp(param->sym.tokval) & OP_XMM) ? "movdqu" : "mov";
+            AddLineQueueX("%s [rbp-%u], %r", move, (unsigned)-param->sym.offset, param->sym.tokval);
+        }
+    }
+
 	/* save USED vector registers */
 	if (cntxmm)
 	{
@@ -4917,6 +4945,16 @@ static void SetLocalOffsets_RBP_SYSV(struct proc_info *info)
 		DebugMsg1(("SetLocalOffsets_RBP(%s): cntxmm=%u cntstd=%u start=%u align=%u localsize=%u\n", CurrProc->sym.name, cntxmm, cntstd, start, align, info->localsize));
 	}
 #endif
+
+    /* Incoming stack arguments keep their ABI offsets. Only referenced
+     * register arguments consume callee-owned local storage. */
+    for (curr = info->paralist; curr; curr = curr->nextparam) {
+        if (curr->sym.sysv_home && curr->sym.used) {
+            unsigned size = curr->sym.total_size;
+            info->localsize = ROUND_UP(info->localsize + size, size < 8 ? size : 8);
+            curr->sym.offset = -(int)info->localsize;
+        }
+    }
 
 	/* scan the locals list and set member sym.offset */
 	for (curr = info->locallist; curr; curr = curr->nextlocal) {
@@ -5191,6 +5229,7 @@ runqueue:
 	* IN the proc.
 	*/
 	oldlinenumbers = Options.line_numbers;
+    dwarf_cfi_begin(CurrProc);
 	Options.line_numbers = FALSE; /* temporarily disable line numbers */
 	OldState = UseSavedState; /* UASM 2.56 - we need this to ensure we don't accidental generate duplicate symbol definitions */
 	UseSavedState = FALSE;
@@ -5390,6 +5429,7 @@ void write_prologue(struct asm_tok tokenarray[])
 
 	/* v2.10: for debug info, calculate prologue size */
 	CurrProc->e.procinfo->size_prolog = GetCurrOffset() - CurrProc->sym.offset;
+    dwarf_body(CurrProc);
 	return;
 }
 
@@ -5699,6 +5739,7 @@ ret_code RetInstr(int i, struct asm_tok tokenarray[], int count)
 /****************************************************************/
 {
 	struct proc_info   *info;
+    unsigned dwarf_epilogue_start = GetCurrOffset();
 	bool        is_iret = FALSE;
 	char        *p;
 #ifdef DEBUG_OUT
@@ -5828,7 +5869,10 @@ ret_code RetInstr(int i, struct asm_tok tokenarray[], int count)
 		strcpy(p, tokenarray[i].tokpos);
 	}
 	AddLineQueue(buffer);
+    dwarf_cfi_epilogue(TRUE);
 	RunLineQueue();
+    dwarf_cfi_epilogue(FALSE);
+    dwarf_epilogue(CurrProc, dwarf_epilogue_start, GetCurrOffset());
 
 	return(NOT_ERROR);
 }
@@ -5844,6 +5888,7 @@ void ProcInit(void)
 	ProcStatus = 0;
 	/* v2.09: reset prolog and epilog mode */
 	ModuleInfo.no_stackprobe = FALSE;
+    ModuleInfo.sysvhome = FALSE;
     ModuleInfo.stackbase_explicit = FALSE;
 	if (Parse_Pass == PASS_1) stack_probe_helpers = NULL;
 	ModuleInfo.prologuemode = PEM_DEFAULT;

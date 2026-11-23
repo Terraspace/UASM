@@ -25,6 +25,7 @@
 #include "msgtext.h"
 #include "myassert.h"
 #include "linnum.h"
+#include "dwarf.h"
 #include "omf.h"
 
 extern struct qdesc   LinnumQueue;    /* queue of line_num_info items ( OMF only ) */
@@ -69,6 +70,10 @@ void AddLinnumDataRef( unsigned srcfile, uint_32 line_num )
 /*********************************************************/
 {
     struct line_num_info    *curr;
+    if (Options.output_format == OFORMAT_ELF && ModuleInfo.defOfssize == USE64) {
+        dwarf_line(srcfile, line_num);
+        return;
+    }
 
     /* COFF line number info is related to functions/procedures. Since
      * assembly allows code lines outside of procs, "dummy" procs must
@@ -213,6 +218,7 @@ void LinnumFini( void )
 void LinnumInit( void )
 /*********************/
 {
+    dwarf_init();
     lastLineNumber = 0;
     dmyproc = NULL;
 }

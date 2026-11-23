@@ -804,6 +804,7 @@ struct module_info {
     unsigned char       inside_comment;  /* v2.10: moved from tokenize.c */
 	
 	unsigned			arch : 1;		 /* option arch:{avx/sse} 1=AVX(default architecture), 0=SSE for generated code */
+	unsigned            sysvhome : 1;    /* OPTION SYSVHOME:0(default)|1 */
 	unsigned            redzone : 1;     /* option redzone:{yes/no} 1=use, 0=dont use redzone */
 
     unsigned            case_sensitive:1;     /* option casemap */

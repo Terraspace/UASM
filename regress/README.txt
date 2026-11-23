@@ -656,3 +656,21 @@ GCC 16.2 and Clang 23 each passed 599 cases, 0 failed, 0 incomplete.
 Go tests and the installed Windows runtime validation commands passed.
 Corrected vectorcall decoration changes symbol names compared with older
 UASM objects; rebuild affected callers and callees together.
+
+ELF64 DWARF debugging and optional System V parameter homes (v2.60)
+----------------------------------------------------------------
+-elf64 -Zi now emits DWARF4 source lines, types, globals, parameters, locals
+and automatic System V call-frame information. -Zd provides lines/procedures
+and call-frame information. -elf64 -Zi8 is rejected; COFF keeps CodeView.
+OPTION SYSVHOME:0 (default) preserves aliases; :1 saves named register
+parameters in callee-owned slots using pass-based reference discovery.
+See validation/dwarf/README.txt for supported types, automatic-frame scope,
+GDB fixtures and remaining limitations (.eh_frame/custom frames/macros).
+
+Validation: 607/607 Windows MSVC, Linux GCC 13, GCC 16.2 and Clang 23;
+Go tests; Windows scalar/vector/unwind/CodeView/stack-probe runtime checks;
+Linux source stepping, 58 variable checks and 125 caller-frame checks per
+unwind configuration (-Zi, -Zd and flag-preserving frames), for all three
+Linux builds. LLVM verifies objects and linked executables. The six Linux
+ABI runtime fixtures supported by the VM passed; AVX-512 execution was not
+available on that VM (its assembly/byte regression remains covered).

@@ -36,6 +36,7 @@
 #include "reswords.h"
 #include "codegen.h"
 #include "codegenv2.h"
+#include "dwarf.h"
 #include "expreval.h"
 #include "fixup.h"
 #include "types.h"
@@ -4104,6 +4105,7 @@ dataInProc:
 	else
 		temp = codegen(&CodeInfo, oldofs);
 
+    if (temp != ERROR) dwarf_cfi_instruction(CodeInfoV2.token, opndxV2);
 nopor:
 	/* now reset EVEX maskflags for the next line */
 	decoflags  = 0;

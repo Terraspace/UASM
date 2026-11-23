@@ -1621,6 +1621,12 @@ int EXPQUAL AssembleModule( const char *source )
 #endif
 
     AssembleInit( source );
+    /* Validate the final option combination, independently of switch order. */
+    if (Options.output_format == OFORMAT_ELF && Options.sub_format == SFORMAT_64BIT &&
+        Options.debug_symbols == 4) {
+        EmitErr(NOT_SUPPORTED, "CodeView 8 (-Zi8) with ELF64 output; use -Zi for DWARF");
+        goto done;
+    }
 	
     starttime = clock();
 

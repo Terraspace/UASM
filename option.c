@@ -230,6 +230,18 @@ OPTFUNC(SetVTable)
 	return(NOT_ERROR);
 }
 
+/* OPTION SYSVHOME:0(default)|1. Select before the PROC declaration. */
+OPTFUNC(SetSysvHome)
+{
+    int i = *pi;
+    if (CurrProc) return EmitErr(NOT_SUPPORTED, "changing SYSVHOME inside a PROC");
+    if (tokenarray[i].token != T_NUM || (strcmp(tokenarray[i].string_ptr, "0") && strcmp(tokenarray[i].string_ptr, "1")))
+        return EmitErr(SYNTAX_ERROR_EX, tokenarray[i].tokpos);
+    ModuleInfo.sysvhome = strcmp(tokenarray[i].string_ptr, "1") == 0;
+    *pi = i + 1;
+    return NOT_ERROR;
+}
+
 /* OPTION STACKPROBE:ON(default) | OFF */
 OPTFUNC(SetStackProbe)
 {
@@ -1372,6 +1384,7 @@ static const struct asm_option optiontab[] = {
   { "VTABLE",           SetVTable },     /* VTABLE:ON or OFF */
   { "HLCALL",           SetHLCall },     /* HLCALL:ON or OFF */
   { "STACKPROBE", SetStackProbe },
+  { "SYSVHOME", SetSysvHome },
   { "FRAMEPRESERVEFLAGS", SetFPS }       /* FRAMEPRESERVEFLAGS:ON or OFF */
 };
 

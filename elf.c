@@ -20,6 +20,7 @@
 #include "segment.h"
 #include "extern.h"
 #include "elf.h"
+#include "dwarf.h"
 #include "elfspec.h"
 #include "myassert.h"
 
@@ -980,6 +981,7 @@ static int elf_write_section_table64( struct module_info *modinfo, struct elfmod
         if ( curr->e.seginfo->characteristics == ??? ) {
         }
 #endif
+        if (dwarf_section(curr)) { shdr64.sh_type = SHT_PROGBITS; shdr64.sh_flags = 0; }
         shdr64.sh_addr = 0;
         /* v2.12: the sh_offset field holds the file position, even for SHT_NOBITS */
         //if ( shdr64.sh_type != SHT_NOBITS ) {
@@ -1259,6 +1261,7 @@ static ret_code elf_write_module( struct module_info *modinfo )
 
     DebugMsg(("elf_write_module: enter\n"));
 
+    if (modinfo->defOfssize == USE64 && (Options.debug_symbols || Options.line_numbers)) dwarf_write();
     memset( &em, 0, sizeof( em ) );
     em.srcname = CurrFName[ASM];
 #if 1

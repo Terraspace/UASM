@@ -1,0 +1,2 @@
+../src/systemv_errors/sysvhome_manual.asm(4) : Error A2072: Not supported: SYSVHOME:1 requires automatic RBP prologue and epilogue
+../src/systemv_errors/sysvhome_manual.asm(6) : Error A2142: Unmatched block nesting: Bad

@@ -13,6 +13,7 @@ $(OUTD)/context.obj  &
 $(OUTD)/cpumodel.obj &
 $(OUTD)/data.obj     &
 $(OUTD)/dbgcv.obj    &
+$(OUTD)/dwarf.obj    &
 $(OUTD)/directiv.obj &
 $(OUTD)/elf.obj      &
 $(OUTD)/end.obj      &
