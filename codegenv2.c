@@ -1606,6 +1606,13 @@ ret_code CodeGenV2(const char* instr, struct code_info* CodeInfo, uint_32 oldofs
 			hasMemReg = TRUE;
 	}
 
+	/* VPCLMULQDQ has an imm8 control byte, including unsigned 128..255.
+	 * Preserve the parser's value; only normalize its lookup classification. */
+	if (CodeInfo->token == T_VPCLMULQDQ && opCount == 4 &&
+		opExpr[3].kind == EXPR_CONST && (int_64)CodeInfo->opnd[3].data64 >= -128 &&
+		(int_64)CodeInfo->opnd[3].data64 <= 255)
+		instrToMatch.operand_types[3] = IMM8;
+
 	/* Determine encoding model for x16/x32 or x64 */
 	switch (CodeInfo->Ofssize)
 	{

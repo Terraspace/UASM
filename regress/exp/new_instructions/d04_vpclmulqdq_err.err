@@ -1,0 +1,7 @@
+..\src\new_instructions\d04_vpclmulqdq_err.asm(6) : Error A2300: EVEX decorator not supported
+..\src\new_instructions\d04_vpclmulqdq_err.asm(7) : Error A2300: EVEX decorator not supported
+..\src\new_instructions\d04_vpclmulqdq_err.asm(7) : Error A2301: {z} mask not permitted when first operand is memory
+..\src\new_instructions\d04_vpclmulqdq_err.asm(8) : Error A2018: mismatch in the number of broadcasting elements
+..\src\new_instructions\d04_vpclmulqdq_err.asm(8) : Error A2023: Broadcast decorators not allowed for this instruction
+..\src\new_instructions\d04_vpclmulqdq_err.asm(9) : Error A2049: Invalid instruction operands
+..\src\new_instructions\d04_vpclmulqdq_err.asm(10) : Error A2049: Invalid instruction operands
