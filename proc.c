@@ -4786,11 +4786,11 @@ static void write_sysv_default_prologue_RBP(struct proc_info *info)
         for (param = info->paralist; param; param = param->nextparam) {
             const char *move;
             if (!param->sym.sysv_home || !param->sym.used) continue;
-            move = param->sym.mem_type == MT_REAL4 ? "movss" :
-                param->sym.mem_type == MT_REAL8 ? "movsd" :
+            move = param->sym.mem_type == MT_REAL4 ? MOVE_SINGLE() :
+                param->sym.mem_type == MT_REAL8 ? MOVE_DOUBLE() :
                 (GetValueSp(param->sym.tokval) & OP_ZMM) ? "vmovdqu64" :
                 (GetValueSp(param->sym.tokval) & OP_YMM) ? "vmovdqu" :
-                (GetValueSp(param->sym.tokval) & OP_XMM) ? "movdqu" : "mov";
+                (GetValueSp(param->sym.tokval) & OP_XMM) ? MOVE_UNALIGNED_INT() : "mov";
             AddLineQueueX("%s [rbp-%u], %r", move, (unsigned)-param->sym.offset, param->sym.tokval);
         }
     }
