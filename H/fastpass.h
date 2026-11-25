@@ -31,6 +31,7 @@ struct line_item {
     struct line_item *next;
     uint_32 lineno:20, srcfile:12;
     uint_32 list_pos; /* position .LST file */
+    void *namespace_scope; /* scope before this cached line executes */
     char line[1];
 };
 
@@ -40,6 +41,7 @@ extern struct line_item *LineStoreCurr;
  */
 
 struct mod_state {
+    void *namespace_scope; /* scope at the restart checkpoint */
     bool init;           /* is this struct initialized? */
     struct {
         struct equ_item *head; /* the list of modified assembly time variables */

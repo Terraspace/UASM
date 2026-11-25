@@ -335,9 +335,6 @@ static struct namespace_info *NamespacePath(const char *name, const char **leaf,
     struct namespace_info *ns = current_namespace, *n, *scan;
     bool first = TRUE, absolute = FALSE;
     NamespaceUsed = TRUE;
-#if FASTPASS
-    SkipSavedState();
-#endif
     if (p[0] == ':' && p[1] == ':') { absolute = TRUE; ns = &root_namespace; p += 2; }
     while ((end = strstr(p, "::")) != NULL) {
         size_t len = end - p;
@@ -415,9 +412,6 @@ ret_code NamespaceDirective(int i, struct asm_tok tokenarray[])
     struct namespace_info *ns;
     if (CurrProc || CurrStruct || MacroLevel) return EmitErr(SYNTAX_ERROR_EX, "namespace change inside procedure, structure or macro");
     NamespaceUsed = TRUE;
-#if FASTPASS
-    SkipSavedState();
-#endif
     if (tokenarray[i].tokval == T_ENDNAMESPACE) {
         if (tokenarray[i+1].token != T_FINAL || current_namespace == &root_namespace)
             return EmitErr(UNMATCHED_BLOCK_NESTING, "ENDNAMESPACE");

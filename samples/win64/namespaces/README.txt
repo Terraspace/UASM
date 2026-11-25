@@ -88,8 +88,8 @@ NAMESPACE RULES EXERCISED
 - Write `Label:: MacroCall` with whitespace after :: for a public/unscoped
   label. `Label::MacroCall` is now qualification. Existing INVOKE register-pair
   syntax such as edx::eax remains supported.
-- Namespace modules currently replay the full source on each assembly pass;
-  saved-state/FASTPASS replay is disabled for those modules for correctness.
+- Namespace modules support FASTPASS. Cached lines retain their namespace
+  context, including the caller scope of expanded macros.
 
 REGRESSION COVERAGE
 regress/src/namespaces contains five independently checked binary cases and

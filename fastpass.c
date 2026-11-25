@@ -51,7 +51,8 @@ static void SaveState( void )
 {
     DebugMsg1(("SaveState enter\n" ));
     StoreState = TRUE;
-    UseSavedState = !NamespaceUsed;
+    UseSavedState = TRUE;
+    modstate.namespace_scope = NamespaceCurrent();
     modstate.init = TRUE;
     modstate.Equ.head = modstate.Equ.tail = NULL;
 
@@ -83,6 +84,7 @@ void StoreLine( const char *srcline, int flags, uint_32 lst_position )
     j = ( ( ( flags & 1 ) && ModuleInfo.CurrComment ) ? strlen( ModuleInfo.CurrComment ) : 0 );
     LineStoreCurr = LclAlloc( i + j + sizeof( struct line_item ) );
     LineStoreCurr->next = NULL;
+    LineStoreCurr->namespace_scope = NamespaceCurrent();
     LineStoreCurr->lineno = GetLineNumber();
     if ( MacroLevel ) {
         LineStoreCurr->srcfile = 0xfff;
@@ -181,6 +183,7 @@ struct line_item *RestoreState( void )
          */
         //memcpy( &modstate.modinfo.g, &ModuleInfo.g, sizeof( ModuleInfo.g ) );
         memcpy( (char *)&ModuleInfo + sizeof( struct module_vars ), &modstate.modinfo, sizeof( modstate.modinfo ) );
+        NamespaceRestore(modstate.namespace_scope);
         SetOfssize();
         SymSetCmpFunc();
     }

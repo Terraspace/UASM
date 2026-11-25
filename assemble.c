@@ -1196,6 +1196,7 @@ static int OnePass( void )
 #if USELSLINE==0
             strcpy( CurrSource, LineStoreCurr->line );
 #endif
+            NamespaceRestore(LineStoreCurr->namespace_scope);
             set_curr_srcfile( LineStoreCurr->srcfile, LineStoreCurr->lineno );
             /* v2.06: list flags now initialized on the top level */
             ModuleInfo.line_flags = 0;

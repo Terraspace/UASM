@@ -265,5 +265,9 @@
     "-q",
     "-win64",
     "-Zi8"
+  ],
+  "namespaces_fastpass": [
+    "-q",
+    "-bin"
   ]
 }
