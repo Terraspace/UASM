@@ -193,7 +193,7 @@ static struct asym *CreateAssemblyTimeVariable( struct asm_tok tokenarray[] )
             goto check_number;
     }
 
-    sym = SymSearch( name );
+    sym = SymFindDefinition( name );
     if( sym == NULL || sym->state == SYM_UNDEFINED ) {
         if( sym == NULL ) {
             sym = SymCreate( name );
@@ -290,7 +290,7 @@ struct asym *CreateVariable(const char *name, int value)
 
 	DebugMsg1(("CreateVariable(%s, %d ) enter\n", name, value));
 
-	sym = SymSearch(name);
+	sym = SymFindDefinition(name);
 	if (sym == NULL) {
 		sym = SymCreate(name);
 #if FASTPASS
@@ -367,7 +367,7 @@ struct asym *CreateConstant( struct asm_tok tokenarray[] )
 
     DebugMsg1(( "CreateConstant(%s) enter\n", name ));
 
-    sym = SymSearch( name );
+    sym = SymFindDefinition( name );
 	
 	/* UASM 2.46.10 Ensure that struct.member references are also encoded as text macros so they expand correctly in invoke */
 	symA = SymSearch(tokenarray[2].string_ptr);

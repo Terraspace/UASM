@@ -90,7 +90,7 @@ struct asym *SearchNameInStruct( const struct asym *tstruct, const char *name, u
     struct asym *sym = NULL;
 
     //if (ModuleInfo.oldstructs == TRUE) {
-    //    return( SymSearch( name ) );
+    //    return( SymFindDefinition( name ) );
     //}
     if ( level >= MAX_STRUCT_NESTING ) {
         EmitError( NESTING_LEVEL_TOO_DEEP );
@@ -114,7 +114,7 @@ struct asym *SearchNameInStruct( const struct asym *tstruct, const char *name, u
                     break;
                 }
             }
-        } else if ( len == fl->sym.name_size && SymCmpFunc( name, fl->sym.name, len ) == 0 ) {
+        } else if ( len == strlen(SymLeafName(fl->sym.name)) && SymCmpFunc( name, SymLeafName(fl->sym.name), len ) == 0 ) {
             DebugMsg(("SearchNameInStruct: '%s' found in struct %s\n", name, tstruct->name ));
             sym = &fl->sym;
             break;
@@ -258,7 +258,7 @@ ret_code StructDirective( int i, struct asm_tok tokenarray[] )
     if ( *name ) {
         if ( CurrStruct == NULL ) {
             /* the "top-level" struct is part of the global namespace */
-            sym = SymSearch( name );
+            sym = SymFindDefinition( name );
             DebugMsg1(("StructDirective: SymSearch (%s)=%X (curr struct=%X)\n", name, sym, CurrStruct ));
         } else {
             sym = SearchNameInStruct( (struct asym *)CurrStruct, name, &offset, 0 );
@@ -463,7 +463,7 @@ ret_code CStructDirective(int i, struct asm_tok tokenarray[])
 	if (*name) {
 		if (CurrStruct == NULL) {
 			/* the "top-level" struct is part of the global namespace */
-			sym = SymSearch(name);
+			sym = SymFindDefinition(name);
 			if (sym)
 				sym->isClass = TRUE;
 			DebugMsg1(("StructDirective: SymSearch (%s)=%X (curr struct=%X)\n", name, sym, CurrStruct));
@@ -678,7 +678,7 @@ ret_code RAWStructDirective(int i, struct asm_tok tokenarray[])
 	if (*name) {
 		if (CurrStruct == NULL) {
 			/* the "top-level" struct is part of the global namespace */
-			sym = SymSearch(name);
+			sym = SymFindDefinition(name);
 			if (sym)
 			{
 				sym->isPtrTable = TRUE;
@@ -902,7 +902,7 @@ ret_code COMStructDirective(int i, struct asm_tok tokenarray[])
 	if (*name) {
 		if (CurrStruct == NULL) {
 			/* the "top-level" struct is part of the global namespace */
-			sym = SymSearch(name);
+			sym = SymFindDefinition(name);
 			if (sym)
 			{
 				sym->isClass = TRUE;
@@ -1064,7 +1064,7 @@ ret_code EndstructDirective( int i, struct asm_tok tokenarray[] )
     }
 
     if ( i == 1 ) { /* an global struct ends with <name ENDS> */
-        if ( SymCmpFunc( tokenarray[0].string_ptr, dir->sym.name, dir->sym.name_size ) != 0 ) {
+        if ( SymCmpFunc( tokenarray[0].string_ptr, SymLeafName(dir->sym.name), strlen(SymLeafName(dir->sym.name)) ) != 0 ) {
             /* names don't match */
             DebugMsg(("EndstructDirective: names don't match, i=%u, name=%s - %s\n", i, tokenarray[0].string_ptr, dir->sym.name));
             return( EmitErr( UNMATCHED_BLOCK_NESTING, tokenarray[0].string_ptr ) );
@@ -1643,7 +1643,7 @@ ret_code TypedefDirective( int i, struct asm_tok tokenarray[] )
 
     i++; /* go past TYPEDEF */
 
-    sym = SymSearch( name );
+    sym = SymFindDefinition( name );
     if ( sym == NULL || sym->state == SYM_UNDEFINED ) {
         sym = CreateTypeSymbol( sym, name, TRUE );
         if ( sym == NULL )
@@ -1808,7 +1808,7 @@ ret_code RecordDirective( int i, struct asm_tok tokenarray[] )
     }
 
     name = tokenarray[0].string_ptr;
-    sym = SymSearch( name );
+    sym = SymFindDefinition( name );
     if ( sym == NULL || sym->state == SYM_UNDEFINED ) {
         sym = CreateTypeSymbol( sym, name, TRUE );
     } else if ( sym->state == SYM_TYPE &&
@@ -1885,7 +1885,7 @@ ret_code RecordDirective( int i, struct asm_tok tokenarray[] )
                 count = tokenarray[i].tokpos - tokenarray[init_loc].tokpos;
         }
         /* record field names are global! (Masm design flaw) */
-        sym = SymSearch( tokenarray[name_loc].string_ptr );
+        sym = SymFindDefinition( tokenarray[name_loc].string_ptr );
         define = TRUE;
         if ( oldr ) {
             if ( sym == NULL ||

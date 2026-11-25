@@ -244,11 +244,11 @@ static struct dsym *CreateGroup( const char *name )
 {
     struct dsym    *grp;
 
-    grp = (struct dsym *)SymSearch( name );
+    grp = (struct dsym *)SymSearchModule( name );
 
     if( grp == NULL || grp->sym.state == SYM_UNDEFINED ) {
         if ( grp == NULL )
-            grp = (struct dsym *)SymCreate( name );
+            grp = (struct dsym *)SymCreateModule( name );
         else
             sym_remove_table( &SymTables[TAB_UNDEF], grp );
 
@@ -273,7 +273,7 @@ static struct dsym *CreateSegment( struct dsym *seg, const char *name, bool add_
 /**************************************************************************************/
 {
     if ( seg == NULL )
-        seg = ( add_global ? (struct dsym *)SymCreate( name ) : (struct dsym *)SymAlloc( name ) );
+        seg = ( add_global ? (struct dsym *)SymCreateModule( name ) : (struct dsym *)SymAlloc( name ) );
     else if ( seg->sym.state == SYM_UNDEFINED )
         sym_remove_table( &SymTables[TAB_UNDEF], seg );
 
@@ -348,7 +348,7 @@ ret_code GrpDir( int i, struct asm_tok tokenarray[] )
         name = tokenarray[i].string_ptr;
         i++;
 
-        seg = (struct dsym *)SymSearch( name );
+        seg = (struct dsym *)SymSearchModule( name );
         if ( Parse_Pass == PASS_1 ) {
             if( seg == NULL || seg->sym.state == SYM_UNDEFINED ) {
                 seg = CreateSegment( seg, name, TRUE );
@@ -635,7 +635,7 @@ struct asym *CreateIntSegment( const char *name, const char *classname, uint_8 a
 {
     struct dsym *seg;
     if ( add_global ) {
-        seg = (struct dsym *)SymSearch( name );
+        seg = (struct dsym *)SymSearchModule( name );
         if ( seg == NULL || seg->sym.state == SYM_UNDEFINED )
             seg = CreateSegment( seg, name, add_global );
         else if ( seg->sym.state != SYM_SEG ) {
@@ -690,7 +690,7 @@ static ret_code SetCurrSeg( int i, struct asm_tok tokenarray[] )
 {
     struct asym *sym;
 
-    sym = SymSearch( tokenarray[0].string_ptr );
+    sym = SymSearchModule( tokenarray[0].string_ptr );
 
     if ( sym == NULL || sym->state != SYM_SEG ) {
         return( EmitErr( SEGMENT_NOT_DEFINED, tokenarray[0].string_ptr ) );
@@ -766,7 +766,7 @@ ret_code SegmentDir( int i, struct asm_tok tokenarray[] )
     name = tokenarray[0].string_ptr;
 
     /* See if the segment is already defined */
-    sym = SymSearch( name );
+    sym = SymSearchModule( name );
     if( sym == NULL || sym->state == SYM_UNDEFINED ) {
 
         newseg = 1;
@@ -939,7 +939,7 @@ ret_code SegmentDir( int i, struct asm_tok tokenarray[] )
                         break;
                     }
                     /* associated segment must be COMDAT, but not associative */
-                    sym2 = SymSearch( tokenarray[i].string_ptr );
+                    sym2 = SymSearchModule( tokenarray[i].string_ptr );
                     if ( sym2 == NULL ||
                         sym2->state != SYM_SEG ||
                         ((struct dsym *)sym2)->e.seginfo->comdat_selection == 0 ||

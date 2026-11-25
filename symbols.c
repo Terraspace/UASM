@@ -42,6 +42,8 @@
 #include "types.h"
 #include "proc.h"
 #include "input.h"
+#include "tokenize.h"
+#include "mangle.h"
 
 #if defined(__WATCOMC__) && !defined(__FLAT__)
 #define HASH_MAGNITUDE 12  /* for 16bit model */
@@ -254,7 +256,184 @@ struct asym *SymAlloc( const char *name )
     return( sym );
 }
 
-struct asym *SymFind(const char *name)
+/* Experimental source namespaces. Canonical internal names are absolute; the
+ * linker mangler strips qualification only for public/external symbols. */
+struct namespace_info {
+    struct namespace_info *parent, *children, *next;
+    char *name;
+    char *path;
+};
+static struct namespace_info root_namespace;
+static struct namespace_info *current_namespace = &root_namespace;
+static struct namespace_info *pending_namespace;
+static char pending_name[MAX_ID_LEN + 1];
+bool NamespaceUsed;
+static struct asym *SymFindRaw(const char *);
+
+const char *SymLeafName(const char *name)
+{
+    const char *p, *leaf = name;
+    for (p = name; *p; p++) if (p[0] == ':' && p[1] == ':') { leaf = p + 2; p++; }
+    return leaf;
+}
+
+static struct namespace_info *NamespaceChild(struct namespace_info *parent, const char *name)
+{
+    struct namespace_info *n;
+    for (n = parent->children; n; n = n->next)
+        if (strlen(n->name) == strlen(name) && SYMCMP(n->name, name, strlen(name)) == 0) return n;
+    return NULL;
+}
+
+static bool NamespaceName(struct namespace_info *ns, const char *leaf, char *out)
+{
+    size_t len = strlen(leaf) + (ns == &root_namespace ? 0 : strlen(ns->path) + 4);
+    if (len > MAX_ID_LEN) {
+        EmitError(IDENTIFIER_TOO_LONG);
+        strcpy(out, "@namespace_name_too_long"); return TRUE;
+    }
+    if (ns == &root_namespace) strcpy(out, leaf);
+    else sprintf(out, "::%s::%s", ns->path, leaf);
+    return TRUE;
+}
+
+static struct asym *NamespaceRaw(struct namespace_info *ns, const char *leaf)
+{
+    struct dsym *save = CurrProc;
+    struct asym *sym;
+    pending_namespace = ns;
+    if (!NamespaceName(ns, leaf, pending_name)) return NULL;
+    CurrProc = NULL;
+    sym = SymFindRaw(pending_name);
+    CurrProc = save;
+    return sym;
+}
+
+static struct namespace_info *NamespaceNew(struct namespace_info *parent, const char *name)
+{
+    struct namespace_info *n;
+    struct asym *s = NamespaceRaw(parent, name);
+    if (s) { EmitErr(SYMBOL_ALREADY_DEFINED, name); return NULL; }
+    if (strlen(parent->path) + strlen(name) + 4 > MAX_ID_LEN) { EmitError(IDENTIFIER_TOO_LONG); return NULL; }
+    n = LclAlloc(sizeof(*n));
+    memset(n, 0, sizeof(*n));
+    n->parent = parent;
+    n->name = LclAlloc(strlen(name) + 1); strcpy(n->name, name);
+    n->path = LclAlloc(strlen(parent->path) + strlen(name) + 3);
+    if (parent == &root_namespace) strcpy(n->path, name);
+    else sprintf(n->path, "%s::%s", parent->path, name);
+    n->next = parent->children; parent->children = n;
+    return n;
+}
+
+/* Qualified references bind the first namespace relative to the caller;
+ * subsequent components are strict. Forward-qualified paths are persistent. */
+static struct namespace_info *NamespacePath(const char *name, const char **leaf, bool create)
+{
+    char part[MAX_ID_LEN + 1];
+    const char *p = name, *end;
+    struct namespace_info *ns = current_namespace, *n, *scan;
+    bool first = TRUE, absolute = FALSE;
+    NamespaceUsed = TRUE;
+#if FASTPASS
+    SkipSavedState();
+#endif
+    if (p[0] == ':' && p[1] == ':') { absolute = TRUE; ns = &root_namespace; p += 2; }
+    while ((end = strstr(p, "::")) != NULL) {
+        size_t len = end - p;
+        if (!len || len > MAX_ID_LEN) { EmitErr(SYNTAX_ERROR_EX, name); return NULL; }
+        memcpy(part, p, len); part[len] = 0;
+        n = NULL;
+        for (scan = ns; scan; scan = (!absolute && first ? scan->parent : NULL)) {
+            n = NamespaceChild(scan, part);
+            if (n) break;
+            if (NamespaceRaw(scan, part)) { EmitErr(SYNTAX_ERROR_EX, name); return NULL; }
+        }
+        if (!n && create) n = NamespaceNew(ns, part);
+        if (!n) return NULL;
+        ns = n; first = FALSE; p = end + 2;
+    }
+    if (!*p) { EmitErr(SYNTAX_ERROR_EX, name); return NULL; }
+    *leaf = p;
+    return ns;
+}
+
+static struct asym *NamespaceLookup(const char *name, bool declaration)
+{
+    struct namespace_info *ns;
+    struct asym *sym;
+    const char *leaf = name;
+    /* Shared assembler-generated metadata/helpers are module-owned. */
+    if (!strcmp(name, "$xdatasym") || !strncmp(name, "@__uasm_stack_probe_", 20))
+        return NamespaceRaw(&root_namespace, name);
+    if (strstr(name, "::")) {
+        ns = NamespacePath(name, &leaf, FALSE);
+        if (!ns) return NULL;
+        return NamespaceRaw(ns, leaf);
+    }
+    if (CurrProc && SymFindLocalDeclare(name)) return SymFindRaw(name);
+    for (ns = current_namespace; ns; ns = declaration ? NULL : ns->parent) {
+        sym = NamespaceRaw(ns, name);
+        if (sym) return sym;
+    }
+    /* Missing references are owned by the use site, not the last ancestor. */
+    NamespaceRaw(current_namespace, name);
+    return NULL;
+}
+
+struct asym *SymFind(const char *name) { return NamespaceLookup(name, FALSE); }
+struct asym *SymFindDefinition(const char *name) { return NamespaceLookup(name, TRUE); }
+struct asym *SymSearchModule(const char *name) { return NamespaceRaw(&root_namespace, SymLeafName(name)); }
+struct asym *SymCreateModule(const char *name)
+{
+    struct namespace_info *save = current_namespace;
+    struct dsym *proc = CurrProc;
+    struct asym *s;
+    current_namespace = &root_namespace; CurrProc = NULL;
+    s = SymCreate(name);
+    current_namespace = save; CurrProc = proc;
+    return s;
+}
+static struct asym *NamespaceAlloc(void)
+{
+    struct asym *s;
+    if (NamespaceChild(pending_namespace, SymLeafName(pending_name)))
+        EmitErr(SYMBOL_ALREADY_DEFINED, pending_name);
+    s = SymAlloc(pending_name);
+    s->namespace_owner = pending_namespace;
+    return s;
+}
+
+void *NamespaceCurrent(void) { return current_namespace; }
+void NamespaceRestore(void *scope) { current_namespace = scope ? scope : &root_namespace; }
+void NamespaceCheckOpen(void)
+{
+    if (current_namespace != &root_namespace) EmitErr(UNMATCHED_BLOCK_NESTING, "NAMESPACE");
+}
+ret_code NamespaceDirective(int i, struct asm_tok tokenarray[])
+{
+    struct namespace_info *ns;
+    if (CurrProc || CurrStruct || MacroLevel) return EmitErr(SYNTAX_ERROR_EX, "namespace change inside procedure, structure or macro");
+    NamespaceUsed = TRUE;
+#if FASTPASS
+    SkipSavedState();
+#endif
+    if (tokenarray[i].tokval == T_ENDNAMESPACE) {
+        if (tokenarray[i+1].token != T_FINAL || current_namespace == &root_namespace)
+            return EmitErr(UNMATCHED_BLOCK_NESTING, "ENDNAMESPACE");
+        current_namespace = current_namespace->parent;
+        return NOT_ERROR;
+    }
+    if (i || tokenarray[i+1].token != T_ID || tokenarray[i+2].token != T_FINAL || strstr(tokenarray[i+1].string_ptr, "::"))
+        return EmitErr(SYNTAX_ERROR_EX, "NAMESPACE requires one unqualified identifier");
+    ns = NamespaceChild(current_namespace, tokenarray[i+1].string_ptr);
+    if (!ns) ns = NamespaceNew(current_namespace, tokenarray[i+1].string_ptr);
+    if (!ns) return ERROR;
+    current_namespace = ns;
+    return NOT_ERROR;
+}
+
+static struct asym *SymFindRaw(const char *name)
 	/**************************************/
 	/* find a symbol in the local/global symbol table,
 	* return ptr to next free entry in global table if not found.
@@ -312,6 +491,7 @@ struct asym *SymCheck(const char *name)
 	int i;
 	int len;
 
+	if (NamespaceUsed || strstr(name, "::")) return NamespaceLookup(name, FALSE);
 	len = strlen(name);
 	i = hashpjw(name);
 
@@ -342,10 +522,10 @@ struct asym *SymCheck(const char *name)
 	return(NULL);
 }
 
-struct asym *SymFindLocal(const char *name)
+struct asym *SymFindLocalDeclare(const char *name)
 	/**************************************/
-	/* find a symbol in the local symbol table,
-	* return ptr to next free entry in local table if not found.
+	/* Find a procedure-local symbol without marking it used.
+	* Leave lsym at the insertion slot when not found.
 	*/
 {
 	int i;
@@ -358,13 +538,20 @@ struct asym *SymFindLocal(const char *name)
 		for (lsym = &lsym_table[i % LHASH_TABLE_SIZE]; *lsym; lsym = &((*lsym)->nextitem)) {
 			if (len == (*lsym)->name_size && SYMCMP(name, (*lsym)->name, len) == 0) {
 				DebugMsg1(("SymFindLocal(%s): found in local table, state=%u, local=%u\n", name, (*lsym)->state, (*lsym)->scoped));
-				(*lsym)->used = TRUE;
 				return(*lsym);
 			}
 		}
 	}
 
 	return(NULL);
+}
+
+/* Reference lookup marks a local used; declaration lookup must not. */
+struct asym *SymFindLocal(const char *name)
+{
+    struct asym *sym = SymFindLocalDeclare(name);
+    if (sym) sym->used = TRUE;
+    return sym;
 }
 
 /* Version to be used during declaration of a LOCAL to avoid it being marked as used */
@@ -380,6 +567,11 @@ struct asym *SymFindDeclare(const char *name)
 	int i;
 	int len;
 
+	if (NamespaceUsed || strstr(name, "::")) {
+        struct asym *local = SymFindLocalDeclare(name);
+        if (local) return local;
+        return NamespaceLookup(name, FALSE);
+    }
 	len = strlen(name);
 	i = hashpjw(name);
 
@@ -418,9 +610,43 @@ struct asym *SymLookup( const char *name )
 {
     struct asym *sym;
     sym = SymFind( name );
-    if( sym == NULL ) 
+    if( sym == NULL )
 	{
-        sym = SymAlloc( name );
+        if (strstr(name, "::")) {
+            const char *leaf;
+            struct namespace_info *ns = NamespacePath(name, &leaf, TRUE);
+            if (ns) NamespaceRaw(ns, leaf);
+            else { /* invalid qualification: don't overwrite another symbol */
+                static struct asym *discard;
+                gsym = &discard; pending_namespace = &root_namespace;
+                strcpy(pending_name, "@namespace_error");
+            }
+        }
+        sym = NamespaceAlloc();
+        *gsym = sym;
+        ++SymCount;
+    }
+    return( sym );
+}
+
+struct asym *SymLookupDefinition( const char *name )
+/****************************************/
+{
+    struct asym *sym;
+    sym = SymFindDefinition( name );
+    if( sym == NULL )
+	{
+        if (strstr(name, "::")) {
+            const char *leaf;
+            struct namespace_info *ns = NamespacePath(name, &leaf, TRUE);
+            if (ns) NamespaceRaw(ns, leaf);
+            else { /* invalid qualification: don't overwrite another symbol */
+                static struct asym *discard;
+                gsym = &discard; pending_namespace = &root_namespace;
+                strcpy(pending_name, "@namespace_error");
+            }
+        }
+        sym = NamespaceAlloc();
         *gsym = sym;
         ++SymCount;
     }
@@ -447,6 +673,12 @@ struct asym *SymLookupLocal( const char *name )
         *gsym = sym->nextitem;
         SymCount--;
         sym->scoped = TRUE;
+        if (sym->namespace_owner && sym->namespace_owner != &root_namespace) {
+            const char *leaf = SymLeafName(sym->name);
+            char *local_name = LclAlloc(strlen(leaf)+1);
+            strcpy(local_name, leaf); sym->name = local_name;
+            sym->name_size = strlen(leaf); sym->namespace_owner = NULL;
+        }
         /* add the label to the local hash table */
         sym->nextitem = NULL;
         *lsym = sym;
@@ -547,9 +779,8 @@ struct asym *SymAddLocal( struct asym *sym, const char *name )
 /************************************************************/
 {
     struct asym *sym2;
-    /* v2.10: ignore symbols with state SYM_UNDEFINED! */
-    //if( SymFind( name ) ) {
-    if( ( sym2 = SymFind( name ) ) && sym2->state != SYM_UNDEFINED ) {
+    /* Only declarations in this procedure conflict; globals may be shadowed. */
+    if( ( sym2 = SymFindLocalDeclare( name ) ) && sym2->state != SYM_UNDEFINED ) {
         /* shouldn't happen */
         EmitErr( SYMBOL_ALREADY_DEFINED, name );
         return( NULL );
@@ -573,9 +804,14 @@ struct asym *SymAddLocal( struct asym *sym, const char *name )
 struct asym *SymAddGlobal( struct asym *sym )
 /*******************************************/
 {
-    if( SymFind( sym->name ) ) {
+    if( SymFindDefinition( sym->name ) ) {
         EmitErr( SYMBOL_ALREADY_DEFINED, sym->name );
         return( NULL );
+    }
+    if (pending_namespace != &root_namespace) {
+        sym->name = LclAlloc(strlen(pending_name)+1);
+        strcpy(sym->name, pending_name); sym->name_size = strlen(pending_name);
+        sym->namespace_owner = pending_namespace;
     }
     sym->nextitem = NULL;
     *gsym = sym;
@@ -589,11 +825,11 @@ struct asym *SymCreate( const char *name )
 {
     struct asym *sym;
 
-    if( SymFind( name ) ) {
+    if( SymFindDefinition( name ) ) {
         EmitErr( SYMBOL_ALREADY_DEFINED, name );
         return( NULL );
     }
-    sym = SymAlloc( name );
+    sym = NamespaceAlloc();
     *gsym = sym;
     SymCount++;
     return( sym );
@@ -608,9 +844,8 @@ struct asym *SymLCreate( const char *name )
 {
     struct asym *sym;
 
-    /* v2.10: ignore symbols with state SYM_UNDEFINED */
-    //if( SymFind( name ) ) {
-    if( ( sym = SymFindDeclare( name ) ) && sym->state != SYM_UNDEFINED ) {
+    /* Only declarations in this procedure conflict; globals may be shadowed. */
+    if( ( sym = SymFindLocalDeclare( name ) ) && sym->state != SYM_UNDEFINED ) {
         EmitErr( SYMBOL_ALREADY_DEFINED, name );
         return( NULL );
     }
@@ -699,6 +934,9 @@ void SymInit( void )
 
     DebugMsg(("SymInit() enter\n"));
     SymCount = 0;
+    memset(&root_namespace, 0, sizeof(root_namespace));
+    root_namespace.path = "";
+    current_namespace = &root_namespace; NamespaceUsed = FALSE;
 
     /* v2.11: ensure CurrProc is NULL - might be a problem if multiple files are assembled */
     CurrProc = NULL;
@@ -754,6 +992,7 @@ void SymPassInit( int pass )
 {
     unsigned            i;
 
+    current_namespace = &root_namespace;
     if ( pass == PASS_1 )
         return;
 
@@ -1175,3 +1414,22 @@ static void DumpSymbols( void )
 }
 #endif
 
+
+/* Distinct assembler symbols must not silently export/import one linker name. */
+void NamespaceCheckExports(void)
+{
+    struct asym *a = NULL, *b;
+    int ai = 0, bi;
+    char an[MAX_ID_LEN + 64], bn[MAX_ID_LEN + 64];
+    if (!NamespaceUsed) return;
+    while ((a = SymEnum(a, &ai)) != NULL) {
+        if (!(a->ispublic || a->state == SYM_EXTERNAL)) continue;
+        Mangle(a, an);
+        bi = ai; b = a;
+        while ((b = SymEnum(b, &bi)) != NULL) {
+            if (!(b->ispublic || b->state == SYM_EXTERNAL)) continue;
+            Mangle(b, bn);
+            if (!strcmp(an, bn)) EmitErr(SYMBOL_ALREADY_DEFINED, an);
+        }
+    }
+}

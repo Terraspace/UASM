@@ -1228,6 +1228,8 @@ static int OnePass( void )
     if ( Parse_Pass == PASS_1 )
         PassOneChecks();
 
+    NamespaceCheckOpen();
+    NamespaceCheckExports();
     ClearSrcStack();
 
     return( 1 );

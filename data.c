@@ -1381,7 +1381,7 @@ ret_code data_dir( int i, struct asm_tok tokenarray[], struct asym *type_sym )
         if( name ) {
             /* get/create the label. */
             DebugMsg1(("data_dir: calling SymLookup(%s)\n", name ));
-            sym = SymLookup( name );
+            sym = SymLookupDefinition( name );
             /* v2.11: cannot fail */
             //if( sym == NULL ) {
             //    DebugMsg(("data_dir exit, error: invalid label name\n"));

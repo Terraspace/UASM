@@ -111,7 +111,7 @@ struct asym *CreateLabel( const char *name, enum memtype mem_type, struct qualif
          strlen(name) >= 6 && strspn(name + 2, "0123456789ABCDEF") == strlen(name + 2) )
         generated_label = TRUE;
 
-    sym = ( bLocal ? SymLookupLocal( name ) : SymLookup( name ) );
+    sym = ( bLocal ? SymLookupLocal( name ) : SymLookupDefinition( name ) );
     /* v2.11: SymLookup...() cannot fail */
     //if( sym == NULL ) /* name invalid or too long? */
     //    return( NULL );

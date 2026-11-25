@@ -277,7 +277,7 @@ ret_code CatStrDir( int i, struct asm_tok tokenarray[] )
         i++;
     }
 
-    sym = SymSearch( tokenarray[0].string_ptr );
+    sym = SymFindDefinition( tokenarray[0].string_ptr );
     if ( sym == NULL ) {
         sym = SymCreate( tokenarray[0].string_ptr );
         DebugMsg1(( "CatStrDir: new symbol %s created\n", sym->name));
@@ -415,7 +415,7 @@ struct asym *AddPredefinedText( const char *name, const char *value )
 
     DebugMsg1(("AddPredefinedText(%s): >%s<\n", name, value ));
     /* v2.08: ignore previous setting */
-    if ( NULL == ( sym = SymSearch( name ) ) )
+    if ( NULL == ( sym = SymFindDefinition( name ) ) )
         sym = SymCreate( name );
     sym->state = SYM_TMACRO;
     sym->isdefined = TRUE;
@@ -561,7 +561,7 @@ ret_code SubStrDir( int i, struct asm_tok tokenarray[] )
         size = cnt - pos + 1;
 #endif
 
-    sym = SymSearch( name );
+    sym = SymFindDefinition( name );
 
     /* if we've never seen it before, put it in */
     if( sym == NULL ) {
@@ -756,6 +756,20 @@ ret_code InStrDir( int i, struct asm_tok tokenarray[] )
  * syntax: @CatStr( literal [, literal ...] )
  */
 
+/* Macro-library identifier construction: prefix the leaf, not its namespace. */
+static ret_code NamespacePrefixFunc(struct macro_instance *mi, char *buffer, struct asm_tok tokenarray[])
+{
+    const char *prefix = mi->parm_array[0] ? mi->parm_array[0] : "";
+    const char *name = mi->parm_array[1] ? mi->parm_array[1] : "";
+    const char *leaf = SymLeafName(name);
+    size_t head = leaf - name;
+    if (strlen(prefix) + strlen(name) > MAX_ID_LEN) return EmitError(IDENTIFIER_TOO_LONG);
+    memcpy(buffer, name, head);
+    strcpy(buffer + head, prefix);
+    strcpy(buffer + head + strlen(prefix), leaf);
+    return NOT_ERROR;
+}
+
 static ret_code CatStrFunc( struct macro_instance *mi, char *buffer, struct asm_tok tokenarray[] )
 /************************************************************************************************/
 {
@@ -948,6 +962,20 @@ void StringInit( void )
     instrcnt = 0;
     equcnt = 0;
 #endif
+
+    macro = CreateMacro("@NamespacePrefix");
+    macro->sym.list = FALSE; /* Internal OO name-composition helper. */
+    macro->sym.isdefined = TRUE;
+    macro->sym.predefined = TRUE;
+    macro->sym.func_ptr = NamespacePrefixFunc;
+    macro->e.macroinfo->autoexp = 1;
+    macro->sym.isfunc = TRUE;
+    macro->e.macroinfo->parmcnt = 2;
+    macro->e.macroinfo->parmlist = LclAlloc(sizeof(struct mparm_list) * 2);
+    for (i = 0; i < 2; i++) {
+        macro->e.macroinfo->parmlist[i].deflt = NULL;
+        macro->e.macroinfo->parmlist[i].required = FALSE;
+    }
 
     /* add @CatStr() macro func */
 

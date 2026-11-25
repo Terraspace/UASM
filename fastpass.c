@@ -51,7 +51,7 @@ static void SaveState( void )
 {
     DebugMsg1(("SaveState enter\n" ));
     StoreState = TRUE;
-    UseSavedState = TRUE;
+    UseSavedState = !NamespaceUsed;
     modstate.init = TRUE;
     modstate.Equ.head = modstate.Equ.tail = NULL;
 

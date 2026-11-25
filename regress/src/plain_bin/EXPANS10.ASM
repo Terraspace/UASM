@@ -14,7 +14,7 @@ ENDM
 
 p1 proc
 	nop
-l1::m1
+l1:: m1
 	ret
 p1 endp
 

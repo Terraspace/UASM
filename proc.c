@@ -909,7 +909,7 @@ static ret_code ParseParams(struct dsym *proc, int i, struct asm_tok tokenarray[
 		}
 
 		/* check if parameter name is defined already */
-		if ((IsPROC) && (sym = SymSearch(name)) && sym->state != SYM_UNDEFINED) { 
+		if ((IsPROC) && (sym = SymFindLocalDeclare(name)) && sym->state != SYM_UNDEFINED) {
 			DebugMsg(("ParseParams: %s defined already, state=%u, local=%u\n", sym->name, sym->state, sym->scoped));
 			return(EmitErr(SYMBOL_REDEFINITION, name));
 		}
@@ -1911,7 +1911,7 @@ ret_code ProcDir(int i, struct asm_tok tokenarray[])
 	}
 
 	name = tokenarray[0].string_ptr;
-	sym = SymFind(name);
+	sym = SymFindDefinition(name);
 	if (sym) 
 		ProcCur->string_ptr = sym->name;
 
@@ -1943,7 +1943,7 @@ ret_code ProcDir(int i, struct asm_tok tokenarray[])
 
 	i++; /* go past PROC */
 
-	sym = SymSearch(name);
+	sym = SymFindDefinition(name);
 
 	if (Parse_Pass == PASS_1) { //|| (Parse_Pass > PASS_1 && sym == NULL) ) {
 
@@ -2250,7 +2250,7 @@ ret_code EndpDir(int i, struct asm_tok tokenarray[])
 	}
 	/* v2.10: "+ 1" added to CurrProc->sym.name_size */
 	if (CurrProc &&
-		(SymCmpFunc(CurrProc->sym.name, tokenarray[0].string_ptr, CurrProc->sym.name_size + 1) == 0)) {
+		(SymCmpFunc(SymLeafName(CurrProc->sym.name), tokenarray[0].string_ptr, strlen(SymLeafName(CurrProc->sym.name)) + 1) == 0)) {
 
 		/* Reset the current source code line relating to the PROC */
 		procline = SymFind("@ProcLine");
@@ -2293,7 +2293,7 @@ static void WriteSEHData(struct dsym *proc)
 		AddLineQueue("$xdatasym label near");
 	}
 	xdataofs = 0;
-	xdata = (struct dsym *)SymSearch(segname);
+	xdata = (struct dsym *)SymSearchModule(segname);
 	if (xdata) {
 		/* v2.11: changed offset to max_offset.
 		* However, value structinfo.current_loc might even be better.

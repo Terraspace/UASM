@@ -69,3 +69,5 @@ res( CONTEXT,   ContextDirective )
 res( DEFINE,    DefineDirective )  /* DEFINE directive */
 res( UNDEF,     UndefDirective )   /* UNDEF directive */
 
+
+res( NAMESPACE, NamespaceDirective )

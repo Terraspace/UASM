@@ -264,6 +264,15 @@ int Mangle( struct asym *sym, char *buffer )
 #if MANGLERSUPP
     sym->mangler = mangler;
 #endif
+    if (sym->namespace_owner && (sym->ispublic || sym->state == SYM_EXTERNAL)) {
+        char *saved = sym->name;
+        unsigned saved_size = sym->name_size;
+        int result;
+        sym->name = (char *)SymLeafName(saved); sym->name_size = strlen(sym->name);
+        result = mangler(sym, buffer);
+        sym->name = saved; sym->name_size = saved_size;
+        return result;
+    }
     return( mangler( sym, buffer ) );
 }
 

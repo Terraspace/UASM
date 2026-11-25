@@ -282,3 +282,6 @@ res(OPTION,      option,      0,                          DRT_OPTION,  0,  P_86,
 res(POPCONTEXT,  popcontext,  0,                          DRT_CONTEXT, 0,  P_86, 0)
 res(PUSHCONTEXT, pushcontext, 0,                          DRT_CONTEXT, 0,  P_86, 0)
 
+
+res(NAMESPACE, namespace, DF_NOSTRUC|DF_NOEXPAND, DRT_NAMESPACE, 0, P_86, 0)
+res(ENDNAMESPACE, endnamespace, DF_NOSTRUC|DF_NOEXPAND, DRT_NAMESPACE, 0, P_86, 0)

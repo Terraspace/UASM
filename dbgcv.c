@@ -672,6 +672,8 @@ static void cv_write_type_procedure(struct dbgcv* cv, struct asym* sym, int cnt)
 
 static void cv_write_type(struct dbgcv* cv, struct asym* sym)
 {
+    const char *debug_name = sym->name_size ? sym->name : "__unnamed";
+    /* CodeView uses qualified type names without the source root operator. */
 	struct dsym* type = (struct dsym*)sym;
 	uint_8* tmp;
 	int		namesize;
@@ -680,6 +682,8 @@ static void cv_write_type(struct dbgcv* cv, struct asym* sym)
 	int		leaf;
 	CV_prop_t	property;
 	struct cv_counters count;
+
+    if (debug_name[0] == ':' && debug_name[1] == ':') debug_name += 2;
 
 	/* v2.10: handle typedefs. when the types are enumerated,
 	 * typedefs are ignored.
@@ -721,7 +725,7 @@ static void cv_write_type(struct dbgcv* cv, struct asym* sym)
 	cv_enum_fields(type, cv_cntproc, cv, &count);
 
 	/* WinDbg wants embedded structs to have a name - else it won't allow to "open" it. */
-	namesize = (sym->name_size ? sym->name_size : 9);	 /* 9 is sizeof("__unnamed") */
+	namesize = strlen(debug_name);
 
 	sym->cvtyperef = cv->currtype++;
 	switch (type->sym.typekind) {
@@ -788,7 +792,7 @@ static void cv_write_type(struct dbgcv* cv, struct asym* sym)
 		*(uint_16*)tmp = sym->total_size;
 		tmp += sizeof(uint_16);
 	}
-	tmp = SetPrefixName(tmp, sym->name_size ? sym->name : "__unnamed", namesize);
+	tmp = SetPrefixName(tmp, debug_name, namesize);
 	PadBytes(tmp, cv->types->e.seginfo->CodeBuffer);
 	cv->pt += size;
 

@@ -963,8 +963,18 @@ static ret_code get_id( struct asm_tok *buf, struct line_status *p )
 #if CONCATID || DOTNAMEX
 continue_scan:
 #endif
+    if (src[0] == ':' && src[1] == ':') { *dst++ = *src++; *dst++ = *src++; }
     do {
         *dst++ = *src++;
+        if (!fast_is_valid_id_char(*src) && src[0] == ':' && src[1] == ':' &&
+            (islalpha(src[2]) || src[2]=='_' || src[2]=='@' || src[2]=='$' || src[2]=='?')) {
+            int head;
+            *dst = 0;
+            head = FindResWord(p->output, dst - p->output);
+            /* INVOKE's existing register-pair syntax is not qualification. */
+            if (head && head < SPECIAL_LAST && SpecialTable[head].type == RWT_REG) break;
+            *dst++ = *src++; *dst++ = *src++;
+        }
     } while ( fast_is_valid_id_char( *src ) );
 #if CONCATID
     /* v2.05: in case there's a backslash right behind
@@ -1007,7 +1017,7 @@ continue_scan:
         buf->string_ptr = "?";
         return( NOT_ERROR );
     }
-    index = FindResWord( p->output, size );
+    index = strstr(p->output, "::") ? 0 : FindResWord( p->output, size );
     if( index == 0 ) {
         /* if ID begins with a DOT, check for OPTION DOTNAME.
          * if not set, skip the token and return a T_DOT instead!
@@ -1178,7 +1188,7 @@ ret_code GetToken( struct asm_tok token[], struct line_status *p )
 {
     if( isldigit( *p->input ) ) {
         return( get_number( token, p ) );
-    } else if( is_valid_id_start( *p->input ) ) {
+    } else if( is_valid_id_start( *p->input ) || (p->input[0] == ':' && p->input[1] == ':' && is_valid_id_start(p->input[2]) && (p->index == 0 || token[-1].token != T_REG)) ) {
         return( get_id( token, p ) );
     } else if( *p->input == '.' &&
 #if DOTNAMEX /* allow dots within identifiers */

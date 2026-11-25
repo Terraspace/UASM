@@ -98,8 +98,14 @@ ret_code IncludeDirective( int i, struct asm_tok tokenarray[] )
         name = tokenarray[i].tokpos;
         for ( p = tokenarray[Token_Count].tokpos - 1; p > name && isspace(*p); *p = NULLC, p-- );
     }
-    if ( SearchFile( name, TRUE ) )
-        ProcessFile( tokenarray );   /* v2.11: process the file synchronously */
+    if ( SearchFile( name, TRUE ) ) {
+        void *scope = NamespaceCurrent();
+        ProcessFile( tokenarray );
+        if (scope != NamespaceCurrent()) {
+            EmitErr(UNMATCHED_BLOCK_NESTING, "NAMESPACE in INCLUDE");
+            NamespaceRestore(scope);
+        }
+    }   /* v2.11: process the file synchronously */
     return( NOT_ERROR );
 }
 

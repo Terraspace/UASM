@@ -143,7 +143,9 @@ struct debug_info {
     unsigned next_file;  /* index next file */
 };
 
+struct namespace_info;
 struct asym {
+    struct namespace_info *namespace_owner;
     struct asym     *nextitem;       /* next symbol in hash line */
     char            *name;           /* symbol name */
 	char           *string_ptr;  /* used by SYM_TMACRO */
@@ -606,9 +608,20 @@ extern  struct asym     *SymAddLocal( struct asym *, const char * );
 extern  struct asym     *SymLookup( const char * );
 extern  struct asym     *SymLookupLocal( const char * );
 
+extern const char *SymLeafName(const char *);
+extern struct asym *SymFindDefinition(const char *);
+extern struct asym *SymSearchModule(const char *);
+extern struct asym *SymCreateModule(const char *);
+extern struct asym *SymLookupDefinition(const char *);
+extern bool NamespaceUsed;
+extern void *NamespaceCurrent(void);
+extern void NamespaceRestore(void *);
+extern void NamespaceCheckOpen(void);
+extern void NamespaceCheckExports(void);
 extern  struct asym     *SymFind( const char *name );
 extern  struct asym     *SymCheck(const char *name);
 extern  struct asym     *SymFindLocal( const char *name );
+extern  struct asym     *SymFindLocalDeclare( const char *name );
 extern  struct asym     *SymFindDeclare( const char *name );
 #define SymSearch(x) SymFind(x)
 

@@ -128,7 +128,7 @@ static struct asym *CreateProto( int i, struct asm_tok tokenarray[], const char 
     struct dsym      *dir;
 
     DebugMsg1(("CreateProto( i=%u, name=%s, lang=%u )\n", i, name ? name : "NULL", langtype ));
-    sym = SymSearch( name );
+    sym = SymFindDefinition( name );
 
     /* the symbol must be either NULL or state
      * - SYM_UNDEFINED
@@ -214,7 +214,7 @@ ret_code ExterndefDirective( int i, struct asm_tok tokenarray[] )
             return( EmitError( COLON_EXPECTED ) );
         }
         i++;
-        sym = SymSearch( token );
+        sym = SymFindDefinition( token );
 
         //typetoken = tokenarray[i].string_ptr;
         ti.mem_type = MT_EMPTY;
@@ -543,7 +543,7 @@ ret_code ExternDirective( int i, struct asm_tok tokenarray[] )
             return( EmitError( COLON_EXPECTED ) );
         }
         i++;
-        sym = SymSearch( token );
+        sym = SymFindDefinition( token );
 
         ti.mem_type = MT_EMPTY;
         ti.size = 0;
@@ -803,7 +803,7 @@ ret_code CommDirective( int i, struct asm_tok tokenarray[] )
             count = opndx.uvalue;
         }
 
-        sym = SymSearch( token );
+        sym = SymFindDefinition( token );
         if( sym == NULL || sym->state == SYM_UNDEFINED ) {
             sym = MakeComm( token, sym, size, count, isfar );
             if ( sym == NULL )

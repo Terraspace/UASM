@@ -1,0 +1,1 @@
+..\src\namespaces\strict_path_err.asm(13) : Error A2102: Symbol not defined : Outer::Inner::value

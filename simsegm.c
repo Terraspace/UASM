@@ -152,7 +152,7 @@ static void SetSimSeg( enum sim_seg segm, const char *name )
              * of the simplified segment directives have highest priority.
              */
             if ( Parse_Pass == PASS_1 ) {
-				sym = SymSearch( name );
+				sym = SymSearchModule( name );
                 if ( sym && sym->state == SYM_SEG && sym->isdefined == TRUE )
                     ModuleInfo.simseg_defd |= ( 1 << segm );
             }
@@ -160,7 +160,7 @@ static void SetSimSeg( enum sim_seg segm, const char *name )
                 pFmt = "%s %r";
         }
     } else {
-        sym = SymSearch( name );
+        sym = SymSearchModule( name );
         /* v2.04: testing for state SYM_SEG isn't enough. The segment
          * might have been "defined" by a GROUP directive. Additional
          * check for segment's lname index is needed.

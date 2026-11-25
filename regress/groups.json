@@ -1,5 +1,8 @@
 {
-  "new_instructions": ["-q", "-bin"],
+  "new_instructions": [
+    "-q",
+    "-bin"
+  ],
   "plain_bin": [
     "-q",
     "-bin"
@@ -188,22 +191,79 @@
     "-q",
     "-elf64"
   ],
-  "pr240": ["-q", "-bin", "-Fl"],
-  "pr240_locals": ["-q", "-coff", "-Fl"],
+  "pr240": [
+    "-q",
+    "-bin",
+    "-Fl"
+  ],
+  "pr240_locals": [
+    "-q",
+    "-coff",
+    "-Fl"
+  ],
   "cv8_issue235": [
     "-q",
     "-win64",
     "-Zi8"
   ],
-  "hll_collision": ["-q", "-coff"],
-  "hll_collision_cv8": ["-q", "-coff", "-Zi8"],
-  "elf64_rela": ["-q", "-elf64"],
-  "stackprobe": ["-q", "-win64"],
-  "cvlocals8": ["-c", "-win64", "-Zi8"],
-  "cvlocals4": ["-c", "-win64", "-Zi"],
-  "elf64_pic_calls": ["-q", "-elf64"],
-  "elf64_pic_errors": ["-q", "-elf64"],
-  "elf64_pic_format_errors": ["-q", "-win64"],
-  "elf64_got": ["-q", "-elf64"],
-  "elf64_got_errors": ["-q", "-elf64"]
+  "hll_collision": [
+    "-q",
+    "-coff"
+  ],
+  "hll_collision_cv8": [
+    "-q",
+    "-coff",
+    "-Zi8"
+  ],
+  "elf64_rela": [
+    "-q",
+    "-elf64"
+  ],
+  "stackprobe": [
+    "-q",
+    "-win64"
+  ],
+  "cvlocals8": [
+    "-c",
+    "-win64",
+    "-Zi8"
+  ],
+  "cvlocals4": [
+    "-c",
+    "-win64",
+    "-Zi"
+  ],
+  "elf64_pic_calls": [
+    "-q",
+    "-elf64"
+  ],
+  "elf64_pic_errors": [
+    "-q",
+    "-elf64"
+  ],
+  "elf64_pic_format_errors": [
+    "-q",
+    "-win64"
+  ],
+  "elf64_got": [
+    "-q",
+    "-elf64"
+  ],
+  "elf64_got_errors": [
+    "-q",
+    "-elf64"
+  ],
+  "shadowing": [
+    "-q",
+    "-bin"
+  ],
+  "namespaces": [
+    "-q",
+    "-bin"
+  ],
+  "namespaces_cv8": [
+    "-q",
+    "-win64",
+    "-Zi8"
+  ]
 }

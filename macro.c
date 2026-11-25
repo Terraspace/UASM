@@ -452,6 +452,9 @@ ret_code StoreMacro( struct dsym *macro, int i, struct asm_tok tokenarray[], boo
         if ( GetToken( &tok[0], &ls ) == ERROR )
             return( ERROR );
 
+        if (tok[0].token == T_DIRECTIVE && tok[0].dirtype == DRT_NAMESPACE) {
+            EmitErr(SYNTAX_ERROR_EX, "namespace change inside macro definition");
+        }
         /* v2.05: GetTextLine() doesn't concat lines anymore.
          * So if a backslash is found in the current source line,
          * tokenize it to get possible concatenated lines.
@@ -1015,7 +1018,7 @@ ret_code MacroDir( int i, struct asm_tok tokenarray[] )
 
 	inMacroBody = TRUE; /* flag that we're processing a macro UASM 2.46.6 */
 
-    macro = (struct dsym *)SymSearch( name );
+    macro = (struct dsym *)SymFindDefinition( name );
     if( macro == NULL ) {
         macro = CreateMacro( name );
     } else if( macro->sym.state != SYM_MACRO ) {

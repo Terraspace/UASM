@@ -392,9 +392,13 @@ static void ExpandObjCalls(char *line, struct asm_tok tokenarray[])
 				else
 				{
 					pMethodStr = methodName;
-					pMethodStr = strcpy(pMethodStr, "_") + 1;
-					strcpy(pMethodStr, type->sym.name);
-					pMethodStr += strlen(type->sym.name);
+					{
+                        const char *leaf = SymLeafName(type->sym.name);
+                        size_t prefix = leaf - type->sym.name;
+                        memcpy(pMethodStr, type->sym.name, prefix); pMethodStr += prefix;
+                        *pMethodStr++ = '_';
+                        strcpy(pMethodStr, leaf); pMethodStr += strlen(leaf);
+                    }
 					pMethodStr = strcpy(pMethodStr, "_") + 1;
 					strcpy(pMethodStr, tokenarray[i + 1].string_ptr);
 					pMethodStr += strlen(tokenarray[i + 1].string_ptr);
@@ -712,8 +716,8 @@ static void ExpandStaticObjCalls(char *line, struct asm_tok tokenarray[])
 						pStr = strcpy(pStr, "_STATIC(") + 8;
 					else
 						pStr = strcpy(pStr, "_SINVOKE ") + 9;
-					strcpy(pStr, tokenarray[type].string_ptr);
-					pStr += strlen(tokenarray[type].string_ptr);
+					strcpy(pStr, sym->name);
+					pStr += strlen(sym->name);
 					pStr = strcpy(pStr, ",") + 1;
 					strcpy(pStr, tokenarray[method].string_ptr);
 					pStr += strlen(tokenarray[method].string_ptr);
@@ -1150,6 +1154,14 @@ int PreprocessLine( char *line, struct asm_tok tokenarray[] )
 		}
 	}
 
+    if (!MacroLevel && !ModuleInfo.GeneratedCode && CurrIfState == BLOCK_ACTIVE &&
+        tokenarray[0].token == T_ID && strstr(tokenarray[0].string_ptr, "::") &&
+        (tokenarray[1].token == T_COLON || tokenarray[1].token == T_DBL_COLON ||
+         tokenarray[1].token == T_STYPE ||
+         (tokenarray[1].token == T_DIRECTIVE && (GetValueSp(tokenarray[1].tokval) & DF_LABEL)))) {
+        EmitErr(SYNTAX_ERROR_EX, "qualified definition: use a NAMESPACE block");
+        return 0;
+    }
 	EvaluatePreprocessItems( line, tokenarray );
 
     /* CurrIfState != BLOCK_ACTIVE && Token_Count == 1 | 3 may happen
