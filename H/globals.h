@@ -732,6 +732,7 @@ struct fname_item {
 struct module_info;
 
 struct module_vars {
+    struct invoke_literal *invoke_literals; /* module-owned, survives FASTPASS restore */
     unsigned            error_count;     /* total of errors so far */
     unsigned            warning_count;   /* total of warnings so far */
     unsigned            num_segs;        /* number of segments in module */

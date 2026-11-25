@@ -104,6 +104,30 @@ int VerifyBrackets(struct asm_tok tokenarray[], int openIdx, bool inParam)
 	return(-1);
 }
 
+/* Source reconstructed from tokens uses MASM doubled quote escaping. */
+static char *SkipCallString(char *p)
+{
+    char quote = *p++;
+    while (*p) {
+        if (*p++ == quote) {
+            if (*p != quote) break;
+            p++;
+        }
+    }
+    return p;
+}
+
+static char *FindCallText(char *p, const char *text)
+{
+    size_t n = strlen(text);
+    while (*p) {
+        if (*p == '"' || *p == 39) { p = SkipCallString(p); continue; }
+        if (!strncmp(p, text, n)) return p;
+        p++;
+    }
+    return NULL;
+}
+
 /* We only allow a single level of nested calls */
 static void VerifyNesting(char *line, bool exprBracket)
 {
@@ -121,6 +145,7 @@ static void VerifyNesting(char *line, bool exprBracket)
 	
 	while (*p)
 	{
+        if (*p == '"' || *p == 39) { p = SkipCallString(p); continue; }
 		if (*p == '(')
 			depth++;
 		if (*p == ')')
@@ -844,7 +869,7 @@ static void ExpandHllCalls(char *line, struct asm_tok tokenarray[], bool inParam
 					strcmp(tokenarray[i - 1].string_ptr,"arginvoke") == 0 || strcmp(tokenarray[i - 1].string_ptr, "@what") == 0)) continue;
 					
 				// Allow expansion in an instruction.
-				if (tokenarray[i - 1].token == T_COMMA)
+				if (i > 0 && tokenarray[i - 1].token == T_COMMA)
 					inExpr = TRUE;
 					
 				// Allow expansion in a memory address [].
@@ -957,9 +982,21 @@ static void ExpandHllCalls(char *line, struct asm_tok tokenarray[], bool inParam
 						strcpy(p, " ");
 						p++;
 					}
-					strcpy(p, tokenarray[j].string_ptr);
-					tokenarray[j].tokpos = p;
-					p += strlen(tokenarray[j].string_ptr);
+					{
+                        const char *text = tokenarray[j].string_ptr;
+                        size_t k, length = strlen(text);
+                        bool quoted = tokenarray[j].token == T_STRING && tokenarray[j].string_delim == '"';
+                        tokenarray[j].tokpos = p;
+                        for (k = 0; k < length; k++) {
+                            if (p - newline >= MAX_LINE_LEN - 3) {
+                                EmitError(STRING_OR_TEXT_LITERAL_TOO_LONG);
+                                return;
+                            }
+                            *p++ = text[k];
+                            if (quoted && k && k+1 < length && text[k] == '"') *p++ = '"';
+                        }
+                        *p = 0;
+                    }
 					if (j == 0 || tokenarray[j].tokval == T_ADDR || tokenarray[j].tokval == T_OFFSET)
 					{
 						strcpy(p, " ");
@@ -984,16 +1021,21 @@ static void ExpandHllCalls(char *line, struct asm_tok tokenarray[], bool inParam
 	if (expandedCall)
 	{
 		p = newline;
-		p = strstr(p, "invoke"); // even if the line only contains uinvoke, such as in an HLL expression this will still find it.
+		p = FindCallText(p, "invoke"); // even if the line only contains uinvoke, such as in an HLL expression this will still find it.
 		if (p != NULL)
 		{
 			bool inBrackets = FALSE;
-			j = (int)(p - (char *)newline);
+			j = p ? (int)(p - (char *)newline) : 0;
 			stackPt++;
 			idxStack[stackPt] = 0;
 			while (*p)
 			{
-				idxline[j++] = idxStack[stackPt];
+				if (*p == '"' || *p == 39) {
+                    char *end = SkipCallString(p);
+                    while (p < end) { idxline[j++] = idxStack[stackPt]; p++; }
+                    continue;
+                }
+                idxline[j++] = idxStack[stackPt];
 				if (*p == '(')
 					inBrackets = TRUE;
 				if (*p == ')')
@@ -1004,8 +1046,8 @@ static void ExpandHllCalls(char *line, struct asm_tok tokenarray[], bool inParam
 			}
 		}
 		p = newline;
-		p = strstr(p, "arginvoke(");
-		j = (int)(p - (char *)newline);
+		p = FindCallText(p, "arginvoke(");
+		j = p ? (int)(p - (char *)newline) : 0;
 		while (p)
 		{
 			if (idxline[j] == 0) idxline[j] = 1;
@@ -1013,9 +1055,9 @@ static void ExpandHllCalls(char *line, struct asm_tok tokenarray[], bool inParam
 			*(p + 11) = (char)(((idxline[j] & 0x0f)) + 48);
 			*(p + 13) = (char)(((invCnt & 0xf0) >> 4) + 48);
 			*(p + 14) = (char)(((invCnt & 0x0f)) + 48);
-			p = strstr(p + 1, "arginvoke(");
+			p = FindCallText(p + 1, "arginvoke(");
 			invCnt++;
-			j = (int)(p - (char *)newline);
+			j = p ? (int)(p - (char *)newline) : 0;
 		}
 
 		/* Ensure max nesting depth isn't exceeded */

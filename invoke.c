@@ -3306,82 +3306,6 @@ static void SkipTypecast(char *fullparam, int i, struct asm_tok tokenarray[])
 	}
 }
 
-/* Check if a parameter (via it's string ptr) is a raw ascii string, 
-if we're in a vararg, just being a raw string is sufficient, 
-for normal parameters it must be qualified as PTR */
-static int ParamIsString(char *pStr, int param, struct dsym* proc) {
-	char c;
-	char *pS = pStr;
-	int i = 0;
-	struct dsym* p = proc->e.procinfo->paralist;
-	struct asym* type = NULL;
-	enum memtype mtype = MT_EMPTY;
-
-	if (!Options.literal_strings)
-		return(FALSE);
-
-	for (i = 0; i < param; i++)
-	{
-		if (p->nextparam == NULL)
-			break;
-		p = p->nextparam;
-	}
-
-	if (p)
-	{
-		if (p->sym.mem_type == MT_PTR)
-		{
-			mtype = MT_PTR;
-		}
-		else
-		{
-			if (p->sym.target_type)
-			{
-				type = p->sym.target_type;
-				while (type->target_type && (int)type->target_type > 0x2000)
-				{
-					type = type->target_type;
-					if (type->mem_type == MT_PTR)
-					{
-						mtype = MT_PTR;
-						break;
-					}
-				}
-				mtype = MT_EMPTY;
-			}
-			else
-				mtype = p->sym.mem_type;
-		}
-	}
-
-	if (!p)
-		return(FALSE);
-
-	c = *pS;
-	if (c != '"') return(FALSE);
-	pS++;
-
-	while (TRUE)
-	{
-		c = *pS;
-		if (c == 0)
-		{
-			c = *(pS - 1);
-			if (c != '"') return(FALSE);
-			break;
-		}
-		pS++;
-	}
-
-	if (p && mtype != MT_PTR && !p->sym.is_vararg)
-	{
-		EmitErr(INVOKE_ARGUMENT_TYPE_MISMATCH, param);
-		return(FALSE);
-	}
-
-	return(TRUE);
-}
-
 static unsigned int hashpjw(const char *s)
 /******************************************/
 {
@@ -3394,6 +3318,103 @@ static unsigned int hashpjw(const char *s)
 		h *= fnv_prime;
 	}
 	return((((h >> 16) ^ h) & 0xffff));
+}
+
+
+/* Intern decoded literal bytes, not a lossy hash. Pool ownership is module-wide
+ * and references are absolute so caller namespaces cannot capture generated IDs. */
+struct invoke_literal {
+    struct invoke_literal *next;
+    struct asym *sym;
+    unsigned size;
+    int pass;
+    bool wide;
+    unsigned char data[1];
+};
+
+static struct asym *InvokeLiteral(struct asm_tok *tok, bool wide)
+{
+    unsigned char decoded[MAX_STRING_LEN + 1];
+    unsigned short utf16[MAX_STRING_LEN + 1];
+    unsigned char *bytes;
+    size_t n = strlen(tok->string_ptr), i, used = 0, size;
+    struct invoke_literal *item;
+    struct dsym *seg, *saved;
+    char name[64];
+    unsigned suffix = 0, hash;
+    UINT_PTR done;
+
+    if (tok->token != T_STRING || tok->string_delim != '"' || n < 2 ||
+        tok->string_ptr[n-1] != '"' || n-2 > MAX_STRING_LEN) {
+        EmitErr(SYNTAX_ERROR_EX, "invalid string literal");
+        return NULL;
+    }
+    /* Tokenization has already collapsed MASM doubled quotes. Interior quotes
+     * are data: do not search for a closing quote while decoding this token. */
+    for (i = 1; i < n-1; i++) {
+        unsigned char c = (unsigned char)tok->string_ptr[i];
+        if (c == '\\' && i+1 < n-1) {
+            switch (tok->string_ptr[i+1]) {
+            case 'n': c = 10; i++; break;
+            case 'r': c = 13; i++; break;
+            case 't': c = 9; i++; break;
+            }
+        }
+        decoded[used++] = c;
+    }
+    if (wide) {
+        size = UTF8toWideChar(decoded, used, &done, utf16, MAX_STRING_LEN);
+        if (done != used) {
+            EmitErr(SYNTAX_ERROR_EX, "invalid or incomplete UTF-8 literal");
+            return NULL;
+        }
+        utf16[size] = 0;
+        size = (size + 1) * 2;
+        bytes = (unsigned char *)utf16;
+    } else {
+        decoded[used] = 0;
+        size = used + 1;
+        bytes = decoded;
+    }
+    for (item = ModuleInfo.g.invoke_literals; item; item = item->next)
+        if (item->wide == wide && item->size == size && !memcmp(item->data, bytes, size)) break;
+    if (!item) {
+        hash = hashpjw(tok->string_ptr + (wide ? 1 : 0));
+        sprintf(name, "__ls%u", hash);
+        while (SymSearchModule(name)) sprintf(name, "__ls%u_%u", hash, ++suffix);
+        item = LclAlloc(sizeof(*item) + size);
+        item->sym = SymCreateModule(name);
+        if (!item->sym) return NULL;
+        item->size = size;
+        item->wide = wide;
+        item->pass = -1;
+        memcpy(item->data, bytes, size);
+        item->next = ModuleInfo.g.invoke_literals;
+        ModuleInfo.g.invoke_literals = item;
+    }
+    if (item->pass != Parse_Pass) {
+        seg = (struct dsym *)SymSearchModule("_DATA");
+        if (!seg || seg->sym.state != SYM_SEG) {
+            EmitErr(SYNTAX_ERROR_EX, "string literal requires a data segment");
+            return NULL;
+        }
+        saved = CurrSeg;
+        CurrSeg = seg;
+        SetSymSegOfs(item->sym);
+        OutputBytes(item->data, item->size, NULL);
+        item->sym->isdefined = TRUE;
+        item->sym->isarray = TRUE;
+        item->sym->mem_type = wide ? MT_WORD : MT_BYTE;
+        item->sym->state = SYM_INTERNAL;
+        item->sym->first_size = item->sym->total_size = item->size;
+        item->sym->first_length = item->sym->total_length = item->size / (wide ? 2 : 1);
+        item->sym->debuginfo = FALSE;
+        item->sym->ispublic = FALSE;
+        BackPatch(item->sym);
+        CurrSeg = saved;
+        item->pass = Parse_Pass;
+    }
+    return item->sym;
 }
 
 /*
@@ -3422,225 +3443,38 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 	struct expr opnd;
 	char fullparam[MAX_LINE_LEN];
 	char buffer[MAX_LINE_LEN];
-	char stringparam[256][32];
-	bool isString[256];
-	int reg = 0;
+    int reg = 0;
+    struct asym *literal = NULL;
+    bool wide = FALSE;
+    int literal_end;
 
-	struct asym *lbl = NULL;
-	struct dsym *curseg;
-	struct dsym *prev;
-	struct dsym *currs;
-	size_t slen;
-	char *pSrc;
-	char *pDest;
-	char *labelstr = "__ls";
-	char buf[32];
-	char c1;
-	char c2;
-	size_t finallen;
-	uint_16 buff[256];
-	uint_8  buff2[256];
-
-	DebugMsg1(("PushInvokeParam(%s, param=%s:%u, i=%u ) enter\n", proc->sym.name, curr ? curr->sym.name : "NULL", reqParam, i));
-
-	previ = i;
-	i++;
-	for (currParm = 0; currParm <= reqParam; )
-	{
-		if (tokenarray[i].token == T_FINAL) { /* this is no real error! */
-			break;
-		}
-		if (tokenarray[i].token == T_COMMA) {
-			currParm++;
-		}
-		// UASM 2.47 Only check the string type information if we're on the actual reqParam.
-		if (currParm == reqParam && curr)
-		{
-			if (ParamIsString(tokenarray[i].string_ptr, currParm, proc))
-			{
-
-				// Preserve current Segment.
-				curseg = ModuleInfo.currseg;
-				// Find Data Segment.
-				prev = NULL;
-				currs = NULL;
-				for (currs = SymTables[TAB_SEG].head; currs && currs->next; prev = currs, currs = currs->next)
-				{
-					if (strcmp(currs->sym.name, "_DATA") == 0)
-						break;
-				}
-				// Set CurrSeg
-				CurrSeg = currs;
-
-				// Transfer raw String Data.
-				slen = strlen(tokenarray[i].string_ptr) - 2;
-				pSrc = (tokenarray[i].string_ptr) + 1;
-
-				sprintf(buf, "%s%d", labelstr, hashpjw(tokenarray[i].string_ptr));
-
-				lbl = SymLookup(buf);
-				SetSymSegOfs(lbl);
-				memset(&buff, 0, 256);
-				pDest = (char *)buff;
-				finallen = slen;
-
-				while (*pSrc != '"')
-				{
-					c1 = *pSrc++;
-					c2 = *(pSrc);
-					if (c1 == '\\' && c2 == 'n')
-					{
-						*pDest++ = 10;
-						finallen--;
-						pSrc++;
-					}
-					else if (c1 == '\\' && c2 == 'r')
-					{
-						*pDest++ = 13;
-						finallen--;
-						pSrc++;
-					}
-					else if (c1 == '\\' && c2 == 't')
-					{
-						*pDest++ = 9;
-						finallen--;
-						pSrc++;
-					}
-					else
-						*pDest++ = c1;
-				}
-				*pDest++ = 0;
-
-				OutputBytes((unsigned char *)&buff, finallen + 1, NULL);
-				lbl->isdefined = TRUE;
-				lbl->isarray = TRUE;
-				lbl->mem_type = MT_BYTE;
-				lbl->state = SYM_INTERNAL;
-				lbl->first_size = finallen;
-				lbl->first_length = slen;
-				lbl->total_length = finallen;
-				lbl->total_size = finallen;
-				//lbl->max_offset = finallen + lbl->offset;
-				lbl->debuginfo = FALSE;
-				lbl->ispublic = 0;
-
-				BackPatch(lbl);
-
-				// invoke parameter is a raw ascii string, substitute in the our new label pointing to this raw string in .data segment. 
-				sprintf(stringparam[currParm], "%s", buf);
-				isString[currParm] = TRUE;
-
-				// Restore current Sement.
-				CurrSeg = curseg;
-			}
-			else if (strcmp(tokenarray[i].string_ptr, "L") == 0 && ParamIsString(tokenarray[i + 1].string_ptr, currParm, proc))
-			{
-				// Preserve current Segment.
-				curseg = ModuleInfo.currseg;
-				// Find Data Segment.
-				prev = NULL;
-				currs = NULL;
-				for (currs = SymTables[TAB_SEG].head; currs && currs->next; prev = currs, currs = currs->next)
-				{
-					if (strcmp(currs->sym.name, "_DATA") == 0)
-						break;
-				}
-
-				// Set CurrSeg
-				CurrSeg = currs;
-
-				slen = strlen(tokenarray[i + 1].string_ptr) - 2;
-				pSrc = (tokenarray[i + 1].string_ptr) + 1;
-				sprintf(buf, "%s%d", labelstr, hashpjw(pSrc));
-				lbl = SymLookup(buf);
-				memset(&buff, 0, 256);
-
-				pDest = buff2;
-				finallen = slen;
-
-				while (*pSrc != '"')
-				{
-					c1 = *pSrc++;
-					c2 = *(pSrc);
-					if (c1 == '\\' && c2 == 'n')
-					{
-						*pDest++ = 10;
-						finallen--;
-						pSrc++;
-					}
-					else if (c1 == '\\' && c2 == 'r')
-					{
-						*pDest++ = 13;
-						finallen--;
-						pSrc++;
-					}
-					else if (c1 == '\\' && c2 == 't')
-					{
-						*pDest++ = 9;
-						finallen--;
-						pSrc++;
-					}
-					else
-						*pDest++ = c1;
-				}
-				*pDest++ = 0;
-
-				j = UTF8toWideChar(buff2, slen, NULL, (unsigned short *)&buff, slen);
-				/* j contains a proper number of wide chars, it can be different than slen, v2.38 */
-				SetSymSegOfs(lbl);
-				OutputBytes((unsigned char *)&buff, (j * 2) + 2, NULL);
-				lbl->isdefined = TRUE;
-				lbl->isarray = TRUE;
-				lbl->mem_type = MT_BYTE;
-				lbl->state = SYM_INTERNAL;
-				lbl->first_size = finallen;
-				lbl->first_length = slen;
-				lbl->total_length = j;
-				lbl->total_size = j;
-				//lbl->max_offset = j + lbl->offset;
-				lbl->debuginfo = FALSE;
-				lbl->ispublic = 0;
-
-				BackPatch(lbl);
-
-				// invoke parameter is a raw ascii string, substitute in the our new label pointing to this raw string in .data segment.
-				sprintf(stringparam[currParm], "%s", buf);
-				isString[currParm] = TRUE;
-
-				// Restore current Sement.
-				CurrSeg = curseg;
-				i++;
-			}
-			else
-			{
-				isString[currParm] = FALSE;
-			}
-		}
-		i++;
-	}
-	i = previ;
-
-	for (currParm = 0; currParm <= reqParam; ) 
-	{
-		if (tokenarray[i].token == T_FINAL ) { /* this is no real error! */
-			DebugMsg1(("PushInvokeParam(%s): T_FINAL token, i=%u\n", proc->sym.name, i));
-			return(ERROR);
-		}
-		if (tokenarray[i].token == T_COMMA) {
-			currParm++;
-		}
-		i++;
-	}
-
-	/* if curr is NULL this call is just a parameter check */
-	if (!curr) return(NOT_ERROR);
-
-	psize = curr->sym.total_size;
-
-	if (_stricmp(tokenarray[i].string_ptr, "L") == 0 && (*(tokenarray[i+1].string_ptr) == '"') )
-	{
-		i++;
-	}
+    /* Locate the requested argument; curr is already the matching formal,
+     * including conventions whose stored parameter list is reversed. */
+    if (tokenarray[i].token == T_FINAL) return ERROR;
+    i++;
+    for (currParm = 0; currParm < reqParam && tokenarray[i].token != T_FINAL; i++)
+        if (tokenarray[i].token == T_COMMA) currParm++;
+    if (tokenarray[i].token == T_FINAL) return ERROR;
+    if (!curr) return NOT_ERROR;
+    psize = curr->sym.total_size;
+    if (Options.literal_strings) {
+        wide = tokenarray[i].token == T_ID && !strcmp(tokenarray[i].string_ptr, "L");
+        literal_end = i + (wide ? 1 : 0);
+        if (tokenarray[literal_end].token == T_STRING &&
+            tokenarray[literal_end].string_ptr[0] == '"') {
+            if (tokenarray[literal_end+1].token != T_COMMA && tokenarray[literal_end+1].token != T_FINAL) {
+                EmitErr(SYNTAX_ERROR_EX, "unexpected text after string literal");
+                return NOT_ERROR; /* argument exists; do not also report too few */
+            }
+            if (curr->sym.mem_type != MT_PTR && !curr->sym.is_vararg) {
+                EmitErr(INVOKE_ARGUMENT_TYPE_MISMATCH, reqParam + 1);
+                return NOT_ERROR;
+            }
+            literal = InvokeLiteral(&tokenarray[literal_end], wide);
+            if (!literal) return NOT_ERROR;
+            i = literal_end;
+        }
+    }
 
 	/* ADDR: the argument's address is to be pushed? */
 	if (tokenarray[i].token == T_RES_ID && tokenarray[i].tokval == T_ADDR) {
@@ -3650,9 +3484,9 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 
 	/* copy the parameter tokens to fullparam */
 	for (j = i; tokenarray[j].token != T_COMMA && tokenarray[j].token != T_FINAL; j++);
-	if (isString[reqParam])
+	if (literal)
 	{
-		memcpy(fullparam, stringparam[reqParam], strlen(stringparam[reqParam]) + 1);
+		sprintf(fullparam, "::%s", literal->name);
 		addr = TRUE;
 		psize = 2 << curr->sym.Ofssize;
 		if (curr->sym.isfar)
@@ -3679,7 +3513,13 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 	if ( addr ) {
 		/* v2.06: don't handle forward refs if -Zne is set */
 		//if ( EvalOperand( &j, Token_Count, &opnd, 0 ) == ERROR )
-		if (EvalOperand(&j, tokenarray, Token_Count, &opnd, ModuleInfo.invoke_exprparm) == ERROR)
+		if (literal) {
+            memset(&opnd, 0, sizeof(opnd));
+            opnd.kind = EXPR_ADDR;
+            opnd.sym = literal;
+            opnd.mem_type = literal->mem_type;
+            opnd.Ofssize = GetSymOfssize(literal);
+        } else if (EvalOperand(&j, tokenarray, Token_Count, &opnd, ModuleInfo.invoke_exprparm) == ERROR)
 			return(ERROR);
 		/* DWORD (16bit) and FWORD(32bit) are treated like FAR ptrs
 		* v2.11: argument may be a FAR32 pointer ( psize == 6 ), while

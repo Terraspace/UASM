@@ -269,5 +269,21 @@
   "namespaces_fastpass": [
     "-q",
     "-bin"
+  ],
+  "literal_calls64": [
+    "-q",
+    "-win64"
+  ],
+  "literal_calls32": [
+    "-q",
+    "-coff"
+  ],
+  "literal_callself": [
+    "-q",
+    "-elf64"
+  ],
+  "literal_call_errors": [
+    "-q",
+    "-win64"
   ]
 }
