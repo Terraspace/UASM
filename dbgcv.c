@@ -13,6 +13,7 @@
 #include <globals.h>
 #include <memalloc.h>
 #include <parser.h>
+#include <proc.h>
 #include <segment.h>
 #include <coff.h>
 #include <fixup.h>
@@ -130,7 +131,7 @@ struct leaf32 {
 
 #pragma pack(pop)
 
-uint_8* SetPrefixName(uint_8* p, uint_8* name, int len)
+uint_8* SetPrefixName(uint_8* p, const void* name, int len)
 {
 	if (Options.debug_symbols < CV_SIGNATURE_C13)
 		*p++ = len;
@@ -999,6 +1000,7 @@ static void cv_write_symbol(struct dbgcv* cv, struct asym* sym)
 		for (i = 0; i < 2; i++) {
 			cnt[i] = 0;
 			for (lcl = locals[i]; lcl; lcl = lcl->nextparam) {
+                if (ProcIsCallTemp(proc, &lcl->sym)) continue;
                 q = lcl;
 				cnt[i]++;
 				typeref = (q->sym.mem_type == MT_PTR ? cv_write_ptr_type(cv, &q->sym) : GetTyperef(&q->sym, Ofssize));
@@ -1209,6 +1211,7 @@ static void cv_write_symbol(struct dbgcv* cv, struct asym* sym)
 		for (i = 0; i < 2; i++) {
 			for (q = locals[i]; q; q = q->nextparam) {
                 struct cv_local_location *location;
+                if (ProcIsCallTemp(proc, &q->sym)) continue;
                 lcl = q;
                 for (location = proc->e.procinfo->debug_locations; location; location = location->next)
                     if (location->sym == &lcl->sym) break;
@@ -1376,7 +1379,7 @@ static uint_8* cv_FlushSection(dbgcv* cv, uint_32 signature, uint_32 ex)
 #define USEMD5
 
 #ifdef USEMD5
-#define BUFSIZ 1024*4
+#define CV_CHECKSUM_BUFFER_SIZE 1024*4
 #define MD5_LENGTH ( sizeof( uint_32 ) + sizeof( uint_16 ) + 16 + sizeof( uint_16 ) )
 
 static int calc_md5(const char* filename, unsigned char* sum)
@@ -1388,10 +1391,10 @@ static int calc_md5(const char* filename, unsigned char* sum)
 
 	if ((fp = fopen(filename, "rb")) == NULL)
 		return 0;
-	file_buf = MemAlloc(BUFSIZ);
+	file_buf = MemAlloc(CV_CHECKSUM_BUFFER_SIZE);
 	_picohash_md5_init(&ctx);
 	while (!feof(fp)) {
-		i = fread(file_buf, 1, BUFSIZ, fp);
+		i = fread(file_buf, 1, CV_CHECKSUM_BUFFER_SIZE, fp);
 		if (ferror(fp)) {
 			fclose(fp);
 			MemFree(file_buf);

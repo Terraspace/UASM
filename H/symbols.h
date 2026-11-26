@@ -393,6 +393,8 @@ struct cv_local_location {
 };
 
 struct proc_info {
+    bool explicit_return; /* Return contract supplied by PROC/PROTO. */
+    struct dsym **call_temps; /* Per-activation nested-call results. */
     struct cv_local_location *debug_locations;
     struct win64_vector_param *vector_layout;
     unsigned vector_count;

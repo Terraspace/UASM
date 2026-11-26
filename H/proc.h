@@ -55,6 +55,8 @@ extern void             DeleteProc( struct dsym * );
 extern ret_code         CopyPrototype( struct dsym *, struct dsym * );
 extern ret_code         RetInstr( int, struct asm_tok[], int );   /* handle RET/IRET within procedures */
 extern void             write_prologue( struct asm_tok[] );
+extern bool ProcIsCallTemp(const struct dsym *, const struct asym *);
+extern struct asym *ProcCallTemp(unsigned slot, unsigned size);
 extern void             ProcInit( void );
 extern bool Win64UnifiedFrame(const struct dsym *);
 extern void Win64VectorLayout(struct dsym *);

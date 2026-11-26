@@ -481,7 +481,8 @@ void dwarf_write(void)
         if(Options.debug_symbols && (proc->e.procinfo->paralist || proc->e.procinfo->locallist)) {
             struct dsym *v;
             for(v=proc->e.procinfo->paralist;v;v=v->nextparam) local_symbol(&b[1],&b[4],proc,&v->sym,TRUE);
-            for(v=proc->e.procinfo->locallist;v;v=v->nextlocal) local_symbol(&b[1],&b[4],proc,&v->sym,FALSE);
+            for(v=proc->e.procinfo->locallist;v;v=v->nextlocal)
+                if(!ProcIsCallTemp(proc,&v->sym)) local_symbol(&b[1],&b[4],proc,&v->sym,FALSE);
             num(&b[1],0,1);
         }
     }

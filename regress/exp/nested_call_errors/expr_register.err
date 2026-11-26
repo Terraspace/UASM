@@ -1,0 +1,1 @@
+..\src\nested_call_errors\expr_register.asm(11) : Error A2210: Syntax error: volatile register operand conflicts with value-producing call

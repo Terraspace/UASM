@@ -606,6 +606,55 @@ static struct dsym *pop_proc(void)
 * count: number of array elements, default is 1
 * type:  qualified type [simple type, structured type, ptr to simple/structured type]
 */
+/* Late-discovered result slots join the normal locals list. The complete list
+ * is laid out at the end of pass one, before replay emits the final frame. */
+bool ProcIsCallTemp(const struct dsym *proc, const struct asym *sym)
+{
+    unsigned i;
+    if (proc->e.procinfo->call_temps)
+        for (i=0;i<32;++i)
+            if (proc->e.procinfo->call_temps[i] && &proc->e.procinfo->call_temps[i]->sym == sym)
+                return TRUE;
+    return FALSE;
+}
+
+struct asym *ProcCallTemp(unsigned slot, unsigned size)
+{
+    struct proc_info *info = CurrProc->e.procinfo;
+    struct dsym *local, *tail;
+    char name[64];
+    unsigned suffix = 0;
+    if (slot >= 32) return NULL;
+    if (!info->call_temps) {
+        if (Parse_Pass != PASS_1) return NULL;
+        info->call_temps = LclAlloc(32 * sizeof(*info->call_temps));
+        memset(info->call_temps, 0, 32 * sizeof(*info->call_temps));
+    }
+    local = info->call_temps[slot];
+    if (!local) {
+        if (Parse_Pass != PASS_1) return NULL;
+        do { sprintf(name, "@CallResult$%u$%u", slot, suffix++); }
+        while (SymFindLocal(name) || SymFind(name));
+        local = (struct dsym *)SymLCreate(name);
+        if (!local) return NULL;
+        local->sym.state = SYM_STACK;
+        local->sym.isdefined = TRUE;
+        local->sym.used = TRUE;
+        local->sym.mem_type = MT_BYTE;
+        local->sym.Ofssize = ModuleInfo.Ofssize;
+        local->sym.total_length = 1;
+        local->sym.total_size = size;
+        if (!info->locallist) info->locallist = local;
+        else {
+            for (tail = info->locallist; tail->nextlocal; tail = tail->nextlocal);
+            tail->nextlocal = local;
+        }
+        info->call_temps[slot] = local;
+    }
+    if (size > local->sym.total_size) local->sym.total_size = size;
+    return &local->sym;
+}
+
 ret_code LocalDir(int i, struct asm_tok tokenarray[])
 /*****************************************************/
 {
@@ -625,6 +674,8 @@ ret_code LocalDir(int i, struct asm_tok tokenarray[])
 	}
 
 	info = CurrProc->e.procinfo;
+
+
 #if STACKBASESUPP
 	/* ensure the fpo bit is set - it's too late to set it in write_prologue().
 	* Note that the fpo bit is set only IF there are locals or arguments.
@@ -1413,8 +1464,13 @@ ret_code ParseProc(struct dsym *proc, int i, struct asm_tok tokenarray[], bool I
 	/* Could be a typedef/chain of typedefs terminating in a valid basic type UASM 2.46.8 */
 	/* UASM 2.46.9 put return type in () */
 
-	if (tokenarray[i + 1].tokval == T_VOIDARG)
+	if (tokenarray[i].token == T_OP_BRACKET)
+        proc->e.procinfo->explicit_return = TRUE;
+
+	if (tokenarray[i].token == T_OP_BRACKET && tokenarray[i+2].token == T_CL_BRACKET &&
+        (tokenarray[i + 1].tokval == T_VOIDARG || _stricmp(tokenarray[i+1].string_ptr, "void") == 0))
 	{
+        ret_type = RT_NONE;
 		i += 3;
 	}
 	else if (tokenarray[i].token == T_OP_BRACKET && tokenarray[i+2].token == T_CL_BRACKET && tokenarray[i+1].token == T_ID )
@@ -1815,6 +1871,8 @@ struct asym *CreateProc(struct asym *sym, const char *name, enum sym_state state
 		info->prologuearg = NULL;
 		info->flags = 0;
 		info->ret_type = 0xff;
+        info->explicit_return = FALSE;
+        info->call_temps = NULL;
 		switch (sym->state) {
 		case SYM_INTERNAL:
 			/* v2.04: don't use sym_add_table() and thus
@@ -2102,6 +2160,7 @@ ret_code CopyPrototype(struct dsym *proc, struct dsym *src)
 		return(ERROR);
 	memcpy(proc->e.procinfo, src->e.procinfo, sizeof(struct proc_info));
     /* Spill locations belong to this procedure, not the prototype. */
+    proc->e.procinfo->call_temps = NULL;
     proc->e.procinfo->debug_locations = NULL;
     proc->e.procinfo->vector_layout = NULL;
     proc->e.procinfo->vector_count = 0;
@@ -2165,6 +2224,16 @@ static void ProcFini(struct dsym *proc)
 				EmitWarn(3, PROCEDURE_ARGUMENT_OR_LOCAL_NOT_REFERENCED, curr->sym.name);
 		}
 	}
+if (Parse_Pass == PASS_1 && proc->e.procinfo->call_temps) {
+        proc->e.procinfo->localsize = 0;
+        if (ModuleInfo.Ofssize == USE64 &&
+            (ModuleInfo.basereg[USE64] == T_RSP || Win64UnifiedFrame(proc)))
+            SetLocalOffsets_RSP(proc->e.procinfo);
+        else if (proc->sym.langtype == LANG_SYSVCALL)
+            SetLocalOffsets_RBP_SYSV(proc->e.procinfo);
+        else
+            SetLocalOffsets(proc->e.procinfo);
+    }
 #if AMD64_SUPPORT
 	/* save stack space reserved for INVOKE if OPTION WIN64:2 is set */
 	if (Parse_Pass == PASS_1 &&

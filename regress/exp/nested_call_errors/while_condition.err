@@ -1,0 +1,2 @@
+..\src\nested_call_errors\while_condition.asm(11) : Error A2210: Syntax error: inline calls in .WHILE/.ELSEIF conditions require explicit control flow
+..\src\nested_call_errors\while_condition.asm(12) : Error A2247: Directive must be in control block

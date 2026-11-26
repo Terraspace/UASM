@@ -42,7 +42,7 @@ struct strentry
 
 struct macho_section_entry
 {
-	char *srcName;
+	const char *srcName;
 	struct section_64 section;
 	struct macho_section_entry *next;
 	int dif; /* padding to keep section size multiple of 16 */

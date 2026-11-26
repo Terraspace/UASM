@@ -24,6 +24,8 @@
 #include "proc.h"
 #include "expreval.h"
 #include "assume.h"
+#include "lqueue.h"
+#include "reswords.h"
 
 #define REMOVECOMENT 0 /* 1=remove comments from source       */
 
@@ -115,48 +117,6 @@ static char *SkipCallString(char *p)
         }
     }
     return p;
-}
-
-static char *FindCallText(char *p, const char *text)
-{
-    size_t n = strlen(text);
-    while (*p) {
-        if (*p == '"' || *p == 39) { p = SkipCallString(p); continue; }
-        if (!strncmp(p, text, n)) return p;
-        p++;
-    }
-    return NULL;
-}
-
-/* We only allow a single level of nested calls */
-static void VerifyNesting(char *line, bool exprBracket)
-{
-	int depth = 0;
-	int maxdepth = (exprBracket) ? 3 : 2;
-	char *p = line;
-
-	// Reduce allowed nesting for system-v calls as arginvoke doesn't support it yet.
-	if ((Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC) && Options.sub_format == SFORMAT_64BIT)
-		maxdepth = (exprBracket) ? 2 : 1;
-	
-	// Same for 32bit code for now..
-	if (Options.sub_format != SFORMAT_64BIT)
-		maxdepth = (exprBracket) ? 2 : 1;
-	
-	while (*p)
-	{
-        if (*p == '"' || *p == 39) { p = SkipCallString(p); continue; }
-		if (*p == '(')
-			depth++;
-		if (*p == ')')
-			depth--;
-		if (depth > maxdepth)
-		{
-			EmitErr(MAX_C_NESTING);
-			return;
-		}
-		p++;
-	}
 }
 
 static void ExpandObjCalls(char *line, struct asm_tok tokenarray[])
@@ -619,170 +579,60 @@ static void ExpandObjCalls(char *line, struct asm_tok tokenarray[])
 
 }
 
-/* Expand static object type method invocations */
+static bool CallAppend(char *out, const char *text, size_t length);
+
+/* Rewrite one static method at a time, then rescan. Raw source slices retain
+ * literal spelling and whitespace; the bounded builder also covers siblings
+ * and nested static calls without appending to an old expansion buffer. */
 static void ExpandStaticObjCalls(char *line, struct asm_tok tokenarray[])
 {
-	int i, j;
-	struct asym *sym = NULL;
-	int opIdx, clIdx;
-	int method;
-	int type;
-	char newline[MAX_LINE_LEN];
-	char *pStr;
-	int opCount = 0;
-	bool hasParams = FALSE;
-	bool inParam = FALSE;
-	bool inExpr = FALSE;
-	bool inProc = FALSE;
-	bool hasExprBracket = FALSE;
-	struct dsym *tsym = NULL;
-
-	memset(newline, 0, MAX_LINE_LEN);
-	pStr = newline;
-
-	for (i = 0; i < Token_Count; i++)
-	{
-		if (tokenarray[i].token == T_ID)
-		{
-			sym = SymSearch(tokenarray[i].string_ptr);
-			if (sym && sym->isClass)
-			{
-				if (tokenarray[i + 1].token == T_DOT && tokenarray[i + 2].token == T_ID && tokenarray[i + 3].token == T_OP_BRACKET)
-				{
-					
-					/* Scan backwards to check if we're in an HLL expression or call parameter */
-					if (i > 0)
-					{
-						for (j = i - 1; j >= 0; j--)
-						{
-							tsym = (struct dsym *)SymCheck(tokenarray[j].string_ptr);
-							if (tokenarray[j].token == T_DIRECTIVE && (tokenarray[j].dirtype == DRT_HLLSTART || tokenarray[j].dirtype == DRT_HLLEND))
-							{
-								inExpr = TRUE;
-								if (tokenarray[j + 1].token == T_OP_BRACKET || tokenarray[j + 1].tokval == '(')
-									hasExprBracket = TRUE;
-								else
-									hasExprBracket = FALSE;
-								break;
-							}
-							else if ((tokenarray[j].token == T_DIRECTIVE && tokenarray[j].dirtype == DRT_INVOKE) ||
-								strcmp(tokenarray[j].string_ptr, "arginvoke") == 0 ||
-								strcmp(tokenarray[j].string_ptr, "_INVOKE") == 0 ||
-								strcmp(tokenarray[j].string_ptr, "_I") == 0 ||
-								strcmp(tokenarray[j].string_ptr, "_VINVOKE") == 0 ||
-								strcmp(tokenarray[j].string_ptr, "_V") == 0 ||
-								strcmp(tokenarray[j].string_ptr, "_SINVOKE") == 0 ||
-								strcmp(tokenarray[j].string_ptr, "_DEREF") == 0 ||
-								strcmp(tokenarray[j].string_ptr, "_DEREFI") == 0 ||
-								strcmp(tokenarray[j].string_ptr, "uinvoke") == 0)
-							{
-								inParam = TRUE;
-								break;
-							}
-							else if (tokenarray[j].token == T_ID && tsym && tsym->sym.isproc)
-							{
-								inParam = TRUE;
-								inProc = TRUE;
-								break;
-							}
-						}
-					}
-					
-					// Allow expansion in an instruction.
-					if (tokenarray[i - 1].token == T_COMMA)
-						inExpr = TRUE;
-
-					// Allow expansion in a memory address [].
-					if (i > 0)
-					{
-						for (j = i - 1; j >= 0; j--)
-						{
-							if (tokenarray[j].token == T_OP_SQ_BRACKET)
-							{
-								inExpr = TRUE;
-								break;
-							}
-						}
-					}
-
-					opIdx = i + 3;
-					method = i + 2;
-					type = i;
-
-					// Find closing bracket.
-					opCount = 1;
-					for (j = opIdx + 1; j < Token_Count; j++)
-					{
-						if (tokenarray[j].token == T_OP_BRACKET)
-							opCount++;
-						else if (tokenarray[j].token == T_CL_BRACKET)
-							opCount--;
-						if (opCount == 0)
-						{
-							clIdx = j;
-							break;
-						}
-					}
-
-					// Are there parameters?
-					if (clIdx > opIdx + 1)
-						hasParams = TRUE;
-
-					// **** Build new line. ****
-					// Copy any pre-tokens
-					for (j = 0; j < i; j++)
-					{
-						pStr = strcpy(pStr, tokenarray[j].string_ptr);
-						pStr += strlen(tokenarray[j].string_ptr);
-						pStr = strcpy(pStr, " ") + 1;
-					}
-
-					if(inProc || inParam || inExpr)
-						pStr = strcpy(pStr, "_STATIC(") + 8;
-					else
-						pStr = strcpy(pStr, "_SINVOKE ") + 9;
-					strcpy(pStr, sym->name);
-					pStr += strlen(sym->name);
-					pStr = strcpy(pStr, ",") + 1;
-					strcpy(pStr, tokenarray[method].string_ptr);
-					pStr += strlen(tokenarray[method].string_ptr);
-					if (hasParams)
-					{
-						pStr = strcpy(pStr, ",") + 1;
-
-						for (j = opIdx + 1; j < clIdx; j++)
-						{
-							if (*tokenarray[j].string_ptr == '&')
-								pStr = strcpy(pStr, " ADDR ") + 6;
-							else
-							{
-								pStr = strcpy(pStr, tokenarray[j].string_ptr);
-								pStr += strlen(tokenarray[j].string_ptr);
-							}
-							//if( j < clIdx-1 )
-							//	pStr = strcpy(pStr, ",") + 1;
-						}
-					}
-					if (inProc || inParam || inExpr)
-						pStr = strcpy(pStr, ")") + 1;
-
-					// If there are more tokens after the closing bracket, add them.
-					if (clIdx < Token_Count-1)
-					{
-						for (i = clIdx+1; i < Token_Count; i++)
-						{
-							pStr = strcpy(pStr, tokenarray[i].string_ptr);
-							pStr += strlen(tokenarray[i].string_ptr);
-							pStr = strcpy(pStr, " ") + 1;
-						}
-					}
-
-					strcpy(line, newline);
-					Token_Count = Tokenize(line, 0, tokenarray, TOK_RESCAN);
-				}
-			}
-		}
-	}
+    int i;
+    for (i=0;i+3<Token_Count;++i) {
+        struct asym *sym;
+        int close, depth;
+        bool expression;
+        const char *source, *begin, *end, *scan, *part;
+        char rewritten[MAX_LINE_LEN];
+        if (tokenarray[i].token != T_ID || tokenarray[i+1].token != T_DOT ||
+            tokenarray[i+2].token != T_ID || tokenarray[i+3].token != T_OP_BRACKET)
+            continue;
+        sym=SymSearch(tokenarray[i].string_ptr);
+        if (!sym || !sym->isClass) continue;
+        depth=1;
+        for (close=i+4;close<Token_Count && depth;++close) {
+            if (tokenarray[close].token == T_OP_BRACKET) ++depth;
+            if (tokenarray[close].token == T_CL_BRACKET) --depth;
+        }
+        if (depth) { EmitErr(SYNTAX_ERROR_EX,"unmatched static-call parentheses"); return; }
+        --close;
+        expression=i != 0;
+        source=tokenarray[0].tokpos;
+        begin=tokenarray[i+3].tokpos+1;
+        end=tokenarray[close].tokpos;
+        rewritten[0]=0;
+        if (!CallAppend(rewritten,source,tokenarray[i].tokpos-source) ||
+            !CallAppend(rewritten,expression ? "_STATIC(" : "_SINVOKE ",expression ? 8 : 9) ||
+            !CallAppend(rewritten,sym->name,strlen(sym->name)) ||
+            !CallAppend(rewritten,",",1) ||
+            !CallAppend(rewritten,tokenarray[i+2].string_ptr,strlen(tokenarray[i+2].string_ptr))) return;
+        if (close > i+4) {
+            if (!CallAppend(rewritten,",",1)) return;
+            part=scan=begin;
+            while (scan<end) {
+                if (*scan == '"' || *scan == 39) { scan=SkipCallString((char *)scan); continue; }
+                if (*scan == '&') {
+                    if (!CallAppend(rewritten,part,scan-part) || !CallAppend(rewritten,"ADDR ",5)) return;
+                    part=++scan;
+                } else ++scan;
+            }
+            if (!CallAppend(rewritten,part,end-part)) return;
+        }
+        if (expression && !CallAppend(rewritten,")",1)) return;
+        if (!CallAppend(rewritten,end+1,strlen(end+1))) return;
+        strcpy(line,rewritten);
+        Token_Count=Tokenize(line,0,tokenarray,TOK_RESCAN);
+        i=-1;
+    }
 }
 
 static struct asym * TraverseEquate(struct asym *sym)
@@ -798,25 +648,341 @@ static struct asym * TraverseEquate(struct asym *sym)
 	return(resultSym);
 }
 
+/* Bounded C-style call lowering. Only return values are materialized: user
+ * operands remain assembler expressions, with volatile-register conflicts
+ * diagnosed instead of introducing implicit snapshots. */
+#define CALL_RESULT_LIMIT 32
+struct bounded_call {
+    int first, last, parent, depth, order, helper;
+    struct dsym *proc;
+    struct asym *temp;
+    const char *type, *reg, *store;
+    unsigned size;
+    char replacement[128];
+};
+
+static bool CallReturn(struct bounded_call *c)
+{
+    enum returntype r = c->proc->e.procinfo->ret_type;
+    c->store = "mov";
+    if (!c->proc->e.procinfo->explicit_return || r == RT_NONE) {
+        EmitErr(SYNTAX_ERROR_EX, "value-producing call requires an explicit non-void return type");
+        return FALSE;
+    }
+    switch (r) {
+    case RT_BYTE: case RT_SBYTE: c->type = r == RT_BYTE ? "byte" : "sbyte"; c->reg="al"; c->size=1; break;
+    case RT_WORD: case RT_SWORD: c->type = r == RT_WORD ? "word" : "sword"; c->reg="ax"; c->size=2; break;
+    case RT_DWORD: case RT_SDWORD: c->type = r == RT_DWORD ? "dword" : "sdword"; c->reg="eax"; c->size=4; break;
+    case RT_PTR: case RT_QWORD: case RT_SQWORD:
+        if (ModuleInfo.Ofssize != USE64 && r != RT_PTR) goto unsupported;
+        c->size = ModuleInfo.Ofssize == USE64 ? 8 : 4;
+        c->type = c->size == 8 ? "qword" : "dword";
+        c->reg = c->size == 8 ? "rax" : "eax"; break;
+    case RT_REAL4: case RT_REAL8:
+        /* UASM explicit REAL return contracts use XMM0, including Win32. */
+        c->size = r == RT_REAL4 ? 4 : 8;
+        c->type = r == RT_REAL4 ? "real4" : "real8";
+        c->store = r == RT_REAL4 ? (MODULEARCH == ARCH_AVX ? "vmovss" : "movss") : (MODULEARCH == ARCH_AVX ? "vmovsd" : "movsd");
+        c->reg = "xmm0"; break;
+    case RT_XMM:
+        if (ModuleInfo.Ofssize != USE64) goto unsupported;
+        c->size=16; c->type="xmmword"; c->reg="xmm0"; c->store=MODULEARCH == ARCH_AVX ? "vmovdqu" : "movdqu"; break;
+    case RT_YMM:
+        if (ModuleInfo.Ofssize != USE64) goto unsupported;
+        c->size=32; c->type="ymmword"; c->reg="ymm0"; c->store="vmovdqu"; break;
+    case RT_ZMM:
+        if (ModuleInfo.Ofssize != USE64) goto unsupported;
+        c->size=64; c->type="zmmword"; c->reg="zmm0"; c->store="vmovdqu64"; break;
+    default: goto unsupported;
+    }
+    return TRUE;
+unsupported:
+    EmitErr(SYNTAX_ERROR_EX, "unsupported nested-call return convention");
+    return FALSE;
+}
+
+static bool CallVolatile(unsigned reg, bool sysv)
+{
+    unsigned kind = GetValueSp(reg), n = GetRegNo(reg);
+    if (kind & (OP_XMM | OP_YMM | OP_ZMM)) {
+        if (ModuleInfo.Ofssize != USE64 || sysv) return TRUE;
+        /* Win64 preserves only the low 128 bits of XMM6..15. */
+        return n < 6 || n > 15 || (kind & (OP_YMM | OP_ZMM));
+    }
+    if (kind & OP_R) {
+        if (reg == T_AH) n=0;
+        if (reg == T_CH) n=1;
+        if (reg == T_DH) n=2;
+        if (reg == T_BH) n=3;
+        return n <= 2 || (ModuleInfo.Ofssize == USE64 &&
+            ((n >= 8 && n <= 11) || (sysv && (n == 6 || n == 7))));
+    }
+    return FALSE;
+}
+
+/* Text equates and register aliases must not hide a conflicting address.
+ * Scan their identifiers without interpreting quoted literal contents. */
+static bool CallTextVolatile(const char *text, bool sysv, unsigned depth)
+{
+    char name[MAX_ID_LEN+1];
+    if (depth > 16) return TRUE;
+    while (*text) {
+        const char *begin;
+        size_t length;
+        unsigned reg;
+        struct asym *sym;
+        if (*text == '"' || *text == 39) { text=SkipCallString((char *)text); continue; }
+        if (!is_valid_id_start(*text) && !(text[0] == ':' && text[1] == ':')) { ++text; continue; }
+        begin=text;
+        if (text[0] == ':') text+=2; else ++text;
+        while (is_valid_id_char(*text) || (text[0] == ':' && text[1] == ':')) {
+            if (text[0] == ':') text+=2; else ++text;
+        }
+        length=text-begin;
+        if (!length || length > MAX_ID_LEN) return TRUE;
+        memcpy(name,begin,length); name[length]=0;
+        reg=FindResWord(name,(unsigned char)length);
+        if (reg && reg < SPECIAL_LAST && SpecialTable[reg].type == RWT_REG) {
+            if (CallVolatile(reg,sysv)) return TRUE;
+        } else if ((sym=SymCheck(name)) && sym->state == SYM_TMACRO && sym->string_ptr) {
+            if (CallTextVolatile(sym->string_ptr,sysv,depth+1)) return TRUE;
+        }
+    }
+    return FALSE;
+}
+
+static bool CallOperandVolatile(struct asm_tok *token, bool sysv)
+{
+    struct asym *sym;
+    if (token->token == T_REG) return CallVolatile(token->tokval,sysv);
+    if (token->token == T_ID && (sym=SymCheck(token->string_ptr)) &&
+        sym->state == SYM_TMACRO && sym->string_ptr)
+        return CallTextVolatile(sym->string_ptr,sysv,0);
+    return FALSE;
+}
+
+static bool CallAppend(char *out, const char *text, size_t length)
+{
+    size_t used = strlen(out);
+    if (used + length >= MAX_LINE_LEN) {
+        EmitError(STRING_OR_TEXT_LITERAL_TOO_LONG);
+        return FALSE;
+    }
+    memcpy(out+used, text, length); out[used+length]=0;
+    return TRUE;
+}
+
+/* Copy source text, replacing immediate child calls with typed frame operands. */
+static bool CallRender(char *out, const char *begin, const char *end,
+                       int parent, struct bounded_call *calls, int count,
+                       struct asm_tok *tokens)
+{
+    int i;
+    for (i=0; i<count; ++i) if (calls[i].parent == parent) {
+        const char *first=tokens[calls[i].first].tokpos;
+        const char *last=tokens[calls[i].last].tokpos+1;
+        if (first < begin || last > end) continue;
+        if (!CallAppend(out,begin,first-begin) ||
+            !CallAppend(out,calls[i].replacement,strlen(calls[i].replacement))) return FALSE;
+        begin=last;
+    }
+    return CallAppend(out,begin,end-begin);
+}
+
+static void CallOrder(int node, struct bounded_call *calls, int count, int *order)
+{
+    int i;
+    for (i=0; i<count; ++i) if (calls[i].parent == node) CallOrder(i,calls,count,order);
+    calls[node].order=(*order)++;
+}
+
+/* The OO macrolib records the same explicit return contract on its generated
+ * PROC and prototype symbols. Resolve that contract before invoking the helper. */
+static struct dsym *CallMethodPrototype(struct asm_tok *tokens, int first, int helper)
+{
+    const char *name, *leaf, *method;
+    size_t head;
+    char full[MAX_ID_LEN+1];
+    struct asym *sym;
+    unsigned depth=0;
+    if (first+5 >= Token_Count || tokens[first+3].token != T_COMMA) return NULL;
+    name=tokens[first+2].string_ptr;
+    method=tokens[first+4].string_ptr;
+    leaf=SymLeafName(name); head=leaf-name;
+    if (strlen(name)+strlen(method)+6 > MAX_ID_LEN) return NULL;
+    memcpy(full,name,head);
+    sprintf(full+head,"_%s_%s%s",leaf,method,helper==2 ? "Pto" : "");
+    sym=SymCheck(full);
+    while (sym && !sym->isproc && sym->target_type && depth++<16) sym=sym->target_type;
+    return sym && sym->isproc ? (struct dsym *)sym : NULL;
+}
+
+/* Returns -1 for a diagnosed error, 0 for the existing flat path, 1 when
+ * children have been emitted and line contains the remaining outer call. */
+static int LowerBoundedCalls(char *line, struct asm_tok *tokens)
+{
+    struct bounded_call calls[CALL_RESULT_LIMIT+1];
+    int count=0, i,j,k,paren,order=0,roots=0,slot=0,root=-1;
+    bool sysv = Options.output_format == OFORMAT_ELF && ModuleInfo.Ofssize == USE64;
+    bool directInvoke = tokens[0].tokval == T_INVOKE ||
+        _stricmp(tokens[0].string_ptr,"_SINVOKE") == 0 || _stricmp(tokens[0].string_ptr,"_DEREF") == 0 ||
+        _stricmp(tokens[0].string_ptr,"_VINVOKE") == 0 || _stricmp(tokens[0].string_ptr,"_INVOKE") == 0 ||
+        _stricmp(tokens[0].string_ptr,"_DEREFR") == 0 || _stricmp(tokens[0].string_ptr,"_DEREFRR") == 0;
+    char rewritten[MAX_LINE_LEN], generated[CALL_RESULT_LIMIT][MAX_LINE_LEN];
+    char stores[CALL_RESULT_LIMIT][256];
+    const char *source=tokens[0].tokpos;
+    memset(calls,0,sizeof(calls));
+    for (i=0;i<Token_Count-1;++i) {
+        struct dsym *proc;
+        int helper;
+        if (tokens[i].token != T_ID || tokens[i+1].token != T_OP_BRACKET) continue;
+        helper = _stricmp(tokens[i].string_ptr,"_STATIC") == 0 ? 1 :
+                 (_stricmp(tokens[i].string_ptr,"_DEREFI") == 0 ? 2 : 0);
+        proc=helper ? CallMethodPrototype(tokens,i,helper) :
+            (struct dsym *)TraverseEquate(SymCheck(tokens[i].string_ptr));
+        if (!proc || !proc->sym.isproc) {
+            if (helper) { EmitErr(SYNTAX_ERROR_EX,"method call requires a resolved typed prototype"); return -1; }
+            continue;
+        }
+        if (i && (tokens[i-1].tokval == T_PROTO || tokens[i-1].tokval == T_PROC)) continue;
+        paren=1;
+        for (j=i+2;j<Token_Count && paren;++j) {
+            if (tokens[j].token == T_OP_BRACKET) ++paren;
+            if (tokens[j].token == T_CL_BRACKET) --paren;
+        }
+        if (paren) { EmitError(EXPECTED_CL_SQ_BRACKET); return -1; }
+        if (count == CALL_RESULT_LIMIT+1) {
+            EmitErr(SYNTAX_ERROR_EX,"too many nested-call results (maximum 32)"); return -1;
+        }
+        calls[count].first=i; calls[count].last=j-1; calls[count].proc=proc; calls[count].helper=helper;
+        calls[count].parent=-1; calls[count].depth=directInvoke ? 2 : 1;
+        for (k=count-1;k>=0;--k) if (calls[k].last > i) {
+            calls[count].parent=k; calls[count].depth=calls[k].depth+1; break;
+        }
+        if (calls[count].depth > 3) { EmitError(MAX_C_NESTING); return -1; }
+        if (calls[count].parent == -1) { ++roots; root=count; }
+        ++count;
+    }
+    if (!count) return 0;
+    /* These directives arrange their condition at another control-flow site.
+     * Emitting a call before the directive would execute it in the wrong block. */
+    if (tokens[0].tokval == T_DOT_WHILE || tokens[0].tokval == T_DOT_ELSEIF) {
+        EmitErr(SYNTAX_ERROR_EX,"inline calls in .WHILE/.ELSEIF conditions require explicit control flow");
+        return -1;
+    }
+    for (i=0;i<count;++i)
+        if (calls[i].proc->sym.langtype == LANG_SYSVCALL) sysv=TRUE;
+    /* Registers read by the enclosing expression survive every call too.
+     * A plain MOV/LEA register destination is written, not consumed. */
+    if (!directInvoke && roots == 1 && calls[root].first) {
+        for (j=0;j<Token_Count;++j) {
+            if (j == calls[root].first) { j=calls[root].last; continue; }
+            if (j == 1 && (tokens[0].tokval == T_LEA || strncasecmp(tokens[0].string_ptr,"mov",3) == 0 || strncasecmp(tokens[0].string_ptr,"vmov",4) == 0)) continue;
+            if (CallOperandVolatile(&tokens[j],sysv)) {
+                EmitErr(SYNTAX_ERROR_EX,"volatile register operand conflicts with value-producing call"); return -1;
+            }
+        }
+    }
+    /* A single flat expression still needs an explicit return contract. */
+    if (count == 1 && !directInvoke) {
+        if (calls[0].first && !CallReturn(&calls[0])) return -1;
+        return 0;
+    }
+    if (!directInvoke && roots != 1) { EmitError(MAX_C_CALLS); return -1; }
+    if (count - (directInvoke ? 0 : 1) > CALL_RESULT_LIMIT) {
+        EmitErr(SYNTAX_ERROR_EX,"too many nested-call results (maximum 32)"); return -1;
+    }
+    if (!CurrProc || ModuleInfo.Ofssize == USE16 || ModuleInfo.prologuemode != PEM_DEFAULT ||
+        (ModuleInfo.Ofssize == USE64 && CurrProc->e.procinfo->isframe && !ModuleInfo.frame_auto)) {
+        EmitErr(SYNTAX_ERROR_EX,"nested calls require an automatic procedure frame"); return -1;
+    }
+    for (i=0;i<count;++i) if (calls[i].parent == -1) CallOrder(i,calls,count,&order);
+    for (i=0;i<count;++i) {
+        bool value = directInvoke || i != root || calls[i].first != 0;
+        if (value && !CallReturn(&calls[i])) return -1;
+        /* Values consumed after any child/sibling call cannot depend on a
+         * volatile register, even through a memory-address expression. */
+        if (!calls[i].order) continue;
+        for (j=calls[i].first+2;j<calls[i].last;++j) {
+            for (k=0;k<count;++k) if (calls[k].parent == i && calls[k].first == j) break;
+            if (k<count) { j=calls[k].last; continue; }
+            if (CallOperandVolatile(&tokens[j],sysv)) {
+                EmitErr(SYNTAX_ERROR_EX,"volatile register operand conflicts with nested call"); return -1;
+            }
+        }
+    }
+    if (directInvoke) {
+        for (j=1;j<Token_Count;++j) {
+            for (k=0;k<count;++k) if (calls[k].parent == -1 && calls[k].first == j) break;
+            if (k<count) { j=calls[k].last; continue; }
+            if (CallOperandVolatile(&tokens[j],sysv)) {
+                EmitErr(SYNTAX_ERROR_EX,"volatile register operand conflicts with nested call"); return -1;
+            }
+        }
+    }
+    /* Assign stable slots before rendering. Results are reused between source
+     * statements, but never between simultaneously live calls. */
+    for (i=0;i<count;++i) if (directInvoke || i != root) {
+        calls[i].temp=ProcCallTemp(slot++,calls[i].size);
+        if (!calls[i].temp) { EmitErr(SYNTAX_ERROR_EX,"nested-call temporary unavailable"); return -1; }
+        sprintf(calls[i].replacement,"%s ptr %s",calls[i].type,calls[i].temp->name);
+    }
+    for (k=0;k<count;++k) for (i=0;i<count;++i) if (calls[i].order==k && (directInvoke || i!=root)) {
+        char *out=generated[k];
+        if (calls[i].helper) strcpy(out,calls[i].helper == 1 ? "_SINVOKE " : "_DEREF ");
+        else {
+            strcpy(out,"invoke ");
+            if (!CallAppend(out,tokens[calls[i].first].tokpos,
+                            tokens[calls[i].first+1].tokpos-tokens[calls[i].first].tokpos)) return -1;
+        }
+        if (calls[i].last > calls[i].first+2) {
+            if (!calls[i].helper) strcat(out,",");
+            if (!CallRender(out,tokens[calls[i].first+1].tokpos+1,tokens[calls[i].last].tokpos,
+                            i,calls,count,tokens)) return -1;
+        }
+        {
+            char addressed[MAX_LINE_LEN];
+            const char *scan=out, *start=out;
+            addressed[0]=0;
+            while (*scan) {
+                if (*scan == '"' || *scan == 39) { scan=SkipCallString((char *)scan); continue; }
+                if (*scan == '&') {
+                    if (!CallAppend(addressed,start,scan-start) || !CallAppend(addressed,"ADDR ",5)) return -1;
+                    start=++scan;
+                } else ++scan;
+            }
+            if (!CallAppend(addressed,start,scan-start)) return -1;
+            strcpy(out,addressed);
+        }
+        sprintf(stores[k],"%s %s,%s",calls[i].store,calls[i].replacement,calls[i].reg);
+    }
+    rewritten[0]=0;
+    if (directInvoke) {
+        if (!CallRender(rewritten,source,source+strlen(source),-1,calls,count,tokens)) return -1;
+    } else {
+        const char *begin=tokens[calls[root].first+1].tokpos+1;
+        const char *end=tokens[calls[root].last].tokpos;
+        if (!CallAppend(rewritten,source,begin-source) ||
+            !CallRender(rewritten,begin,end,root,calls,count,tokens) ||
+            !CallAppend(rewritten,end,strlen(end))) return -1;
+    }
+    for (k=0;k<slot;++k) { AddLineQueue(generated[k]); AddLineQueue(stores[k]); }
+    RunSourceLineQueue(FALSE);
+    strcpy(line,rewritten);
+    Token_Count=Tokenize(line,0,tokens,TOK_RESCAN);
+    return 1;
+}
+
 static void ExpandHllCalls(char *line, struct asm_tok tokenarray[], bool inParam, int argIdx, bool inExpr)
 {
 	int i, j;
 	struct dsym *sym;
 	char newline[MAX_LINE_LEN];
 	int clIdx, opIdx;
-	int tokenCount;
-	struct asm_tok *tokenarray2;
 	char *p = newline;
-	char idxStack[] = { 0, 0, 0, 0 };
-	int stackPt = -1;
-	char idxline[MAX_LINE_LEN];
-	char invCnt = 1;
-	bool hasExprBracket = FALSE;
-	bool expandedCall = FALSE;
 	char uCnt = 0;
 
 	strcpy(newline, line);
-	memset(&idxline, 0, MAX_LINE_LEN);
 
 	for (i = 0;i < Token_Count;i++)
 	{
@@ -838,10 +1004,6 @@ static void ExpandHllCalls(char *line, struct asm_tok tokenarray[], bool inParam
 						if (tokenarray[j].token == T_DIRECTIVE && (tokenarray[j].dirtype == DRT_HLLSTART || tokenarray[j].dirtype == DRT_HLLEND))
 						{
 							inExpr = TRUE;
-							if (tokenarray[j + 1].token == T_OP_BRACKET || tokenarray[j + 1].tokval == '(')
-								hasExprBracket = TRUE;
-							else
-								hasExprBracket = FALSE;
 							break;
 						}
 						else if ((tokenarray[j].token == T_DIRECTIVE && tokenarray[j].dirtype == DRT_INVOKE) ||
@@ -891,7 +1053,6 @@ static void ExpandHllCalls(char *line, struct asm_tok tokenarray[], bool inParam
 				if (clIdx == -1)
 					return;
 					
-				expandedCall = TRUE;
 
 				/* scan all tokens between opIdx and clIdx and replace & operator with ADDR */
 				for (j = opIdx; j < clIdx; j++)
@@ -965,9 +1126,8 @@ static void ExpandHllCalls(char *line, struct asm_tok tokenarray[], bool inParam
 					}
 					else if (inParam)
 					{
-						tokenarray[i].string_ptr = "arginvoke(%%,%%,";
-						tokenarray[i + 1].string_ptr = ""; 
-						tokenarray[i + 1].token = 0; 
+                        EmitErr(SYNTAX_ERROR_EX,"nested call requires a directly resolved typed procedure");
+                        return;
 					}
 				}
 					
@@ -997,7 +1157,7 @@ static void ExpandHllCalls(char *line, struct asm_tok tokenarray[], bool inParam
                         }
                         *p = 0;
                     }
-					if (j == 0 || tokenarray[j].tokval == T_ADDR || tokenarray[j].tokval == T_OFFSET)
+					if (j == 0 || tokenarray[j].tokval == T_PTR || tokenarray[j].tokval == T_ADDR || tokenarray[j].tokval == T_OFFSET)
 					{
 						strcpy(p, " ");
 						p++;
@@ -1008,60 +1168,6 @@ static void ExpandHllCalls(char *line, struct asm_tok tokenarray[], bool inParam
 				p = newline;
 			}
 		}
-	}
-
-	/* Scan string and insert argument numbers */
-	// MyProc(MyProc3(), 20)	 MyProc(10, MyProc4())
-	// invoke MyProc,arginvoke(0,MyProc3),20
-	// invoke MyProc,10,arginvoke(0,MyProc4)
-	//find invoke, increment stackPt and set argno 1... for every comma not in () increment argno
-	//find uinvoke or arginvoke increment stackPt and set argno 1... for every comma after opIdx and before closeIdx and not in () increment argno... at closeIdx decrement StackPt
-	//at each step write argno to idxline string
-	//finally replace place-holder with idxline value
-	if (expandedCall)
-	{
-		p = newline;
-		p = FindCallText(p, "invoke"); // even if the line only contains uinvoke, such as in an HLL expression this will still find it.
-		if (p != NULL)
-		{
-			bool inBrackets = FALSE;
-			j = p ? (int)(p - (char *)newline) : 0;
-			stackPt++;
-			idxStack[stackPt] = 0;
-			while (*p)
-			{
-				if (*p == '"' || *p == 39) {
-                    char *end = SkipCallString(p);
-                    while (p < end) { idxline[j++] = idxStack[stackPt]; p++; }
-                    continue;
-                }
-                idxline[j++] = idxStack[stackPt];
-				if (*p == '(')
-					inBrackets = TRUE;
-				if (*p == ')')
-					inBrackets = FALSE;
-				if (!inBrackets && *p == ',')
-					idxStack[stackPt]++;
-				p++;
-			}
-		}
-		p = newline;
-		p = FindCallText(p, "arginvoke(");
-		j = p ? (int)(p - (char *)newline) : 0;
-		while (p)
-		{
-			if (idxline[j] == 0) idxline[j] = 1;
-			*(p + 10) = (char)(((idxline[j] & 0xf0) >> 4) + 48);
-			*(p + 11) = (char)(((idxline[j] & 0x0f)) + 48);
-			*(p + 13) = (char)(((invCnt & 0xf0) >> 4) + 48);
-			*(p + 14) = (char)(((invCnt & 0x0f)) + 48);
-			p = FindCallText(p + 1, "arginvoke(");
-			invCnt++;
-			j = p ? (int)(p - (char *)newline) : 0;
-		}
-
-		/* Ensure max nesting depth isn't exceeded */
-		VerifyNesting(newline, hasExprBracket);
 	}
 
 	/* Transfer new source line back for token rescan */
@@ -1169,7 +1275,7 @@ int PreprocessLine( char *line, struct asm_tok tokenarray[] )
         return( Token_Count );
 #endif
 
-	if (!Options.nomlib && Options.hlcall)
+	if (!Options.nomlib && Options.hlcall && CurrIfState == BLOCK_ACTIVE)
 	{
 		// Hll and Object style call expansion is only valid inside a code section, AND if the line contains ( ) or ->.
 		if (CurrSeg && (strcmp(CurrSeg->sym.name, "_TEXT") == 0 || strcmp(CurrSeg->sym.name, "_flat") == 0) && PossibleCallExpansion( tokenarray ))
@@ -1187,7 +1293,8 @@ int PreprocessLine( char *line, struct asm_tok tokenarray[] )
 				strcpy(line, cline);
 				Token_Count = Tokenize(line, 0, tokenarray, TOK_RESCAN);
 			}
-			ExpandHllCalls(cline, tokenarray, FALSE, 0, FALSE);
+			if (LowerBoundedCalls(cline, tokenarray) < 0) return 0;
+            ExpandHllCalls(cline, tokenarray, FALSE, 0, FALSE);
 			if (strcmp(cline, line) != 0)
 			{
 				strcpy(line, cline);

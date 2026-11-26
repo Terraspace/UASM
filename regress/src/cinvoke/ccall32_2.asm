@@ -13,7 +13,7 @@ includelib  user32.lib
 includelib  msvcrt.lib
 
 printf      PROTO C :PTR, :VARARG
-sum         PROTO :DWORD, :DWORD
+sum         PROTO (DWORD) :DWORD, :DWORD
 sumAsFlt    PROTO (REAL4) :DWORD, :DWORD
 
 .data
@@ -23,7 +23,7 @@ str2        db '%f',13,10,0
 
 .code
 
-start:
+start PROC
 
     sum( 90, sum( 20, 10 ) )
     printf( ADDR str1, sum( 80, 20 ) )
@@ -31,6 +31,8 @@ start:
 	printf( "%f\n", sumAsFlt( 20, 30 ) )
 	
     invoke  ExitProcess,0
+
+start ENDP
 
 sum PROC x:DWORD, y:DWORD
     mov eax,x

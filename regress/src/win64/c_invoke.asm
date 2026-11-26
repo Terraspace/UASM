@@ -13,9 +13,9 @@ printf      PROTO :ptr, :vararg
 MYTYPE TYPEDEF QWORD
 
 MyProc  PROTO (dword) :dword, :qword
-MyProc2 PROTO :PTR
+MyProc2 PROTO (qword) :PTR
 MyProc3 PROTO (dword)
-MyProc4 PROTO
+MyProc4 PROTO (qword)
 MyProc5 PROTO (real4) :real4
 MyProc6 PROTO (byte) :byte
 MyProc7 PROTO (dword) :byte, :word, :dword, :qword, :real4, :qword
@@ -36,7 +36,7 @@ nameString db "Mr Bubbles",0
 
 .code
 
-start:
+start PROC
 
 	; This case should generate an error of MAX CALLS allowed.
 	;.if( MyProc(10,20) == MyProc3() )
@@ -99,6 +99,8 @@ start:
 		 30 )
 
 	invoke ExitProcess,0
+
+start ENDP
 
 MyProc PROC (dword) aVar:DWORD, bVar:QWORD
    movsxd rax,aVar

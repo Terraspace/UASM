@@ -7,7 +7,7 @@
 	d1 dd 32
 	.code
 
-foo	proc a:dword
+foo	proc (dword) a:dword
 	ret
 foo	endp
 

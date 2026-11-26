@@ -1181,14 +1181,14 @@ continue_scan:
  * varname.abc -> . is an operator
  */
 
-#define is_valid_id_start( ch )  ( islalpha(ch) || ch=='_' || ch=='@' || ch=='$' || ch=='?' )
+#define is_token_id_start( ch )  ( islalpha(ch) || ch=='_' || ch=='@' || ch=='$' || ch=='?' )
 
 ret_code GetToken( struct asm_tok token[], struct line_status *p )
 /****************************************************************/
 {
     if( isldigit( *p->input ) ) {
         return( get_number( token, p ) );
-    } else if( is_valid_id_start( *p->input ) || (p->input[0] == ':' && p->input[1] == ':' && is_valid_id_start(p->input[2]) && (p->index == 0 || token[-1].token != T_REG)) ) {
+    } else if( is_token_id_start( *p->input ) || (p->input[0] == ':' && p->input[1] == ':' && is_token_id_start(p->input[2]) && (p->index == 0 || token[-1].token != T_REG)) ) {
         return( get_id( token, p ) );
     } else if( *p->input == '.' &&
 #if DOTNAMEX /* allow dots within identifiers */

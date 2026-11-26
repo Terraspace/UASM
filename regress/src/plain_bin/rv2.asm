@@ -11,7 +11,7 @@ option flat:1
 
 	use32
 
-foo	proc stdcall a:dword
+foo	proc stdcall (dword) a:dword
 	ret
 foo	endp
 

@@ -1,0 +1,1 @@
+..\src\nested_call_errors\no_prologue.asm(12) : Error A2210: Syntax error: nested calls require an automatic procedure frame

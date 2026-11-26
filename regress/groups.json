@@ -285,5 +285,34 @@
   "literal_call_errors": [
     "-q",
     "-win64"
+  ],
+  "nested_calls64": [
+    "-q",
+    "-win64"
+  ],
+  "nested_calls32": [
+    "-q",
+    "-coff"
+  ],
+  "nested_callself": [
+    "-q",
+    "-elf64"
+  ],
+  "nested_call_errors": [
+    "-q",
+    "-win64"
+  ],
+  "nested_calls_cv8": [
+    "-q",
+    "-win64",
+    "-Zi8"
+  ],
+  "nested_call_errors32": [
+    "-q",
+    "-coff"
+  ],
+  "nested_call_errorself": [
+    "-q",
+    "-elf64"
   ]
 }

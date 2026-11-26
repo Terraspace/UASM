@@ -242,7 +242,7 @@ void BuildCodeLine(char *buffer, const char *fmt, ...)
  * - restores input status
  */
 
-void RunLineQueue( void )
+void RunSourceLineQueue(bool generated)
 /***********************/
 {
     struct input_status oldstat;
@@ -251,7 +251,7 @@ void RunLineQueue( void )
 
     /* v2.03: ensure the current source buffer is still aligned */
     tokenarray = PushInputStatus( &oldstat );
-    ModuleInfo.GeneratedCode++;
+    if (generated) ModuleInfo.GeneratedCode++;
 
     /* v2.11: line queues are no longer pushed onto the file stack.
      * Instead, the queue is processed directly here.
@@ -270,8 +270,10 @@ void RunLineQueue( void )
         currline = nextline;
     }
 
-    ModuleInfo.GeneratedCode--;
+    if (generated) ModuleInfo.GeneratedCode--;
     PopInputStatus( &oldstat );
 
     return;
 }
+
+void RunLineQueue(void) { RunSourceLineQueue(TRUE); }
