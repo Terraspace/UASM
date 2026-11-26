@@ -1409,21 +1409,32 @@ static void DumpSymbols( void )
 #endif
 
 
-/* Distinct assembler symbols must not silently export/import one linker name. */
+/* Compare linker names case-sensitively, independently of OPTION CASEMAP. */
+static int NamespaceExportCompare(const void *a, const void *b)
+{
+    return strcmp((const char *)a, (const char *)b);
+}
+
+/* Distinct assembler symbols must not silently export/import one linker name.
+ * Mangle each name once, then sort: SDK headers can contain thousands of
+ * externals, making an all-pairs scan prohibitively expensive on every pass.
+ */
 void NamespaceCheckExports(void)
 {
-    struct asym *a = NULL, *b;
-    int ai = 0, bi;
-    char an[MAX_ID_LEN + 64], bn[MAX_ID_LEN + 64];
+    struct asym *sym = NULL;
+    int index = 0;
+    size_t count = 0, i;
+    char (*names)[MAX_ID_LEN + 64];
     if (!NamespaceUsed) return;
-    while ((a = SymEnum(a, &ai)) != NULL) {
-        if (!(a->ispublic || a->state == SYM_EXTERNAL)) continue;
-        Mangle(a, an);
-        bi = ai; b = a;
-        while ((b = SymEnum(b, &bi)) != NULL) {
-            if (!(b->ispublic || b->state == SYM_EXTERNAL)) continue;
-            Mangle(b, bn);
-            if (!strcmp(an, bn)) EmitErr(SYMBOL_ALREADY_DEFINED, an);
-        }
-    }
+    while ((sym = SymEnum(sym, &index)) != NULL)
+        if (sym->ispublic || sym->state == SYM_EXTERNAL) ++count;
+    if (count < 2) return;
+    names = MemAlloc(count * sizeof(*names));
+    sym = NULL; index = 0; i = 0;
+    while ((sym = SymEnum(sym, &index)) != NULL)
+        if (sym->ispublic || sym->state == SYM_EXTERNAL) Mangle(sym, names[i++]);
+    qsort(names, count, sizeof(*names), NamespaceExportCompare);
+    for (i = 1; i < count; ++i)
+        if (!strcmp(names[i-1], names[i])) EmitErr(SYMBOL_ALREADY_DEFINED, names[i]);
+    MemFree(names);
 }
