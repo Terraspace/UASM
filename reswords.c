@@ -266,7 +266,8 @@ uint_16 optable_idx[] = {
 /* table of instruction operand classes
 */
 const struct opnd_class opnd_clstab[] = {
-#define OpCls( op1, op2, op3 ) { { OP_ ## op1, OP_ ## op2 }, OP3_ ## op3 },
+/* operand_sets combines operand_type flags; retain the operand_type storage. */
+#define OpCls( op1, op2, op3 ) { { (enum operand_type)OP_ ## op1, (enum operand_type)OP_ ## op2 }, OP3_ ## op3 },
 #include "opndcls.h"
 #undef OpCls
 };
