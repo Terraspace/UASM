@@ -42,6 +42,8 @@
 #include "fastpass.h"
 #include "myassert.h"
 #include "pseudoFilter.h"
+#include "proc.h"
+#include "types.h"
 
 #define CONCATID 0 /* 0=most compatible (see backsl.asm) */
 #define MASMNUMBER 1 /* 1=Masm-compatible number scanning */
@@ -1018,6 +1020,20 @@ continue_scan:
         return( NOT_ERROR );
     }
     index = strstr(p->output, "::") ? 0 : FindResWord( p->output, size );
+    /* Namespace delimiters are contextual keywords. They cannot change scope
+     * inside a type/procedure, and member access always names an identifier.
+     * PROC/PROTO parameters are tokenized before CurrProc has been entered.
+     * Leave every other reserved word and its expansion flags unchanged.
+     */
+    if (index == T_NAMESPACE || index == T_ENDNAMESPACE) {
+        const struct asm_tok *line = buf - p->index;
+        if (CurrStruct || CurrProc ||
+            (p->index && (buf[-1].token == T_DOT || buf[-1].token == T_POINTER)) ||
+            (p->index > 1 && line[1].token == T_DIRECTIVE &&
+             (line[1].tokval == T_PROC || line[1].tokval == T_PROTO)))
+            index = 0;
+    }
+
     if( index == 0 ) {
         /* if ID begins with a DOT, check for OPTION DOTNAME.
          * if not set, skip the token and return a T_DOT instead!

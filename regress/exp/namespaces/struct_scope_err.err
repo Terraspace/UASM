@@ -1,1 +1,1 @@
-..\src\namespaces\struct_scope_err.asm(5) : Error A2141: Statement not allowed inside structure definition
+..\src\namespaces\struct_scope_err.asm(5) : Error A2210: Syntax error: namespace

@@ -453,7 +453,17 @@ ret_code StoreMacro( struct dsym *macro, int i, struct asm_tok tokenarray[], boo
             return( ERROR );
 
         if (tok[0].token == T_DIRECTIVE && tok[0].dirtype == DRT_NAMESPACE) {
-            EmitErr(SYNTAX_ERROR_EX, "namespace change inside macro definition");
+            const char *tail = ls.input;
+            /* Only delimiter-shaped lines change namespace. A macro can emit
+             * a field named NameSpace/EndNameSpace or call such a member; its
+             * identifiers are classified in the expansion site's context.
+             */
+            while (isspace((unsigned char)*tail)) ++tail;
+            if (tok[0].tokval == T_NAMESPACE)
+                while (is_valid_id_char(*tail)) ++tail;
+            while (isspace((unsigned char)*tail)) ++tail;
+            if (!*tail || *tail == ';')
+                EmitErr(SYNTAX_ERROR_EX, "namespace change inside macro definition");
         }
         /* v2.05: GetTextLine() doesn't concat lines anymore.
          * So if a backslash is found in the current source line,
