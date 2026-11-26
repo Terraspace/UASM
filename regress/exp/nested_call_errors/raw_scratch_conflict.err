@@ -1,2 +1,1 @@
 ../src/nested_call_errors/raw_scratch_conflict.asm(20) : Error A2210: Syntax error: RAW call argument conflicts with R11 dispatch scratch register
-../src/nested_call_errors/raw_scratch_conflict.asm(20) : Error A2210: Syntax error: rawPtr

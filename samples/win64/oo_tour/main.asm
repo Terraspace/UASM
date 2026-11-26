@@ -67,7 +67,10 @@ METHOD Person, Init, <QWORD>, <USES rsi rdi>, years:dword,namePtr:ptr
  mov [rcx].age,eax
  mov rax,namePtr
  mov [rcx].nameText,rax
- ; Company is attached by the owner after allocation.
+ ; Nested allocation in a namespaced METHOD: constructor returns its own This.
+ mov rax,_NEW(Company)
+ mov rcx,thisPtr
+ mov [rcx].company,rax
  mov rax,thisPtr         ; constructor contract: return this, even after calls
  ret
 ENDMETHOD
@@ -140,20 +143,21 @@ FloatIdentity proc value:real4
 FloatIdentity endp
 
 Start proc frame uses rbx rsi rdi r15
- LOCAL other:Model::psrPerson,typedEntity:ptr Model::Entity,employer:Model::psrCompany
+ LOCAL other:Model::psrPerson,typedEntity:ptr Model::Entity
  LOCAL result:real4,exitCode:dword,written:dword,output:qword
  mov other,0
  mov exitCode,1
  mov person,_NEW(Model::Person,30,"Ada")
  cmp person,0
  je cleanup
- mov rax,_NEW(Model::Company)
- test rax,rax
- jz cleanup
- mov rcx,person
- mov [rcx].Model::Person.company,rax
+ mov rax,person
+ cmp [rax].Model::Person.company,0
+ je cleanup
  mov other,_NEW(Model::Person,40,"Alan")
  cmp other,0
+ je cleanup
+ mov rax,other
+ cmp [rax].Model::Person.company,0
  je cleanup
  ; Single-character argument; fixed bug used to fail here.
  person->SetAge(7)
@@ -168,16 +172,12 @@ Start proc frame uses rbx rsi rdi r15
  person->GetAge()
  cmp eax,9
  jne cleanup
- person->Calc(FloatIdentity(1.0))
- movss result,xmm0
+ movss result,person->Calc(FloatIdentity(1.0))
  movss xmm0,result
  ucomiss xmm0,FP4(2.0)
  jne cleanup
- ; chained object pointers can also be loaded into a typed LOCAL
- mov rax,person
- mov rax,[rax].Model::Person.company
- mov employer,rax
- employer->Adjust(2.0)
+ ; Chained method dispatch through a namespaced pointer field.
+ person->company->Adjust(2.0)
  ucomiss xmm0,FP4(3.0)
  jne cleanup
  ; Direct and vtable legacy helpers also accept namespace-qualified types.
@@ -186,6 +186,9 @@ Start proc frame uses rbx rsi rdi r15
  movss result,_I(Model::Person,Calc,person,1.0)
  movss xmm0,result
  ucomiss xmm0,FP4(2.0)
+ jne cleanup
+ mov ebx,_I(Model::Person,GetAge,person)
+ cmp ebx,8
  jne cleanup
  mov ebx,_V(person,Model::Person,GetAge)
  cmp ebx,8

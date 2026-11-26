@@ -511,8 +511,8 @@ int RunMacro( struct dsym *macro, int idx, struct asm_tok tokenarray[], char *ou
                                 ptr += strlen( ptr );
                                 /* copy spaces behind text macro */
                                 if ( tokenarray[idx+1].token != T_FINAL && tokenarray[idx+1].token != T_COMMA ) {
-                                    i = tokenarray[idx+1].tokpos - ( tokenarray[idx].tokpos + sym->name_size );
-                                    memcpy( ptr, tokenarray[idx].tokpos + sym->name_size, i );
+                                    i = tokenarray[idx+1].tokpos - ( tokenarray[idx].tokpos + strlen(tokenarray[idx].string_ptr) );
+                                    memcpy( ptr, tokenarray[idx].tokpos + strlen(tokenarray[idx].string_ptr), i );
                                     ptr += i;
                                 }
                                 /**/myassert( ptr < parmstrings + PARMSTRINGSIZE );
@@ -1067,10 +1067,8 @@ static ret_code ExpandTMacro( char * const outbuf, struct asm_tok tokenarray[], 
                         return( ERROR );
                     }
                     DebugMsg1(("ExpandTMacro(%u): repl >%s< by >%s<\n", level, sym->name, buffer+len ));
-                    //if ( level || ( tokenarray[i+1].token != T_FINAL && tokenarray[i+1].token != T_COMMA ))
-                        p = tokenarray[i].tokpos + sym->name_size;
-                    //else
-                    //    p = tokenarray[i+1].tokpos;
+                    /* A namespaced symbol name may be longer than its source spelling. */
+                    p = tokenarray[i].tokpos + strlen(tokenarray[i].string_ptr);
                     strcat( buffer+len, p );
                     strcpy( outbuf, buffer );
                     expanded = TRUE;

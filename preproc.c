@@ -142,6 +142,7 @@ static void ExpandObjCalls(char *line, struct asm_tok tokenarray[])
 	bool gotOpenSqr = FALSE;
 	char methodName[MAX_LINE_LEN];
 	char indirectAddr[MAX_LINE_LEN];
+    char receiverType[MAX_LINE_LEN];
 	char *pMethodStr = methodName;
 	char *pStr = newline;
 	char *pType = NULL;
@@ -154,7 +155,6 @@ static void ExpandObjCalls(char *line, struct asm_tok tokenarray[])
 	char pcs[16];
 	bool didExpand = TRUE;
 	char refStr[MAX_LINE_LEN];
-	char *pRefStr = refStr;
 	struct sfield *field = NULL;
 
 	strcpy(newline, line);
@@ -167,8 +167,10 @@ static void ExpandObjCalls(char *line, struct asm_tok tokenarray[])
 		memset(newline, 0, MAX_LINE_LEN);
 		memset(&refStr, 0, MAX_LINE_LEN);
 		pStr = newline;
-		pRefStr = refStr;
 		didExpand = FALSE;
+        derefCount = 0;
+        type = NULL;
+        inExpr = inParam = FALSE;
 		paramCount = 0;
 		for (i = 0; i < Token_Count; i++)
 		{
@@ -402,24 +404,21 @@ static void ExpandObjCalls(char *line, struct asm_tok tokenarray[])
 							paramCount++;
 						}
 					}
-					else if (type && type->sym.isClass)
-					{
-						foundProc = FALSE;
-						if (derefCount == 0)
-						{
-							strcpy(pRefStr, pType);
-							pRefStr += strlen(pType);
-						}
-						else
-						{
-							pRefStr = strcpy(pRefStr, "rcx") + 3;
-						}
-						pRefStr = strcpy(pRefStr, ",") + 1;
-						strcpy(pRefStr, type->sym.name);
-						pRefStr += strlen(type->sym.name);
-						strcpy(pType, type->sym.name); // Reset pType to the type name.
-
-					}
+                    else if (type && type->sym.isClass) {
+                        foundProc = FALSE;
+                        if (derefCount == 0) {
+                            if (!CallAppend(refStr,pType,strlen(pType)) ||
+                                !CallAppend(refStr,",",1) ||
+                                !CallAppend(refStr,type->sym.name,strlen(type->sym.name))) return;
+                        } else {
+                            /* Record the parent's field path before changing to
+                             * the next object's type (supports chains beyond two). */
+                            if (!CallAppend(refStr,",rcx,",5) ||
+                                !CallAppend(refStr,pType,strlen(pType))) return;
+                        }
+                        strcpy(receiverType,type->sym.name);
+                        pType = receiverType; /* Never overwrite token storage. */
+                    }
 					else
 						EmitError(INVALID_POINTER);
 				}
@@ -459,6 +458,24 @@ static void ExpandObjCalls(char *line, struct asm_tok tokenarray[])
 					if (!gotClose)
 						EmitError(MISSING_RIGHT_PARENTHESIS_IN_EXPRESSION);
 				}
+
+                if (foundProc) {
+                    int actual = 0, depth = 0;
+                    int required = paramCount - (type->sym.isPtrTable ? 0 : 1);
+                    if (!gotOpen || !gotClose) return;
+                    if (clIdx > opIdx + 1) {
+                        actual = 1;
+                        for (j = opIdx + 1; j < clIdx; ++j) {
+                            if (tokenarray[j].token == T_OP_BRACKET || tokenarray[j].token == T_OP_SQ_BRACKET) ++depth;
+                            else if (tokenarray[j].token == T_CL_BRACKET || tokenarray[j].token == T_CL_SQ_BRACKET) --depth;
+                            else if (!depth && tokenarray[j].token == T_COMMA) ++actual;
+                        }
+                    }
+                    if (sym->e.procinfo->has_vararg) --required;
+                    if (actual < required) { EmitErr(TOO_FEW_ARGUMENTS_TO_INVOKE, sym->sym.name); return; }
+                    if (actual > required && !sym->e.procinfo->has_vararg) { EmitError(TOO_MANY_ARGUMENTS_TO_INVOKE); return; }
+                    if (sym->e.procinfo->has_vararg) paramCount = actual + (type->sym.isPtrTable ? 0 : 1);
+                }
 
                 if (foundProc && type->sym.isPtrTable) {
                     int first = firstDeRefIdx + 1;
@@ -503,6 +520,10 @@ static void ExpandObjCalls(char *line, struct asm_tok tokenarray[])
                     break;
                 }
 
+                if (foundProc) {
+                    for (j = 0; j <= firstDeRefIdx; ++j)
+                        if (tokenarray[j].token == T_INSTRUCTION) inExpr = TRUE;
+                }
 				if (foundProc)
 				{
 					if (!type->sym.isPtrTable)
@@ -552,12 +573,12 @@ static void ExpandObjCalls(char *line, struct asm_tok tokenarray[])
 
 					pStr = strcpy(pStr, ",") + 1;
 
-					if ((paramCount - 1) == 0 && !type->sym.isPtrTable) // For no argument case, put a dummy 0 in to be filtered out by deref
-					{
-						pStr = strcpy(pStr, "0") + 1;
-					}
-					else if(!type->sym.isPtrTable)
-						pStr = strcpy(pStr, "0,") + 2;
+                    /* A dummy first argument is skipped by the dispatch helper. */
+                    if (!type->sym.isPtrTable) {
+                        *pStr++ = '0';
+                        if (clIdx > opIdx + 1) *pStr++ = ',';
+                        *pStr = 0;
+                    }
 
 					for (j = opIdx + 1; j < clIdx; j++)
 					{
@@ -807,6 +828,27 @@ static bool CallOperandVolatile(struct asm_tok *token, bool sysv)
     return FALSE;
 }
 
+/* _DEREF's later receiver pairs contain a generated RCX, loaded by the
+ * helper after child calls. It is not a user value that must survive them.
+ * The initial receiver and every ordinary argument still undergo checks. */
+static bool CallDerefScratch(struct asm_tok *tokens, int first, int operand)
+{
+    int begin, argc, j, depth = 0, argument = 0;
+    if (tokens[operand].token != T_REG || tokens[operand].tokval != T_RCX) return FALSE;
+    if (_stricmp(tokens[first].string_ptr, "_DEREFI") == 0) begin = first + 2;
+    else if (_stricmp(tokens[first].string_ptr, "_DEREF") == 0) begin = first + 1;
+    else return FALSE;
+    if (begin + 4 >= Token_Count || tokens[begin+4].token != T_NUM) return FALSE;
+    argc = atoi(tokens[begin+4].string_ptr);
+    for (j = begin; j < operand; ++j) {
+        if (tokens[j].token == T_OP_BRACKET || tokens[j].token == T_OP_SQ_BRACKET) ++depth;
+        else if (tokens[j].token == T_CL_BRACKET || tokens[j].token == T_CL_SQ_BRACKET) --depth;
+        else if (!depth && tokens[j].token == T_COMMA) ++argument;
+    }
+    return !depth && argument >= argc + 6 && !((argument - argc - 6) & 1) &&
+        tokens[operand-1].token == T_COMMA && tokens[operand+1].token == T_COMMA;
+}
+
 static bool CallAppend(char *out, const char *text, size_t length)
 {
     size_t used = strlen(out);
@@ -955,7 +997,7 @@ static int LowerBoundedCalls(char *line, struct asm_tok *tokens)
         for (j=calls[i].first+2;j<calls[i].last;++j) {
             for (k=0;k<count;++k) if (calls[k].parent == i && calls[k].first == j) break;
             if (k<count) { j=calls[k].last; continue; }
-            if (CallOperandVolatile(&tokens[j],sysv)) {
+            if (CallOperandVolatile(&tokens[j],sysv) && !CallDerefScratch(tokens,calls[i].first,j)) {
                 EmitErr(SYNTAX_ERROR_EX,"volatile register operand conflicts with nested call"); return -1;
             }
         }
@@ -964,7 +1006,7 @@ static int LowerBoundedCalls(char *line, struct asm_tok *tokens)
         for (j=1;j<Token_Count;++j) {
             for (k=0;k<count;++k) if (calls[k].parent == -1 && calls[k].first == j) break;
             if (k<count) { j=calls[k].last; continue; }
-            if (CallOperandVolatile(&tokens[j],sysv)) {
+            if (CallOperandVolatile(&tokens[j],sysv) && !CallDerefScratch(tokens,0,j)) {
                 EmitErr(SYNTAX_ERROR_EX,"volatile register operand conflicts with nested call"); return -1;
             }
         }
@@ -1337,7 +1379,11 @@ int PreprocessLine( char *line, struct asm_tok tokenarray[] )
 				strcpy(line, cline);
 				Token_Count = Tokenize(line, 0, tokenarray, TOK_RESCAN);
 			}
-			ExpandObjCalls(cline, tokenarray);
+            {
+                unsigned errors = ModuleInfo.g.error_count;
+                ExpandObjCalls(cline, tokenarray);
+                if (ModuleInfo.g.error_count != errors) return 0;
+            }
 			if (strcmp(cline, line) != 0)
 			{
 				strcpy(line, cline);
