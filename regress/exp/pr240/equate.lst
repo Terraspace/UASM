@@ -90,6 +90,10 @@ _INVOKE  . . . . . . . . . . . .        Proc
 _ITEM  . . . . . . . . . . . . .        Func
 _ITEMR . . . . . . . . . . . . .        Func
 _NEW . . . . . . . . . . . . . .        Func
+_RAWI  . . . . . . . . . . . . .        Func
+_RAWINVOKE . . . . . . . . . . .        Proc
+_RAWRI . . . . . . . . . . . . .        Func
+_RAWRINVOKE  . . . . . . . . . .        Proc
 _RBXNEW  . . . . . . . . . . . .        Func
 _SINVOKE . . . . . . . . . . . .        Proc
 _STATIC  . . . . . . . . . . . .        Func

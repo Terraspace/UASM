@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations"><ProjectConfiguration Include="Debug|x64"><Configuration>Debug</Configuration><Platform>x64</Platform></ProjectConfiguration></ItemGroup>
+  <PropertyGroup Label="Globals"><ProjectGuid>{A7C3769F-9047-4AC7-B471-1064A936AF01}</ProjectGuid><Keyword>MakeFileProj</Keyword><ProjectName>oo_tour</ProjectName></PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Label="Configuration"><ConfigurationType>Makefile</ConfigurationType></PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <PropertyGroup>
+    <UasmPath Condition="'$(UasmPath)'==''">$(ProjectDir)..\..\..\x64\Release\UASM.exe</UasmPath>
+    <NMakeBuildCommandLine>call "$(ProjectDir)build.cmd" "$(UasmPath)"</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>$(NMakeBuildCommandLine)</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>if exist "$(ProjectDir)build" del /q "$(ProjectDir)build\*.obj" "$(ProjectDir)build\*.pdb" "$(ProjectDir)build\*.exe"</NMakeCleanCommandLine>
+    <NMakeOutput>$(ProjectDir)build\oo_tour.exe</NMakeOutput>
+    <LocalDebuggerCommand>$(NMakeOutput)</LocalDebuggerCommand>
+    <LocalDebuggerWorkingDirectory>$(ProjectDir)</LocalDebuggerWorkingDirectory>
+    <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
+  </PropertyGroup>
+  <ItemGroup><None Include="main.asm" /><None Include="test.cmd" /><None Include="build.cmd" /><None Include="README.txt" /></ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+</Project>

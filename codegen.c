@@ -748,7 +748,8 @@ static void output_opc(struct code_info *CodeInfo)
      EmitError(INVALID_COMBINATION_OF_OPCODE_AND_OPERANDS);
     }
     /* emit 4 byte (0x62), 3 (0xC4) or 2 (0xC5) byte VEX prefix */
-        if ((CodeInfo->token ==  T_VMOVMSKPD )||(CodeInfo->token ==  T_VMOVMSKPS )) 
+        if ((CodeInfo->token ==  T_VMOVMSKPD )||(CodeInfo->token ==  T_VMOVMSKPS ) ||
+            (CodeInfo->token == T_VPMOVMSKB))
           CodeInfo->prefix.rex &= ~REX_W;
         //if (CodeInfo->indexreg == EMPTY) tmp = 0xB4;
         if (( ins->byte1_info >= F_0F38) || ( CodeInfo->prefix.rex & ( REX_B | REX_X | REX_W ) )|| 
@@ -761,10 +762,7 @@ static void output_opc(struct code_info *CodeInfo)
             else{
               /* These instructions if, not 0x62, can be only 0xC5, Uasm 2.16 */
                 if (CodeInfo->token == T_VPMOVMSKB){
-                  if(ins->byte1_info == F_0F && (CodeInfo->prefix.rex & REX_B == 0)&& 
-                     (CodeInfo->prefix.rex & REX_X == 0) && (CodeInfo->prefix.rex & REX_W == 8))
-                        goto outC5;    // go handle 0xC5 instruction
-                  //CodeInfo->prefix.rex &= ~REX_W; // clear the W bit.
+                  /* WIG is cleared before prefix selection; no C5 shortcut is needed. */
                   if(CodeInfo->reg3 > 7) lbyte |= 1;
                 }              
                 if ((CodeInfo->token >= T_VPSLLDQ && CodeInfo->token <= T_VPSRLQ)||
@@ -898,7 +896,7 @@ static void output_opc(struct code_info *CodeInfo)
                 if ((CodeInfo->reg2 <= 7) || (CodeInfo->reg2 >= 16 && CodeInfo->reg2 <= 23))
                   byte1 |= EVEX_P0RMASK;
                 else byte1 &= ~EVEX_P0RMASK;
-                if (CodeInfo->opnd[OPND1].type & OP_M_ANY == 0){
+                if ((CodeInfo->opnd[OPND1].type & OP_M_ANY) == 0){
                   if (CodeInfo->reg1 <= 15) byte1 |= EVEX_P0XMASK;
                   else byte1 &= ~EVEX_P0XMASK;
                   if ((CodeInfo->reg1 <= 7) || (CodeInfo->reg1 >= 16 && CodeInfo->reg1 <= 23))
@@ -1927,10 +1925,14 @@ static void output_opc(struct code_info *CodeInfo)
 			if ((CodeInfo->token >= T_KADDB) && (CodeInfo->token <= T_KUNPCKDQ)) lbyte |= 0x04;
 			/* That is where is fixed problem with the VEX registers size, Uasm 2.16 */
 			if (CodeInfo->token == T_VPMOVMSKB) {
-				lbyte |= EVEX_P1WMASK;    // 2 byte vex_p1 R must be set
-				if (CodeInfo->opnd[OPND1].type == OP_YMM)
+				/* C5 bit 7 is inverted R, not W: preserve high GP destinations. */
+                if (CodeInfo->prefix.rex & REX_R)
+                    lbyte &= ~EVEX_P1WMASK;
+                else
+                    lbyte |= EVEX_P1WMASK;
+				if (CodeInfo->opnd[OPND2].type == OP_YMM)
 					lbyte |= 0x04;         // for YMM register bit 2 byte VEX L bit is set
-				else if (CodeInfo->opnd[OPND1].type == OP_XMM)
+				else if (CodeInfo->opnd[OPND2].type == OP_XMM)
 					lbyte &= ~0x04;                     // for XMM register bit 2 byte VEX L bit is cleared
 				  lbyte &= ~0x03;                     // clear vex_p1 PP 
 				  lbyte |= 0x01;                      // set vex_p1 01: 66

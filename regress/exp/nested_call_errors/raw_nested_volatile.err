@@ -1,0 +1,1 @@
+../src/nested_call_errors/raw_nested_volatile.asm(20) : Error A2210: Syntax error: volatile register operand conflicts with nested call

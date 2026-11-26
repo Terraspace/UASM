@@ -1,0 +1,1 @@
+../src/nested_call_errors/interface_query_missing.asm(20) : Error A2147: Too few arguments to INVOKE: _ITest_QueryInterface

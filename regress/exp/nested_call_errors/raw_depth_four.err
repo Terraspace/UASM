@@ -1,0 +1,1 @@
+../src/nested_call_errors/raw_depth_four.asm(20) : Error A2292: Maximum nested call depth for C-Style calls exceeded

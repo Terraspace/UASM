@@ -119,6 +119,8 @@ static char *SkipCallString(char *p)
     return p;
 }
 
+static bool CallAppend(char *out, const char *text, size_t length);
+
 static void ExpandObjCalls(char *line, struct asm_tok tokenarray[])
 {
 	int i,j;
@@ -215,9 +217,10 @@ static void ExpandObjCalls(char *line, struct asm_tok tokenarray[])
 					foundType = FALSE;
 				foundProc = FALSE;
 				// The item to the left of the pointer must be an ID with type or register or register indirect.
-				if (i == 0 && tokenarray[i - 1].token != T_ID && tokenarray[i - 1].token != T_REG && tokenarray[i - 1].token != T_CL_SQ_BRACKET)
+				if (i == 0)
 				{
 					EmitError(INVALID_POINTER);
+                    return;
 				}
 				/* Variable object reference */
 				else if (tokenarray[i - 1].token == T_ID)
@@ -225,7 +228,7 @@ static void ExpandObjCalls(char *line, struct asm_tok tokenarray[])
 					if (derefCount == 0)
 					{
 						sym = (struct dsym *)SymCheck(tokenarray[i - 1].string_ptr);
-						if (sym && sym->sym.target_type && sym->sym.target_type > 0x200000 && sym->sym.target_type->isClass)
+						if (sym && sym->sym.target_type && sym->sym.target_type > 0x200000 && (sym->sym.target_type->isClass || sym->sym.target_type->isPtrTable))
 						{
 							foundType = TRUE;
 							pType = tokenarray[i - 1].string_ptr;
@@ -244,7 +247,7 @@ static void ExpandObjCalls(char *line, struct asm_tok tokenarray[])
 							foundType = TRUE;
 							pType = tokenarray[i - 1].string_ptr;
 							type = (struct dsym *)sym->sym.type->target_type;
-							firstDeRefIdx = 0; /* pointer->item */
+							firstDeRefIdx = i - 2; /* pointer->item */
 						}
 						/* Indirect register using .TYPE */
 						else if (sym && (sym->sym.isClass || sym->sym.isPtrTable))
@@ -456,6 +459,49 @@ static void ExpandObjCalls(char *line, struct asm_tok tokenarray[])
 					if (!gotClose)
 						EmitError(MISSING_RIGHT_PARENTHESIS_IN_EXPRESSION);
 				}
+
+                if (foundProc && type->sym.isPtrTable) {
+                    int first = firstDeRefIdx + 1;
+                    bool expression = first != 0;
+                    bool indirect = pType[0] == '[';
+                    const char *helper = expression ? (indirect ? "_RAWRI(" : "_RAWI(") :
+                        (indirect ? "_RAWRINVOKE " : "_RAWINVOKE ");
+                    const char *scan, *start;
+                    /* RAW receivers use R11 while INVOKE marshals arguments.
+                     * Do not silently overwrite an explicitly supplied operand. */
+                    {
+                        for (j = opIdx + 1; j < clIdx; ++j)
+                            if (tokenarray[j].token == T_REG &&
+                                (GetValueSp(tokenarray[j].tokval) & OP_R) &&
+                                GetRegNo(tokenarray[j].tokval) == 11) {
+                                EmitErr(SYNTAX_ERROR_EX, "RAW call argument conflicts with R11 dispatch scratch register");
+                                return;
+                            }
+                    }
+                    newline[0] = 0;
+                    if (!CallAppend(newline,tokenarray[0].tokpos,tokenarray[first].tokpos-tokenarray[0].tokpos) ||
+                        !CallAppend(newline,helper,strlen(helper)) ||
+                        !CallAppend(newline,type->sym.name,strlen(type->sym.name)) ||
+                        !CallAppend(newline,",",1) || !CallAppend(newline,pMethodStr,strlen(pMethodStr)) ||
+                        !CallAppend(newline,",",1) || !CallAppend(newline,pType,strlen(pType))) return;
+                    if (clIdx > opIdx+1) {
+                        if (!CallAppend(newline,",",1)) return;
+                        start=scan=tokenarray[opIdx].tokpos+1;
+                        while (scan < tokenarray[clIdx].tokpos) {
+                            if (*scan == '"' || *scan == 39) { scan=SkipCallString((char *)scan); continue; }
+                            if (*scan == '&') {
+                                if (!CallAppend(newline,start,scan-start) || !CallAppend(newline," ADDR ",6)) return;
+                                start=scan+1;
+                            }
+                            ++scan;
+                        }
+                        if (!CallAppend(newline,start,scan-start)) return;
+                    }
+                    if (expression && !CallAppend(newline,")",1)) return;
+                    if (!CallAppend(newline,tokenarray[clIdx].tokpos+1,strlen(tokenarray[clIdx].tokpos+1))) return;
+                    didExpand=TRUE;
+                    break;
+                }
 
 				if (foundProc)
 				{
@@ -811,7 +857,7 @@ static struct dsym *CallMethodPrototype(struct asm_tok *tokens, int first, int h
     leaf=SymLeafName(name); head=leaf-name;
     if (strlen(name)+strlen(method)+6 > MAX_ID_LEN) return NULL;
     memcpy(full,name,head);
-    sprintf(full+head,"_%s_%s%s",leaf,method,helper==2 ? "Pto" : "");
+    sprintf(full+head,"_%s_%s%s",leaf,method,helper>=2 ? "Pto" : "");
     sym=SymCheck(full);
     while (sym && !sym->isproc && sym->target_type && depth++<16) sym=sym->target_type;
     return sym && sym->isproc ? (struct dsym *)sym : NULL;
@@ -827,7 +873,8 @@ static int LowerBoundedCalls(char *line, struct asm_tok *tokens)
     bool directInvoke = tokens[0].tokval == T_INVOKE ||
         _stricmp(tokens[0].string_ptr,"_SINVOKE") == 0 || _stricmp(tokens[0].string_ptr,"_DEREF") == 0 ||
         _stricmp(tokens[0].string_ptr,"_VINVOKE") == 0 || _stricmp(tokens[0].string_ptr,"_INVOKE") == 0 ||
-        _stricmp(tokens[0].string_ptr,"_DEREFR") == 0 || _stricmp(tokens[0].string_ptr,"_DEREFRR") == 0;
+        _stricmp(tokens[0].string_ptr,"_DEREFR") == 0 || _stricmp(tokens[0].string_ptr,"_DEREFRR") == 0 ||
+        _stricmp(tokens[0].string_ptr,"_RAWINVOKE") == 0 || _stricmp(tokens[0].string_ptr,"_RAWRINVOKE") == 0;
     char rewritten[MAX_LINE_LEN], generated[CALL_RESULT_LIMIT][MAX_LINE_LEN];
     char stores[CALL_RESULT_LIMIT][256];
     const char *source=tokens[0].tokpos;
@@ -837,7 +884,9 @@ static int LowerBoundedCalls(char *line, struct asm_tok *tokens)
         int helper;
         if (tokens[i].token != T_ID || tokens[i+1].token != T_OP_BRACKET) continue;
         helper = _stricmp(tokens[i].string_ptr,"_STATIC") == 0 ? 1 :
-                 (_stricmp(tokens[i].string_ptr,"_DEREFI") == 0 ? 2 : 0);
+                 (_stricmp(tokens[i].string_ptr,"_DEREFI") == 0 ? 2 :
+                 (_stricmp(tokens[i].string_ptr,"_RAWI") == 0 ? 3 :
+                 (_stricmp(tokens[i].string_ptr,"_RAWRI") == 0 ? 4 : 0)));
         proc=helper ? CallMethodPrototype(tokens,i,helper) :
             (struct dsym *)TraverseEquate(SymCheck(tokens[i].string_ptr));
         if (!proc || !proc->sym.isproc) {
@@ -929,7 +978,8 @@ static int LowerBoundedCalls(char *line, struct asm_tok *tokens)
     }
     for (k=0;k<count;++k) for (i=0;i<count;++i) if (calls[i].order==k && (directInvoke || i!=root)) {
         char *out=generated[k];
-        if (calls[i].helper) strcpy(out,calls[i].helper == 1 ? "_SINVOKE " : "_DEREF ");
+        if (calls[i].helper) strcpy(out,calls[i].helper == 1 ? "_SINVOKE " :
+            (calls[i].helper == 2 ? "_DEREF " : (calls[i].helper == 3 ? "_RAWINVOKE " : "_RAWRINVOKE ")));
         else {
             strcpy(out,"invoke ");
             if (!CallAppend(out,tokens[calls[i].first].tokpos,

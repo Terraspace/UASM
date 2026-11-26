@@ -1,0 +1,1 @@
+../src/nested_call_errors/raw_void_result.asm(20) : Error A2210: Syntax error: value-producing call requires an explicit non-void return type
