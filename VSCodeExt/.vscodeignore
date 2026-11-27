@@ -1,0 +1,13 @@
+.git/**
+.vscode/**
+.test-data/**
+.npm-cache/**
+node_modules/**
+test/**
+scripts/**
+dist/**
+*.cmd
+package-lock.json
+.gitignore
+.vscodeignore
+**/*.log

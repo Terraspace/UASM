@@ -1,0 +1,165 @@
+{
+  "name": "uasm-intellisense",
+  "displayName": "UASM IntelliSense",
+  "description": "Type-aware UASM and MASM completion, namespaces, OO/COM/RAW interfaces, signatures and navigation.",
+  "version": "0.1.1",
+  "publisher": "terraspace",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Terraspace/UASM.git",
+    "directory": "VSCodeExt"
+  },
+  "main": "./src/extension.js",
+  "activationEvents": [
+    "onLanguage:uasm",
+    "onLanguage:asm",
+    "onLanguage:masm",
+    "onLanguage:assembly"
+  ],
+  "capabilities": {
+    "untrustedWorkspaces": {
+      "supported": true
+    },
+    "virtualWorkspaces": {
+      "supported": false
+    }
+  },
+  "contributes": {
+    "languages": [
+      {
+        "id": "uasm",
+        "aliases": [
+          "UASM",
+          "uasm"
+        ],
+        "extensions": [
+          ".asm",
+          ".inc"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "uasm",
+        "scopeName": "source.uasm",
+        "path": "./syntaxes/uasm.tmLanguage.json"
+      }
+    ],
+    "commands": [
+      {
+        "command": "uasm.reindex",
+        "title": "UASM: Rebuild IntelliSense Index"
+      },
+      {
+        "command": "uasm.showIndex",
+        "title": "UASM: Show Index Status"
+      }
+    ],
+    "configuration": {
+      "title": "UASM",
+      "properties": {
+        "uasm.includePaths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [],
+          "scope": "resource",
+          "description": "Include directories. Relative paths are workspace-relative. Supports workspaceFolder and env substitutions."
+        },
+        "uasm.defines": {
+          "type": "object",
+          "additionalProperties": {
+            "type": [
+              "string",
+              "number",
+              "boolean"
+            ]
+          },
+          "default": {},
+          "scope": "resource",
+          "description": "Predefined symbols for IFDEF/IFNDEF and simple IF expressions. Unknown conditional branches are indexed conservatively."
+        },
+        "uasm.caseSensitive": {
+          "type": "boolean",
+          "default": false,
+          "scope": "resource",
+          "description": "Default identifier case sensitivity. OPTION CASEMAP overrides it."
+        },
+        "uasm.maxIncludeFiles": {
+          "type": "integer",
+          "default": 1000,
+          "minimum": 1,
+          "maximum": 10000,
+          "scope": "resource",
+          "description": "Maximum files in one INCLUDE closure."
+        },
+        "uasm.maxFileSizeKB": {
+          "type": "integer",
+          "default": 2048,
+          "minimum": 1,
+          "maximum": 32768,
+          "scope": "resource",
+          "description": "Maximum size of an included source file."
+        },
+        "uasm.maxIndexLines": {
+          "type": "integer",
+          "default": 250000,
+          "minimum": 1000,
+          "maximum": 1000000,
+          "scope": "resource",
+          "description": "Maximum expanded lines per index, including repeated includes."
+        },
+        "uasm.suggestInstructions": {
+          "type": "boolean",
+          "default": true,
+          "scope": "resource",
+          "description": "Suggest instruction mnemonics and directives."
+        },
+        "uasm.maxCompletions": {
+          "type": "integer",
+          "default": 200,
+          "minimum": 20,
+          "maximum": 1000,
+          "scope": "resource",
+          "description": "Maximum completion entries returned per request."
+        },
+        "uasm.largeNamespaceThreshold": {
+          "type": "integer",
+          "default": 1000,
+          "minimum": 100,
+          "maximum": 10000,
+          "scope": "resource",
+          "description": "Namespaces larger than this require a prefix before suggestions are shown."
+        },
+        "uasm.namespaceMinPrefix": {
+          "type": "integer",
+          "default": 2,
+          "minimum": 1,
+          "maximum": 6,
+          "scope": "resource",
+          "description": "Minimum typed characters when completing a large namespace."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "test": "node --test test/core.test.js",
+    "test:host": "node scripts/test-host.js",
+    "build": "node scripts/build.js",
+    "package": "npm run build && vsce package --no-dependencies --out dist/uasm-intellisense.vsix"
+  },
+  "devDependencies": {
+    "@vscode/test-electron": "3.1.0",
+    "@vscode/vsce": "4.1.1",
+    "prettier": "3.6.2"
+  }
+}
