@@ -1238,6 +1238,17 @@ static void ExpandHllCalls(char *line, struct asm_tok tokenarray[], bool inParam
                         const char *text = tokenarray[j].string_ptr;
                         size_t k, length = strlen(text);
                         bool quoted = tokenarray[j].token == T_STRING && tokenarray[j].string_delim == '"';
+                        /* Retokenization must not merge adjacent words (for example,
+                         * flags OR mask, SIZEOF value, or DWORD PTR value). Keep
+                         * punctuation adjacent, including qualified names and members. */
+                        if (length && p > newline && is_valid_id_char(p[-1]) &&
+                            is_valid_id_char(text[0])) {
+                            if (p - newline >= MAX_LINE_LEN - 3) {
+                                EmitError(STRING_OR_TEXT_LITERAL_TOO_LONG);
+                                return;
+                            }
+                            *p++ = ' ';
+                        }
                         tokenarray[j].tokpos = p;
                         for (k = 0; k < length; k++) {
                             if (p - newline >= MAX_LINE_LEN - 3) {
