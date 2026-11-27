@@ -18,7 +18,6 @@ Tour PROC namespace:PTR Demo::Point
     mov eax,point.NameSpace
     mov eax,point.x
 
-
     ret
 Tour ENDP
 end

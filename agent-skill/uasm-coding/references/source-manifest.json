@@ -1,0 +1,160 @@
+{
+  "uasm_commit": "e693c8c2555c04980308910cac0dad834202ae39",
+  "files": [
+    {
+      "source": "samples/win64/namespaces/api.inc",
+      "copy": "assets/examples/win64/namespaces/api.inc",
+      "sha256": "a4b5ab79b0e38d2741a0decb840f5a02f2716ee21476e3f96bd3efcd66fe4e10"
+    },
+    {
+      "source": "samples/win64/namespaces/build.cmd",
+      "copy": "assets/examples/win64/namespaces/build.cmd",
+      "sha256": "4b28174dc65d3d51367b974f672a294f1508a0a5a8b53d2411084dce4d58bb2e"
+    },
+    {
+      "source": "samples/win64/namespaces/counter.inc",
+      "copy": "assets/examples/win64/namespaces/counter.inc",
+      "sha256": "973ade3268a287ada7632cf2b7357bacd35e8e9a359c720a1d1ac19faa4b8b95"
+    },
+    {
+      "source": "samples/win64/namespaces/main.asm",
+      "copy": "assets/examples/win64/namespaces/main.asm",
+      "sha256": "76074545eeb3f6d1519723bf19aa28544a32bbc12d0fcc6b19de7c9c20334d48"
+    },
+    {
+      "source": "samples/win64/namespaces/services.asm",
+      "copy": "assets/examples/win64/namespaces/services.asm",
+      "sha256": "9f2ed09dbcf03fd0a72522e3f779ac0649e97f4e413c1f503474bf1756f3f7a5"
+    },
+    {
+      "source": "samples/win64/nested_calls/build.cmd",
+      "copy": "assets/examples/win64/nested_calls/build.cmd",
+      "sha256": "1ab07582cb4a30510a1c60307013693c8b3c0ddfc9fcb9dbd25edf0c752698ba"
+    },
+    {
+      "source": "samples/win64/nested_calls/main.asm",
+      "copy": "assets/examples/win64/nested_calls/main.asm",
+      "sha256": "65e97a8fc165841fd2b65fb3e9dfc4c7de9ff91b7b72263ee95c5089ec303fd1"
+    },
+    {
+      "source": "samples/win64/nested_calls/nested_calls.sln",
+      "copy": "assets/examples/win64/nested_calls/nested_calls.sln",
+      "sha256": "bc4b0c85347655123770d33b77256f722451f960ab308d17c690ab590a51c1bf"
+    },
+    {
+      "source": "samples/win64/nested_calls/nested_calls.vcxproj",
+      "copy": "assets/examples/win64/nested_calls/nested_calls.vcxproj",
+      "sha256": "691b0fde6d2be0be126f433d5a64ae03c85007a8b63e0527d5bd6c4bfc124f62"
+    },
+    {
+      "source": "samples/win64/oo_tour/build.cmd",
+      "copy": "assets/examples/win64/oo_tour/build.cmd",
+      "sha256": "a87c44d86fcd5b5038e52785851de8916ee2de9eb0901800bdaa442bd2134f23"
+    },
+    {
+      "source": "samples/win64/oo_tour/main.asm",
+      "copy": "assets/examples/win64/oo_tour/main.asm",
+      "sha256": "4ebfad60b0ecfb708a483a1f4634b35999b7d8889489d73037157628691f1f62"
+    },
+    {
+      "source": "samples/win64/oo_tour/oo_tour.sln",
+      "copy": "assets/examples/win64/oo_tour/oo_tour.sln",
+      "sha256": "026499c6b79160ea0a282f26748da47de021dc359532865691f0b5ee31781957"
+    },
+    {
+      "source": "samples/win64/oo_tour/oo_tour.vcxproj",
+      "copy": "assets/examples/win64/oo_tour/oo_tour.vcxproj",
+      "sha256": "2cf221df2ad0f93b032edf5c5cc882da9d0afef02ceda32c6a3bf85fface9b54"
+    },
+    {
+      "source": "samples/win64/oo_tour/test.cmd",
+      "copy": "assets/examples/win64/oo_tour/test.cmd",
+      "sha256": "9fe631b4276281ac7470e1b73ecc8dd1c544b9330e7ada1e0513f8c24a12f5f1"
+    },
+    {
+      "source": "samples/win64/direct2d_namespaces/api.inc",
+      "copy": "assets/examples/win64/direct2d_namespaces/api.inc",
+      "sha256": "e42b71580ab123d18506dda5ed3df2fa41c9e05f48193d21128f61ab36e38721"
+    },
+    {
+      "source": "samples/win64/direct2d_namespaces/build.cmd",
+      "copy": "assets/examples/win64/direct2d_namespaces/build.cmd",
+      "sha256": "f5d14132011742bea193c662b1e03aedfc93a9082ea6c506035abc01c0420a53"
+    },
+    {
+      "source": "samples/win64/direct2d_namespaces/direct2d_namespaces.sln",
+      "copy": "assets/examples/win64/direct2d_namespaces/direct2d_namespaces.sln",
+      "sha256": "b579d90bcce647d39be7c8aa0454b4bbe167c02a6a326cd1e787e45afea88eca"
+    },
+    {
+      "source": "samples/win64/direct2d_namespaces/direct2d_namespaces.vcxproj",
+      "copy": "assets/examples/win64/direct2d_namespaces/direct2d_namespaces.vcxproj",
+      "sha256": "a74f2c3a50916b9ea80b371feb345d9d352584f5af1b985b1518a70639a6477d"
+    },
+    {
+      "source": "samples/win64/direct2d_namespaces/main.asm",
+      "copy": "assets/examples/win64/direct2d_namespaces/main.asm",
+      "sha256": "8f346ec84f67aaf4ccf83ac752deecc840a75203409b4dc6fc3b15a91fbc6e9d"
+    },
+    {
+      "source": "samples/win64/direct2d_namespaces/test.cmd",
+      "copy": "assets/examples/win64/direct2d_namespaces/test.cmd",
+      "sha256": "66a710b8e100ce5e7b7c8553fd868100780b9f52b6eec1bfa564c00e734307f7"
+    },
+    {
+      "source": "samples/linux64/pltgot-gtk/Makefile",
+      "copy": "assets/examples/linux64/pltgot-gtk/Makefile",
+      "sha256": "514ea7f25945f56ee7bd16b24a8a3032639781d814f184e1b834f6bd45398110"
+    },
+    {
+      "source": "samples/linux64/pltgot-gtk/api.inc",
+      "copy": "assets/examples/linux64/pltgot-gtk/api.inc",
+      "sha256": "f687e6d95336dd110d4464e475e259f58bdb9e6ba681bcb1ba98bc419c0ba6a9"
+    },
+    {
+      "source": "samples/linux64/pltgot-gtk/console.asm",
+      "copy": "assets/examples/linux64/pltgot-gtk/console.asm",
+      "sha256": "55d7505ffad21785747fcb28ffff1349c21e212664613a15c4298b0a1aa9ad46"
+    },
+    {
+      "source": "samples/linux64/pltgot-gtk/debug_check.py",
+      "copy": "assets/examples/linux64/pltgot-gtk/debug_check.py",
+      "sha256": "5a0e72e5a3bcbe12b8e80faa146ff6b1d453ab5a0fe53b73457a8ce27ab579e8"
+    },
+    {
+      "source": "samples/linux64/pltgot-gtk/gtk.asm",
+      "copy": "assets/examples/linux64/pltgot-gtk/gtk.asm",
+      "sha256": "f8d34fac7c8c63794756dc553e3959d06086b0e4c322f47df872d1a4faae8f23"
+    },
+    {
+      "source": "samples/linux64/pltgot-gtk/gtk4.inc",
+      "copy": "assets/examples/linux64/pltgot-gtk/gtk4.inc",
+      "sha256": "c4f11fa1c94b0e40d2f785252789e403e8af140c7dd584857252b78fa8e7cc85"
+    },
+    {
+      "source": "samples/linux64/pltgot-gtk/samplelib.asm",
+      "copy": "assets/examples/linux64/pltgot-gtk/samplelib.asm",
+      "sha256": "25007f898a2d6e2921983126324b6f8cee38018743b6844c927056763d573147"
+    },
+    {
+      "source": "samples/linux64/pltgot-gtk/verify.py",
+      "copy": "assets/examples/linux64/pltgot-gtk/verify.py",
+      "sha256": "c318bddfafd1b866d1a7b7a9a42de8c01950780c2d75ee12e007a76c6d513bc2"
+    },
+    {
+      "source": "regress/src/nested_calls64/interfaces_runtime.asm",
+      "copy": "assets/examples/probes/interfaces.asm",
+      "sha256": "45642b68fd24d3f10ee92eca75dfd85b98d8f00cd511d1c7857153271977748c"
+    },
+    {
+      "source": "regress/src/literal_calls64/runtime.asm",
+      "copy": "assets/examples/probes/literals.asm",
+      "sha256": "11aee5ef393ff2c6763ae1ae1598ed821379c053c3f84bc91bbcc1f578a0f900"
+    },
+    {
+      "source": "regress/src/namespaces/scope.asm",
+      "copy": "assets/examples/probes/namespace_scope.asm",
+      "sha256": "18a6c8b36f0eb346d9be6ead1a1ad233befe216ecfb060f1516b37f5e9003952"
+    }
+  ]
+}

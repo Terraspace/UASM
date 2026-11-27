@@ -1,0 +1,9 @@
+# UASM project guidance
+
+Use the `uasm-coding` skill for UASM source work. If installed within this project, read `.agents/skills/uasm-coding/SKILL.md`; if not discovered, ask for its location rather than assuming prior conversation knowledge.
+
+Prefer the project's typed PROC/PROTO, INVOKE, namespace and HLL/OO conventions. Respect the skill's nested-call, pointer-dispatch and ABI boundaries. Match the installed assembler's capabilities. Use project-relative includes and configurable tool paths.
+
+Before making code changes, identify this project's target, assembler command, linker/runtime dependencies and validation command from its build files. If they are absent, establish them with the user and record the agreed commands here. Do not invent local SDK paths or assume Windows and System V use the same argument layout.
+
+Report assembly, link, runtime and debugger checks separately. Do not regenerate expectations solely to remove failures.

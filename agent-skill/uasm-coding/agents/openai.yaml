@@ -1,0 +1,6 @@
+interface:
+  display_name: "UASM Coding"
+  short_description: "Typed UASM assembly, OO, namespaces and platform ABIs"
+  default_prompt: "Use $uasm-coding to write and verify UASM code using the project's target ABI and the supplied feature references."
+policy:
+  allow_implicit_invocation: true
