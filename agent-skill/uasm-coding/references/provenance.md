@@ -1,6 +1,6 @@
 # Version and evidence
 
-Pack version: 1.0.0. Prepared 2026-11-27 for UASM 2.60 master snapshot `e693c8c2555c04980308910cac0dad834202ae39` in https://github.com/Terraspace/UASM.
+Pack version: 1.0.3. Prepared 2026-11-27 for UASM 2.60 master snapshot `e693c8c2555c04980308910cac0dad834202ae39` in https://github.com/Terraspace/UASM.
 
 This is a portable coding reference, not a transcript or a promise that every UASM 2.60 binary contains every post-release fix. Some original sample READMEs still say experimental/v2.60b; this pack describes the merged code at the snapshot above. No external machine's paths, tools or credentials are prerequisites.
 

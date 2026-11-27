@@ -2,7 +2,9 @@
 
 ## Tools and build shape
 
-Windows x64 projects: use UASM `-win64`, MS LINK from an x64 Visual Studio tools prompt and the applicable Windows SDK libraries. A custom `Start` entry point normally terminates via ExitProcess. A function named main does not supply CRT startup by itself: either link the matching CRT/startup arrangement or use a deliberate custom entry point. Import libraries such as an old msvcrt.lib do not guarantee a valid mainCRTStartup definition.
+Windows x64 defaults: use the preamble in SKILL.md, including `.x64`, EVEX:1, WinInc windows.inc and INCLUDELIB kernel32.lib/user32.lib. WinInc windows.inc provides the API declarations; separate kernel32.inc/user32.inc are not needed for that header pack. Do not assume arbitrary unrelated files named windows.inc have the same contents.
+
+Windows x64 projects: use UASM `-win64 -Zp8`, MS LINK from an x64 Visual Studio tools prompt and the applicable Windows SDK libraries. A custom `Start` entry point normally terminates via ExitProcess. A function named main does not supply CRT startup by itself: either link the matching CRT/startup arrangement or use a deliberate custom entry point. Import libraries such as an old msvcrt.lib do not guarantee a valid mainCRTStartup definition.
 
 Win32 projects: select `.386`/`.686` and `.model flat,<convention>` as required, `-coff`, and x86 linker/libraries. Account for STDCALL/C decoration and cleanup. The host assembler being XP-compatible does not make an arbitrary assembled application XP-compatible: APIs, imports and linker settings also matter.
 

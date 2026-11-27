@@ -8,6 +8,7 @@ import subprocess
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--assembler', required=True, help='Path to UASM executable')
+    parser.add_argument('--include-dir', action='append', default=[], help='Additional assembler include search directory; enables WinInc example')
     parser.add_argument('--output', required=True, help='Directory for generated objects/report')
     args = parser.parse_args()
     assembler = Path(args.assembler).resolve(strict=True)
@@ -19,13 +20,16 @@ def main():
     results = []
     for source in sorted(root.rglob('*.asm')):
         relative = source.relative_to(root)
+        if source.name == 'wininc.asm' and not args.include_dir:
+            print('SKIP '+relative.as_posix()+' (provide --include-dir for WinInc)')
+            continue
         binary = source.name == 'namespace_scope.asm'
         flags = ['-bin'] if binary else (['-elf64', '-Zi'] if relative.parts[0] == 'linux64' else ['-win64', '-Zp8', '-Zi8'])
         target = (output / relative).with_suffix('.bin' if binary else '.obj')
         target.parent.mkdir(parents=True, exist_ok=True)
         # No stale result can satisfy the output check after a failed invocation.
         target.unlink(missing_ok=True)
-        command = [str(assembler), '-q', *flags, '-Fo'+str(target), source.name]
+        command = [str(assembler), '-q', *flags, *['-I'+str(Path(p).resolve()) for p in args.include_dir], '-Fo'+str(target), source.name]
         run = subprocess.run(command, cwd=source.parent, env=env, capture_output=True, text=True, errors='replace', timeout=60)
         passed = run.returncode == 0 and target.is_file() and target.stat().st_size > 0
         if binary and passed:

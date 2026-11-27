@@ -12,7 +12,7 @@ mov result,eax
 Sink(result)
 ```
 
-PROTO `(type)` describes the return contract. A standalone call can be untyped; a nested call used as a value requires an explicit supported non-void PROC/PROTO return type. Return values still arrive in ABI registers, not a magical expression object. Plain INVOKE and HLL `Name(args)` share call generation; `&local` is address-of syntax translated to ADDR. Do not substitute OFFSET for an address of a stack local.
+PROTO `(type)` describes the return contract. Prefer `Run PROTO (DWORD)` followed by `Run PROC FRAME` (parameters still appear on the definition as needed). The current parser also accepts `Run PROC (DWORD) FRAME`, but **not** `Run PROC FRAME (DWORD)`: ordering matters. Use separate `PUBLIC Start` then `Start PROC FRAME`; `PROC FRAME PUBLIC` is rejected. A standalone call can be untyped; a nested call used as a value requires an explicit supported non-void PROC/PROTO return type. Return values still arrive in ABI registers, not a magical expression object. Plain INVOKE and HLL `Name(args)` share call generation; `&local` is the preferred C-style address-of syntax translated to ADDR. ADDR is also accepted in C-style argument lists, but use `&` for consistency; use ADDR with INVOKE. Do not substitute OFFSET for an address of a stack local.
 
 Current nested-call limits:
 
@@ -65,3 +65,7 @@ COMINTERFACE / ENDCOMINTERFACE model COM's vtable, starting with QueryInterface,
 RAWINTERFACE / ENDRAWINTERFACE with `STDFUNC Name,<ReturnType>,...` models direct function-pointer tables such as UEFI. It does not insert COM's three methods. Explicit parameters such as This must follow the real API contract; do not add/remove one by analogy with COM. Dispatch uses scratch registers and rejects conflicting live operands: do not silence an R11 conflict diagnostic without inspecting the call. The included RAW probe exercises global and LOCAL pointer receivers and typed nested returns, without requiring firmware or an external EFI include.
 
 When interoping with external code, a plausible prototype is insufficient: verify pointer depth, width, signedness, by-value/by-reference aggregate rules, register convention and return contract against the actual API.
+
+## Verified C-style constant-expression boundary
+
+The reviewed starter's `MessageBoxW(..., MB_OK or MB_ICONERROR)` fails in this snapshot: the argument becomes `MB_OKorMB_ICONERROR`. Adding parentheses does not repair it. Precompute `ERROR_MESSAGE_FLAGS EQU MB_OK or MB_ICONERROR` and pass the constant, or use a separately verified INVOKE form. This is a confirmed assembler bug in preproc.c ExpandHllCalls: token rebuilding loses the separators around OR before the generated INVOKE is rescanned. The intended language supports this expression; it is not a valid language restriction. Report it if it affects the requested task; do not silently change the assembler while writing an application.

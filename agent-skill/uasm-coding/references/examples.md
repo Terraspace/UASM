@@ -4,6 +4,7 @@ Paths below are relative to this skill folder. These are source projects copied 
 
 | Directory under assets/examples | What to adapt |
 |---|---|
+| win64/window_starter | Preferred WinInc GUI plus an explicit self-contained alternative, typed PROTO/plain PROC, `&` calls, AVX option and an opt-in hidden-window smoke build |
 | win64/namespaces | Balanced shared namespaces; private/public linkage across two objects; macro lookup; typed structs; static/instance OO and debugger locals |
 | win64/nested_calls | Explicit return types, result spills, siblings, depth three, re-entry, pointers and REAL8 |
 | win64/oo_tour | CLASS/OINTERFACE, owned Company, Init/Destroy, direct/virtual dispatch, typed memory/LOCAL/ASSUME receivers, namespace helpers, arrows and vectorcall |
@@ -26,7 +27,7 @@ Pass the explicit assembler path: the copied scripts retain their repository-rel
 
 The three Win64 console projects print PASS and exit zero. Keep the resulting PDB beside each executable to inspect initialized locals/parameters in Visual Studio. OO's uninitialized fields and freed pointers should not be treated as valid debugger values.
 
-For probe interfaces/literals, assemble `-win64 -Zi8`, then link with `/SUBSYSTEM:CONSOLE /ENTRY:Start` and kernel32.lib; successful programs exit zero. The language probe is not a program entry point and should not be executed.
+For probe interfaces/literals, assemble `-win64 -Zp8 -Zi8`, then link with `/SUBSYSTEM:CONSOLE /ENTRY:Start` and kernel32.lib; successful programs exit zero. The language probe is not a program entry point and should not be executed.
 
 ## Linux project
 
@@ -38,4 +39,14 @@ Use the build/check commands in [platforms](platforms.md). Pass `ASSEMBLER=/abso
 python scripts/check_examples.py --assembler /path/to/uasm --output /path/to/temporary/objects
 ```
 
-This needs Python 3.10+ and a compatible UASM binary, no SDK/linker. It compiles all twelve ASM files to COFF, ELF64 or binary as appropriate, and compares namespace_scope.bin to hand-calculated bytes. The JSON report distinguishes individual outcomes. It does not overwrite regression EXP files or claim cross-platform runtime verification.
+This needs Python 3.10+ and a compatible UASM binary, no SDK/linker. It compiles all fourteen ASM files when WinInc is supplied to COFF, ELF64 or binary as appropriate, and compares namespace_scope.bin to hand-calculated bytes. The JSON report distinguishes individual outcomes. It does not overwrite regression EXP files or claim cross-platform runtime verification.
+
+## Minimal window starter
+
+`win64/window_starter/wininc.asm` is the default starter using windows.inc and both INCLUDELIB declarations. Configure the WinInc include search path and run `build-wininc.cmd <assembler-path>`; it produces wininc.exe and wininc-smoke.exe. It does not include kernel32.inc/user32.inc or hardcode header/library locations.
+
+`win64/window_starter/main.asm` remains an alternative for explicitly header-free examples and contains all source declarations in one file. Its `build.cmd <assembler-path>` builds `build/window_starter.exe` for manual use and `build/smoke.exe` with SMOKE_TEST defined. The latter creates an unshown window, posts WM_CLOSE, dispatches through the real WndProc and exits zero after WM_QUIT. Use a timeout when running it automatically. The normal build stays open until closed. No external assembly include pack is required; linking needs kernel32.lib and user32.lib from the Windows SDK. Win64 WNDCLASSEXW and MSG sizes are checked at assembly time. The ARCH:AVX preference does not imply every instruction in this small integer-only example needs AVX.
+
+For portable compile checks, pass `--include-dir <WinInc/include>` to check_examples.py to test wininc.asm; without that argument it is explicitly skipped, while header-free cases are still checked.
+
+All WinInc x64 commands must retain -Zp8; wininc.asm now asserts MSG size and member offsets so an omitted flag fails during assembly.

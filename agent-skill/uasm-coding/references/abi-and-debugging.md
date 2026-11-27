@@ -2,14 +2,16 @@
 
 ## Win64
 
-A useful new-project baseline, also used by the supplied samples:
+A useful new-project baseline, with the preferred AVX setting for new code:
 
 ```asm
+.x64
 option casemap:none
 option stackbase:rsp
 option win64:15
 option frame:auto
-option arch:sse
+option arch:avx
+option evex:1
 ```
 
 Use the project's chosen mode rather than overriding it casually. Windows x64 uses RCX/RDX/R8/R9 for the first four integer/pointer argument positions and XMM0–3 for corresponding floating positions, with caller shadow space and correctly aligned call sites. Preserve the ABI's nonvolatile registers you modify, including XMM6–15's required portions. Named homing and USES are generated code, not a reason to ignore the ABI. INVOKE handles supported variadic float duplication; do not independently duplicate/reorder arguments on top of it.
@@ -50,10 +52,14 @@ Keep stack alignment and red-zone use consistent with the complete routine. The 
 
 ## Debug formats and verification
 
-- COFF Win64: assemble `-win64 -Zi8`, link `/DEBUG:FULL /INCREMENTAL:NO`; keep the PDB, sources and binary matching. Samples use normal Visual Studio debugger projects. CV8 contains namespaced types and correct parameter/local locations for supported automatic frames.
+- COFF Win64: assemble `-win64 -Zp8 -Zi8`, link `/DEBUG:FULL /INCREMENTAL:NO`; keep the PDB, sources and binary matching. Samples use normal Visual Studio debugger projects. CV8 contains namespaced types and correct parameter/local locations for supported automatic frames.
 - ELF64: `-elf64 -Zi` emits DWARF types, source lines, globals, parameters and locals. `-Zd` is the line-oriented mode; do not treat it as a substitute for full types. `-Zi8` with ELF64 is rejected.
 - Automatic System V frames with debug output emit `.debug_frame` and PIC-safe allocated `.eh_frame`. The linker can generate `.eh_frame_hdr`. Stack unwinding support is not a claim of C++ exception cleanup/personality support.
 - Stop after prologue/initialization before judging local values. Register-backed arguments may become unavailable or changed after clobbers; SYSVHOME:1 makes intentionally named arguments durable. Uninitialized locals remain meaningless.
 - Use GDB for a reproducible Linux baseline: break a source/function, step, inspect args/locals and dereferenced structs, and backtrace across an SO. RAD testing previously reached function breakpoints and F10; F11 into the SO remained problematic. Do not claim that current RAD stepping is universally fixed.
 
 For assembler changes, independently inspect generated unwind/debug records and runtime state; an executable that happens to run does not prove unwind correctness.
+
+### WinInc structure packing is part of the ABI
+
+Use -Zp8 when assembling Windows x64 API structures from WinInc. The verified MSG layout is SIZEOF 48, wParam offset 16, lParam offset 24 and pt offset 36. Without -Zp8 the tested headers produce size 40 and offsets 12/20/32. A local object of that incorrect size can overwrite a return address when GetMessageW fills it. OPTION WIN64:15 and STACKBASE:RSP do not imply correct field packing. Keep layout assertions next to the include-dependent starter; this is a build configuration requirement, not a prologue workaround.
