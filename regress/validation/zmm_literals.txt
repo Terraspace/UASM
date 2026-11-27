@@ -1,0 +1,56 @@
+ZMM frames and direct-literal validation (2026-11-27)
+
+Changes
+- Wide USES saves/restores choose an instruction valid for their register width,
+  regardless of ARCH:SSE. High XMM/YMM registers select EVEX forms.
+- RSP frames allocate sufficient space for ZMM, and restore ZMM in epilogues.
+- Fixed malformed leaf-prologue formatting that could crash the assembler.
+- High volatile vector registers do not produce truncated Windows unwind entries.
+- System V vector arguments respect wide/high register requirements.
+- CodeGenV2 only compresses EVEX displacement after checking disp8 eligibility;
+  symbol/RIP-relative addends are preserved.
+- Guarded empty-base parser lookups; zero-initialized ELF PROGBITS sections no
+  longer attempt to write through a null buffer.
+- Direct ANSI/UTF-16 literals use CONST (.rdata/.rodata), retaining module-local
+  deduplication. Legacy CStr/WStr remain separate writable copies.
+
+Fixtures
+win64/zmm_uses_{sse,avx}: RBP/RSP, modes 1-15, leaf/nonleaf, low/high XMM/YMM/ZMM.
+win64/zmm_vectorcall_{sse,avx}: RBP/RSP, register/memory args, seventh vector,
+  two-vector HVA, and named parameter homes.
+win64/evex_symbol_addends: +/- symbol addends and base-register compressed offsets.
+systemv/zmm_home{0,1}_{sse,avx}: mixed USES, memory/high-register parameters,
+  SYSVHOME enabled/disabled, and uninitialized data in PROGBITS.
+literal_calls32/readonly_pool, literal_calls64/readonly_pool,
+  literal_callself/readonly_pool: 100 identical direct strings, UTF-16,
+  namespace reuse, legacy helper independence, late explicit CONST/data.
+
+Independent checks
+Use validation/zmm_frames.py with Python 3 and llvm-objdump on the two
+zmm_uses object files. It checks 120 frames and 720 save/restore pairs for
+bounds, overlap, alignment, restored addresses and stack balance.
+Example (after assembling the fixtures to a scratch directory):
+python regress/validation/zmm_frames.py scratch/zmm_uses_sse.obj scratch/zmm_uses_avx.obj
+Pass --objdump PATH if llvm-objdump is not on PATH.
+
+llvm-readobj --unwind verified each generated frame records XMM6/7/8 and
+never truncates register 20/21/22 into an unrelated unwind register.
+The displacement fixture matches LLVM encoding/relocations after normalizing
+EVEX.X, which is ignored for RIP-relative addressing without SIB.
+MSVC /arch:AVX512 reference confirmed six register vectors and the seventh
+indirect argument; existing referential aggregate behavior is preserved.
+All 28 migrated existing EXPs retain identical code bytes and code relocation
+names/types/addends; their changes move literal payloads to read-only storage.
+
+Results
+Windows, GCC 13, GCC 16.2, Clang 23: 857 passed, 0 failed, 0 incomplete each.
+Go tests passed. Existing Windows runtime checks: 285 unwind frames / 9455
+instruction boundaries; 3168 vectorcall checks and 108 edge checks, no failures.
+Literal runtime checks passed on Windows/Linux. AddressSanitizer checks passed
+for System V homes/vector saves and literals; FASTPASS/non-FASTPASS literal
+objects are byte-identical.
+
+Limits
+AVX-512 code was validated statically, not executed on AVX-512 hardware.
+System V RSP stackbase and extended 32-bit VECTORCALL ZMM/HVA forms remain
+unsupported; this change does not introduce those calling-convention features.

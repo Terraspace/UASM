@@ -1226,8 +1226,17 @@ static ret_code elf_write_data( struct module_info *modinfo, struct elfmod *em )
         size = curr->sym.max_offset - curr->e.seginfo->start_loc;
         if ( curr->e.seginfo->segtype != SEGTYPE_BSS && size != 0 ) {
             fseek( CurrFile[OBJ], curr->e.seginfo->fileoffset + curr->e.seginfo->start_loc, SEEK_SET );
-            /*myassert( curr->e.seginfo->CodeBuffer );*/
-            if ( fwrite( curr->e.seginfo->CodeBuffer, 1, size, CurrFile[OBJ] ) != size )
+            /* A PROGBITS section containing only '?' has no initialized-byte
+             * buffer. It still occupies file storage; emit zeroes rather than
+             * reading a null pointer (BSS was excluded above). */
+            if (!curr->e.seginfo->CodeBuffer) {
+                static const unsigned char zeroes[256] = { 0 };
+                while (size) {
+                    unsigned count = size > sizeof(zeroes) ? sizeof(zeroes) : size;
+                    if (fwrite(zeroes, 1, count, CurrFile[OBJ]) != count) WriteError();
+                    size -= count;
+                }
+            } else if ( fwrite( curr->e.seginfo->CodeBuffer, 1, size, CurrFile[OBJ] ) != size )
                 WriteError();
         }
     }

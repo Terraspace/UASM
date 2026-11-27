@@ -1834,6 +1834,18 @@ done:
     return( ModuleInfo.g.error_count == 0 );
 }
 
+/* Select by register width first: ARCH:SSE only applies to legacy XMM.
+ * Stack alignment guarantees 16 bytes, not 32/64; wide saves use unaligned
+ * moves. High XMM/YMM registers require EVEX even under ARCH:SSE. */
+const char *VectorMove(int reg, bool aligned)
+{
+    unsigned kind = GetValueSp(reg);
+    if ((kind & OP_ZMM) || GetRegNo(reg) >= 16)
+        return (aligned && (kind & OP_XMM)) ? "vmovdqa64" : "vmovdqu64";
+    if (kind & OP_YMM) return "vmovdqu";
+    return aligned ? MOVE_ALIGNED_INT() : MOVE_UNALIGNED_INT();
+}
+
 /* ARCH SSE/AVX specific instructions */
 const char* MOVE_ALIGNED_FLOAT()
 {

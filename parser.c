@@ -706,7 +706,7 @@ static ret_code set_rm_sib(struct code_info *CodeInfo, unsigned CurrOpnd, char s
     mod_field = MOD_01; /* byte size displacement */
     }
   /* In the case of suppressed base register it has to be swapped with index v2.38 */
-  temp = GetValueSp( base );                                 /* get value from SpecialTable */
+  temp = base == EMPTY ? 0 : GetValueSp( base );                                 /* get value from SpecialTable */
   if (temp == OP_XMM || temp == OP_YMM || temp == OP_ZMM){   /* base can be only GP register*/
     temp = index;                                            /* swap index with base */
     index = base;
@@ -1769,7 +1769,7 @@ static ret_code memory_operand( struct code_info *CodeInfo, unsigned CurrOpnd, s
     index = ( opndx->idx_reg ? opndx->idx_reg->tokval : EMPTY );
 
     /* swap registers if base is AVX register, v2.38 */
-    if (GetValueSp(base) == OP_XMM || GetValueSp(base) == OP_YMM || GetValueSp(base) == OP_ZMM)
+    if (base != EMPTY && (GetValueSp(base) == OP_XMM || GetValueSp(base) == OP_YMM || GetValueSp(base) == OP_ZMM))
 	{
       temp    = base;
       base    = index;

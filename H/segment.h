@@ -34,6 +34,7 @@
 
 #define GetSegm( x )     (struct dsym *)x->segment
 
+extern struct dsym     *GetLiteralSegment(void);
 extern void             SetSymSegOfs( struct asym * );
 extern int              GetSymOfssize( const struct asym * );
 /* Get current segment's offset */

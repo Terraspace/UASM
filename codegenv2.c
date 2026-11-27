@@ -1432,9 +1432,11 @@ int BuildMemoryEncoding(unsigned char* pmodRM, unsigned char* pSIB, unsigned cha
 		else
 		{
 			/* Is it 8bit or 16/32bit (RIP only allows 32bit). */
-			if (CompDisp(&opExpr[(instr->memOpnd & 7)], instr, CodeInfo) &&
-				(((!opExpr[instr->memOpnd].sym) || (opExpr[instr->memOpnd].sym && opExpr[instr->memOpnd].sym->state == SYM_STACK)) &&
-				(((MemTable[memModeIdx].flags & MEMF_DSP32) == 0) && (opExpr[instr->memOpnd].value >= -128 && opExpr[instr->memOpnd].value <= 127))))
+			/* CompDisp mutates the addend: only call it when disp8 is legal. */
+			if ((!opExpr[instr->memOpnd].sym || opExpr[instr->memOpnd].sym->state == SYM_STACK) &&
+				!(MemTable[memModeIdx].flags & MEMF_DSP32) &&
+				CompDisp(&opExpr[(instr->memOpnd & 7)], instr, CodeInfo) &&
+				opExpr[instr->memOpnd].value >= -128 && opExpr[instr->memOpnd].value <= 127)
 			{
 				*dispSize = 1;
 				*pmodRM |= MODRM_DISP8;

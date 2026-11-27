@@ -911,6 +911,7 @@ struct format_options {
 /* global variables */
 
 /* global strings for arch:sse/avx instructions to use */
+extern const char* VectorMove(int reg, bool aligned);
 extern const char* MOVE_ALIGNED_FLOAT();
 extern const char* MOVE_ALIGNED_INT();
 extern const char* MOVE_UNALIGNED_FLOAT();

@@ -1982,7 +1982,7 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 			}
 			else
 			{
-				AddLineQueueX("%s %r, %s", MOVE_ALIGNED_INT(), reg, paramvalue);
+				AddLineQueueX("%s %r, %s", VectorMove(reg, TRUE), reg, paramvalue);
 				/* Mark vector register as written */
 				info->vecused |= (1 << sysv_reg(reg));
 				/* Increment count of vectors used in vararg call */
@@ -2148,7 +2148,7 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 		reg = sysv_GetNextVEC(info, 16);
 		if (reg != -1)
 		{
-			AddLineQueueX("%s %r, xmmword ptr %s", MOVE_ALIGNED_INT(), reg, paramvalue);
+			AddLineQueueX("%s %r, xmmword ptr %s", VectorMove(reg, TRUE), reg, paramvalue);
 			/* Mark vector register as written */
 			info->vecused |= (1 << sysv_reg(reg));
 			/* Increment count of vectors used in vararg call */
@@ -2169,7 +2169,7 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 		reg = -1;
 		if (reg != -1)
 		{
-			AddLineQueueX("%s %r, ymmword ptr %s", MOVE_ALIGNED_INT(), reg, paramvalue);
+			AddLineQueueX("%s %r, ymmword ptr %s", VectorMove(reg, TRUE), reg, paramvalue);
 			/* Mark vector register as written */
 			info->vecused |= (1 << sysv_reg(reg));
 			/* Increment count of vectors used in vararg call */
@@ -2190,7 +2190,7 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 		reg = -1;
 		if (reg != -1)
 		{
-			AddLineQueueX("%s %r, zmmword ptr %s", MOVE_ALIGNED_INT(), reg, paramvalue);
+			AddLineQueueX("%s %r, zmmword ptr %s", VectorMove(reg, TRUE), reg, paramvalue);
 			/* Mark vector register as written */
 			info->vecused |= (1 << sysv_reg(reg));
 			/* Increment count of vectors used in vararg call */
@@ -2442,7 +2442,7 @@ static int sysv_param_impl(struct dsym const *proc, int index, struct dsym *para
 					if (_stricmp(param->sym.string_ptr, paramvalue) == 0)
 						DebugMsg(("sysv_param(%s, param=%u): argument optimized\n", proc->sym.name, index));
 					else
-						AddLineQueueX("%s %s, %s", MOVE_ALIGNED_INT(), param->sym.string_ptr, paramvalue);
+						AddLineQueueX("%s %s, %s", VectorMove(reg, TRUE), param->sym.string_ptr, paramvalue);
 				}
 				else
 				{
@@ -2454,14 +2454,14 @@ static int sysv_param_impl(struct dsym const *proc, int index, struct dsym *para
 			/* Vector register load from indirect register ie: [rax] etc */
 			if (opnd->kind == EXPR_REG && opnd->indirect == TRUE)
 			{
-				AddLineQueueX("%s %s, xmmword ptr %s", MOVE_ALIGNED_INT(), param->sym.string_ptr, paramvalue);
+				AddLineQueueX("%s %s, xmmword ptr %s", VectorMove(reg, TRUE), param->sym.string_ptr, paramvalue);
 				return(1);
 			}
 			/* Operand is a memory address (IE: symbol name) or memory address expression like [rbp+rax] etc */
 			if (opnd->kind == EXPR_ADDR && !addr)
 			{
 				if (psize == param->sym.total_size || opnd->mem_type == MT_EMPTY)
-					AddLineQueueX("%s %s, xmmword ptr %s", MOVE_ALIGNED_INT(), param->sym.string_ptr, paramvalue);
+					AddLineQueueX("%s %s, xmmword ptr %s", VectorMove(reg, TRUE), param->sym.string_ptr, paramvalue);
 				else
 					EmitErr(INVOKE_ARGUMENT_TYPE_MISMATCH, index + 1);
 				return(1);
@@ -2495,7 +2495,7 @@ static int sysv_param_impl(struct dsym const *proc, int index, struct dsym *para
 					if (_stricmp(param->sym.string_ptr, paramvalue) == 0)
 						DebugMsg(("sysv_param(%s, param=%u): argument optimized\n", proc->sym.name, index));
 					else
-						AddLineQueueX("vmovdqa %s, %s", param->sym.string_ptr, paramvalue);
+						AddLineQueueX("%s %s, %s", GetRegNo(reg) >= 16 ? "vmovdqa64" : "vmovdqa", param->sym.string_ptr, paramvalue);
 				}
 				else
 				{
@@ -2548,7 +2548,7 @@ static int sysv_param_impl(struct dsym const *proc, int index, struct dsym *para
 					if (_stricmp(param->sym.string_ptr, paramvalue) == 0)
 						DebugMsg(("sysv_param(%s, param=%u): argument optimized\n", proc->sym.name, index));
 					else
-						AddLineQueueX("%s %s, %s", MOVE_ALIGNED_INT(), param->sym.string_ptr, paramvalue);
+						AddLineQueueX("%s %s, %s", VectorMove(reg, TRUE), param->sym.string_ptr, paramvalue);
 				}
 				else
 				{
@@ -2560,14 +2560,14 @@ static int sysv_param_impl(struct dsym const *proc, int index, struct dsym *para
 			/* Vector register load from indirect register ie: [rax] etc */
 			if (opnd->kind == EXPR_REG && opnd->indirect == TRUE)
 			{
-				AddLineQueueX("%s %s, zmmword ptr %s", MOVE_UNALIGNED_INT(), param->sym.string_ptr, paramvalue);
+				AddLineQueueX("%s %s, zmmword ptr %s", VectorMove(param->sym.tokval, FALSE), param->sym.string_ptr, paramvalue);
 				return(1);
 			}
 			/* Operand is a memory address (IE: symbol name) or memory address expression like [rbp+rax] etc */
 			if (opnd->kind == EXPR_ADDR && !addr)
 			{
 				if (psize == param->sym.total_size || opnd->mem_type == MT_EMPTY)
-					AddLineQueueX("%s %s, zmmword ptr %s", MOVE_UNALIGNED_INT(), param->sym.string_ptr, paramvalue);
+					AddLineQueueX("%s %s, zmmword ptr %s", VectorMove(param->sym.tokval, FALSE), param->sym.string_ptr, paramvalue);
 				else
 					EmitErr(INVOKE_ARGUMENT_TYPE_MISMATCH, index + 1);
 				return(1);
@@ -2909,7 +2909,7 @@ static int sysv_param_impl(struct dsym const *proc, int index, struct dsym *para
 				}
 				else if (GetValueSp(reg) & OP_XMM)
 				{
-					BuildCodeLine(sysv_stack_line(info), "%s xmmword ptr [%r], %s", MOVE_ALIGNED_INT(), T_RSP, paramvalue);
+					BuildCodeLine(sysv_stack_line(info), "%s xmmword ptr [%r], %s", VectorMove(reg, TRUE), T_RSP, paramvalue);
 					if (info->stackOfs % 16 != 0)
 					{
 						BuildCodeLine(sysv_stack_line(info), "sub %r, 24", T_RSP);
@@ -2923,7 +2923,7 @@ static int sysv_param_impl(struct dsym const *proc, int index, struct dsym *para
 				}
 				else if (GetValueSp(reg) & OP_YMM)
 				{
-					BuildCodeLine(sysv_stack_line(info), "%s ymmword ptr [%r], %s", MOVE_UNALIGNED_INT(), T_RSP, paramvalue);
+					BuildCodeLine(sysv_stack_line(info), "%s ymmword ptr [%r], %s", VectorMove(reg, FALSE), T_RSP, paramvalue);
 					if (info->stackOfs % 16 != 0)
 					{
 						BuildCodeLine(sysv_stack_line(info), "sub %r, 40", T_RSP);
@@ -2937,7 +2937,7 @@ static int sysv_param_impl(struct dsym const *proc, int index, struct dsym *para
 				}
 				else if (GetValueSp(reg) & OP_ZMM)
 				{
-					BuildCodeLine(sysv_stack_line(info), "%s zmmword ptr [%r], %s", MOVE_UNALIGNED_INT(), T_RSP, paramvalue);
+					BuildCodeLine(sysv_stack_line(info), "%s zmmword ptr [%r], %s", VectorMove(reg, FALSE), T_RSP, paramvalue);
 					if (info->stackOfs % 16 != 0)
 					{
 						BuildCodeLine(sysv_stack_line(info), "sub %r, 72", T_RSP);
@@ -3393,11 +3393,8 @@ static struct asym *InvokeLiteral(struct asm_tok *tok, bool wide)
         ModuleInfo.g.invoke_literals = item;
     }
     if (item->pass != Parse_Pass) {
-        seg = (struct dsym *)SymSearchModule("_DATA");
-        if (!seg || seg->sym.state != SYM_SEG) {
-            EmitErr(SYNTAX_ERROR_EX, "string literal requires a data segment");
-            return NULL;
-        }
+        seg = GetLiteralSegment();
+        if (!seg) return NULL;
         saved = CurrSeg;
         CurrSeg = seg;
         SetSymSegOfs(item->sym);

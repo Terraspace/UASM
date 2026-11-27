@@ -627,6 +627,52 @@ static ret_code SetSegmentClass( struct dsym *seg, const char *name )
     return( NOT_ERROR );
 }
 
+/* Obtain the normal .CONST segment without changing the active segment,
+ * ASSUME state, token array or line queue of the INVOKE being parsed. */
+struct dsym *GetLiteralSegment(void)
+{
+    const char *name = SimGetSegName(SIM_CONST);
+    struct dsym *seg, *data;
+    if (!name) name = "CONST";
+    seg = (struct dsym *)SymSearchModule(name);
+    if (seg && seg->sym.state != SYM_UNDEFINED && seg->sym.state != SYM_SEG) {
+        EmitErr(SYMBOL_REDEFINITION, name);
+        return NULL;
+    }
+    if (!seg || seg->sym.state == SYM_UNDEFINED) {
+        seg = CreateSegment(seg, name, TRUE);
+        if (!seg) return NULL;
+        seg->sym.isdefined = TRUE;
+        seg->sym.segment = &seg->sym;
+        seg->e.seginfo->combine = COMB_ADDOFF;
+        seg->e.seginfo->alignment = Options.seg_align;
+        if (ModuleInfo.defOfssize == USE16)
+            seg->e.seginfo->alignment = 1;
+        else if ((ModuleInfo.curr_cpu & P_CPU_MASK) <= P_386)
+            seg->e.seginfo->alignment = 2;
+        seg->e.seginfo->readonly = TRUE;
+        SetSegmentClass(seg, "CONST");
+        seg->e.seginfo->segtype = TypeFromClassName(seg, seg->e.seginfo->clsym);
+        seg->e.seginfo->seg_idx = ++ModuleInfo.g.num_segs;
+        AddLnameItem(&seg->sym);
+        /* Near literals belong to the same group as ordinary near data. */
+        data = (struct dsym *)SymSearchModule(SimGetSegName(SIM_DATA) ? SimGetSegName(SIM_DATA) : "_DATA");
+        if (data && data->sym.state == SYM_SEG && data->e.seginfo->group) {
+            struct dsym *group = (struct dsym *)data->e.seginfo->group;
+            seg->e.seginfo->group = &group->sym;
+            if (group != ModuleInfo.flat_grp) {
+                struct seg_item *item = LclAlloc(sizeof(*item)), **tail;
+                item->seg = seg;
+                item->next = NULL;
+                for (tail = &group->e.grpinfo->seglist; *tail; tail = &(*tail)->next) ;
+                *tail = item;
+                group->e.grpinfo->numseg++;
+            }
+        }
+    }
+    return seg;
+}
+
 /* CreateIntSegment(), used for internally defined segments:
  * codeview debugging segments, COFF .drectve, COFF .sxdata
  */
