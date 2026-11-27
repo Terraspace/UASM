@@ -161,5 +161,10 @@
     "@vscode/test-electron": "3.1.0",
     "@vscode/vsce": "4.1.1",
     "prettier": "3.6.2"
+  },
+  "overrides": {
+    "@vscode/vsce": {
+      "minimatch": "11.0.9"
+    }
   }
 }

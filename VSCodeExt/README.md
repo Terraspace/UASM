@@ -13,6 +13,8 @@ To build from source, install Node.js 22.12 or newer, then run `build.cmd`. It r
 - `redeploy.cmd`: build, then install.
 - `uninstall.cmd`: uninstall this extension only.
 - `clean.cmd`: remove generated `dist` and isolated test data; retain source and dependencies.
+The packaging tool currently has a scoped `minimatch` 11.0.9 override for [GHSA-g3hv-75wg-m249](https://github.com/advisories/GHSA-g3hv-75wg-m249). Remove the override once `@vscode/vsce` requires a patched version itself; verify with `npm ci`, `npm audit` and `npm run package`. This dependency is not included in the installed extension.
+
 - `npm test`: semantic engine tests.
 - `npm run test:host`: actual VS Code provider tests, using an isolated profile and extension directory. Downloads a test copy of VS Code by default; set `VSCODE_EXECUTABLE` to use an existing executable.
 
