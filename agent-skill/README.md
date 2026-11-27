@@ -1,6 +1,6 @@
 # UASM coding skill pack
 
-Version 1.0.3, for the UASM 2.60 snapshot identified in `uasm-coding/references/provenance.md`.
+Version 1.0.4, for the UASM 2.60 snapshot identified in `uasm-coding/references/provenance.md`.
 
 This pack gives a fresh Codex conversation reusable UASM instructions, feature references and source-only examples. It does not install an assembler, SDK or debugger and does not depend on this conversation. Read `VALIDATION.md` for the exact checks performed.
 
@@ -64,7 +64,7 @@ Do not expect an installed skill folder to be writable. Copy an example to your 
 To recreate the distribution from this directory:
 
 ```text
-python package.py --output /path/to/uasm-coding-skill-1.0.3.zip
+python package.py --output /path/to/uasm-coding-skill-1.0.4.zip
 ```
 
 Keep the source manifest and provenance current when refreshing the pack. Local installation copies do not auto-update from GitHub. No personal Codex settings are modified by the packaging or example-check scripts.

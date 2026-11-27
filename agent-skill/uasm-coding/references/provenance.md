@@ -1,10 +1,12 @@
 # Version and evidence
 
-Pack version: 1.0.3. Prepared 2026-11-27 for UASM 2.60 master snapshot `e693c8c2555c04980308910cac0dad834202ae39` in https://github.com/Terraspace/UASM.
+Pack version: 1.0.4. Prepared 2026-11-27 for UASM 2.60 master snapshot `e693c8c2555c04980308910cac0dad834202ae39` in https://github.com/Terraspace/UASM.
 
 This is a portable coding reference, not a transcript or a promise that every UASM 2.60 binary contains every post-release fix. Some original sample READMEs still say experimental/v2.60b; this pack describes the merged code at the snapshot above. No external machine's paths, tools or credentials are prerequisites.
 
 `source-manifest.json` records the repository origin and SHA-256 of the copied example/build files. `assets/SOURCE-LICENSE.txt` preserves the repository's source license; existing notices remain in copied files. The new references summarize observed source/test contracts rather than importing a third-party manual.
+
+C-style operator guidance was updated against commit `786aa76` on 2026-11-27. All 845 regressions passed on Windows x64/x86 and Linux GCC release builds; the fix also passed GCC 16.2 and Clang 23. Copied sample provenance remains the snapshot recorded above.
 
 ## Source map for checking or updating the pack
 

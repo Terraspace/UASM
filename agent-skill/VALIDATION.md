@@ -29,3 +29,7 @@ All fourteen ASM files assembled with the include directory supplied externally.
 ## 1.0.3 packing feedback
 
 The user's new GUI source omitted -Zp8. Independent object-data probes measured MSG at 40 bytes (wParam=12, lParam=20, pt=32) without it, versus the correct 48 bytes (16/24/36) with it. The generated local buffer at RSP+0x70 in a 0x98-byte frame allowed a 48-byte OS write to reach the saved return address. The same user source, rebuilt with -Zp8, passed an automated WM_CLOSE test and exited zero. Default skill build commands now require -Zp8 for WinInc x64. The WinInc starter has layout assertions for SIZEOF and member offsets, and omission is checked as an expected assembly failure. No assembler implementation changes were made.
+
+## 1.0.4 C-style expressions
+
+Removed the obsolete OR-expression workaround; direct ASM expressions are supported by the token-boundary fix in commit 786aa76. Added a self-contained operator/nested-call probe. Skill validation passed and all 15 bundled ASM files assembled successfully with the rebuilt UASM, including the WinInc starter with -Zp8. These are assembly checks; the preceding assembler validation separately covered full Windows/Linux suites and the inline-OR GUI startup/close check.

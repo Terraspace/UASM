@@ -66,6 +66,13 @@ RAWINTERFACE / ENDRAWINTERFACE with `STDFUNC Name,<ReturnType>,...` models direc
 
 When interoping with external code, a plausible prototype is insufficient: verify pointer depth, width, signedness, by-value/by-reference aggregate rules, register convention and return contract against the actual API.
 
-## Verified C-style constant-expression boundary
+## C-style argument expressions
 
-The reviewed starter's `MessageBoxW(..., MB_OK or MB_ICONERROR)` fails in this snapshot: the argument becomes `MB_OKorMB_ICONERROR`. Adding parentheses does not repair it. Precompute `ERROR_MESSAGE_FLAGS EQU MB_OK or MB_ICONERROR` and pass the constant, or use a separately verified INVOKE form. This is a confirmed assembler bug in preproc.c ExpandHllCalls: token rebuilding loses the separators around OR before the generated INVOKE is rescanned. The intended language supports this expression; it is not a valid language restriction. Report it if it affects the requested task; do not silently change the assembler while writing an application.
+C-style calls preserve ASM expression tokens when lowering to INVOKE. Write expressions directly, including `MB_OK or MB_ICONERROR`, `flags AND bits`, `1 SHL 3`, `SIZEOF value` and parenthesized combinations. No intermediate EQU or extra parentheses are required to work around token reconstruction. The same expression rules apply to ordinary and typed nested calls.
+
+```asm
+MessageBoxW(0, L"The application encountered an error.",
+            L"UASM example", MB_OK or MB_ICONERROR)
+```
+
+Verified with UASM commit `786aa76`: operator fixtures match INVOKE output on Win32, Win64 and ELF64. An older executable can still contain the token-boundary bug despite displaying version 2.60; use a build containing this fix.
